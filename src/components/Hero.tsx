@@ -15,67 +15,62 @@ const Counter = ({ from, to }: { from: number; to: number }) => {
         const node = nodeRef.current;
 
         const controls = animate(from, to, {
-            duration: 2,
+            duration: 2.5, // Slower, more elegant
+            ease: [0.19, 1, 0.22, 1],
             onUpdate(value) {
                 if (node) node.textContent = `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             },
             onComplete() {
-                // Start "Live Ticking" Simulation
                 if (!node) return;
                 let currentValue = to;
-
-                // Add random cents every few seconds to simulate yield
+                // Subtle "Live Ticking" - less chaotic frequency
                 setInterval(() => {
                     const increment = Math.random() * (0.05 - 0.01) + 0.01;
                     currentValue += increment;
                     node.textContent = `$${currentValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-                }, 3000);
+                }, 4000);
             }
         });
 
         return () => controls.stop();
     }, [from, to, isInView]);
 
-    return <span ref={nodeRef} className="tabular-nums" />;
+    return <span ref={nodeRef} className="tabular-nums tracking-tight" />;
 };
 
 export default function Hero() {
     const targetRef = useRef<HTMLDivElement>(null);
     const cardRef = useRef<HTMLDivElement>(null);
 
-    // Scroll Parallax
+    // Scroll Logic
     const { scrollYProgress } = useScroll({
         target: targetRef,
         offset: ["start start", "end start"],
     });
 
-    const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-    const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.9]);
-    const yParallax = useTransform(scrollYProgress, [0, 0.5], [0, 50]);
+    const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+    const scale = useTransform(scrollYProgress, [0, 0.6], [1, 0.95]);
+    const yParallax = useTransform(scrollYProgress, [0, 0.6], [0, 100]); // Deeper parallax
 
-    // Mouse Tilt Logic
+    // Mouse Tilt Logic - Refined physics
     const x = useMotionValue(0);
     const y = useMotionValue(0);
 
-    const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
-    const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
+    const mouseXSpring = useSpring(x, { stiffness: 100, damping: 20 }); // Heavier feel
+    const mouseYSpring = useSpring(y, { stiffness: 100, damping: 20 });
 
-    const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7deg", "-7deg"]);
-    const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7deg", "7deg"]);
+    const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["8deg", "-8deg"]);
+    const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-8deg", "8deg"]);
 
     const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
         if (!cardRef.current) return;
         const rect = cardRef.current.getBoundingClientRect();
-
         const width = rect.width;
         const height = rect.height;
-
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
-
         const xPct = mouseX / width - 0.5;
         const yPct = mouseY / height - 0.5;
-
         x.set(xPct);
         y.set(yPct);
     };
@@ -86,10 +81,10 @@ export default function Hero() {
     };
 
     return (
-        <section ref={targetRef} className="relative min-h-[110vh] flex flex-col pt-32 pb-10 overflow-hidden">
-            {/* Background with Unified Grid */}
-            <div className="absolute inset-0 z-0 pointer-events-none bg-grid-animate" />
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/50 to-[#050505] z-0" />
+        <section ref={targetRef} className="relative min-h-screen flex flex-col pt-32 pb-20 overflow-hidden">
+            {/* Background */}
+            <div className="absolute inset-0 z-0 pointer-events-none bg-grid-animate opacity-50" />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--obsidian-base)]/80 to-[var(--obsidian-base)] z-0" />
 
             {/* Main Content */}
             <motion.div
@@ -102,50 +97,49 @@ export default function Hero() {
                     <motion.div
                         initial={{ opacity: 0, x: -30, filter: "blur(10px)" }}
                         animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                        transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+                        transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
                         className="lg:col-span-7 flex flex-col gap-8 max-w-2xl"
                     >
-                        {/* Live Badge - Bold Uppercase */}
-                        <div className="inline-flex items-center gap-2 self-start rounded-full border border-white/5 bg-white/5 px-3 py-1.5 text-xs font-bold text-white/80 backdrop-blur-md uppercase tracking-wider">
+                        {/* Live Badge */}
+                        <div className="inline-flex items-center gap-2 self-start rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[10px] font-bold text-white/80 uppercase tracking-widest backdrop-blur-md">
                             <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--volt)] opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--volt)]"></span>
                             </span>
-                            <span>V2.0 Live on Mainnet</span>
+                            <span>V2.0 Mainnet Live</span>
                         </div>
 
-                        {/* Headline - Bold & Tight */}
-                        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tighter leading-[1] text-white">
-                            THE SALARY ENGINE <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/80 to-white/40">
-                                FOR THE OPEN ECONOMY.
+                        {/* Headline */}
+                        <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] text-white">
+                            THE SALARY <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/90 to-white/50">
+                                ENGINE.
                             </span>
                         </h1>
 
-                        {/* Description - Standardized Normal Tracking, Relaxed Leading */}
-                        <p className="text-lg text-[var(--foreground-muted)] font-normal leading-relaxed max-w-xl tracking-normal">
-                            Streamline crypto payroll and earn generic yield on idle USDC. Secure, automated, and compliant financial infrastructure for the future of work.
+                        {/* Description */}
+                        <p className="text-xl text-[var(--text-secondary)] font-normal leading-relaxed max-w-lg">
+                            Streamline crypto payroll and earn generic yield on idle USDC. Automated financial infrastructure for the open economy.
                         </p>
 
                         {/* Buttons */}
-                        <div className="flex flex-wrap items-center gap-4 mt-2">
-                            <button className="h-12 px-8 rounded-lg flex items-center gap-2 btn-neon group relative overflow-hidden font-bold tracking-wide uppercase text-sm">
-                                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                                <span className="relative">Start Earning</span>
-                                <ArrowRight size={18} className="relative group-hover:translate-x-1 transition-transform" />
+                        <div className="flex flex-wrap items-center gap-4 mt-4">
+                            <button className="h-12 px-8 flex items-center gap-3 btn-primary group">
+                                <span className="relative z-10">Start Earning</span>
+                                <ArrowRight size={18} className="relative z-10 group-hover:translate-x-1 transition-transform" />
                             </button>
-                            <button className="h-12 px-8 rounded-lg flex items-center gap-2 btn-outline group font-bold tracking-wide uppercase text-sm">
+                            <button className="h-12 px-8 flex items-center gap-3 btn-secondary group">
                                 <PlayCircle size={20} className="text-white/60 group-hover:text-white transition-colors" />
                                 <span>How it works</span>
                             </button>
                         </div>
 
-                        {/* Social Proof - Bold Uppercase */}
-                        <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row gap-6 sm:items-center">
-                            <span className="text-xs text-zinc-500 font-bold uppercase tracking-widest">Audited & Trusted By</span>
-                            <div className="flex gap-4 opacity-40 grayscale transition-all hover:grayscale-0 hover:opacity-100">
+                        {/* Social Proof */}
+                        <div className="pt-10 border-t border-white/5 flex flex-col sm:flex-row gap-6 sm:items-center">
+                            <span className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest">Audited & Trusted By</span>
+                            <div className="flex gap-4 opacity-50 grayscale transition-all duration-500 hover:grayscale-0 hover:opacity-100">
                                 {['CERTIK', 'HACKEN', 'OPENZEP'].map((partner) => (
-                                    <div key={partner} className="h-7 px-3 bg-white/5 rounded flex items-center justify-center text-[10px] text-white font-black border border-white/5 uppercase tracking-widest">
+                                    <div key={partner} className="h-8 px-4 bg-white/5 rounded flex items-center justify-center text-[10px] text-white font-black border border-white/5 uppercase tracking-widest">
                                         {partner}
                                     </div>
                                 ))}
@@ -159,87 +153,89 @@ export default function Hero() {
                         onMouseLeave={handleMouseLeave}
                         className="lg:col-span-5 relative perspective-1000 w-full flex justify-center lg:justify-end py-10"
                     >
-                        {/* Glow Effects Behind */}
+                        {/* Glow Behind */}
                         <motion.div
                             style={{ rotateX, rotateY }}
-                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-primary/20 rounded-full blur-[120px] pointer-events-none transition-opacity duration-500"
+                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[var(--volt)] opacity-20 blur-[120px] rounded-full pointer-events-none"
                         />
 
-                        {/* The Unified Card Container - TILT TARGET */}
+                        {/* Main Card */}
                         <motion.div
                             ref={cardRef}
                             style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
                             initial={{ opacity: 0, scale: 0.9, y: 50 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
-                            transition={{ duration: 1, ease: [0.19, 1, 0.22, 1], delay: 0.2 }}
-                            className="card-prime w-full max-w-md rounded-3xl p-8 relative bg-[#0A0A0A]/60"
+                            transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1], delay: 0.2 }}
+                            className="card-solid w-full max-w-md rounded-[2rem] p-8 relative bg-[var(--obsidian-surface)]"
                         >
-                            {/* Floating Badge (Parallax Layer 1 - Highest Z) */}
+                            {/* Floating Badge */}
                             <motion.div
                                 style={{ z: 60 }}
-                                className="absolute -right-6 -top-8 bg-[#151515] border border-white/10 p-3 rounded-2xl shadow-2xl flex items-center gap-3 transform-style-3d"
+                                className="absolute -right-6 -top-8 bg-[#111] border border-white/10 p-4 rounded-xl shadow-2xl flex items-center gap-4 transform-style-3d"
                             >
-                                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-black font-bold shadow-[0_0_15px_rgba(204,255,0,0.4)]">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                                <div className="w-10 h-10 rounded-full bg-[var(--volt)] flex items-center justify-center text-black shadow-[0_0_20px_rgba(204,255,0,0.5)]">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
                                 </div>
-                                <div className="pr-2">
-                                    <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider mb-0.5">Yield Generated</p>
-                                    <p className="text-white font-bold tracking-tight">+$1,240.50</p>
+                                <div className="pr-1">
+                                    <p className="text-[9px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-0.5">Yield Generated</p>
+                                    <p className="text-white font-bold tracking-tight text-sm">+$1,240.50</p>
                                 </div>
                             </motion.div>
 
-                            {/* Card Header (Layer 2) */}
-                            <motion.div style={{ z: 30 }} className="flex justify-between items-start mb-8 transform-style-3d">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-full bg-[#0052FF] flex items-center justify-center text-white font-bold text-sm shadow-[0_4px_20px_rgba(0,82,255,0.4)] ring-2 ring-white/10">
-                                        <span className="font-serif italic text-xl">$</span>
-                                    </div>
-                                    <div>
-                                        <h3 className="text-white font-bold text-lg uppercase tracking-wider">USDC Treasury</h3>
-                                        <div className="flex items-center gap-2 text-[10px] text-primary font-bold uppercase tracking-wider bg-primary/10 px-2 py-0.5 rounded-full w-fit mt-1">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                                            Active
+                            {/* Card Content Layer */}
+                            <motion.div style={{ z: 30 }} className="transform-style-3d">
+                                {/* Header */}
+                                <div className="flex justify-between items-start mb-10">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-12 h-12 rounded-full bg-[#0052FF] flex items-center justify-center text-white font-bold text-lg shadow-[0_4px_20px_rgba(0,82,255,0.4)] ring-2 ring-white/5">
+                                            $
+                                        </div>
+                                        <div>
+                                            <h3 className="text-white font-bold text-lg uppercase tracking-wider">USDC Vault</h3>
+                                            <div className="flex items-center gap-2 text-[9px] text-[var(--volt)] font-bold uppercase tracking-widest bg-[var(--volt-glass)] px-2 py-0.5 rounded-full w-fit mt-1 border border-[var(--volt)]/10">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-[var(--volt)] animate-pulse" />
+                                                Active Strategy
+                                            </div>
                                         </div>
                                     </div>
+                                    <button className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/5 text-[var(--text-tertiary)] hover:text-white transition-colors">
+                                        <MoreHorizontal size={20} />
+                                    </button>
                                 </div>
-                                <button className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/5 text-zinc-500 hover:text-white transition-colors">
-                                    <MoreHorizontal size={20} />
-                                </button>
-                            </motion.div>
 
-                            {/* Main Stat (Layer 2) */}
-                            <motion.div style={{ z: 30 }} className="mb-8 transform-style-3d">
-                                <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest mb-1">Total Balance</p>
-                                <h2 className="text-5xl font-bold text-white tracking-tighter tabular-nums">
-                                    <Counter from={100000} to={124592.50} />
-                                </h2>
-                            </motion.div>
-
-                            {/* Chart (Layer 1 - Deep) */}
-                            <motion.div style={{ z: 10 }} className="relative h-24 w-full mb-8 transform-style-3d">
-                                <svg className="w-full h-full overflow-visible" viewBox="0 0 300 100" preserveAspectRatio="none">
-                                    <defs>
-                                        <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
-                                            <stop offset="0%" stopColor="#CCFF00" stopOpacity="0.1" />
-                                            <stop offset="100%" stopColor="#CCFF00" stopOpacity="0" />
-                                        </linearGradient>
-                                    </defs>
-                                    <path d="M0,100 L0,70 Q30,65 60,75 T120,60 T180,45 T240,20 L300,5 L300,100 Z" fill="url(#chartGradient)" />
-                                    <path className="chart-line drop-shadow-[0_0_10px_rgba(204,255,0,0.3)]" d="M0,70 Q30,65 60,75 T120,60 T180,45 T240,20 L300,5" fill="none" stroke="#CCFF00" strokeLinecap="round" strokeWidth="3" />
-                                    {/* End Point Dot */}
-                                    <circle cx="300" cy="5" r="4" fill="#0A0A0A" stroke="#CCFF00" strokeWidth="2" className="drop-shadow-[0_0_10px_#CCFF00]" />
-                                </svg>
-                            </motion.div>
-
-                            {/* Secondary Stats (Layer 3 - Floating Buttons) */}
-                            <motion.div style={{ z: 40 }} className="grid grid-cols-2 gap-4 transform-style-3d">
-                                <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] transition-colors hover:-translate-y-1 duration-300">
-                                    <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-2">Current APY</p>
-                                    <p className="text-2xl font-bold text-primary tracking-tight">4.5%</p>
+                                {/* Balance */}
+                                <div className="mb-8">
+                                    <p className="text-[var(--text-tertiary)] text-[10px] font-bold uppercase tracking-widest mb-2">Total Balance</p>
+                                    <h2 className="text-5xl font-bold text-white tracking-tighter tabular-nums">
+                                        <Counter from={100000} to={124592.50} />
+                                    </h2>
                                 </div>
-                                <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] transition-colors hover:-translate-y-1 duration-300">
-                                    <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-2">Next Payout</p>
-                                    <p className="text-2xl font-bold text-white tabular-nums tracking-tight">4h 12m</p>
+
+                                {/* Graph */}
+                                <div className="relative h-24 w-full mb-8">
+                                    <svg className="w-full h-full overflow-visible" viewBox="0 0 300 100" preserveAspectRatio="none">
+                                        <defs>
+                                            <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+                                                <stop offset="0%" stopColor="#CCFF00" stopOpacity="0.1" />
+                                                <stop offset="100%" stopColor="#CCFF00" stopOpacity="0" />
+                                            </linearGradient>
+                                        </defs>
+                                        <path d="M0,100 L0,70 Q30,65 60,75 T120,60 T180,45 T240,20 L300,5 L300,100 Z" fill="url(#chartGradient)" />
+                                        <path className="chart-line drop-shadow-[0_0_15px_rgba(204,255,0,0.4)]" d="M0,70 Q30,65 60,75 T120,60 T180,45 T240,20 L300,5" fill="none" stroke="#CCFF00" strokeLinecap="round" strokeWidth="3" />
+                                        <circle cx="300" cy="5" r="5" fill="#0A0A0A" stroke="#CCFF00" strokeWidth="3" className="drop-shadow-[0_0_10px_#CCFF00]" />
+                                    </svg>
+                                </div>
+
+                                {/* Stats Grid */}
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors hover:-translate-y-1 duration-300">
+                                        <p className="text-[9px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">APY</p>
+                                        <p className="text-2xl font-bold text-[var(--volt)] tracking-tighter">4.5%</p>
+                                    </div>
+                                    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors hover:-translate-y-1 duration-300">
+                                        <p className="text-[9px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">Next Payout</p>
+                                        <p className="text-2xl font-bold text-white tabular-nums tracking-tighter">4h 12m</p>
+                                    </div>
                                 </div>
                             </motion.div>
                         </motion.div>
