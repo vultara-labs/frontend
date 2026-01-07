@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Github, Twitter, ExternalLink } from "lucide-react";
+import Link from "next/link";
 
 export default function Footer() {
     return (
@@ -17,14 +17,14 @@ export default function Footer() {
                 <div className="grid md:grid-cols-4 gap-16 mb-20">
                     {/* Brand */}
                     <div className="md:col-span-2">
-                        <a href="/" className="flex items-center gap-4 mb-8">
+                        <Link href="/" className="flex items-center gap-4 mb-8">
                             <div className="w-12 h-12 rounded-xl bg-[var(--volt)] flex items-center justify-center shadow-[0_0_25px_rgba(204,255,0,0.3)]">
                                 <span className="text-black font-black text-2xl">V</span>
                             </div>
                             <span className="text-2xl font-black tracking-tighter text-white uppercase">
                                 Vultara<span className="text-white/30 font-light">.Labs</span>
                             </span>
-                        </a>
+                        </Link>
                         <p className="text-[var(--text-secondary)] font-light leading-loose max-w-md mb-8">
                             Secure Your Income, Amplify Your Growth. The smart USDC vault for Indonesian Web3 freelancers.
                         </p>

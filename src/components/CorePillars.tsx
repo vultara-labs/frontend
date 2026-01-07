@@ -87,7 +87,7 @@ export default function CorePillars() {
                                         payable(taxAuthority).transfer(tax);
                                     </div>
 
-                                    <div className="pl-4 py-1.5 border-l-2 border-transparent text-green-400/40 italic">// Auto-distribution success</div>
+                                    <div className="pl-4 py-1.5 border-l-2 border-transparent text-green-400/40 italic">{"// Auto-distribution success"}</div>
                                     <div className="text-zinc-600 opacity-60">{"}"}</div>
                                 </div>
                             </div>

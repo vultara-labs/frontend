@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Fingerprint, FileText, Banknote, RefreshCcw, Landmark, ArrowRight, ArrowLeft } from "lucide-react";
+import { Fingerprint, FileText, Banknote, RefreshCcw, Landmark } from "lucide-react";
 import { useRef } from "react";
 
 export default function UserJourney() {

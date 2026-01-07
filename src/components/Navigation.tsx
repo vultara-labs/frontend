@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function Navigation() {
@@ -16,7 +17,7 @@ export default function Navigation() {
         >
             <div className="mx-auto max-w-[1280px] px-6 h-20 flex items-center justify-between">
                 {/* Logo */}
-                <a href="/" className="flex items-center gap-3 group">
+                <Link href="/" className="flex items-center gap-3 group">
                     <div className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-xl border border-white/10 text-[var(--volt)] group-hover:border-[var(--volt)]/50 group-hover:bg-[var(--volt-glass)] transition-all duration-300">
                         <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M6 4L11 20" stroke="currentColor" strokeLinecap="round" strokeWidth="3"></path>
@@ -25,7 +26,7 @@ export default function Navigation() {
                         </svg>
                     </div>
                     <span className="text-xl font-bold tracking-tight text-white uppercase">Vultara</span>
-                </a>
+                </Link>
 
                 {/* Desktop Navigation */}
                 <nav className="hidden md:flex items-center gap-8">
