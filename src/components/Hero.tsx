@@ -1,193 +1,146 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, TrendingUp, Shield, Sparkles } from "lucide-react";
+import { ArrowRight, PlayCircle, MoreHorizontal, TrendingUp } from "lucide-react";
 
 export default function Hero() {
     return (
-        <section className="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden">
-            {/* Background Effects */}
-            <div className="absolute inset-0 pointer-events-none">
-                {/* Gradient orbs */}
-                <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[#CCFF00] opacity-[0.03] rounded-full blur-[120px]" />
-                <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[#CCFF00] opacity-[0.02] rounded-full blur-[100px]" />
+        <section className="relative min-h-screen flex flex-col pt-32 pb-10 overflow-hidden">
+            {/* Background with Unified Grid */}
+            <div className="absolute inset-0 z-0 pointer-events-none bg-grid-animate" />
 
-                {/* Grid pattern */}
-                <div
-                    className="absolute inset-0 opacity-[0.015]"
-                    style={{
-                        backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-                             linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-                        backgroundSize: '60px 60px'
-                    }}
-                />
-            </div>
+            {/* Main Content */}
+            <div className="relative z-10 mx-auto max-w-[1280px] px-6 w-full flex-grow flex items-center">
+                <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center w-full">
 
-            <div className="relative z-10 mx-auto max-w-7xl px-6 w-full">
-                <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                     {/* Left Content */}
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
+                        transition={{ duration: 0.8 }}
+                        className="lg:col-span-7 flex flex-col gap-8 max-w-2xl"
                     >
-                        {/* Badge */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.3 }}
-                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8"
-                        >
-                            <Sparkles className="w-4 h-4 text-[#CCFF00]" />
-                            <span className="text-sm text-[#94A3B8]">Built for Base Indonesia Hackathon 2025</span>
-                        </motion.div>
+                        {/* Live Badge */}
+                        <div className="inline-flex items-center gap-2 self-start rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-medium text-primary shadow-lg shadow-primary/10">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                            </span>
+                            v2.0 Now Live on Mainnet
+                        </div>
 
                         {/* Headline */}
-                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] mb-6">
-                            <span className="text-white">Secure Your Income,</span>
-                            <br />
-                            <span className="gradient-text">Amplify Your Growth.</span>
+                        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tighter leading-[1.1] text-white">
+                            The Salary Engine <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/50">
+                                for the Open Economy.
+                            </span>
                         </h1>
 
-                        {/* Subheadline */}
-                        <p className="text-lg text-[#94A3B8] mb-8 max-w-lg leading-relaxed">
-                            The smart USDC vault designed for Indonesian Web3 freelancers.
-                            Earn organic yield through Thetanuts V3 while your AI advisor
-                            optimizes every decision.
+                        {/* Description */}
+                        <p className="text-lg text-gray-400 font-light leading-relaxed max-w-xl">
+                            Streamline crypto payroll and earn generic yield on idle USDC. Secure, automated, and compliant financial infrastructure for the future of work.
                         </p>
 
-                        {/* CTA Buttons */}
-                        <div className="flex flex-wrap gap-4 mb-12">
-                            <button className="btn-primary flex items-center gap-2">
-                                Get Started
-                                <ArrowRight className="w-4 h-4" />
+                        {/* Buttons */}
+                        <div className="flex flex-wrap items-center gap-4 mt-2">
+                            <button className="h-12 px-8 rounded-lg flex items-center gap-2 btn-neon">
+                                <span>Start Earning</span>
+                                <ArrowRight size={20} />
                             </button>
-                            <button className="btn-secondary flex items-center gap-2">
-                                Learn More
+                            <button className="h-12 px-8 rounded-lg flex items-center gap-2 btn-outline group">
+                                <PlayCircle size={20} className="text-gray-400 group-hover:text-white transition-colors" />
+                                <span>How it works</span>
                             </button>
                         </div>
 
-                        {/* Stats */}
-                        <div className="flex flex-wrap gap-8">
-                            <div>
-                                <div className="text-2xl font-bold text-white">12.5%</div>
-                                <div className="text-sm text-[#64748B]">Avg. APY</div>
-                            </div>
-                            <div>
-                                <div className="text-2xl font-bold text-white">$0</div>
-                                <div className="text-sm text-[#64748B]">Gas Fees</div>
-                            </div>
-                            <div>
-                                <div className="text-2xl font-bold text-white">1-Click</div>
-                                <div className="text-sm text-[#64748B]">IDRX Withdraw</div>
+                        {/* Social Proof */}
+                        <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row gap-6 sm:items-center">
+                            <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">Audited & Trusted By</span>
+                            <div className="flex gap-4 opacity-50 grayscale transition-all hover:grayscale-0 hover:opacity-100">
+                                {['CERTIK', 'HACKEN', 'OPENZEP'].map((partner) => (
+                                    <div key={partner} className="h-6 w-20 bg-white/5 rounded flex items-center justify-center text-[10px] text-white font-bold border border-white/5">
+                                        {partner}
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </motion.div>
 
-                    {/* Right Content - Dashboard Card */}
+                    {/* Right Content: Floating Yield Card */}
                     <motion.div
-                        initial={{ opacity: 0, x: 30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
-                        className="relative"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        className="lg:col-span-5 relative perspective-1000"
                     >
-                        {/* Main Dashboard Card */}
-                        <div className="glass-card gradient-border p-8 neon-glow">
+                        {/* Glow Effects */}
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-primary/10 rounded-full blur-[80px] pointer-events-none" />
+
+                        {/* The Unified Class Card */}
+                        <div className="card-prime rounded-2xl p-6 relative">
                             {/* Card Header */}
-                            <div className="flex items-center justify-between mb-8">
+                            <div className="flex justify-between items-start mb-6">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#CCFF00] to-[#A3CC00] flex items-center justify-center">
-                                        <Shield className="w-5 h-5 text-[#0A0A0A]" />
+                                    <div className="w-10 h-10 rounded-full bg-[#0052FF] flex items-center justify-center text-white font-bold text-xs shadow-lg ring-2 ring-[#0052FF]/20">
+                                        $
                                     </div>
                                     <div>
-                                        <div className="text-sm text-[#64748B]">Smart Vault</div>
-                                        <div className="text-white font-medium">Protected by Shieldie</div>
+                                        <h3 className="text-white font-bold text-lg leading-tight">USDC Treasury</h3>
+                                        <div className="flex items-center gap-1.5 text-xs text-primary font-medium">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse shadow-[0_0_10px_#CCFF00]" />
+                                            Compounding Active
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#CCFF00]/10 border border-[#CCFF00]/20">
-                                    <div className="w-2 h-2 rounded-full bg-[#CCFF00] animate-pulse" />
-                                    <span className="text-xs text-[#CCFF00]">Live</span>
-                                </div>
-                            </div>
-
-                            {/* Balance */}
-                            <div className="mb-8">
-                                <div className="text-sm text-[#64748B] mb-2">Total Balance</div>
-                                <div className="flex items-baseline gap-3">
-                                    <span className="text-4xl font-bold text-white">$12,847.50</span>
-                                    <span className="text-lg text-[#64748B]">USDC</span>
-                                </div>
-                            </div>
-
-                            {/* Yield Chart Simulation */}
-                            <div className="glass-card p-4 mb-6">
-                                <div className="flex items-center justify-between mb-4">
-                                    <span className="text-sm text-[#64748B]">Weekly Yield</span>
-                                    <div className="flex items-center gap-1 text-[#CCFF00]">
-                                        <TrendingUp className="w-4 h-4" />
-                                        <span className="font-semibold">+12.5%</span>
-                                    </div>
-                                </div>
-
-                                {/* Chart Bars */}
-                                <div className="flex items-end gap-2 h-20">
-                                    {[40, 55, 45, 65, 50, 75, 85].map((height, i) => (
-                                        <motion.div
-                                            key={i}
-                                            initial={{ height: 0 }}
-                                            animate={{ height: `${height}%` }}
-                                            transition={{ delay: 0.8 + i * 0.1, duration: 0.5 }}
-                                            className="flex-1 rounded-t-md bg-gradient-to-t from-[#CCFF00]/20 to-[#CCFF00]/60"
-                                            style={{ boxShadow: '0 0 20px rgba(204, 255, 0, 0.2)' }}
-                                        />
-                                    ))}
-                                </div>
-                                <div className="flex justify-between mt-2 text-xs text-[#64748B]">
-                                    <span>Mon</span>
-                                    <span>Tue</span>
-                                    <span>Wed</span>
-                                    <span>Thu</span>
-                                    <span>Fri</span>
-                                    <span>Sat</span>
-                                    <span>Sun</span>
-                                </div>
-                            </div>
-
-                            {/* Quick Actions */}
-                            <div className="grid grid-cols-2 gap-3">
-                                <button className="btn-primary py-3 text-sm">
-                                    Deposit
+                                <button className="p-2 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors">
+                                    <MoreHorizontal size={20} />
                                 </button>
-                                <button className="btn-secondary py-3 text-sm">
-                                    Withdraw to IDR
-                                </button>
+                            </div>
+
+                            {/* Main Stat */}
+                            <div className="mb-6">
+                                <div className="flex items-baseline justify-between mb-1">
+                                    <p className="text-gray-400 text-sm font-medium">Total Balance</p>
+                                    <span className="text-xs font-medium text-emerald-400 flex items-center gap-1 bg-emerald-400/10 px-2 py-0.5 rounded">
+                                        +1.2% this week
+                                    </span>
+                                </div>
+                                <h2 className="text-4xl font-bold text-white tracking-tight">$124,592.00</h2>
+                            </div>
+
+                            {/* Chart */}
+                            <div className="relative h-32 w-full mb-6">
+                                {/* CSS Gradient Fade at bottom */}
+                                <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/5 via-transparent to-transparent z-10" />
+
+                                <svg className="w-full h-full overflow-visible" viewBox="0 0 300 100" preserveAspectRatio="none">
+                                    <defs>
+                                        <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+                                            <stop offset="0%" stopColor="#CCFF00" stopOpacity="0.2" />
+                                            <stop offset="100%" stopColor="#CCFF00" stopOpacity="0" />
+                                        </linearGradient>
+                                    </defs>
+                                    <path d="M0,100 L0,70 Q30,65 60,75 T120,60 T180,45 T240,20 L300,5 L300,100 Z" fill="url(#chartGradient)" />
+                                    <path className="chart-line drop-shadow-[0_0_8px_rgba(204,255,0,0.5)]" d="M0,70 Q30,65 60,75 T120,60 T180,45 T240,20 L300,5" fill="none" stroke="#CCFF00" strokeLinecap="round" strokeWidth="3" />
+
+                                    {/* End Point Dot */}
+                                    <circle cx="300" cy="5" r="4" fill="#0A0A0A" stroke="#CCFF00" strokeWidth="2" className="drop-shadow-[0_0_10px_#CCFF00]" />
+                                </svg>
+                            </div>
+
+                            {/* Secondary Stats */}
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="p-3 rounded-xl bg-white/5 border border-white/5">
+                                    <p className="text-xs text-gray-500 font-medium uppercase mb-1">Current APY</p>
+                                    <p className="text-xl font-bold text-primary">4.5%</p>
+                                </div>
+                                <div className="p-3 rounded-xl bg-white/5 border border-white/5">
+                                    <p className="text-xs text-gray-500 font-medium uppercase mb-1">Next Payout</p>
+                                    <p className="text-xl font-bold text-white">4h 12m</p>
+                                </div>
                             </div>
                         </div>
-
-                        {/* Floating Elements */}
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 1 }}
-                            className="absolute -top-4 -right-4 glass-card px-4 py-2 flex items-center gap-2"
-                        >
-                            <div className="w-6 h-6 rounded-full bg-[#CCFF00] flex items-center justify-center">
-                                <span className="text-xs font-bold text-[#0A0A0A]">⚡</span>
-                            </div>
-                            <span className="text-sm text-white">Gasless TX</span>
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 1.2 }}
-                            className="absolute -bottom-4 -left-4 glass-card px-4 py-2 flex items-center gap-2"
-                        >
-                            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
-                                <span className="text-xs">🔐</span>
-                            </div>
-                            <span className="text-sm text-white">Passkey Login</span>
-                        </motion.div>
                     </motion.div>
                 </div>
             </div>

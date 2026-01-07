@@ -1,152 +1,90 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Wallet, Bot, TrendingUp, ArrowRightLeft, ChevronRight } from "lucide-react";
-
-const steps = [
-    {
-        icon: Wallet,
-        step: "01",
-        title: "Get Paid in USDC",
-        description: "Receive your freelance payments directly to your Vultara wallet.",
-        color: "from-blue-500 to-blue-600",
-    },
-    {
-        icon: Bot,
-        step: "02",
-        title: "Shieldie Optimizes",
-        description: "Your AI advisor automatically allocates funds for maximum yield.",
-        color: "from-[#CCFF00] to-[#A3CC00]",
-    },
-    {
-        icon: TrendingUp,
-        step: "03",
-        title: "Earn Weekly",
-        description: "Watch your balance grow with organic premium from Thetanuts.",
-        color: "from-emerald-500 to-emerald-600",
-    },
-    {
-        icon: ArrowRightLeft,
-        step: "04",
-        title: "Withdraw to IDRX",
-        description: "1-click off-ramp to your Indonesian bank or e-wallet.",
-        color: "from-purple-500 to-purple-600",
-    },
-];
+import { Fingerprint, FileText, Banknote, RefreshCcw, Landmark, ArrowRight, ArrowLeft } from "lucide-react";
 
 export default function UserJourney() {
     return (
-        <section id="how-it-works" className="relative py-24 lg:py-32 overflow-hidden">
-            {/* Background Effect */}
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[#CCFF00] opacity-[0.02] rounded-full blur-[120px]" />
-            </div>
+        <section className="py-24 px-6 relative overflow-hidden">
+            {/* Background - Unified Grid */}
+            <div className="absolute inset-0 pointer-events-none bg-grid-animate opacity-30" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]" />
 
-            <div className="relative z-10 mx-auto max-w-7xl px-6">
-                {/* Section Header */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                    className="text-center mb-16 lg:mb-20"
-                >
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
-                        Your <span className="gradient-text">Journey</span>
-                    </h2>
-                    <p className="text-lg text-[#94A3B8] max-w-2xl mx-auto">
-                        From earning to growing—simplified into four seamless steps.
-                    </p>
-                </motion.div>
+            <div className="max-w-[1280px] mx-auto flex flex-col gap-16 relative z-10">
 
-                {/* Journey Steps - Desktop */}
-                <div className="hidden lg:block">
-                    <div className="relative">
-                        {/* Connection Line */}
-                        <div className="absolute top-1/2 left-0 right-0 h-px -translate-y-1/2">
-                            <div className="h-full bg-gradient-to-r from-transparent via-[#CCFF00]/30 to-transparent" />
-                        </div>
-
-                        <div className="grid grid-cols-4 gap-6">
-                            {steps.map((step, index) => (
-                                <motion.div
-                                    key={index}
-                                    initial={{ opacity: 0, y: 30 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: index * 0.15, duration: 0.6 }}
-                                    className="relative"
-                                >
-                                    {/* Step Card */}
-                                    <div className="glass-card glass-card-hover p-6 text-center relative z-10">
-                                        {/* Step Number */}
-                                        <div className="text-xs text-[#CCFF00] font-mono mb-4">{step.step}</div>
-
-                                        {/* Icon */}
-                                        <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${step.color} flex items-center justify-center mx-auto mb-4 shadow-lg`}>
-                                            <step.icon className="w-8 h-8 text-white" />
-                                        </div>
-
-                                        {/* Title */}
-                                        <h3 className="text-lg font-semibold text-white mb-3">
-                                            {step.title}
-                                        </h3>
-
-                                        {/* Description */}
-                                        <p className="text-sm text-[#94A3B8] leading-relaxed">
-                                            {step.description}
-                                        </p>
-                                    </div>
-
-                                    {/* Arrow */}
-                                    {index < steps.length - 1 && (
-                                        <div className="absolute top-1/2 -right-3 -translate-y-1/2 z-20">
-                                            <div className="w-6 h-6 rounded-full bg-[#0A0A0A] border border-[#CCFF00]/30 flex items-center justify-center">
-                                                <ChevronRight className="w-4 h-4 text-[#CCFF00]" />
-                                            </div>
-                                        </div>
-                                    )}
-                                </motion.div>
-                            ))}
-                        </div>
+                {/* Header */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-8 border-b border-white/5">
+                    <div>
+                        <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-white mb-2">Flow Timeline</h2>
+                        <p className="text-gray-400">Your earnings journey, automated in seconds.</p>
+                    </div>
+                    <div className="flex gap-2">
+                        <button className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 text-white transition-colors">
+                            <ArrowLeft size={18} />
+                        </button>
+                        <button className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 text-white transition-colors">
+                            <ArrowRight size={18} />
+                        </button>
                     </div>
                 </div>
 
-                {/* Journey Steps - Mobile */}
-                <div className="lg:hidden">
-                    <div className="relative">
-                        {/* Vertical Line */}
-                        <div className="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-[#CCFF00]/30 via-[#CCFF00]/20 to-transparent" />
+                {/* Timeline */}
+                <div className="relative w-full">
+                    {/* Timeline Track */}
+                    <div className="hidden lg:block absolute top-[40px] left-0 w-full h-[1px] bg-white/10" />
+                    <div className="hidden lg:block absolute top-[40px] left-0 w-1/2 h-[1px] bg-gradient-to-r from-primary to-transparent" />
 
-                        <div className="space-y-6">
-                            {steps.map((step, index) => (
-                                <motion.div
-                                    key={index}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: index * 0.1, duration: 0.5 }}
-                                    className="relative flex gap-6"
-                                >
-                                    {/* Icon Circle */}
-                                    <div className={`flex-shrink-0 w-16 h-16 rounded-2xl bg-gradient-to-br ${step.color} flex items-center justify-center shadow-lg relative z-10`}>
-                                        <step.icon className="w-7 h-7 text-white" />
-                                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 relative">
+                        {[
+                            { icon: Fingerprint, title: "Passkey Login", desc: "Secure, passwordless entry using biometric authentication." },
+                            { icon: FileText, title: "Contract Setup", desc: "One-click smart contract initialization." },
+                            { icon: Banknote, title: "Salary Deposit", desc: "Instant settlement in stablecoins (USDC)." },
+                            { icon: RefreshCcw, title: "Auto-Swap", desc: "Zero-fee automatic conversion to IDR." },
+                            { icon: Landmark, title: "Rupiah Withdrawal", desc: "Direct transfer to local bank accounts." }
+                        ].map((step, idx) => (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: idx * 0.1 }}
+                                className="group relative flex flex-col card-prime rounded-2xl p-6 lg:bg-transparent lg:border-none lg:backdrop-filter-none lg:p-0 lg:hover:bg-transparent lg:hover:border-none lg:shadow-none bg-[#0A0A0A] lg:bg-transparent"
+                            >
+                                {/* Mobile/Card Style background is applied above, explicit resets for desktop layout to be cleaner if desired, OR we can stick to card style for all. Let's make them ALL card-style for consistency. */}
 
-                                    {/* Content */}
-                                    <div className="flex-1 glass-card p-5">
-                                        <div className="text-xs text-[#CCFF00] font-mono mb-2">{step.step}</div>
-                                        <h3 className="text-lg font-semibold text-white mb-2">
-                                            {step.title}
-                                        </h3>
-                                        <p className="text-sm text-[#94A3B8]">
-                                            {step.description}
-                                        </p>
+                                {/* Actually, for UNIFICATION, let's make them all unified Cards. */}
+
+                                <div className="mb-4 lg:mb-6 flex justify-center">
+                                    <div className={`w-20 h-20 rounded-2xl bg-[#0A0A0A] border flex items-center justify-center transition-all duration-300 relative z-10 ${idx === 0 ? 'border-primary text-primary shadow-[0_0_20px_rgba(204,255,0,0.2)]' : 'border-white/10 text-gray-500 group-hover:border-primary/50 group-hover:text-primary'} `}>
+                                        <step.icon size={28} />
                                     </div>
-                                </motion.div>
-                            ))}
-                        </div>
+                                </div>
+
+                                <div className="text-center">
+                                    <span className={`text-xs font-bold uppercase tracking-wider mb-2 block ${idx === 0 ? 'text-primary' : 'text-gray-500 group-hover:text-primary transition-colors'}`}>
+                                        Step 0{idx + 1}
+                                    </span>
+                                    <h3 className="text-white font-bold text-lg mb-2">{step.title}</h3>
+                                    <p className="text-gray-400 text-sm leading-relaxed">{step.desc}</p>
+                                </div>
+                            </motion.div>
+                        ))}
                     </div>
+                </div>
+
+                {/* Tech Detail Strip - Unified Card */}
+                <div className="grid grid-cols-2 md:grid-cols-4 card-prime rounded-2xl divide-y md:divide-y-0 md:divide-x divide-white/5">
+                    {[
+                        { label: "Latency", val: "0.05s" },
+                        { label: "Encryption", val: "256-bit" },
+                        { label: "Uptime", val: "100%" },
+                        { label: "Swap Fees", val: "0%" }
+                    ].map((stat, i) => (
+                        <div key={i} className="p-6 flex flex-col items-center justify-center text-center gap-1">
+                            <span className="text-primary text-2xl font-bold tracking-tight">{stat.val}</span>
+                            <span className="text-xs text-gray-500 uppercase tracking-widest font-medium">{stat.label}</span>
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>
