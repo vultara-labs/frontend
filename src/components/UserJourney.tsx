@@ -5,25 +5,25 @@ import { Fingerprint, FileText, Banknote, RefreshCcw, Landmark, ArrowRight, Arro
 
 export default function UserJourney() {
     return (
-        <section className="py-24 px-6 relative overflow-hidden">
+        <section className="py-32 px-6 relative overflow-hidden">
             {/* Background - Unified Grid */}
-            <div className="absolute inset-0 pointer-events-none bg-grid-animate opacity-30" />
+            <div className="absolute inset-0 pointer-events-none bg-grid-animate opacity-20" />
             <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]" />
 
-            <div className="max-w-[1280px] mx-auto flex flex-col gap-16 relative z-10">
+            <div className="max-w-[1280px] mx-auto flex flex-col gap-20 relative z-10">
 
                 {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-8 border-b border-white/5">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-white/5">
                     <div>
-                        <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-white mb-2">Flow Timeline</h2>
-                        <p className="text-gray-400">Your earnings journey, automated in seconds.</p>
+                        <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-white mb-3">Flow Timeline</h2>
+                        <p className="text-[var(--foreground-muted)] text-lg leading-relaxed max-w-lg">Your earnings journey, automated in seconds. From login to liquidity.</p>
                     </div>
-                    <div className="flex gap-2">
-                        <button className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 text-white transition-colors">
-                            <ArrowLeft size={18} />
+                    <div className="flex gap-3">
+                        <button className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 text-white transition-all hover:scale-105 active:scale-95">
+                            <ArrowLeft size={20} />
                         </button>
-                        <button className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 text-white transition-colors">
-                            <ArrowRight size={18} />
+                        <button className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 text-white transition-all hover:scale-105 active:scale-95">
+                            <ArrowRight size={20} />
                         </button>
                     </div>
                 </div>
@@ -31,10 +31,10 @@ export default function UserJourney() {
                 {/* Timeline */}
                 <div className="relative w-full">
                     {/* Timeline Track */}
-                    <div className="hidden lg:block absolute top-[40px] left-0 w-full h-[1px] bg-white/10" />
-                    <div className="hidden lg:block absolute top-[40px] left-0 w-1/2 h-[1px] bg-gradient-to-r from-primary to-transparent" />
+                    <div className="hidden lg:block absolute top-[48px] left-0 w-full h-[1px] bg-white/5" />
+                    <div className="hidden lg:block absolute top-[48px] left-0 w-1/3 h-[1px] bg-gradient-to-r from-primary to-transparent" />
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 relative">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-4 relative">
                         {[
                             { icon: Fingerprint, title: "Passkey Login", desc: "Secure, passwordless entry using biometric authentication." },
                             { icon: FileText, title: "Contract Setup", desc: "One-click smart contract initialization." },
@@ -44,28 +44,24 @@ export default function UserJourney() {
                         ].map((step, idx) => (
                             <motion.div
                                 key={idx}
-                                initial={{ opacity: 0, y: 20 }}
+                                initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ delay: idx * 0.1 }}
-                                className="group relative flex flex-col card-prime rounded-2xl p-6 lg:bg-transparent lg:border-none lg:backdrop-filter-none lg:p-0 lg:hover:bg-transparent lg:hover:border-none lg:shadow-none bg-[#0A0A0A] lg:bg-transparent"
+                                transition={{ delay: idx * 0.1, duration: 0.5 }}
+                                className="group relative flex flex-col"
                             >
-                                {/* Mobile/Card Style background is applied above, explicit resets for desktop layout to be cleaner if desired, OR we can stick to card style for all. Let's make them ALL card-style for consistency. */}
-
-                                {/* Actually, for UNIFICATION, let's make them all unified Cards. */}
-
-                                <div className="mb-4 lg:mb-6 flex justify-center">
-                                    <div className={`w-20 h-20 rounded-2xl bg-[#0A0A0A] border flex items-center justify-center transition-all duration-300 relative z-10 ${idx === 0 ? 'border-primary text-primary shadow-[0_0_20px_rgba(204,255,0,0.2)]' : 'border-white/10 text-gray-500 group-hover:border-primary/50 group-hover:text-primary'} `}>
-                                        <step.icon size={28} />
+                                <div className="mb-8 lg:mb-10 flex justify-center lg:justify-start">
+                                    <div className={`w-24 h-24 rounded-3xl bg-[#0A0A0A] border flex items-center justify-center transition-all duration-500 relative z-10 ${idx === 0 ? 'border-primary text-primary shadow-[0_0_30px_-5px_rgba(204,255,0,0.3)]' : 'border-white/10 text-zinc-500 group-hover:border-primary/50 group-hover:text-primary group-hover:scale-110 group-hover:shadow-[0_0_20px_-5px_rgba(204,255,0,0.2)]'} `}>
+                                        <step.icon size={32} />
                                     </div>
                                 </div>
 
-                                <div className="text-center">
-                                    <span className={`text-xs font-bold uppercase tracking-wider mb-2 block ${idx === 0 ? 'text-primary' : 'text-gray-500 group-hover:text-primary transition-colors'}`}>
+                                <div className="text-center lg:text-left">
+                                    <span className={`text-xs font-bold uppercase tracking-widest mb-2 block ${idx === 0 ? 'text-primary' : 'text-zinc-600 group-hover:text-primary transition-colors'}`}>
                                         Step 0{idx + 1}
                                     </span>
-                                    <h3 className="text-white font-bold text-lg mb-2">{step.title}</h3>
-                                    <p className="text-gray-400 text-sm leading-relaxed">{step.desc}</p>
+                                    <h3 className="text-white font-bold text-xl mb-3 tracking-tight">{step.title}</h3>
+                                    <p className="text-[var(--foreground-muted)] text-sm leading-relaxed">{step.desc}</p>
                                 </div>
                             </motion.div>
                         ))}
@@ -73,16 +69,16 @@ export default function UserJourney() {
                 </div>
 
                 {/* Tech Detail Strip - Unified Card */}
-                <div className="grid grid-cols-2 md:grid-cols-4 card-prime rounded-2xl divide-y md:divide-y-0 md:divide-x divide-white/5">
+                <div className="grid grid-cols-2 md:grid-cols-4 card-prime rounded-3xl divide-y md:divide-y-0 md:divide-x divide-white/5 overflow-hidden">
                     {[
                         { label: "Latency", val: "0.05s" },
                         { label: "Encryption", val: "256-bit" },
                         { label: "Uptime", val: "100%" },
                         { label: "Swap Fees", val: "0%" }
                     ].map((stat, i) => (
-                        <div key={i} className="p-6 flex flex-col items-center justify-center text-center gap-1">
-                            <span className="text-primary text-2xl font-bold tracking-tight">{stat.val}</span>
-                            <span className="text-xs text-gray-500 uppercase tracking-widest font-medium">{stat.label}</span>
+                        <div key={i} className="p-8 flex flex-col items-center justify-center text-center gap-2 hover:bg-white/[0.02] transition-colors">
+                            <span className="text-primary text-3xl font-bold tracking-tighter">{stat.val}</span>
+                            <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">{stat.label}</span>
                         </div>
                     ))}
                 </div>

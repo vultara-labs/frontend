@@ -3,13 +3,21 @@
 /* Vultara - Obsidian Prime Design System */
 :root {
   --background: #050505;
-  /* Deepest Obsidian */
-  --foreground: #FFFFFF;
+  /* Deep deep black */
+  --foreground: #F0F0F0;
+  /* Off-white for better reading comfort */
+  --foreground-muted: #A1A1AA;
+  /* Zinc 400 */
+
   --primary: #CCFF00;
   --primary-glow: rgba(204, 255, 0, 0.15);
-  --surface: rgba(255, 255, 255, 0.03);
-  --border: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(204, 255, 0, 0.5);
+
+  --surface: rgba(255, 255, 255, 0.02);
+  --surface-highlight: rgba(255, 255, 255, 0.05);
+  /* Lighter interaction state */
+
+  --border: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.12);
 }
 
 @theme inline {
@@ -26,6 +34,7 @@ body {
   font-family: var(--font-inter), system-ui, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
 }
 
 /* Custom Scrollbar */
@@ -49,17 +58,32 @@ body {
 /* --- THE UNIFIED CARD SYSTEM --- */
 .card-prime {
   background: var(--surface);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  position: relative;
+  overflow: hidden;
 }
 
 .card-prime:hover {
   border-color: var(--border-hover);
-  background: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 0 30px -10px var(--primary-glow);
+  background: var(--surface-highlight);
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.6);
   transform: translateY(-2px);
+}
+
+/* Inner stroke for that sharp iOS/Mac feel */
+.card-prime::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), transparent);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  pointer-events: none;
 }
 
 /* --- TEXT UTILITIES --- */
@@ -69,12 +93,13 @@ body {
 
 /* --- GRID BACKGROUND --- */
 .bg-grid-animate {
-  background-size: 50px 50px;
+  background-size: 60px 60px;
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
-  animation: gridMove 40s linear infinite;
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  animation: gridMove 60s linear infinite;
+  opacity: 0.6;
 }
 
 @keyframes gridMove {
@@ -83,36 +108,41 @@ body {
   }
 
   100% {
-    background-position: 50px 50px;
+    background-position: 60px 60px;
   }
 }
 
 /* --- NEON BUTTON --- */
 .btn-neon {
   background: var(--primary);
-  color: #000;
-  font-weight: 700;
+  color: #050505;
+  font-weight: 600;
   border: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 20px rgba(204, 255, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: -0.01em;
 }
 
 .btn-neon:hover {
   background: #D4FF33;
-  box-shadow: 0 0 30px rgba(204, 255, 0, 0.4);
-  transform: translateY(-1px);
+  transform: scale(0.98);
+  box-shadow: 0 0 30px -5px var(--primary-glow);
 }
 
 .btn-outline {
   background: transparent;
   border: 1px solid var(--border);
-  color: #fff;
+  color: var(--foreground);
   transition: all 0.3s ease;
+  font-weight: 500;
 }
 
 .btn-outline:hover {
-  border-color: #fff;
-  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.03);
+  color: #fff;
+  transform: scale(0.98);
 }
 
 /* --- CHART ANIMATION --- */
@@ -126,4 +156,30 @@ body {
   to {
     stroke-dashoffset: 0;
   }
+}
+
+/* --- PERSPECTIVE UTILITIES --- */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+/* Floating Animation */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px) rotateX(10deg) rotateY(-10deg);
+  }
+
+  50% {
+    transform: translateY(-15px) rotateX(5deg) rotateY(-5deg);
+  }
+}
+
+.floating-card {
+  animation: float 8s ease-in-out infinite;
 }
