@@ -26,8 +26,8 @@ export default function UserJourney() {
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-white/5">
                     <div>
-                        <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-white mb-3">Flow Timeline</h2>
-                        <p className="text-[var(--foreground-muted)] text-lg leading-relaxed max-w-lg">Your earnings journey, automated in seconds. From login to liquidity.</p>
+                        <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white mb-3">Flow Timeline</h2>
+                        <p className="text-[var(--foreground-muted)] text-lg leading-relaxed max-w-lg tracking-normal">Your earnings journey, automated in seconds. From login to liquidity.</p>
                     </div>
                     <div className="flex gap-3">
                         <button className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 text-white transition-all hover:scale-105 active:scale-95">
@@ -84,8 +84,8 @@ export default function UserJourney() {
                                     <span className={`text-xs font-bold uppercase tracking-widest mb-2 block ${idx === 0 ? 'text-primary' : 'text-zinc-600 group-hover:text-primary transition-colors'}`}>
                                         Step 0{idx + 1}
                                     </span>
-                                    <h3 className="text-white font-bold text-xl mb-3 tracking-tight">{step.title}</h3>
-                                    <p className="text-[var(--foreground-muted)] text-sm leading-relaxed">{step.desc}</p>
+                                    <h3 className="text-white font-bold text-lg mb-3 uppercase tracking-tight">{step.title}</h3>
+                                    <p className="text-[var(--foreground-muted)] text-sm leading-relaxed tracking-normal">{step.desc}</p>
                                 </div>
                             </motion.div>
                         ))}
@@ -102,7 +102,7 @@ export default function UserJourney() {
                     ].map((stat, i) => (
                         <div key={i} className="p-8 flex flex-col items-center justify-center text-center gap-2 hover:bg-white/[0.02] transition-colors cursor-default group">
                             <span className="text-primary text-3xl font-bold tracking-tighter group-hover:scale-110 transition-transform duration-300">{stat.val}</span>
-                            <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold group-hover:text-white transition-colors">{stat.label}</span>
+                            <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest group-hover:text-white transition-colors">{stat.label}</span>
                         </div>
                     ))}
                 </div>

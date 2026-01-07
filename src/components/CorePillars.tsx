@@ -12,10 +12,10 @@ export default function CorePillars() {
             <div className="mx-auto max-w-[1280px]">
                 {/* Header - Unified Style */}
                 <div className="mb-20 max-w-3xl">
-                    <h2 className="mb-6 text-4xl font-bold uppercase leading-[0.9] tracking-tighter text-white md:text-6xl lg:text-7xl">
-                        Protocol <span className="text-primary">Architecture</span>
+                    <h2 className="mb-6 text-4xl font-black uppercase tracking-tighter text-white md:text-6xl lg:text-7xl leading-[0.9]">
+                        PROTOCOL <span className="text-primary">ARCHITECTURE</span>
                     </h2>
-                    <p className="max-w-xl text-lg text-[var(--foreground-muted)] leading-relaxed">
+                    <p className="max-w-xl text-lg text-[var(--foreground-muted)] leading-relaxed tracking-normal">
                         Infrastructure built for the automated economy.
                         Precision-engineered modules working in perfect sync.
                     </p>
@@ -38,18 +38,18 @@ export default function CorePillars() {
                             </div>
                             <div className="flex justify-between items-start">
                                 <div>
-                                    <h3 className="mb-3 text-3xl font-bold uppercase tracking-tight text-white">Automated Compliance</h3>
+                                    <h3 className="mb-3 text-3xl font-bold uppercase tracking-tighter text-white">Automated Compliance</h3>
                                     <p className="max-w-md text-[var(--foreground-muted)] text-base leading-relaxed">Automated tax logic embedded directly into payment streams.</p>
                                 </div>
                                 {/* Visual State Indicator based on Code Hover */}
                                 <div className="hidden sm:flex flex-col gap-2">
                                     <div className={`flex items-center gap-2 text-xs font-mono transition-colors duration-300 ${activeLine === 1 ? 'text-primary' : 'text-zinc-700'}`}>
                                         <div className={`w-2 h-2 rounded-full ${activeLine === 1 ? 'bg-primary' : 'bg-zinc-800'}`} />
-                                        Calculated
+                                        CALCULATED
                                     </div>
                                     <div className={`flex items-center gap-2 text-xs font-mono transition-colors duration-300 ${activeLine === 2 ? 'text-blue-400' : 'text-zinc-700'}`}>
                                         <div className={`w-2 h-2 rounded-full ${activeLine === 2 ? 'bg-blue-400' : 'bg-zinc-800'}`} />
-                                        Distributed
+                                        DISTRIBUTED
                                     </div>
                                 </div>
                             </div>
@@ -61,7 +61,7 @@ export default function CorePillars() {
                             <div className="relative w-full overflow-hidden rounded-xl bg-[#080808] border border-white/10 font-mono text-xs p-6 shadow-2xl">
                                 <div className="w-full space-y-1 text-primary/80">
                                     <div className="flex justify-between border-b border-white/5 pb-3 mb-3">
-                                        <span className="text-zinc-500 font-bold">SmartContract.sol</span>
+                                        <span className="text-zinc-500 font-bold uppercase tracking-wider text-[10px]">SmartContract.sol</span>
                                         <div className="flex gap-1.5">
                                             <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/50" />
                                             <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/50" />
@@ -108,7 +108,7 @@ export default function CorePillars() {
                             <div className="mb-8 flex w-12 h-12 items-center justify-center rounded-2xl bg-white/5 text-primary border border-white/5 group-hover:rotate-12 transition-transform duration-500">
                                 <Droplets size={24} />
                             </div>
-                            <h3 className="mb-3 text-2xl font-bold uppercase tracking-tight text-white">Instant Liquidity</h3>
+                            <h3 className="mb-3 text-2xl font-bold uppercase tracking-tighter text-white">Instant Liquidity</h3>
                             <p className="mb-6 text-sm text-[var(--foreground-muted)] leading-relaxed">Pay by the second, settled instantly. No more waiting for bi-weekly cycles.</p>
                         </div>
 
@@ -137,7 +137,7 @@ export default function CorePillars() {
                         <div className="mb-8 flex w-12 h-12 items-center justify-center rounded-2xl bg-white/5 text-primary border border-white/5">
                             <Network size={24} />
                         </div>
-                        <h3 className="mb-3 text-2xl font-bold uppercase tracking-tight text-white">Cross-Chain</h3>
+                        <h3 className="mb-3 text-2xl font-bold uppercase tracking-tighter text-white">Cross-Chain</h3>
                         <p className="mb-8 text-sm text-[var(--foreground-muted)] leading-relaxed">Pay in stablecoins across Ethereum, Solana, and L2s seamlessly.</p>
 
                         <div className="mt-auto flex flex-1 items-center justify-center">
@@ -164,15 +164,15 @@ export default function CorePillars() {
                             <div className="mb-8 flex w-14 h-14 items-center justify-center rounded-2xl bg-white/5 text-primary border border-white/5">
                                 <Fingerprint size={28} />
                             </div>
-                            <h3 className="mb-4 text-3xl font-bold uppercase tracking-tight text-white">Identity Sovereignty</h3>
+                            <h3 className="mb-4 text-3xl font-bold uppercase tracking-tighter text-white">Identity Sovereignty</h3>
                             <p className="max-w-xl text-lg text-[var(--foreground-muted)] leading-relaxed">
                                 Zero-Knowledge Proofs ensure salary data remains private. Your financial data is encrypted, owned by you.
                             </p>
                             <div className="mt-8 flex flex-wrap gap-3">
-                                <span className="rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold text-primary border border-primary/20 uppercase tracking-wider flex items-center gap-2">
+                                <span className="rounded-full bg-primary/10 px-4 py-2 text-xs font-bold text-primary border border-primary/20 tracking-wider uppercase flex items-center gap-2">
                                     <CheckCircle2 size={12} /> ZK-SNARKs
                                 </span>
-                                <span className="rounded-full bg-white/5 px-4 py-1.5 text-xs font-bold text-white border border-white/10 uppercase tracking-wider">Encrypted Metadata</span>
+                                <span className="rounded-full bg-white/5 px-4 py-2 text-xs font-bold text-white border border-white/10 tracking-wider uppercase">Encrypted Metadata</span>
                             </div>
                         </div>
 

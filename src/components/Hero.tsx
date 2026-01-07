@@ -1,8 +1,8 @@
 "use client";
 
-import { motion, useScroll, useTransform, useMotionValue, useSpring, useInView } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, useSpring, useInView, animate } from "framer-motion";
 import { ArrowRight, PlayCircle, MoreHorizontal } from "lucide-react";
-import { useRef, MouseEvent, useEffect, useState } from "react";
+import { useRef, MouseEvent, useEffect } from "react";
 
 // Counter Component for "Live" Money Feel
 const Counter = ({ from, to }: { from: number; to: number }) => {
@@ -13,8 +13,6 @@ const Counter = ({ from, to }: { from: number; to: number }) => {
         if (!isInView) return;
 
         const node = nodeRef.current;
-        const duration = 2000; // 2 seconds initial setup
-        const startTime = performance.now();
 
         const controls = animate(from, to, {
             duration: 2,
@@ -40,9 +38,6 @@ const Counter = ({ from, to }: { from: number; to: number }) => {
 
     return <span ref={nodeRef} className="tabular-nums" />;
 };
-
-// Helper for animation
-import { animate } from "framer-motion";
 
 export default function Hero() {
     const targetRef = useRef<HTMLDivElement>(null);
@@ -110,47 +105,47 @@ export default function Hero() {
                         transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
                         className="lg:col-span-7 flex flex-col gap-8 max-w-2xl"
                     >
-                        {/* Live Badge */}
-                        <div className="inline-flex items-center gap-2 self-start rounded-full border border-white/5 bg-white/5 px-3 py-1 text-xs font-medium text-white/80 backdrop-blur-md">
+                        {/* Live Badge - Bold Uppercase */}
+                        <div className="inline-flex items-center gap-2 self-start rounded-full border border-white/5 bg-white/5 px-3 py-1.5 text-xs font-bold text-white/80 backdrop-blur-md uppercase tracking-wider">
                             <span className="relative flex h-2 w-2">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                             </span>
-                            <span className="tracking-wide">V2.0 LIVE ON MAINNET</span>
+                            <span>V2.0 Live on Mainnet</span>
                         </div>
 
-                        {/* Headline */}
-                        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tighter leading-[1] text-white">
-                            The Salary Engine <br />
+                        {/* Headline - Bold & Tight */}
+                        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tighter leading-[1] text-white">
+                            THE SALARY ENGINE <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/80 to-white/40">
-                                for the Open Economy.
+                                FOR THE OPEN ECONOMY.
                             </span>
                         </h1>
 
-                        {/* Description */}
-                        <p className="text-lg text-[var(--foreground-muted)] font-normal leading-relaxed max-w-xl tracking-tight">
+                        {/* Description - Standardized Normal Tracking, Relaxed Leading */}
+                        <p className="text-lg text-[var(--foreground-muted)] font-normal leading-relaxed max-w-xl tracking-normal">
                             Streamline crypto payroll and earn generic yield on idle USDC. Secure, automated, and compliant financial infrastructure for the future of work.
                         </p>
 
                         {/* Buttons */}
                         <div className="flex flex-wrap items-center gap-4 mt-2">
-                            <button className="h-12 px-8 rounded-lg flex items-center gap-2 btn-neon group relative overflow-hidden">
+                            <button className="h-12 px-8 rounded-lg flex items-center gap-2 btn-neon group relative overflow-hidden font-bold tracking-wide uppercase text-sm">
                                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
                                 <span className="relative">Start Earning</span>
                                 <ArrowRight size={18} className="relative group-hover:translate-x-1 transition-transform" />
                             </button>
-                            <button className="h-12 px-8 rounded-lg flex items-center gap-2 btn-outline group">
+                            <button className="h-12 px-8 rounded-lg flex items-center gap-2 btn-outline group font-bold tracking-wide uppercase text-sm">
                                 <PlayCircle size={20} className="text-white/60 group-hover:text-white transition-colors" />
                                 <span>How it works</span>
                             </button>
                         </div>
 
-                        {/* Social Proof */}
+                        {/* Social Proof - Bold Uppercase */}
                         <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row gap-6 sm:items-center">
-                            <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Audited & Trusted By</span>
+                            <span className="text-xs text-zinc-500 font-bold uppercase tracking-widest">Audited & Trusted By</span>
                             <div className="flex gap-4 opacity-40 grayscale transition-all hover:grayscale-0 hover:opacity-100">
                                 {['CERTIK', 'HACKEN', 'OPENZEP'].map((partner) => (
-                                    <div key={partner} className="h-6 px-3 bg-white/5 rounded flex items-center justify-center text-[10px] text-white font-bold border border-white/5">
+                                    <div key={partner} className="h-7 px-3 bg-white/5 rounded flex items-center justify-center text-[10px] text-white font-black border border-white/5 uppercase tracking-widest">
                                         {partner}
                                     </div>
                                 ))}
@@ -188,7 +183,7 @@ export default function Hero() {
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
                                 </div>
                                 <div className="pr-2">
-                                    <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">Yield Generated</p>
+                                    <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider mb-0.5">Yield Generated</p>
                                     <p className="text-white font-bold tracking-tight">+$1,240.50</p>
                                 </div>
                             </motion.div>
@@ -200,10 +195,10 @@ export default function Hero() {
                                         <span className="font-serif italic text-xl">$</span>
                                     </div>
                                     <div>
-                                        <h3 className="text-white font-bold text-xl tracking-tight">USDC Treasury</h3>
-                                        <div className="flex items-center gap-2 text-xs text-primary font-medium bg-primary/10 px-2 py-0.5 rounded-full w-fit mt-1">
+                                        <h3 className="text-white font-bold text-lg uppercase tracking-wider">USDC Treasury</h3>
+                                        <div className="flex items-center gap-2 text-[10px] text-primary font-bold uppercase tracking-wider bg-primary/10 px-2 py-0.5 rounded-full w-fit mt-1">
                                             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                                            Compounding Active
+                                            Active
                                         </div>
                                     </div>
                                 </div>
@@ -214,7 +209,7 @@ export default function Hero() {
 
                             {/* Main Stat (Layer 2) */}
                             <motion.div style={{ z: 30 }} className="mb-8 transform-style-3d">
-                                <p className="text-zinc-500 text-sm font-medium mb-1 tracking-wide">TOTAL BALANCE</p>
+                                <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest mb-1">Total Balance</p>
                                 <h2 className="text-5xl font-bold text-white tracking-tighter tabular-nums">
                                     <Counter from={100000} to={124592.50} />
                                 </h2>
@@ -239,12 +234,12 @@ export default function Hero() {
                             {/* Secondary Stats (Layer 3 - Floating Buttons) */}
                             <motion.div style={{ z: 40 }} className="grid grid-cols-2 gap-4 transform-style-3d">
                                 <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] transition-colors hover:-translate-y-1 duration-300">
-                                    <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider mb-2">Current APY</p>
-                                    <p className="text-2xl font-bold text-primary">4.5%</p>
+                                    <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-2">Current APY</p>
+                                    <p className="text-2xl font-bold text-primary tracking-tight">4.5%</p>
                                 </div>
                                 <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] transition-colors hover:-translate-y-1 duration-300">
-                                    <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider mb-2">Next Payout</p>
-                                    <p className="text-2xl font-bold text-white tabular-nums">4h 12m</p>
+                                    <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-2">Next Payout</p>
+                                    <p className="text-2xl font-bold text-white tabular-nums tracking-tight">4h 12m</p>
                                 </div>
                             </motion.div>
                         </motion.div>
