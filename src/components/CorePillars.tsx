@@ -1,9 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Gavel, Droplets, Network, Fingerprint, Lock } from "lucide-react";
+import { Gavel, Droplets, Network, Fingerprint, Lock, CheckCircle2 } from "lucide-react";
+import { useState } from "react";
 
 export default function CorePillars() {
+    const [activeLine, setActiveLine] = useState<number | null>(null);
+
     return (
         <section id="features" className="py-32 px-6 relative z-10">
             <div className="mx-auto max-w-[1280px]">
@@ -21,7 +24,7 @@ export default function CorePillars() {
                 {/* Bento Grid - Unified Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8">
 
-                    {/* Card 1: Compliance */}
+                    {/* Card 1: Compliance (Interactive Code) */}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -33,28 +36,61 @@ export default function CorePillars() {
                             <div className="mb-8 flex w-14 h-14 items-center justify-center rounded-2xl bg-white/5 text-primary border border-white/5 group-hover:scale-110 transition-transform duration-500">
                                 <Gavel size={28} />
                             </div>
-                            <h3 className="mb-3 text-3xl font-bold uppercase tracking-tight text-white">Automated Compliance</h3>
-                            <p className="max-w-md text-[var(--foreground-muted)] text-base leading-relaxed">Automated tax logic embedded directly into payment streams. Smart contracts execute withholding in real-time.</p>
+                            <div className="flex justify-between items-start">
+                                <div>
+                                    <h3 className="mb-3 text-3xl font-bold uppercase tracking-tight text-white">Automated Compliance</h3>
+                                    <p className="max-w-md text-[var(--foreground-muted)] text-base leading-relaxed">Automated tax logic embedded directly into payment streams.</p>
+                                </div>
+                                {/* Visual State Indicator based on Code Hover */}
+                                <div className="hidden sm:flex flex-col gap-2">
+                                    <div className={`flex items-center gap-2 text-xs font-mono transition-colors duration-300 ${activeLine === 1 ? 'text-primary' : 'text-zinc-700'}`}>
+                                        <div className={`w-2 h-2 rounded-full ${activeLine === 1 ? 'bg-primary' : 'bg-zinc-800'}`} />
+                                        Calculated
+                                    </div>
+                                    <div className={`flex items-center gap-2 text-xs font-mono transition-colors duration-300 ${activeLine === 2 ? 'text-blue-400' : 'text-zinc-700'}`}>
+                                        <div className={`w-2 h-2 rounded-full ${activeLine === 2 ? 'bg-blue-400' : 'bg-zinc-800'}`} />
+                                        Distributed
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        {/* Code Visual */}
+                        {/* Interactive Code Visual */}
                         <div className="relative mt-10 group-hover:translate-y-[-5px] transition-transform duration-500">
                             <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 blur-xl rounded-lg" />
                             <div className="relative w-full overflow-hidden rounded-xl bg-[#080808] border border-white/10 font-mono text-xs p-6 shadow-2xl">
-                                <div className="w-full space-y-3 text-primary/80">
+                                <div className="w-full space-y-1 text-primary/80">
                                     <div className="flex justify-between border-b border-white/5 pb-3 mb-3">
-                                        <span className="text-zinc-600 font-bold">SmartContract.sol</span>
+                                        <span className="text-zinc-500 font-bold">SmartContract.sol</span>
                                         <div className="flex gap-1.5">
                                             <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/50" />
                                             <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/50" />
                                             <div className="w-2.5 h-2.5 rounded-full bg-green-500/20 border border-green-500/50" />
                                         </div>
                                     </div>
-                                    <div><span className="text-purple-400">function</span> <span className="text-blue-400">executePayment</span>() <span className="text-zinc-600">{"{"}</span></div>
-                                    <div className="pl-4 border-l border-white/5"><span className="text-purple-400">uint256</span> tax = (amount * TAX_RATE) / 100;</div>
-                                    <div className="pl-4 border-l border-white/5">payable(taxAuthority).transfer(tax);</div>
-                                    <div className="pl-4 border-l border-white/5 text-green-400/50">// Auto-distribution success</div>
-                                    <div className="text-zinc-600">{"}"}</div>
+
+                                    <div className="opacity-50 hover:opacity-100 transition-opacity">
+                                        <span className="text-purple-400">function</span> <span className="text-blue-400">executePayment</span>() <span className="text-zinc-600">{"{"}</span>
+                                    </div>
+
+                                    <div
+                                        onMouseEnter={() => setActiveLine(1)}
+                                        onMouseLeave={() => setActiveLine(null)}
+                                        className={`pl-4 py-1 border-l-2 transition-all duration-300 cursor-help rounded-r ${activeLine === 1 ? 'border-primary bg-primary/10' : 'border-transparent hover:bg-white/5'}`}
+                                    >
+                                        <span className="text-purple-400">uint256</span> tax = (amount * TAX_RATE) / 100;
+                                    </div>
+
+                                    <div
+                                        onMouseEnter={() => setActiveLine(2)}
+                                        onMouseLeave={() => setActiveLine(null)}
+                                        className={`pl-4 py-1 border-l-2 transition-all duration-300 cursor-help rounded-r ${activeLine === 2 ? 'border-blue-400 bg-blue-400/10' : 'border-transparent hover:bg-white/5'}`}
+                                    >
+                                        payable(taxAuthority).transfer(tax);
+                                    </div>
+
+                                    <div className="pl-4 py-1 border-l-2 border-transparent text-green-400/50 opacity-50">// Auto-distribution success</div>
+                                    <div className="text-zinc-600 opacity-50">{"}"}</div>
                                 </div>
                             </div>
                         </div>
@@ -133,7 +169,9 @@ export default function CorePillars() {
                                 Zero-Knowledge Proofs ensure salary data remains private. Your financial data is encrypted, owned by you.
                             </p>
                             <div className="mt-8 flex flex-wrap gap-3">
-                                <span className="rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold text-primary border border-primary/20 uppercase tracking-wider">ZK-SNARKs</span>
+                                <span className="rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold text-primary border border-primary/20 uppercase tracking-wider flex items-center gap-2">
+                                    <CheckCircle2 size={12} /> ZK-SNARKs
+                                </span>
                                 <span className="rounded-full bg-white/5 px-4 py-1.5 text-xs font-bold text-white border border-white/10 uppercase tracking-wider">Encrypted Metadata</span>
                             </div>
                         </div>

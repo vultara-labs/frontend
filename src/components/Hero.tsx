@@ -1,8 +1,48 @@
 "use client";
 
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, useSpring, useInView } from "framer-motion";
 import { ArrowRight, PlayCircle, MoreHorizontal } from "lucide-react";
-import { useRef, MouseEvent } from "react";
+import { useRef, MouseEvent, useEffect, useState } from "react";
+
+// Counter Component for "Live" Money Feel
+const Counter = ({ from, to }: { from: number; to: number }) => {
+    const nodeRef = useRef<HTMLSpanElement>(null);
+    const isInView = useInView(nodeRef, { once: true });
+
+    useEffect(() => {
+        if (!isInView) return;
+
+        const node = nodeRef.current;
+        const duration = 2000; // 2 seconds initial setup
+        const startTime = performance.now();
+
+        const controls = animate(from, to, {
+            duration: 2,
+            onUpdate(value) {
+                if (node) node.textContent = `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            },
+            onComplete() {
+                // Start "Live Ticking" Simulation
+                if (!node) return;
+                let currentValue = to;
+
+                // Add random cents every few seconds to simulate yield
+                setInterval(() => {
+                    const increment = Math.random() * (0.05 - 0.01) + 0.01;
+                    currentValue += increment;
+                    node.textContent = `$${currentValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                }, 3000);
+            }
+        });
+
+        return () => controls.stop();
+    }, [from, to, isInView]);
+
+    return <span ref={nodeRef} className="tabular-nums" />;
+};
+
+// Helper for animation
+import { animate } from "framer-motion";
 
 export default function Hero() {
     const targetRef = useRef<HTMLDivElement>(null);
@@ -175,7 +215,9 @@ export default function Hero() {
                             {/* Main Stat (Layer 2) */}
                             <motion.div style={{ z: 30 }} className="mb-8 transform-style-3d">
                                 <p className="text-zinc-500 text-sm font-medium mb-1 tracking-wide">TOTAL BALANCE</p>
-                                <h2 className="text-5xl font-bold text-white tracking-tighter tabular-nums">$124,592.00</h2>
+                                <h2 className="text-5xl font-bold text-white tracking-tighter tabular-nums">
+                                    <Counter from={100000} to={124592.50} />
+                                </h2>
                             </motion.div>
 
                             {/* Chart (Layer 1 - Deep) */}
