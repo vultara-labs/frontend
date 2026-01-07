@@ -1,11 +1,22 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Fingerprint, FileText, Banknote, RefreshCcw, Landmark, ArrowRight, ArrowLeft } from "lucide-react";
+import { useRef } from "react";
 
 export default function UserJourney() {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start center", "end center"],
+    });
+
+    // Liquid Fill Logic
+    const lineHeight = useTransform(scrollYProgress, [0, 0.8], ["0%", "100%"]);
+    const lineWidth = useTransform(scrollYProgress, [0, 0.8], ["0%", "100%"]);
+
     return (
-        <section className="py-32 px-6 relative overflow-hidden">
+        <section ref={containerRef} className="py-32 px-6 relative overflow-hidden">
             {/* Background - Unified Grid */}
             <div className="absolute inset-0 pointer-events-none bg-grid-animate opacity-20" />
             <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]" />
@@ -30,11 +41,24 @@ export default function UserJourney() {
 
                 {/* Timeline */}
                 <div className="relative w-full">
-                    {/* Timeline Track */}
-                    <div className="hidden lg:block absolute top-[48px] left-0 w-full h-[1px] bg-white/5" />
-                    <div className="hidden lg:block absolute top-[48px] left-0 w-1/3 h-[1px] bg-gradient-to-r from-primary to-transparent" />
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-4 relative">
+                    {/* Desktop Horizontal Line (Liquid Fill) */}
+                    <div className="hidden lg:block absolute top-[48px] left-0 w-full h-[2px] bg-white/5 rounded-full overflow-hidden">
+                        <motion.div
+                            style={{ width: lineWidth }}
+                            className="h-full bg-gradient-to-r from-primary via-white to-primary opacity-50 shadow-[0_0_20px_#CCFF00]"
+                        />
+                    </div>
+
+                    {/* Mobile Vertical Line (Liquid Fill) */}
+                    <div className="lg:hidden absolute left-[47px] top-0 bottom-0 w-[2px] bg-white/5 rounded-full overflow-hidden">
+                        <motion.div
+                            style={{ height: lineHeight }}
+                            className="w-full bg-gradient-to-b from-primary via-white to-primary opacity-50 shadow-[0_0_20px_#CCFF00]"
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-4 relative">
                         {[
                             { icon: Fingerprint, title: "Passkey Login", desc: "Secure, passwordless entry using biometric authentication." },
                             { icon: FileText, title: "Contract Setup", desc: "One-click smart contract initialization." },
@@ -46,17 +70,17 @@ export default function UserJourney() {
                                 key={idx}
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
+                                viewport={{ once: true, margin: "-100px" }}
                                 transition={{ delay: idx * 0.1, duration: 0.5 }}
-                                className="group relative flex flex-col"
+                                className="group relative flex lg:flex-col flex-row gap-6 lg:gap-0 items-start"
                             >
-                                <div className="mb-8 lg:mb-10 flex justify-center lg:justify-start">
+                                <div className="mb-0 lg:mb-10 flex flex-shrink-0 justify-center lg:justify-start">
                                     <div className={`w-24 h-24 rounded-3xl bg-[#0A0A0A] border flex items-center justify-center transition-all duration-500 relative z-10 ${idx === 0 ? 'border-primary text-primary shadow-[0_0_30px_-5px_rgba(204,255,0,0.3)]' : 'border-white/10 text-zinc-500 group-hover:border-primary/50 group-hover:text-primary group-hover:scale-110 group-hover:shadow-[0_0_20px_-5px_rgba(204,255,0,0.2)]'} `}>
                                         <step.icon size={32} />
                                     </div>
                                 </div>
 
-                                <div className="text-center lg:text-left">
+                                <div className="text-left pt-2 lg:pt-0">
                                     <span className={`text-xs font-bold uppercase tracking-widest mb-2 block ${idx === 0 ? 'text-primary' : 'text-zinc-600 group-hover:text-primary transition-colors'}`}>
                                         Step 0{idx + 1}
                                     </span>
@@ -76,9 +100,9 @@ export default function UserJourney() {
                         { label: "Uptime", val: "100%" },
                         { label: "Swap Fees", val: "0%" }
                     ].map((stat, i) => (
-                        <div key={i} className="p-8 flex flex-col items-center justify-center text-center gap-2 hover:bg-white/[0.02] transition-colors">
-                            <span className="text-primary text-3xl font-bold tracking-tighter">{stat.val}</span>
-                            <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">{stat.label}</span>
+                        <div key={i} className="p-8 flex flex-col items-center justify-center text-center gap-2 hover:bg-white/[0.02] transition-colors cursor-default group">
+                            <span className="text-primary text-3xl font-bold tracking-tighter group-hover:scale-110 transition-transform duration-300">{stat.val}</span>
+                            <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold group-hover:text-white transition-colors">{stat.label}</span>
                         </div>
                     ))}
                 </div>
