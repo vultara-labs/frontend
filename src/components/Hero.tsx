@@ -168,29 +168,14 @@ export default function Hero() {
                             transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1], delay: 0.2 }}
                             className="card-solid w-full max-w-md rounded-[2rem] p-8 relative bg-[var(--obsidian-surface)]"
                         >
-                            {/* Floating Badge */}
-                            <motion.div
-                                style={{ z: 60 }}
-                                className="absolute -right-6 -top-8 bg-[#111] border border-white/10 p-4 rounded-xl shadow-2xl flex items-center gap-4 transform-style-3d"
-                            >
-                                <div className="w-10 h-10 rounded-full bg-[var(--volt)] flex items-center justify-center text-black shadow-[0_0_20px_rgba(204,255,0,0.5)]">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-                                </div>
-                                <div className="pr-1">
-                                    <p className="text-[9px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-0.5">Yield Generated</p>
-                                    <p className="text-white font-bold tracking-tight text-sm">+$1,240.50</p>
-                                </div>
-                            </motion.div>
 
                             {/* Card Content Layer */}
                             <motion.div style={{ z: 30 }} className="transform-style-3d">
                                 {/* Header */}
                                 <div className="flex justify-between items-start mb-10">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 rounded-full bg-[#2775CA] flex items-center justify-center text-white font-bold text-lg shadow-[0_4px_20px_rgba(39,117,202,0.4)] ring-2 ring-white/5">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12.75 16.5H11.25V15H13.5C14.3284 15 15 14.3284 15 13.5V11.25C15 10.4216 14.3284 9.75 13.5 9.75H9.75V8.25H14.25V6H12.75V7.5H10.5C9.67157 7.5 9 8.17157 9 9V11.25C9 12.0784 9.67157 12.75 10.5 12.75H14.25V14.25H9.75V16.5H12.75V18.75H14.25V16.5H12.75V16.5Z" fill="white" />
-                                            </svg>
+                                        <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center shadow-[0_4px_20px_rgba(39,117,202,0.4)] ring-1 ring-white/5">
+                                            <img src="/usdc.svg" alt="USDC" className="w-full h-full object-cover" />
                                         </div>
                                         <div>
                                             <h3 className="text-white font-bold text-lg uppercase tracking-wider">USDC Vault</h3>
@@ -237,6 +222,24 @@ export default function Hero() {
                                     <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors hover:-translate-y-1 duration-300">
                                         <p className="text-[9px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">Next Payout</p>
                                         <p className="text-2xl font-bold text-white tabular-nums tracking-tighter">4h 12m</p>
+                                    </div>
+                                </div>
+
+                                {/* Earnings Indicator - Integrated */}
+                                <div className="mt-6 pt-5 border-t border-white/5">
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-8 h-8 rounded-full bg-[var(--volt)]/10 flex items-center justify-center">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--volt)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                                    <polyline points="17 6 23 6 23 12"></polyline>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p className="text-[9px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest">Total Yield Earned</p>
+                                            </div>
+                                        </div>
+                                        <p className="text-[var(--volt)] font-bold tracking-tight text-lg">+$1,240.50</p>
                                     </div>
                                 </div>
                             </motion.div>
