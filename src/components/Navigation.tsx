@@ -30,9 +30,14 @@ export default function Navigation() {
 
                 {/* Desktop Navigation */}
                 <nav className="hidden md:flex items-center gap-8">
-                    {['Product', 'Yield', 'Security', 'Company'].map((item) => (
-                        <a key={item} href={`#${item.toLowerCase()}`} className="text-sm font-medium text-[var(--text-secondary)] hover:text-white transition-colors tracking-wide uppercase text-[11px]">
-                            {item}
+                    {[
+                        { label: 'Product', href: '#features' },
+                        { label: 'How It Works', href: '#how-it-works' },
+                        { label: 'Security', href: '#security' },
+                        { label: 'About', href: '#about' }
+                    ].map((item) => (
+                        <a key={item.label} href={item.href} className="text-sm font-medium text-[var(--text-secondary)] hover:text-white transition-colors tracking-wide uppercase text-[11px]">
+                            {item.label}
                         </a>
                     ))}
                 </nav>
@@ -64,9 +69,19 @@ export default function Navigation() {
                     className="md:hidden glass-panel border-t border-white/5 p-6 mx-4 mt-2 rounded-2xl"
                 >
                     <div className="flex flex-col gap-6">
-                        {['Product', 'Yield', 'Security', 'Company'].map((item) => (
-                            <a key={item} href={`#${item.toLowerCase()}`} className="text-[var(--text-secondary)] hover:text-white text-lg font-bold tracking-tight">
-                                {item}
+                        {[
+                            { label: 'Product', href: '#features' },
+                            { label: 'How It Works', href: '#how-it-works' },
+                            { label: 'Security', href: '#security' },
+                            { label: 'About', href: '#about' }
+                        ].map((item) => (
+                            <a
+                                key={item.label}
+                                href={item.href}
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="text-[var(--text-secondary)] hover:text-white text-lg font-bold tracking-tight"
+                            >
+                                {item.label}
                             </a>
                         ))}
                         <button className="btn-primary w-full py-4 rounded-xl mt-4">

@@ -159,7 +159,7 @@ export default function Hero() {
                         {/* Glow Behind */}
                         <motion.div
                             style={{ rotateX, rotateY }}
-                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[var(--volt)] opacity-20 blur-[120px] rounded-full pointer-events-none"
+                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[var(--volt)] opacity-20 blur-[120px] rounded-full pointer-events-none will-change-transform"
                         />
 
                         {/* Main Card */}
@@ -169,7 +169,7 @@ export default function Hero() {
                             initial={{ opacity: 0, scale: 0.9, y: 50 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1], delay: 0.2 }}
-                            className="card-solid w-full max-w-md rounded-[2rem] p-8 relative bg-[var(--obsidian-surface)]"
+                            className="card-solid w-full max-w-md rounded-[2rem] p-8 relative bg-[var(--obsidian-surface)] will-change-transform"
                         >
 
                             {/* Card Content Layer */}

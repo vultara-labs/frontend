@@ -107,7 +107,7 @@ export default function CorePillars() {
                                 <Droplets size={24} />
                             </div>
                             <h3 className="mb-4 text-2xl font-bold uppercase tracking-tight text-white">Instant Liquidity</h3>
-                            <p className="mb-6 text-sm text-[var(--text-secondary)] leading-relaxed">Pay by the second, settled instantly using generic yield vaults.</p>
+                            <p className="mb-6 text-sm text-[var(--text-secondary)] leading-relaxed">Pay by the second, settled instantly using optimized yield vaults.</p>
                         </div>
 
                         {/* Animated Mesh/Liquid Visual */}
@@ -153,6 +153,7 @@ export default function CorePillars() {
 
                     {/* Card 4: Identity */}
                     <motion.div
+                        id="security"
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}

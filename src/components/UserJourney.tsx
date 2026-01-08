@@ -16,7 +16,7 @@ export default function UserJourney() {
     const lineWidth = useTransform(scrollYProgress, [0, 0.7], ["0%", "100%"]);
 
     return (
-        <section ref={containerRef} className="py-32 px-6 relative overflow-hidden">
+        <section id="how-it-works" ref={containerRef} className="py-32 px-6 relative overflow-hidden">
             {/* Background */}
             <div className="absolute inset-0 pointer-events-none bg-grid-animate opacity-30" />
             <div className="absolute inset-0 bg-gradient-to-b from-[var(--obsidian-base)] via-transparent to-[var(--obsidian-base)]" />
