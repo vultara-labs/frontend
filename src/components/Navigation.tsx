@@ -47,9 +47,9 @@ export default function Navigation() {
                     <a href="#" className="hidden sm:block text-xs font-bold uppercase tracking-widest text-white hover:text-[var(--volt)] transition-colors">
                         Log In
                     </a>
-                    <button className="btn-primary px-6 py-2.5 text-xs font-bold tracking-widest">
+                    <Link href="/dashboard" className="btn-primary px-6 py-2.5 text-xs font-bold tracking-widest">
                         Launch App
-                    </button>
+                    </Link>
 
                     {/* Mobile Menu Toggle */}
                     <button

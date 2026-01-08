@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform, useMotionValue, useSpring, useInView, animate } from "framer-motion";
 import { ArrowRight, PlayCircle, MoreHorizontal } from "lucide-react";
+import Link from "next/link";
 import { useRef, MouseEvent, useEffect } from "react";
 
 // Counter Component for "Live" Money Feel
@@ -127,10 +128,10 @@ export default function Hero() {
 
                         {/* Buttons */}
                         <div className="flex flex-wrap items-center gap-4 mt-4">
-                            <button className="h-12 px-8 flex items-center gap-3 btn-primary group">
+                            <Link href="/dashboard" className="h-12 px-8 flex items-center gap-3 btn-primary group">
                                 <span className="relative z-10">Start Earning</span>
                                 <ArrowRight size={18} className="relative z-10 group-hover:translate-x-1 transition-transform" />
-                            </button>
+                            </Link>
                             <button className="h-12 px-8 flex items-center gap-3 btn-secondary group">
                                 <PlayCircle size={20} className="text-white/60 group-hover:text-white transition-colors" />
                                 <span>How it works</span>
