@@ -91,6 +91,14 @@
   /* 24px */
   --radius-2xl: 2rem;
   /* 32px */
+
+  /* LABEL TYPOGRAPHY - Standardized */
+  --label-size: 0.625rem;
+  /* 10px */
+  --label-tracking: 0.1em;
+  /* Wide tracking for labels */
+  --label-weight: 700;
+  --label-transform: uppercase;
 }
 
 @theme inline {
@@ -187,10 +195,20 @@ body {
 .card-solid:hover {
   border-color: var(--border-medium);
   transform: translateY(-4px);
-  /* Subtle lift */
   background: var(--obsidian-uplift);
   box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.8);
-  /* Deep shadow lift */
+}
+
+.card-solid:focus-visible {
+  outline: 2px solid var(--volt);
+  outline-offset: 2px;
+}
+
+/* Disable hover lift on touch devices for better UX */
+@media (hover: none) {
+  .card-solid:hover {
+    transform: none;
+  }
 }
 
 /* 2. TEXT EFFECTS */
@@ -342,4 +360,70 @@ html {
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: 0.5rem;
+}
+
+/* 5. TYPOGRAPHY UTILITIES */
+.label {
+  font-size: var(--label-size);
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-tracking);
+  text-transform: var(--label-transform);
+}
+
+/* 6. PERFORMANCE UTILITIES */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Pause decorative animations on mobile for battery/performance */
+@media (max-width: 768px) {
+  .bg-grid-animate {
+    animation-play-state: paused;
+  }
+
+  /* Reduce blur effects on mobile */
+  .glass-panel {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Loading spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Pulse animation for status indicators */
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
