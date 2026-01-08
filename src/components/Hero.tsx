@@ -187,8 +187,10 @@ export default function Hero() {
                                 {/* Header */}
                                 <div className="flex justify-between items-start mb-10">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 rounded-full bg-[#0052FF] flex items-center justify-center text-white font-bold text-lg shadow-[0_4px_20px_rgba(0,82,255,0.4)] ring-2 ring-white/5">
-                                            $
+                                        <div className="w-12 h-12 rounded-full bg-[#2775CA] flex items-center justify-center text-white font-bold text-lg shadow-[0_4px_20px_rgba(39,117,202,0.4)] ring-2 ring-white/5">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M12.75 16.5H11.25V15H13.5C14.3284 15 15 14.3284 15 13.5V11.25C15 10.4216 14.3284 9.75 13.5 9.75H9.75V8.25H14.25V6H12.75V7.5H10.5C9.67157 7.5 9 8.17157 9 9V11.25C9 12.0784 9.67157 12.75 10.5 12.75H14.25V14.25H9.75V16.5H12.75V18.75H14.25V16.5H12.75V16.5Z" fill="white" />
+                                            </svg>
                                         </div>
                                         <div>
                                             <h3 className="text-white font-bold text-lg uppercase tracking-wider">USDC Vault</h3>

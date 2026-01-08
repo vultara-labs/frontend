@@ -18,14 +18,14 @@ export default function Navigation() {
             <div className="mx-auto max-w-[1280px] px-6 h-20 flex items-center justify-between">
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-3 group">
-                    <div className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-xl border border-white/10 text-[var(--volt)] group-hover:border-[var(--volt)]/50 group-hover:bg-[var(--volt-glass)] transition-all duration-300">
+                    {/* <div className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-xl border border-white/10 text-[var(--volt)] group-hover:border-[var(--volt)]/50 group-hover:bg-[var(--volt-glass)] transition-all duration-300">
                         <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M6 4L11 20" stroke="currentColor" strokeLinecap="round" strokeWidth="3"></path>
                             <path d="M11 20L18 4L14 4" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
                             <path d="M18 4L21 7" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
                         </svg>
-                    </div>
-                    <span className="text-xl font-bold tracking-tight text-white uppercase">Vultara</span>
+                    </div> */}
+                    <img src="/logo-dark.png" alt="Vultara" className="h-10 w-auto" />
                 </Link>
 
                 {/* Desktop Navigation */}

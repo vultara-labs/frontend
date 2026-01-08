@@ -18,12 +18,7 @@ export default function Footer() {
                     {/* Brand */}
                     <div className="md:col-span-2">
                         <Link href="/" className="flex items-center gap-4 mb-8">
-                            <div className="w-12 h-12 rounded-xl bg-[var(--volt)] flex items-center justify-center shadow-[0_0_25px_rgba(204,255,0,0.3)]">
-                                <span className="text-black font-black text-2xl">V</span>
-                            </div>
-                            <span className="text-2xl font-black tracking-tighter text-white uppercase">
-                                Vultara<span className="text-white/30 font-light">.Labs</span>
-                            </span>
+                            <img src="/logo-dark.png" alt="Vultara" className="h-12 w-auto" />
                         </Link>
                         <p className="text-[var(--text-secondary)] font-light leading-loose max-w-md mb-8">
                             Secure Your Income, Amplify Your Growth. The smart USDC vault for Indonesian Web3 freelancers.
@@ -55,7 +50,7 @@ export default function Footer() {
                         <ul className="space-y-4">
                             <li><a href="https://base.org" className="text-sm text-[var(--text-tertiary)] hover:text-blue-400 transition-colors">Base Network</a></li>
                             <li><a href="https://thetanuts.finance" className="text-sm text-[var(--text-tertiary)] hover:text-amber-400 transition-colors">Thetanuts Finance</a></li>
-                            <li><a href="#" className="text-sm text-[var(--text-tertiary)] hover:text-orange-400 transition-colors">IDRX Stablecoin</a></li>
+                            <li><a href="https://idrx.co" className="text-sm text-[var(--text-tertiary)] hover:text-orange-400 transition-colors">IDRX Stablecoin</a></li>
                         </ul>
                     </div>
                 </div>
