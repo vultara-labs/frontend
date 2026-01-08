@@ -59,8 +59,8 @@ export default function Footer() {
                 <div className="pt-10 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-6 text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest">
                     <div>© 2026 Vultara Labs. All rights reserved.</div>
                     <div className="flex gap-8">
-                        <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-                        <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+                        <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+                        <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
                     </div>
                 </div>
             </div>
