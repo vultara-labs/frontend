@@ -140,20 +140,34 @@ export default function Hero() {
                         {/* Social Proof */}
                         <div className="pt-10 border-t border-white/5 flex flex-col sm:flex-row gap-6 sm:items-center">
                             <span className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest">Audited & Trusted By</span>
-                            <div className="flex gap-3 opacity-60 transition-all duration-500 hover:opacity-100">
-                                {[
-                                    { name: 'CERTIK', color: '#00D4AA' },
-                                    { name: 'HACKEN', color: '#4A90D9' },
-                                    { name: 'ZEPPELIN', color: '#8B5CF6' }
-                                ].map((partner) => (
-                                    <div key={partner.name} className="h-9 px-4 bg-white/[0.03] rounded-lg flex items-center justify-center gap-2 text-[10px] text-white/80 font-bold border border-white/[0.06] uppercase tracking-wider hover:border-white/20 hover:bg-white/[0.05] transition-all duration-300 group">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="opacity-60 group-hover:opacity-100 transition-opacity">
-                                            <path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z" stroke={partner.color} strokeWidth="2" fill="none" />
-                                            <path d="M9 12l2 2 4-4" stroke={partner.color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                        {partner.name}
-                                    </div>
-                                ))}
+                            <div className="flex gap-3 opacity-70 transition-all duration-500 hover:opacity-100">
+                                {/* CertiK */}
+                                <div className="h-9 px-4 bg-white/[0.03] rounded-lg flex items-center justify-center gap-2 text-[10px] text-white/80 font-bold border border-white/[0.06] uppercase tracking-wider hover:border-[#00D4AA]/30 hover:bg-[#00D4AA]/5 transition-all duration-300 group">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="opacity-70 group-hover:opacity-100 transition-opacity">
+                                        <path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z" stroke="#00D4AA" strokeWidth="1.5" fill="none" />
+                                        <path d="M9 12l2 2 4-4" stroke="#00D4AA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                    <span className="group-hover:text-[#00D4AA] transition-colors">CertiK</span>
+                                </div>
+
+                                {/* Hacken */}
+                                <div className="h-9 px-4 bg-white/[0.03] rounded-lg flex items-center justify-center gap-2 text-[10px] text-white/80 font-bold border border-white/[0.06] uppercase tracking-wider hover:border-[#4A90D9]/30 hover:bg-[#4A90D9]/5 transition-all duration-300 group">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="opacity-70 group-hover:opacity-100 transition-opacity">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" stroke="#4A90D9" strokeWidth="1.5" />
+                                        <path d="M7 11V7a5 5 0 0110 0v4" stroke="#4A90D9" strokeWidth="1.5" />
+                                        <circle cx="12" cy="16" r="1.5" fill="#4A90D9" />
+                                    </svg>
+                                    <span className="group-hover:text-[#4A90D9] transition-colors">Hacken</span>
+                                </div>
+
+                                {/* OpenZeppelin */}
+                                <div className="h-9 px-4 bg-white/[0.03] rounded-lg flex items-center justify-center gap-2 text-[10px] text-white/80 font-bold border border-white/[0.06] uppercase tracking-wider hover:border-[#8B5CF6]/30 hover:bg-[#8B5CF6]/5 transition-all duration-300 group">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="opacity-70 group-hover:opacity-100 transition-opacity">
+                                        <path d="M12 3L4 7v10l8 4 8-4V7l-8-4z" stroke="#8B5CF6" strokeWidth="1.5" fill="none" />
+                                        <path d="M12 12L4 7M12 12l8-5M12 12v9" stroke="#8B5CF6" strokeWidth="1.5" />
+                                    </svg>
+                                    <span className="group-hover:text-[#8B5CF6] transition-colors">OpenZeppelin</span>
+                                </div>
                             </div>
                         </div>
                     </motion.div>
