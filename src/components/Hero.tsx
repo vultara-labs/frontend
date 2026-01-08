@@ -13,9 +13,10 @@ const Counter = ({ from, to }: { from: number; to: number }) => {
         if (!isInView) return;
 
         const node = nodeRef.current;
+        let intervalId: NodeJS.Timeout | null = null;
 
         const controls = animate(from, to, {
-            duration: 2.5, // Slower, more elegant
+            duration: 2.5,
             ease: [0.19, 1, 0.22, 1],
             onUpdate(value) {
                 if (node) node.textContent = `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -23,8 +24,7 @@ const Counter = ({ from, to }: { from: number; to: number }) => {
             onComplete() {
                 if (!node) return;
                 let currentValue = to;
-                // Subtle "Live Ticking" - less chaotic frequency
-                setInterval(() => {
+                intervalId = setInterval(() => {
                     const increment = Math.random() * (0.05 - 0.01) + 0.01;
                     currentValue += increment;
                     node.textContent = `$${currentValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -32,7 +32,10 @@ const Counter = ({ from, to }: { from: number; to: number }) => {
             }
         });
 
-        return () => controls.stop();
+        return () => {
+            controls.stop();
+            if (intervalId) clearInterval(intervalId);
+        };
     }, [from, to, isInView]);
 
     return <span ref={nodeRef} className="tabular-nums tracking-tight" />;
@@ -119,7 +122,7 @@ export default function Hero() {
 
                         {/* Description */}
                         <p className="text-xl text-[var(--text-secondary)] font-normal leading-relaxed max-w-lg">
-                            Streamline crypto payroll and earn generic yield on idle USDC. Automated financial infrastructure for the open economy.
+                            Streamline crypto payroll and earn generous yield on idle USDC. Automated financial infrastructure for the open economy.
                         </p>
 
                         {/* Buttons */}
