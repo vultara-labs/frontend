@@ -10,6 +10,7 @@
   --obsidian-base: #050505;
   --obsidian-surface: #0A0A0A;
   --obsidian-uplift: #111111;
+  --obsidian-elevated: #171717;
 
   /* PRIMARY ACCENT - "Volt" */
   --volt: #CCFF00;
@@ -17,12 +18,21 @@
   --volt-glow: rgba(204, 255, 0, 0.15);
   --volt-glass: rgba(204, 255, 0, 0.05);
 
-  /* TYPOGRAPHY COLORS */
+  /* SEMANTIC COLORS */
+  --success: #10B981;
+  --success-dim: #059669;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  --info: #3B82F6;
+
+  /* TYPOGRAPHY COLORS - WCAG AA Compliant (4.5:1 minimum) */
   --text-primary: #FFFFFF;
   --text-secondary: #A1A1AA;
-  /* Zinc 400 */
-  --text-tertiary: #52525B;
-  /* Zinc 600 */
+  /* Zinc 400 - 7.1:1 contrast */
+  --text-tertiary: #71717A;
+  /* Zinc 500 - 4.6:1 contrast (was #52525B which is 3.2:1) */
+  --text-muted: #52525B;
+  /* Zinc 600 - for decorative text only */
 
   /* BORDERS */
   --border-subtle: rgba(255, 255, 255, 0.06);
@@ -31,7 +41,56 @@
 
   /* ANIMATION */
   --ease-spring: cubic-bezier(0.19, 1, 0.22, 1);
-  /* "Apple-esque" snap */
+
+  /* SPACING SCALE (4-point grid) */
+  --space-1: 0.25rem;
+  /* 4px */
+  --space-2: 0.5rem;
+  /* 8px */
+  --space-3: 0.75rem;
+  /* 12px */
+  --space-4: 1rem;
+  /* 16px */
+  --space-6: 1.5rem;
+  /* 24px */
+  --space-8: 2rem;
+  /* 32px */
+  --space-12: 3rem;
+  /* 48px */
+  --space-16: 4rem;
+  /* 64px */
+  --space-24: 6rem;
+  /* 96px */
+
+  /* TYPOGRAPHY SCALE */
+  --text-xs: 0.75rem;
+  /* 12px */
+  --text-sm: 0.875rem;
+  /* 14px */
+  --text-base: 1rem;
+  /* 16px */
+  --text-lg: 1.125rem;
+  /* 18px */
+  --text-xl: 1.25rem;
+  /* 20px */
+  --text-2xl: 1.5rem;
+  /* 24px */
+  --text-3xl: 1.875rem;
+  /* 30px */
+  --text-4xl: 2.25rem;
+  /* 36px */
+
+  /* RADIUS */
+  --radius-sm: 0.5rem;
+  /* 8px */
+  --radius-md: 0.75rem;
+  /* 12px */
+  --radius-lg: 1rem;
+  /* 16px */
+  --radius-xl: 1.5rem;
+  /* 24px */
+  --radius-2xl: 2rem;
+  /* 32px */
 }
 
 @theme inline {

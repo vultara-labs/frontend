@@ -13,9 +13,9 @@ export default function Navigation() {
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-            className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[var(--obsidian-base)]/80 backdrop-blur-xl"
+            className="fixed top-0 left-0 right-0 z-50 border-b border-[var(--border-subtle)] bg-[var(--obsidian-base)]/80 backdrop-blur-xl"
         >
-            <div className="mx-auto max-w-[1280px] px-6 h-20 flex items-center justify-between">
+            <div className="mx-auto max-w-[1280px] px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-3 group">
                     {/* <div className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-xl border border-white/10 text-[var(--volt)] group-hover:border-[var(--volt)]/50 group-hover:bg-[var(--volt-glass)] transition-all duration-300">
@@ -66,9 +66,9 @@ export default function Navigation() {
                 <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="md:hidden glass-panel border-t border-white/5 p-6 mx-4 mt-2 rounded-2xl"
+                    className="md:hidden glass-panel border-t border-[var(--border-subtle)] p-6 mx-4 mt-2 rounded-2xl"
                 >
-                    <div className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-5">
                         {[
                             { label: 'Product', href: '#features' },
                             { label: 'How It Works', href: '#how-it-works' },

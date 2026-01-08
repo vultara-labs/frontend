@@ -126,14 +126,16 @@ export default function Hero() {
                             Streamline crypto payroll and earn generous yield on idle USDC. Automated financial infrastructure for the open economy.
                         </p>
 
-                        {/* Buttons */}
                         <div className="flex flex-wrap items-center gap-4 mt-4">
                             <Link href="/dashboard" className="h-12 px-8 flex items-center gap-3 btn-primary group">
                                 <span className="relative z-10">Start Earning</span>
                                 <ArrowRight size={18} className="relative z-10 group-hover:translate-x-1 transition-transform" />
                             </Link>
-                            <button className="h-12 px-8 flex items-center gap-3 btn-secondary group">
-                                <PlayCircle size={20} className="text-white/60 group-hover:text-white transition-colors" />
+                            <button
+                                className="h-12 px-8 flex items-center gap-3 btn-secondary group"
+                                aria-label="Watch how it works video"
+                            >
+                                <PlayCircle size={20} className="text-[var(--text-tertiary)] group-hover:text-white transition-colors" />
                                 <span>How it works</span>
                             </button>
                         </div>
@@ -198,7 +200,10 @@ export default function Hero() {
                                             </div>
                                         </div>
                                     </div>
-                                    <button className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/5 text-[var(--text-tertiary)] hover:text-white transition-colors">
+                                    <button
+                                        className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/5 text-[var(--text-tertiary)] hover:text-white transition-colors"
+                                        aria-label="More options"
+                                    >
                                         <MoreHorizontal size={20} />
                                     </button>
                                 </div>

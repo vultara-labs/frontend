@@ -25,10 +25,10 @@ export default function Footer() {
                         </p>
                         {/* Social Links */}
                         <div className="flex gap-3">
-                            <a href="#" className="w-12 h-12 rounded-xl card-solid flex items-center justify-center text-[var(--text-secondary)] hover:text-white hover:border-white/30 transition-all">
+                            <a href="#" className="w-12 h-12 rounded-xl card-solid flex items-center justify-center text-[var(--text-secondary)] hover:text-white hover:border-[var(--border-bright)] transition-all" aria-label="Twitter">
                                 <Twitter className="w-5 h-5" />
                             </a>
-                            <a href="#" className="w-12 h-12 rounded-xl card-solid flex items-center justify-center text-[var(--text-secondary)] hover:text-white hover:border-white/30 transition-all">
+                            <a href="#" className="w-12 h-12 rounded-xl card-solid flex items-center justify-center text-[var(--text-secondary)] hover:text-white hover:border-[var(--border-bright)] transition-all" aria-label="GitHub">
                                 <Github className="w-5 h-5" />
                             </a>
                         </div>
@@ -56,7 +56,7 @@ export default function Footer() {
                 </div>
 
                 {/* Copyright */}
-                <div className="pt-10 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-6 text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest">
+                <div className="pt-8 lg:pt-10 border-t border-[var(--border-subtle)] flex flex-col sm:flex-row justify-between items-center gap-4 lg:gap-6 text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest">
                     <div>© 2026 Vultara Labs. All rights reserved.</div>
                     <div className="flex gap-8">
                         <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>

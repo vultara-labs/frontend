@@ -92,32 +92,31 @@ export default function AIAdvisorPage() {
     return (
         <div className="flex flex-col h-screen relative bg-[var(--obsidian-base)]">
             {/* Header */}
-            <header className="h-16 border-b border-white/[0.05] flex items-center justify-between px-6 bg-[var(--obsidian-base)]/80 backdrop-blur-md shrink-0 absolute top-0 w-full z-20">
+            <header className="h-14 lg:h-16 border-b border-[var(--border-subtle)] flex items-center justify-between px-4 lg:px-6 bg-[var(--obsidian-base)]/80 backdrop-blur-md shrink-0 absolute top-0 w-full z-20">
                 <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-purple-500/20">
-                            <Bot size={18} className="text-white" />
+                    <div className="flex items-center gap-2 lg:gap-3">
+                        <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-purple-500/20">
+                            <Bot size={16} className="lg:w-[18px] lg:h-[18px] text-white" />
                         </div>
                         <div>
-                            <h2 className="text-sm font-bold text-white flex items-center gap-2">
+                            <h2 className="text-xs lg:text-sm font-bold text-white flex items-center gap-2">
                                 Shieldie AI
-                                <span className="text-[10px] px-1.5 py-0.5 rounded bg-purple-500/10 border border-purple-500/20 text-purple-400 font-medium">BETA</span>
+                                <span className="text-[9px] lg:text-[10px] px-1.5 py-0.5 rounded bg-purple-500/10 border border-purple-500/20 text-purple-400 font-medium">BETA</span>
                             </h2>
                             <div className="flex items-center gap-1.5">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                <span className="text-[10px] text-emerald-400 font-medium">Online</span>
+                                <span className="w-1.5 h-1.5 rounded-full bg-[var(--success)] animate-pulse" />
+                                <span className="text-[10px] text-[var(--success)] font-medium">Online</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </header>
-
             {/* Chat Container */}
-            <div className="flex-1 overflow-y-auto px-4 pt-24 pb-4 md:px-0">
-                <div className="max-w-3xl mx-auto flex flex-col gap-6">
+            <div className="flex-1 overflow-y-auto px-4 pt-20 lg:pt-24 pb-4 md:px-0">
+                <div className="max-w-3xl mx-auto flex flex-col gap-4 lg:gap-6">
                     {/* Date Divider */}
                     <div className="flex justify-center">
-                        <span className="text-[10px] font-bold text-[#A1A1AA] bg-white/[0.03] px-3 py-1 rounded-full border border-white/[0.05] uppercase tracking-wider">
+                        <span className="text-[10px] font-bold text-[var(--text-secondary)] bg-white/[0.03] px-3 py-1 rounded-full border border-[var(--border-subtle)] uppercase tracking-wider">
                             Today
                         </span>
                     </div>
@@ -132,26 +131,26 @@ export default function AIAdvisorPage() {
                         >
                             {/* Avatar */}
                             {msg.role === "assistant" ? (
-                                <div className="w-8 h-8 rounded-lg bg-[var(--obsidian-uplift)] border border-white/[0.1] flex items-center justify-center shrink-0">
-                                    <Sparkles size={14} className="text-purple-400" />
+                                <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-lg bg-[var(--obsidian-uplift)] border border-[var(--border-medium)] flex items-center justify-center shrink-0">
+                                    <Sparkles size={12} className="lg:w-[14px] lg:h-[14px] text-purple-400" />
                                 </div>
                             ) : (
-                                <div className="w-8 h-8 rounded-lg bg-white/[0.05] border border-white/[0.1] flex items-center justify-center shrink-0">
-                                    <User size={14} className="text-white" />
+                                <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-lg bg-white/[0.05] border border-[var(--border-medium)] flex items-center justify-center shrink-0">
+                                    <User size={12} className="lg:w-[14px] lg:h-[14px] text-white" />
                                 </div>
                             )}
 
                             {/* Message Content */}
-                            <div className={`flex flex-col gap-1 max-w-[80%] ${msg.role === "user" ? "items-end" : ""}`}>
+                            <div className={`flex flex-col gap-1 max-w-[85%] lg:max-w-[80%] ${msg.role === "user" ? "items-end" : ""}`}>
                                 <div className={`flex items-baseline gap-2 ${msg.role === "user" ? "flex-row-reverse" : ""}`}>
-                                    <span className="text-xs font-bold text-white">
+                                    <span className="text-[10px] lg:text-xs font-bold text-white">
                                         {msg.role === "assistant" ? "Shieldie AI" : "You"}
                                     </span>
-                                    <span className="text-[10px] text-[#52525B]">{msg.time}</span>
+                                    <span className="text-[10px] text-[var(--text-tertiary)]">{msg.time}</span>
                                 </div>
-                                <div className={`text-sm leading-relaxed p-4 rounded-2xl shadow-sm ${msg.role === "user"
-                                    ? "bg-white/[0.05] border border-white/[0.05] text-white rounded-tr-none"
-                                    : "bg-[var(--obsidian-uplift)] border border-white/[0.05] text-[#D4D4D8] rounded-tl-none"
+                                <div className={`text-xs lg:text-sm leading-relaxed p-3 lg:p-4 rounded-2xl shadow-sm ${msg.role === "user"
+                                    ? "bg-white/[0.05] border border-[var(--border-subtle)] text-white rounded-tr-none"
+                                    : "bg-[var(--obsidian-uplift)] border border-[var(--border-subtle)] text-[#D4D4D8] rounded-tl-none"
                                     }`}>
                                     <p className="whitespace-pre-line">{msg.content}</p>
                                 </div>
@@ -161,7 +160,7 @@ export default function AIAdvisorPage() {
                                     <motion.div
                                         initial={{ opacity: 0, scale: 0.95 }}
                                         animate={{ opacity: 1, scale: 1 }}
-                                        className="mt-2 bg-[#0A0A0A] border border-white/[0.08] rounded-xl p-4 w-full md:w-80 hover:border-purple-500/30 transition-colors group"
+                                        className="mt-2 bg-[var(--obsidian-surface)] border border-[var(--border-medium)] rounded-xl p-3 lg:p-4 w-full md:w-80 hover:border-purple-500/30 transition-colors group"
                                     >
                                         <div className="flex items-center justify-between mb-4">
                                             <div className="flex items-center gap-2">
@@ -179,7 +178,7 @@ export default function AIAdvisorPage() {
                                                         <span className="text-[#A1A1AA]">{item.label}</span>
                                                         <span className="text-white font-medium">{item.value}</span>
                                                     </div>
-                                                    <div className="w-full bg-white/[0.05] h-1.5 rounded-full overflow-hidden">
+                                                    <div className="w-full bg-white/[0.05] h-1 lg:h-1.5 rounded-full overflow-hidden">
                                                         <motion.div
                                                             initial={{ width: 0 }}
                                                             animate={{ width: `${item.percent}%` }}
@@ -191,7 +190,7 @@ export default function AIAdvisorPage() {
                                                 </div>
                                             ))}
                                         </div>
-                                        <button className="mt-4 w-full py-2 bg-white/[0.03] text-xs text-white font-medium rounded-lg hover:bg-white/[0.08] transition-colors border border-white/[0.05] flex items-center justify-center gap-1 group-hover:text-purple-400">
+                                        <button className="mt-3 lg:mt-4 w-full py-2 bg-white/[0.03] text-[10px] lg:text-xs text-white font-medium rounded-lg hover:bg-white/[0.08] transition-colors border border-[var(--border-subtle)] flex items-center justify-center gap-1 group-hover:text-purple-400">
                                             Full Report
                                             <ArrowUpRight size={12} />
                                         </button>
@@ -206,15 +205,15 @@ export default function AIAdvisorPage() {
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            className="flex items-start gap-4"
+                            className="flex items-start gap-3 lg:gap-4"
                         >
-                            <div className="w-8 h-8 rounded-lg bg-[var(--obsidian-uplift)] border border-white/[0.1] flex items-center justify-center">
-                                <Sparkles size={14} className="text-purple-400" />
+                            <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-lg bg-[var(--obsidian-uplift)] border border-[var(--border-medium)] flex items-center justify-center">
+                                <Sparkles size={12} className="lg:w-[14px] lg:h-[14px] text-purple-400" />
                             </div>
-                            <div className="flex items-center gap-1 mt-3">
-                                <div className="w-1.5 h-1.5 bg-[#52525B] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                                <div className="w-1.5 h-1.5 bg-[#52525B] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                                <div className="w-1.5 h-1.5 bg-[#52525B] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                            <div className="flex items-center gap-1 mt-2 lg:mt-3">
+                                <div className="w-1.5 h-1.5 bg-[var(--text-tertiary)] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                                <div className="w-1.5 h-1.5 bg-[var(--text-tertiary)] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                                <div className="w-1.5 h-1.5 bg-[var(--text-tertiary)] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                             </div>
                         </motion.div>
                     )}
@@ -224,15 +223,15 @@ export default function AIAdvisorPage() {
             </div>
 
             {/* Input Area */}
-            <div className="p-4 md:p-6 bg-[var(--obsidian-base)] border-t border-white/[0.05] relative z-20">
-                <div className="max-w-3xl mx-auto space-y-4">
+            <div className="p-3 sm:p-4 lg:p-6 bg-[var(--obsidian-base)] border-t border-[var(--border-subtle)] relative z-20">
+                <div className="max-w-3xl mx-auto space-y-3 lg:space-y-4">
                     {/* Quick Prompts */}
                     <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
                         {quickPrompts.map((prompt, i) => (
                             <button
                                 key={i}
                                 onClick={() => handleSend(prompt)}
-                                className="whitespace-nowrap px-4 py-2 rounded-full bg-white/[0.02] border border-white/[0.08] text-xs font-medium text-[#A1A1AA] hover:text-white hover:border-purple-500/50 hover:bg-purple-500/5 transition-all"
+                                className="whitespace-nowrap px-3 lg:px-4 py-1.5 lg:py-2 rounded-full bg-white/[0.02] border border-[var(--border-medium)] text-[10px] lg:text-xs font-medium text-[var(--text-secondary)] hover:text-white hover:border-purple-500/50 hover:bg-purple-500/5 transition-all"
                             >
                                 {prompt}
                             </button>
@@ -242,15 +241,15 @@ export default function AIAdvisorPage() {
                     {/* Input Box */}
                     <div className="relative group">
                         <div className="absolute -inset-[1px] bg-gradient-to-r from-purple-500/20 to-indigo-500/20 rounded-xl opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition duration-500 blur-sm" />
-                        <div className="relative flex items-end gap-2 bg-[#0A0A0A] border border-white/[0.08] rounded-xl p-2 group-focus-within:border-purple-500/30 transition-all">
+                        <div className="relative flex items-end gap-2 bg-[var(--obsidian-surface)] border border-[var(--border-medium)] rounded-xl p-2 group-focus-within:border-purple-500/30 transition-all">
                             <textarea
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), handleSend())}
                                 placeholder="Ask Shieldie about your strategy..."
                                 rows={1}
-                                className="w-full bg-transparent border-none text-white placeholder-[#52525B] focus:ring-0 resize-none py-3 px-3 text-sm outline-none leading-relaxed"
-                                style={{ minHeight: '44px', maxHeight: '128px' }}
+                                className="w-full bg-transparent border-none text-white placeholder-[var(--text-tertiary)] focus:ring-0 resize-none py-2 lg:py-3 px-2 lg:px-3 text-sm outline-none leading-relaxed"
+                                style={{ minHeight: '40px', maxHeight: '128px' }}
                             />
                             <button
                                 onClick={() => handleSend()}
@@ -262,8 +261,8 @@ export default function AIAdvisorPage() {
                         </div>
                     </div>
 
-                    <p className="text-center text-[10px] text-[#52525B] font-mono">
-                        AI can make mistakes. Dyer.
+                    <p className="text-center text-[10px] text-[var(--text-tertiary)] font-mono">
+                        AI can make mistakes. DYOR.
                     </p>
                 </div>
             </div>

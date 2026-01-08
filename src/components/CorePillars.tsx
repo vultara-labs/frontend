@@ -22,7 +22,7 @@ export default function CorePillars() {
                 </div>
 
                 {/* Bento Grid layout */}
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-4 lg:gap-6 xl:gap-8">
 
                     {/* Card 1: Compliance (Interactive Code) */}
                     <motion.div
@@ -42,12 +42,12 @@ export default function CorePillars() {
                                     <p className="max-w-md text-[var(--text-secondary)] text-base leading-relaxed">Automated tax logic embedded directly into payment streams. Never miss a withholding.</p>
                                 </div>
                                 <div className="hidden sm:flex flex-col gap-3 text-[10px] font-bold tracking-widest uppercase">
-                                    <div className={`flex items-center gap-2 transition-colors duration-300 ${activeLine === 1 ? 'text-[var(--volt)]' : 'text-zinc-700'}`}>
-                                        <div className={`w-2 h-2 rounded-full ${activeLine === 1 ? 'bg-[var(--volt)] shadow-[0_0_10px_#CCFF00]' : 'bg-zinc-800'}`} />
+                                    <div className={`flex items-center gap-2 transition-colors duration-300 ${activeLine === 1 ? 'text-[var(--volt)]' : 'text-[var(--text-tertiary)]'}`}>
+                                        <div className={`w-2 h-2 rounded-full ${activeLine === 1 ? 'bg-[var(--volt)] shadow-[0_0_10px_#CCFF00]' : 'bg-[var(--obsidian-elevated)]'}`} />
                                         CALCULATED
                                     </div>
-                                    <div className={`flex items-center gap-2 transition-colors duration-300 ${activeLine === 2 ? 'text-blue-400' : 'text-zinc-700'}`}>
-                                        <div className={`w-2 h-2 rounded-full ${activeLine === 2 ? 'bg-blue-400 shadow-[0_0_10px_#60A5FA]' : 'bg-zinc-800'}`} />
+                                    <div className={`flex items-center gap-2 transition-colors duration-300 ${activeLine === 2 ? 'text-[var(--info)]' : 'text-[var(--text-tertiary)]'}`}>
+                                        <div className={`w-2 h-2 rounded-full ${activeLine === 2 ? 'bg-[var(--info)] shadow-[0_0_10px_#3B82F6]' : 'bg-[var(--obsidian-elevated)]'}`} />
                                         DISTRIBUTED
                                     </div>
                                 </div>
@@ -59,16 +59,16 @@ export default function CorePillars() {
                             <div className="absolute -inset-1 bg-gradient-to-r from-[var(--volt)]/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-700 blur-2xl rounded-lg" />
                             <div className="relative w-full overflow-hidden rounded-xl bg-[#080808] border border-white/10 font-mono text-xs p-6 shadow-2xl">
                                 <div className="w-full space-y-2 text-[var(--volt)]/80">
-                                    <div className="flex justify-between border-b border-white/5 pb-4 mb-4">
+                                    <div className="flex justify-between border-b border-[var(--border-subtle)] pb-4 mb-4">
                                         <span className="text-[var(--text-tertiary)] font-bold uppercase tracking-widest text-[10px]">SmartContract.sol</span>
                                         <div className="flex gap-2">
-                                            <div className="w-2.5 h-2.5 rounded-full bg-zinc-800" />
-                                            <div className="w-2.5 h-2.5 rounded-full bg-zinc-800" />
+                                            <div className="w-2.5 h-2.5 rounded-full bg-[var(--obsidian-elevated)]" />
+                                            <div className="w-2.5 h-2.5 rounded-full bg-[var(--obsidian-elevated)]" />
                                         </div>
                                     </div>
 
                                     <div className="opacity-60 hover:opacity-100 transition-opacity">
-                                        <span className="text-purple-400">function</span> <span className="text-blue-400">executePayment</span>() <span className="text-zinc-600">{"{"}</span>
+                                        <span className="text-purple-400">function</span> <span className="text-[var(--info)]">executePayment</span>() <span className="text-[var(--text-tertiary)]">{"{"}</span>
                                     </div>
 
                                     <div
@@ -82,13 +82,13 @@ export default function CorePillars() {
                                     <div
                                         onMouseEnter={() => setActiveLine(2)}
                                         onMouseLeave={() => setActiveLine(null)}
-                                        className={`pl-4 py-1.5 border-l-2 transition-all duration-300 cursor-help rounded-r ${activeLine === 2 ? 'border-blue-400 bg-blue-400/10' : 'border-transparent hover:bg-white/5'}`}
+                                        className={`pl-4 py-1.5 border-l-2 transition-all duration-300 cursor-help rounded-r ${activeLine === 2 ? 'border-[var(--info)] bg-[var(--info)]/10' : 'border-transparent hover:bg-white/5'}`}
                                     >
                                         payable(taxAuthority).transfer(tax);
                                     </div>
 
-                                    <div className="pl-4 py-1.5 border-l-2 border-transparent text-green-400/40 italic">{"// Auto-distribution success"}</div>
-                                    <div className="text-zinc-600 opacity-60">{"}"}</div>
+                                    <div className="pl-4 py-1.5 border-l-2 border-transparent text-[var(--success)]/40 italic">{"// Auto-distribution success"}</div>
+                                    <div className="text-[var(--text-tertiary)] opacity-60">{"}"}</div>
                                 </div>
                             </div>
                         </div>
@@ -142,8 +142,8 @@ export default function CorePillars() {
 
                         <div className="mt-auto flex flex-1 items-center justify-center pb-8">
                             <div className="relative w-28 h-28 flex items-center justify-center group-hover:scale-110 transition-transform duration-700 ease-out">
-                                <div className="absolute w-24 h-24 rounded-full border border-dashed border-white/20 animate-[spin_20s_linear_infinite]" />
-                                <div className="absolute w-32 h-32 rounded-full border border-dashed border-white/10 animate-[spin_30s_linear_infinite_reverse]" />
+                                <div className="absolute w-24 h-24 rounded-full border border-dashed border-[var(--border-medium)] animate-[spin_20s_linear_infinite]" />
+                                <div className="absolute w-32 h-32 rounded-full border border-dashed border-[var(--border-subtle)] animate-[spin_30s_linear_infinite_reverse]" />
                                 <div className="absolute w-16 h-16 rounded-full border border-[var(--volt)]/20 bg-[var(--volt)]/5 backdrop-blur-sm flex items-center justify-center">
                                     <div className="w-2 h-2 rounded-full bg-[var(--volt)] shadow-[0_0_20px_#CCFF00] animate-pulse" />
                                 </div>
@@ -185,8 +185,8 @@ export default function CorePillars() {
                                 <Lock size={48} className="text-white/30 group-hover:text-white/60 transition-colors" />
                                 <div className="absolute top-4 right-4 w-2 h-2 bg-[var(--volt)] rounded-full animate-pulse shadow-[0_0_10px_#CCFF00]" />
                                 {/* Biometric Lines */}
-                                <div className="absolute inset-5 border border-white/5 rounded-3xl" />
-                                <div className="absolute inset-0 bg-grid-animate opacity-30 mask-image:radial-gradient(ellipse_at_center,black,transparent)" />
+                                <div className="absolute inset-5 border border-[var(--border-subtle)] rounded-3xl" />
+                                <div className="absolute inset-0 bg-grid-animate opacity-30" style={{ maskImage: 'radial-gradient(ellipse at center, black, transparent)' }} />
                             </div>
                         </div>
                     </motion.div>
