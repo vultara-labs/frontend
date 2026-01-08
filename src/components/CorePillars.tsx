@@ -8,11 +8,11 @@ export default function CorePillars() {
     const [activeLine, setActiveLine] = useState<number | null>(null);
 
     return (
-        <section id="features" className="py-32 px-6 relative z-10">
+        <section id="features" className="py-16 md:py-24 lg:py-32 px-4 sm:px-6 relative z-10">
             <div className="mx-auto max-w-[1280px]">
                 {/* Header */}
-                <div className="mb-24 max-w-3xl">
-                    <h2 className="mb-8 text-4xl font-black uppercase tracking-tighter text-white md:text-6xl lg:text-7xl leading-[0.85]">
+                <div className="mb-12 md:mb-16 lg:mb-24 max-w-3xl">
+                    <h2 className="mb-6 lg:mb-8 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black uppercase tracking-tighter text-white leading-[0.85]">
                         PROTOCOL <span className="text-[var(--volt)]">ARCHITECTURE</span>
                     </h2>
                     <p className="max-w-xl text-lg text-[var(--text-secondary)] leading-relaxed tracking-normal font-light">
