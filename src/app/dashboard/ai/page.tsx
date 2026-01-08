@@ -43,12 +43,8 @@ export default function AIAdvisorPage() {
     const [isTyping, setIsTyping] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    };
-
     useEffect(() => {
-        scrollToBottom();
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages, isTyping]);
 
     const getCurrentTime = () => {
@@ -154,8 +150,8 @@ export default function AIAdvisorPage() {
                                     <span className="text-[10px] text-[#52525B]">{msg.time}</span>
                                 </div>
                                 <div className={`text-sm leading-relaxed p-4 rounded-2xl shadow-sm ${msg.role === "user"
-                                        ? "bg-white/[0.05] border border-white/[0.05] text-white rounded-tr-none"
-                                        : "bg-[var(--obsidian-uplift)] border border-white/[0.05] text-[#D4D4D8] rounded-tl-none"
+                                    ? "bg-white/[0.05] border border-white/[0.05] text-white rounded-tr-none"
+                                    : "bg-[var(--obsidian-uplift)] border border-white/[0.05] text-[#D4D4D8] rounded-tl-none"
                                     }`}>
                                     <p className="whitespace-pre-line">{msg.content}</p>
                                 </div>
