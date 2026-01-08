@@ -140,10 +140,18 @@ export default function Hero() {
                         {/* Social Proof */}
                         <div className="pt-10 border-t border-white/5 flex flex-col sm:flex-row gap-6 sm:items-center">
                             <span className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest">Audited & Trusted By</span>
-                            <div className="flex gap-4 opacity-50 grayscale transition-all duration-500 hover:grayscale-0 hover:opacity-100">
-                                {['CERTIK', 'HACKEN', 'OPENZEP'].map((partner) => (
-                                    <div key={partner} className="h-8 px-4 bg-white/5 rounded flex items-center justify-center text-[10px] text-white font-black border border-white/5 uppercase tracking-widest">
-                                        {partner}
+                            <div className="flex gap-3 opacity-60 transition-all duration-500 hover:opacity-100">
+                                {[
+                                    { name: 'CERTIK', color: '#00D4AA' },
+                                    { name: 'HACKEN', color: '#4A90D9' },
+                                    { name: 'ZEPPELIN', color: '#8B5CF6' }
+                                ].map((partner) => (
+                                    <div key={partner.name} className="h-9 px-4 bg-white/[0.03] rounded-lg flex items-center justify-center gap-2 text-[10px] text-white/80 font-bold border border-white/[0.06] uppercase tracking-wider hover:border-white/20 hover:bg-white/[0.05] transition-all duration-300 group">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="opacity-60 group-hover:opacity-100 transition-opacity">
+                                            <path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z" stroke={partner.color} strokeWidth="2" fill="none" />
+                                            <path d="M9 12l2 2 4-4" stroke={partner.color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                        {partner.name}
                                     </div>
                                 ))}
                             </div>
@@ -201,29 +209,39 @@ export default function Hero() {
                                     </h2>
                                 </div>
 
-                                {/* Graph */}
+                                {/* Graph - Animated */}
                                 <div className="relative h-24 w-full mb-8">
                                     <svg className="w-full h-full overflow-visible" viewBox="0 0 300 100" preserveAspectRatio="none">
                                         <defs>
                                             <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
-                                                <stop offset="0%" stopColor="#CCFF00" stopOpacity="0.1" />
+                                                <stop offset="0%" stopColor="#CCFF00" stopOpacity="0.15" />
                                                 <stop offset="100%" stopColor="#CCFF00" stopOpacity="0" />
                                             </linearGradient>
                                         </defs>
-                                        <path d="M0,100 L0,70 Q30,65 60,75 T120,60 T180,45 T240,20 L300,5 L300,100 Z" fill="url(#chartGradient)" />
-                                        <path className="chart-line drop-shadow-[0_0_15px_rgba(204,255,0,0.4)]" d="M0,70 Q30,65 60,75 T120,60 T180,45 T240,20 L300,5" fill="none" stroke="#CCFF00" strokeLinecap="round" strokeWidth="3" />
-                                        <circle cx="300" cy="5" r="5" fill="#0A0A0A" stroke="#CCFF00" strokeWidth="3" className="drop-shadow-[0_0_10px_#CCFF00]" />
+                                        <path d="M0,100 L0,70 Q30,65 60,75 T120,60 T180,45 T240,20 L300,5 L300,100 Z" fill="url(#chartGradient)" className="animate-[fadeIn_1.5s_ease-out_0.5s_both]" />
+                                        <path
+                                            className="drop-shadow-[0_0_15px_rgba(204,255,0,0.4)]"
+                                            d="M0,70 Q30,65 60,75 T120,60 T180,45 T240,20 L300,5"
+                                            fill="none"
+                                            stroke="#CCFF00"
+                                            strokeLinecap="round"
+                                            strokeWidth="3"
+                                            strokeDasharray="500"
+                                            strokeDashoffset="500"
+                                            style={{ animation: 'drawLine 2s ease-out 0.3s forwards' }}
+                                        />
+                                        <circle cx="300" cy="5" r="5" fill="#0A0A0A" stroke="#CCFF00" strokeWidth="3" className="drop-shadow-[0_0_10px_#CCFF00] animate-[fadeIn_0.3s_ease-out_2s_both]" />
                                     </svg>
                                 </div>
 
                                 {/* Stats Grid */}
                                 <div className="grid grid-cols-2 gap-4">
-                                    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors hover:-translate-y-1 duration-300">
-                                        <p className="text-[9px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">APY</p>
+                                    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300 hover:scale-[1.02] cursor-default">
+                                        <p className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">APY</p>
                                         <p className="text-2xl font-bold text-[var(--volt)] tracking-tighter">4.5%</p>
                                     </div>
-                                    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors hover:-translate-y-1 duration-300">
-                                        <p className="text-[9px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">Next Payout</p>
+                                    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300 hover:scale-[1.02] cursor-default">
+                                        <p className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">Next Payout</p>
                                         <p className="text-2xl font-bold text-white tabular-nums tracking-tighter">4h 12m</p>
                                     </div>
                                 </div>
@@ -239,7 +257,7 @@ export default function Hero() {
                                                 </svg>
                                             </div>
                                             <div>
-                                                <p className="text-[9px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest">Total Yield Earned</p>
+                                                <p className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest">Total Yield Earned</p>
                                             </div>
                                         </div>
                                         <p className="text-[var(--volt)] font-bold tracking-tight text-lg">+$1,240.50</p>
