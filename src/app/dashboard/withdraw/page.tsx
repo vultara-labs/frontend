@@ -5,13 +5,13 @@ import Link from "next/link";
 import { useState } from "react";
 import {
     ArrowLeft,
-    Check,
-    Building2,
-    AlertTriangle,
-    Loader2,
-    ChevronRight,
-    ArrowDownToLine
-} from "lucide-react";
+    CheckCircle,
+    Bank,
+    Warning,
+    CircleNotch,
+    CaretRight,
+    ArrowCircleDown
+} from "@phosphor-icons/react";
 
 export default function WithdrawPage() {
     const [step, setStep] = useState(1);
@@ -40,7 +40,7 @@ export default function WithdrawPage() {
                 </Link>
                 <div className="flex items-center gap-3 mb-2">
                     <div className="p-2 rounded-lg bg-[var(--volt)]/10 text-[var(--volt)]">
-                        <ArrowDownToLine size={20} className="lg:w-6 lg:h-6" />
+                        <ArrowCircleDown size={20} weight="duotone" className="lg:w-6 lg:h-6" />
                     </div>
                     <h1 className="text-xl sm:text-2xl lg:text-3xl font-black uppercase tracking-tight text-white">
                         Withdraw to IDR
@@ -63,7 +63,7 @@ export default function WithdrawPage() {
                             ? "bg-[var(--volt)] text-black shadow-[0_0_15px_var(--volt-glow)]"
                             : "bg-white/[0.05] text-[var(--text-secondary)] border border-[var(--border-subtle)]"
                             }`}>
-                            {step > s.num ? <Check size={14} /> : s.num}
+                            {step > s.num ? <CheckCircle size={14} weight="fill" /> : s.num}
                         </div>
                         <span className={`text-xs sm:text-sm tracking-wide font-medium whitespace-nowrap ${step >= s.num ? "text-white" : "text-[var(--text-muted)]"}`}>
                             {s.label}
@@ -126,7 +126,7 @@ export default function WithdrawPage() {
                     <div className="p-4 rounded-xl border border-[var(--border-subtle)] flex items-center justify-between group cursor-pointer hover:bg-white/[0.02] transition-colors">
                         <div className="flex items-center gap-3 lg:gap-4">
                             <div className="w-10 h-10 rounded-lg bg-[var(--info)]/10 flex items-center justify-center text-[var(--info)]">
-                                <Building2 size={20} />
+                                <Bank size={20} weight="duotone" />
                             </div>
                             <div>
                                 <p className="text-sm font-bold text-white mb-0.5">Bank Central Asia (BCA)</p>
@@ -181,7 +181,7 @@ export default function WithdrawPage() {
                     </div>
 
                     <div className="p-3 lg:p-4 rounded-xl bg-[var(--warning)]/5 border border-[var(--warning)]/10 flex gap-3">
-                        <AlertTriangle size={18} className="text-[var(--warning)] shrink-0 mt-0.5" />
+                        <Warning size={18} weight="duotone" className="text-[var(--warning)] shrink-0 mt-0.5" />
                         <p className="text-xs text-[var(--warning)]/80 leading-relaxed">
                             Please verify the bank details carefully. Transactions on the blockchain cannot be reversed once confirmed.
                         </p>
@@ -201,7 +201,7 @@ export default function WithdrawPage() {
                         >
                             {isProcessing ? (
                                 <>
-                                    <Loader2 size={18} className="animate-spin" />
+                                    <CircleNotch size={18} className="animate-spin" />
                                     <span>Processing</span>
                                 </>
                             ) : (
@@ -221,7 +221,7 @@ export default function WithdrawPage() {
                 >
                     <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/20 flex items-center justify-center mx-auto mb-6 lg:mb-8 relative">
                         <div className="absolute inset-0 bg-[var(--success)]/10 blur-xl rounded-full" />
-                        <Check size={32} className="lg:w-10 lg:h-10 text-[var(--success)] relative z-10" />
+                        <CheckCircle size={32} weight="fill" className="lg:w-10 lg:h-10 text-[var(--success)] relative z-10" />
                     </div>
                     <h2 className="text-2xl lg:text-3xl font-black text-white mb-2 uppercase tracking-tight">Withdrawal Initiated</h2>
                     <p className="text-[var(--text-secondary)] mb-8 lg:mb-12">
@@ -233,7 +233,7 @@ export default function WithdrawPage() {
                         className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-[0_0_20px_rgba(204,255,0,0.15)]"
                     >
                         Back to Dashboard
-                        <ChevronRight size={18} />
+                        <CaretRight size={18} weight="bold" />
                     </Link>
                 </motion.div>
             )}

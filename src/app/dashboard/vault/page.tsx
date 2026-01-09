@@ -4,15 +4,15 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import {
     ArrowLeft,
-    ExternalLink,
-    Zap,
-    ChevronRight,
+    ArrowSquareOut,
+    Lightning,
+    CaretRight,
     Lock,
-    TrendingUp,
+    TrendUp,
     Info,
-    Shield,
-    Calendar
-} from "lucide-react";
+    ShieldCheck,
+    CalendarBlank
+} from "@phosphor-icons/react";
 
 export default function VaultPage() {
     return (
@@ -42,7 +42,7 @@ export default function VaultPage() {
                     className="flex items-center gap-2 px-4 py-2 rounded-lg border border-[var(--border-medium)] text-[var(--text-secondary)] hover:text-white hover:bg-white/[0.05] transition-all text-xs font-bold uppercase tracking-wider mt-4 sm:mt-0"
                 >
                     View Contract
-                    <ExternalLink size={14} />
+                    <ArrowSquareOut size={14} weight="bold" />
                 </a>
             </div>
 
@@ -58,9 +58,7 @@ export default function VaultPage() {
 
                     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6 lg:mb-8 relative z-10">
                         <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 lg:w-16 lg:h-16 rounded-xl lg:rounded-2xl bg-[var(--info)]/10 flex items-center justify-center border border-[var(--info)]/20">
-                                <img src="/logos/usdc.svg" alt="USDC" className="w-6 h-6 lg:w-8 lg:h-8" />
-                            </div>
+                            <img src="/logos/usdc.svg" alt="USDC" className="w-12 h-12 lg:w-14 lg:h-14" />
                             <div>
                                 <h2 className="text-xl lg:text-2xl font-bold text-white mb-1">Cash-Secured Put</h2>
                                 <p className="text-sm text-[var(--text-secondary)]">Organic Yield Strategy</p>
@@ -89,12 +87,12 @@ export default function VaultPage() {
 
                     <div className="flex flex-col sm:flex-row gap-3 lg:gap-4">
                         <button className="flex-1 py-3 lg:py-4 rounded-xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm lg:text-base">
-                            <Zap size={18} />
+                            <Lightning size={18} weight="duotone" />
                             Deposit
                         </button>
                         <Link href="/dashboard/withdraw" className="flex-1 py-3 lg:py-4 rounded-xl border border-[var(--border-medium)] text-white font-bold uppercase tracking-widest hover:bg-white/[0.05] transition-all flex items-center justify-center gap-2 text-sm lg:text-base">
                             Withdraw
-                            <ChevronRight size={18} />
+                            <CaretRight size={18} weight="bold" />
                         </Link>
                     </div>
                 </motion.div>
@@ -147,12 +145,12 @@ export default function VaultPage() {
                             desc: "USDC deposit anda dikunci di smart contract sebagai kolateral (jaminan)."
                         },
                         {
-                            icon: TrendingUp,
+                            icon: TrendUp,
                             title: "2. Sell Options",
                             desc: "Vault otomatis menjual 'Put Options' mingguan ke market makers."
                         },
                         {
-                            icon: Calendar,
+                            icon: CalendarBlank,
                             title: "3. Earn Premium",
                             desc: "Anda menerima premium opsi sebagai yield. Jika harga ETH stabil/naik, anda untung."
                         },
@@ -178,7 +176,7 @@ export default function VaultPage() {
                 transition={{ delay: 0.3 }}
                 className="rounded-xl lg:rounded-2xl bg-[var(--warning)]/[0.05] border border-[var(--warning)]/[0.1] p-4 lg:p-6 flex gap-3 lg:gap-4"
             >
-                <Shield size={20} className="text-[var(--warning)] shrink-0 mt-0.5 lg:mt-1" />
+                <ShieldCheck size={20} weight="duotone" className="text-[var(--warning)] shrink-0 mt-0.5 lg:mt-1" />
                 <div>
                     <h4 className="font-bold text-[var(--warning)] mb-1 text-xs lg:text-sm uppercase tracking-wide">Risk Disclosure</h4>
                     <p className="text-xs lg:text-sm text-[var(--warning)]/60 leading-relaxed max-w-3xl">

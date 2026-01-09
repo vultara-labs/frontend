@@ -5,21 +5,21 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-    LayoutDashboard,
-    Wallet,
-    Zap,
-    ArrowDownToLine,
-    Settings,
-    Menu,
+    SquaresFour,
+    Vault,
+    Lightning,
+    ArrowCircleDown,
+    List,
     X,
-    ChevronRight
-} from "lucide-react";
+    CaretRight,
+    GearSix
+} from "@phosphor-icons/react";
 
 const navItems = [
-    { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { label: "Vault Strategy", href: "/dashboard/vault", icon: Wallet },
-    { label: "Withdraw IDR", href: "/dashboard/withdraw", icon: ArrowDownToLine },
-    { label: "Shieldie AI", href: "/dashboard/ai", icon: Zap },
+    { label: "Dashboard", href: "/dashboard", icon: SquaresFour },
+    { label: "Vault Strategy", href: "/dashboard/vault", icon: Vault },
+    { label: "Withdraw IDR", href: "/dashboard/withdraw", icon: ArrowCircleDown },
+    { label: "Shieldie AI", href: "/dashboard/ai", icon: Lightning },
 ];
 
 export default function DashboardLayout({
@@ -70,7 +70,7 @@ export default function DashboardLayout({
                         aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
                         aria-expanded={mobileMenuOpen}
                     >
-                        {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                        {mobileMenuOpen ? <X size={20} weight="bold" /> : <List size={20} weight="bold" />}
                     </button>
                 </div>
             </header>
@@ -132,7 +132,7 @@ export default function DashboardLayout({
                                             />
                                             <span className="text-base font-medium tracking-wide">{item.label}</span>
                                             {isActive && (
-                                                <ChevronRight size={16} className="ml-auto text-[var(--volt)]" />
+                                                <CaretRight size={16} weight="bold" className="ml-auto text-[var(--volt)]" />
                                             )}
                                         </Link>
                                     );
@@ -154,7 +154,7 @@ export default function DashboardLayout({
                                                 Base Network
                                             </p>
                                         </div>
-                                        <Settings size={18} className="text-[var(--text-tertiary)] group-hover:text-white transition-colors" />
+                                        <GearSix size={18} weight="duotone" className="text-[var(--text-tertiary)] group-hover:text-white transition-colors" />
                                     </div>
                                 </div>
                             </div>
@@ -200,7 +200,7 @@ export default function DashboardLayout({
                                 />
                                 <span className="text-sm font-medium tracking-wide">{item.label}</span>
                                 {isActive && (
-                                    <ChevronRight size={14} className="ml-auto text-[var(--volt)]" />
+                                    <CaretRight size={14} weight="bold" className="ml-auto text-[var(--volt)]" />
                                 )}
                             </Link>
                         );
@@ -222,7 +222,7 @@ export default function DashboardLayout({
                                     Base Network
                                 </p>
                             </div>
-                            <Settings size={16} className="text-[var(--text-tertiary)] group-hover:text-white transition-colors" />
+                            <GearSix size={16} weight="duotone" className="text-[var(--text-tertiary)] group-hover:text-white transition-colors" />
                         </div>
                     </div>
                 </div>

@@ -3,14 +3,14 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import {
-    Send,
-    Bot,
+    PaperPlaneTilt,
+    Robot,
     User,
-    Sparkles,
-    Shield,
-    TrendingUp,
-    ArrowUpRight
-} from "lucide-react";
+    Sparkle,
+    ShieldCheck,
+    TrendUp,
+    ArrowCircleUpRight
+} from "@phosphor-icons/react";
 
 type Message = {
     role: "user" | "assistant";
@@ -96,7 +96,7 @@ export default function AIAdvisorPage() {
                 <div className="flex items-center gap-3">
                     <div className="flex items-center gap-2 lg:gap-3">
                         <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-purple-500/20">
-                            <Bot size={16} className="lg:w-[18px] lg:h-[18px] text-white" />
+                            <Robot size={16} weight="duotone" className="lg:w-[18px] lg:h-[18px] text-white" />
                         </div>
                         <div>
                             <h2 className="text-xs lg:text-sm font-bold text-white flex items-center gap-2">
@@ -132,7 +132,7 @@ export default function AIAdvisorPage() {
                             {/* Avatar */}
                             {msg.role === "assistant" ? (
                                 <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-lg bg-[var(--obsidian-uplift)] border border-[var(--border-medium)] flex items-center justify-center shrink-0">
-                                    <Sparkles size={12} className="lg:w-[14px] lg:h-[14px] text-purple-400" />
+                                    <Sparkle size={12} weight="duotone" className="lg:w-[14px] lg:h-[14px] text-purple-400" />
                                 </div>
                             ) : (
                                 <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-lg bg-white/[0.05] border border-[var(--border-medium)] flex items-center justify-center shrink-0">
@@ -164,7 +164,7 @@ export default function AIAdvisorPage() {
                                     >
                                         <div className="flex items-center justify-between mb-4">
                                             <div className="flex items-center gap-2">
-                                                <Shield size={16} className="text-purple-400" />
+                                                <ShieldCheck size={16} weight="duotone" className="text-purple-400" />
                                                 <span className="text-sm font-bold text-white">{msg.card.title}</span>
                                             </div>
                                             <span className="bg-purple-500/10 text-purple-400 text-xs px-2 py-0.5 rounded font-bold border border-purple-500/20">
@@ -190,9 +190,13 @@ export default function AIAdvisorPage() {
                                                 </div>
                                             ))}
                                         </div>
-                                        <button className="mt-3 lg:mt-4 w-full py-2 bg-white/[0.03] text-[10px] lg:text-xs text-white font-medium rounded-lg hover:bg-white/[0.08] transition-colors border border-[var(--border-subtle)] flex items-center justify-center gap-1 group-hover:text-purple-400">
+                                        <button
+                                            className="mt-3 lg:mt-4 w-full py-2 bg-white/[0.02] text-[10px] lg:text-xs text-[var(--text-tertiary)] font-medium rounded-lg border border-[var(--border-subtle)] flex items-center justify-center gap-2 cursor-not-allowed opacity-60"
+                                            title="Coming Soon"
+                                            disabled
+                                        >
                                             Full Report
-                                            <ArrowUpRight size={12} />
+                                            <span className="text-[8px] bg-white/10 px-1.5 py-0.5 rounded">SOON</span>
                                         </button>
                                     </motion.div>
                                 )}
@@ -208,7 +212,7 @@ export default function AIAdvisorPage() {
                             className="flex items-start gap-3 lg:gap-4"
                         >
                             <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-lg bg-[var(--obsidian-uplift)] border border-[var(--border-medium)] flex items-center justify-center">
-                                <Sparkles size={12} className="lg:w-[14px] lg:h-[14px] text-purple-400" />
+                                <Sparkle size={12} weight="duotone" className="lg:w-[14px] lg:h-[14px] text-purple-400" />
                             </div>
                             <div className="flex items-center gap-1 mt-2 lg:mt-3">
                                 <div className="w-1.5 h-1.5 bg-[var(--text-tertiary)] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
@@ -256,7 +260,7 @@ export default function AIAdvisorPage() {
                                 disabled={!input.trim() || isTyping}
                                 className="p-2.5 bg-white text-black rounded-lg hover:bg-[#E4E4E7] transition-all shrink-0 disabled:opacity-50 disabled:cursor-not-allowed mb-0.5"
                             >
-                                <ArrowUpRight size={18} />
+                                <ArrowCircleUpRight size={18} weight="bold" />
                             </button>
                         </div>
                     </div>

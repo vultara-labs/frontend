@@ -4,16 +4,15 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import {
-    TrendingUp,
-    ArrowUpRight,
-    ArrowDownRight,
+    TrendUp,
+    ArrowCircleUp,
+    ArrowCircleDown,
     Wallet,
-    Zap,
-    ChevronRight,
+    Lightning,
+    CaretRight,
     Clock,
-    Inbox,
-    PlusCircle,
-} from "lucide-react";
+    Tray,
+} from "@phosphor-icons/react";
 import { EmptyState, ActivitySkeleton, CardSkeleton } from "@/components/ui";
 
 // Mock data - in production this would come from API/blockchain
@@ -24,9 +23,9 @@ const MOCK_USER_DATA = {
     nextPayout: "4h 12m",
     payoutProgress: 85,
     activities: [
-        { type: "Yield", amount: "+$12.50", label: "Weekly Premium", date: "2h ago", icon: TrendingUp, color: "text-[var(--success)]" },
-        { type: "Deposit", amount: "+$5,000.00", label: "Salary Deposit", date: "3d ago", icon: ArrowUpRight, color: "text-[var(--volt)]" },
-        { type: "Withdraw", amount: "-$1,500.00", label: "IDR Cashout (BCA)", date: "1w ago", icon: ArrowDownRight, color: "text-white" },
+        { type: "Yield", amount: "+$12.50", label: "Weekly Premium", date: "2h ago", icon: TrendUp, color: "text-[var(--success)]" },
+        { type: "Deposit", amount: "+$5,000.00", label: "Salary Deposit", date: "3d ago", icon: ArrowCircleUp, color: "text-[var(--volt)]" },
+        { type: "Withdraw", amount: "-$1,500.00", label: "IDR Cashout (BCA)", date: "1w ago", icon: ArrowCircleDown, color: "text-white" },
     ]
 };
 
@@ -109,7 +108,7 @@ export default function DashboardPage() {
                                     ${Math.floor(userData!.balance).toLocaleString()}<span className="text-white/40">.{(userData!.balance % 1).toFixed(2).slice(2)}</span>
                                 </h2>
                                 <div className="inline-flex items-center gap-3 px-3 py-1.5 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/10">
-                                    <TrendingUp size={14} className="text-[var(--success)]" />
+                                    <TrendUp size={14} weight="duotone" className="text-[var(--success)]" />
                                     <span className="text-sm font-bold text-[var(--success)]">+${userData!.monthlyEarnings.toLocaleString()}</span>
                                     <span className="text-xs font-medium text-[var(--success)]/60 uppercase tracking-wide">
                                         This Month
@@ -149,7 +148,7 @@ export default function DashboardPage() {
                             <span className="text-[10px] lg:text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
                                 Current APY
                             </span>
-                            <Zap size={16} className="text-[var(--volt)]" />
+                            <Lightning size={16} weight="duotone" className="text-[var(--volt)]" />
                         </div>
                         <p className="text-2xl lg:text-4xl font-medium tracking-tighter text-[var(--volt)]">
                             {userData?.apy || 4.5}%
@@ -170,7 +169,7 @@ export default function DashboardPage() {
                             <span className="text-[10px] lg:text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
                                 Next Payout
                             </span>
-                            <Clock size={16} className="text-[var(--text-tertiary)]" />
+                            <Clock size={16} weight="duotone" className="text-[var(--text-tertiary)]" />
                         </div>
                         <p className="text-2xl lg:text-4xl font-medium tracking-tighter text-white">
                             {userData?.nextPayout || "—"}
@@ -188,9 +187,9 @@ export default function DashboardPage() {
             {/* Quick Actions */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6">
                 {[
-                    { title: "Deposit Funds", desc: "Add USDC to start earning", icon: ArrowUpRight, href: "#", color: "text-[var(--volt)]" },
-                    { title: "Withdraw IDR", desc: "Instant transfer to Bank/E-wallet", icon: ArrowDownRight, href: "/dashboard/withdraw", color: "text-[var(--info)]" },
-                    { title: "Shieldie AI", desc: "Analyze risks & strategies", icon: Zap, href: "/dashboard/ai", color: "text-purple-400" },
+                    { title: "Deposit Funds", desc: "Add USDC to start earning", icon: ArrowCircleUp, href: "#", color: "text-[var(--volt)]" },
+                    { title: "Withdraw IDR", desc: "Instant transfer to Bank/E-wallet", icon: ArrowCircleDown, href: "/dashboard/withdraw", color: "text-[var(--info)]" },
+                    { title: "Shieldie AI", desc: "Analyze risks & strategies", icon: Lightning, href: "/dashboard/ai", color: "text-purple-400" },
                 ].map((action, i) => (
                     <Link key={i} href={action.href}>
                         <motion.div
@@ -202,7 +201,7 @@ export default function DashboardPage() {
                                     <action.icon size={20} className="lg:w-6 lg:h-6" />
                                 </div>
                                 <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-full border border-[var(--border-subtle)] flex items-center justify-center text-[var(--text-tertiary)] group-hover:text-white group-hover:border-[var(--border-bright)] transition-all">
-                                    <ChevronRight size={14} className="lg:w-4 lg:h-4" />
+                                    <CaretRight size={14} weight="bold" className="lg:w-4 lg:h-4" />
                                 </div>
                             </div>
                             <h3 className="text-base lg:text-lg font-bold text-white mb-1 group-hover:text-[var(--volt)] transition-colors">
@@ -258,7 +257,7 @@ export default function DashboardPage() {
                     <EmptyState
                         title="No activity yet"
                         description="Your transaction history will appear here once you start using Vultara."
-                        icon={<Inbox size={28} className="text-[var(--text-tertiary)]" />}
+                        icon={<Tray size={28} weight="duotone" className="text-[var(--text-tertiary)]" />}
                     />
                 )}
             </div>
