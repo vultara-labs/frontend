@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
 import {
     ArrowLeft,
     CheckCircle,
@@ -30,6 +31,9 @@ export default function DepositPage() {
         setTimeout(() => {
             setIsProcessing(false);
             setStep(3);
+            toast.success("Deposit successful!", {
+                description: `$${parseFloat(amount).toLocaleString()} USDC is now earning 4.5% APY`,
+            });
         }, 2000);
     };
 

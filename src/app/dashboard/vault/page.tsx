@@ -72,8 +72,8 @@ export default function VaultPage() {
 
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-6 lg:mb-8">
                         {[
-                            { label: "Your Deposit", value: "$124,592.50", sub: "USDC" },
-                            { label: "Total Earned", value: "+$1,240.50", sub: "USDC", highlight: true },
+                            { label: "Your Deposit", value: "$2,450.00", sub: "USDC" },
+                            { label: "Total Earned", value: "+$9.18", sub: "USDC", highlight: true },
                             { label: "TVL", value: "$2.4M", sub: "USDC" },
                             { label: "Next Round", value: "Fri, 12PM", sub: "UTC" },
                         ].map((stat, i) => (

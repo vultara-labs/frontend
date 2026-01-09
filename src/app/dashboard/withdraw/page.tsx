@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
 import {
     ArrowLeft,
     CheckCircle,
@@ -18,7 +19,7 @@ export default function WithdrawPage() {
     const [amount, setAmount] = useState("");
     const [isProcessing, setIsProcessing] = useState(false);
 
-    const maxBalance = 124592.50;
+    const maxBalance = 2450.00;
     const convenienceFee = 0.5;
     const estimatedIDR = parseFloat(amount || "0") * 15850;
 
@@ -27,6 +28,9 @@ export default function WithdrawPage() {
         setTimeout(() => {
             setIsProcessing(false);
             setStep(3);
+            toast.success("Withdrawal initiated!", {
+                description: `Rp ${estimatedIDR.toLocaleString('id-ID')} is being processed to your bank`,
+            });
         }, 2000);
     };
 

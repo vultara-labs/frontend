@@ -17,15 +17,15 @@ import { EmptyState, ActivitySkeleton, CardSkeleton } from "@/components/ui";
 
 // Mock data - in production this would come from API/blockchain
 const MOCK_USER_DATA = {
-    balance: 124592.50,
-    monthlyEarnings: 1240.50,
+    balance: 2450.00,
+    monthlyEarnings: 9.18,
     apy: 4.5,
     nextPayout: "4h 12m",
     payoutProgress: 85,
     activities: [
-        { type: "Yield", amount: "+$12.50", label: "Weekly Premium", date: "2h ago", icon: TrendUp, color: "text-[var(--success)]" },
-        { type: "Deposit", amount: "+$5,000.00", label: "Salary Deposit", date: "3d ago", icon: ArrowCircleUp, color: "text-[var(--volt)]" },
-        { type: "Withdraw", amount: "-$1,500.00", label: "IDR Cashout (BCA)", date: "1w ago", icon: ArrowCircleDown, color: "text-white" },
+        { type: "Yield", amount: "+$2.30", label: "Weekly Premium", date: "2h ago", icon: TrendUp, color: "text-[var(--success)]" },
+        { type: "Deposit", amount: "+$500.00", label: "Salary Deposit", date: "3d ago", icon: ArrowCircleUp, color: "text-[var(--volt)]" },
+        { type: "Withdraw", amount: "-$200.00", label: "IDR Cashout (BCA)", date: "1w ago", icon: ArrowCircleDown, color: "text-white" },
     ]
 };
 
