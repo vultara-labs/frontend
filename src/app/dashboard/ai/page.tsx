@@ -67,10 +67,17 @@ export default function AIAdvisorPage() {
                 content: m.content
             }));
 
+            // Mock User Data (In prod, this comes from global state/wagmi)
+            const mockUserData = {
+                balance: 2450.00,
+                earnings: 128.50,
+                apy: 4.5
+            };
+
             const res = await fetch("/api/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: text, history }),
+                body: JSON.stringify({ message: text, history, userData: mockUserData }),
             });
 
             if (!res.ok) throw new Error("API request failed");

@@ -18,10 +18,16 @@ import {
     LockKey
 } from "@phosphor-icons/react";
 
+import { useSignMessage, useAccount } from "wagmi";
+
 export default function DepositPage() {
     const [step, setStep] = useState(1);
     const [amount, setAmount] = useState("");
     const [isProcessing, setIsProcessing] = useState(false);
+
+    // Wagmi Hooks for "Ghost Protocol" Realism
+    const { signMessageAsync } = useSignMessage();
+    const { isConnected } = useAccount();
 
     const walletBalance = 5420.00; // Mock USDC balance in wallet
     const currentAPY = 4.5;
@@ -31,21 +37,47 @@ export default function DepositPage() {
     const estimatedMonthlyYield = (numericAmount * (currentAPY / 100) / 12);
     const estimatedYearlyYield = (numericAmount * (currentAPY / 100));
 
-    const handleApprove = () => {
+    const handleApprove = async () => {
         setIsProcessing(true);
-        setTimeout(() => {
-            setIsProcessing(false);
+        try {
+            if (isConnected) {
+                // Trigger real wallet popup
+                toast.loading("Please sign the approval in your wallet...");
+                await signMessageAsync({
+                    message: `Approve Vultara Vault to spend ${numericAmount} USDC.\n\nNonce: ${Date.now()}`
+                });
+                toast.dismiss();
+            } else {
+                // Fallback simulation
+                await new Promise(r => setTimeout(r, 2000));
+            }
+
             setStep(3);
             toast.success("USDC Approved!", {
                 description: "You have authorized the Vault to spend your USDC.",
             });
-        }, 2000);
+        } catch (error) {
+            toast.error("Approval Rejected", { description: "User denied transaction signature." });
+        } finally {
+            setIsProcessing(false);
+        }
     };
 
-    const handleDeposit = () => {
+    const handleDeposit = async () => {
         setIsProcessing(true);
-        setTimeout(() => {
-            setIsProcessing(false);
+        try {
+            if (isConnected) {
+                // Trigger real wallet popup
+                toast.loading("Waiting for confirmation...");
+                await signMessageAsync({
+                    message: `Confirm Deposit to Vultara Vault: ${numericAmount} USDC\nStrategy: Thetanuts V4 CSP\n\nNonce: ${Date.now()}`
+                });
+                toast.dismiss();
+            } else {
+                // Fallback simulation
+                await new Promise(r => setTimeout(r, 2000));
+            }
+
             setStep(4);
             toast.success("Deposit successful!", {
                 description: `$${numericAmount.toLocaleString()} USDC is now earning 4.5% APY`,
@@ -57,7 +89,11 @@ export default function DepositPage() {
                 origin: { y: 0.6 },
                 colors: ['#CCFF00', '#10B981', '#FFFFFF']
             });
-        }, 2000);
+        } catch (error) {
+            toast.error("Deposit Failed", { description: "Transaction signature rejected." });
+        } finally {
+            setIsProcessing(false);
+        }
     };
 
     return (

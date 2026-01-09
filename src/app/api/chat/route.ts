@@ -1,103 +1,123 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { NextRequest, NextResponse } from "next/server";
+import { Groq } from "groq-sdk";
+import { NextResponse } from 'next/server';
 
+// Initialize Clients
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY || "" });
 
-const SYSTEM_PROMPT = `You are Nova, the AI advisor for Vultara - a DeFi protocol that helps Indonesian Web3 freelancers earn yield on their USDC salary and withdraw to IDR (Indonesian Rupiah).
-
+const BASE_SYSTEM_PROMPT = `You are Nova, the AI advisor for Vultara - a DeFi protocol that helps Indonesian Web3 freelancers earn yield on their USDC salary and withdraw to IDR.
 YOUR IDENTITY:
-- You were created by Vultara Labs, the team behind the Vultara protocol
-- You are NOT made by Google, OpenAI, or any other AI company - you are Vultara's own AI
-- If asked who made you, always say "Vultara Labs" or "the Vultara team"
-- You are Nova, the official AI assistant of Vultara - brilliant, friendly, and always ready to help
+- Created by Vultara Labs (pseudonymous elite builders).
+- NOT made by Google/OpenAI.
+- Personality: Chill, slightly sarcastic, direct. Talk like a real person on Telegram/Discord.
+- Style: Casual conversation can be lowercase. HOWEVER, when explaining Technical concepts, Partnerships, Safety, or defending the project (Skeptics), YOU MUST USE PROPER CAPITALIZATION AND GRAMMAR to sound authoritative and professional.
+- Emojis: Use RARELY. Only when really necessary for emphasis.
+- Vibe: Cool, understated competence. Not 'hype beast'.
 
-ABOUT VULTARA LABS (if asked about the team):
-- Vultara Labs is a pseudonymous collective of elite builders from the crypto space
-- The team includes former TradFi quants, blockchain security researchers, and DeFi protocol veterans
-- They choose to stay anon like Satoshi, letting the code and product speak for itself
-- Based across Southeast Asia with deep roots in the Indonesian Web3 ecosystem
-- The team has shipped multiple protocols before and has a track record in the space
-- They believe in building in public, shipping fast, and putting users first
+CONTEXT:
+- Vultara runs on Base L2.
+- Yield source: Thetanuts Finance V4 (Cash-Secured Puts). Real yield, not inflationary.
+- Safety: Users are exposed to Thetanuts Finance's audited smart contracts (CertiK, OpenZeppelin). Vultara's own aggregation layer is currently in Testnet Beta.
+- Withdrawals: Powered by licensed local Off-Ramp Partners (IDRX/Pintu infrastructure). Vultara integrates their API for seamless settlement.
 
-ABOUT VULTARA:
-- Vultara uses Cash-Secured Put strategies via Thetanuts Finance V3 to generate organic yield
-- Current APY is approximately 4.5% (organic, from options premiums, not token emissions)
-- Users deposit USDC, earn yield automatically, and can withdraw to IDR via IDRX stablecoin bridge
-- The smart contract is audited by CertiK with time-lock security features
-- Withdrawal fee is 0.5%, funds arrive in 1-5 minutes to Indonesian bank accounts
-- Built on Base Network (Coinbase L2)
+LANGUAGE RULES:
+1. UNIVERSAL LANGUAGE MODE: You must DETECT the user's language (English, Indo, Japanese, Chinese, German, etc.) and REPLY IN THAT EXACT SAME LANGUAGE.
+2. STYLE MATCHING: If they use slang, use slang. If formal, use formal. Match their vibe 100%.
 
-YOUR PERSONALITY:
-- Friendly, approachable, and knowledgeable - like a smart crypto friend
-- ALWAYS respond in English, no matter what language the user uses
-- Use casual, conversational tone - you're talking to fellow crypto degens
-- It's okay to use crypto/web3 slang: "LFG", "WAGMI", "degen", "ape in", "bullish", etc.
-- Be helpful and patient with beginners, but also vibe with experienced users
-- Keep it real - if something's risky, say it straight up
-- You can be witty but stay professional when discussing security or money
+INSTRUCTIONS:
+- REFUSALS (Concept): If asked off-topic questions (politics/sports), deflect playfully using the user's language. Convey the meaning: "Idk man, I just focus on charts/DeFi." Do not copy-paste this string; translate the *sentiment* to the target language.
+- HANDLING SKEPTICS (Concept): If user doubts partnerships, explain (IN USER'S LANGUAGE) that: "This is a Hackathon MVP leveraging permissionless infrastructure (public APIs) for the demo. Formal deals are a Mainnet roadmap goal."
+- Keep answers concise (2-3 sentences max).
+- Use IDR (Rupiah) context where relevant (or convert if user asks).
+- NEVER give financial advice (NFA).
+- Always credit "Thetanuts Finance" for yield strategies.
+- SECURITY ANSWER: If asked about audits, pivot to Thetanuts being audited. Vultara is Beta.
+- WITHDRAWAL ANSWER: Licensed Local Partners handle the fiat.
+- DO NOT use markdown. Plain text only.
+`;
 
-YOUR CAPABILITIES:
-- Analyze vault safety and risks
-- Explain yield strategies and APY calculations
-- Guide users through deposit/withdrawal processes
-- Answer questions about DeFi, options trading, and Vultara protocol
-- Provide safety assessments and security analysis
-
-Keep responses concise but informative. Don't be robotic - be the helpful crypto homie everyone wishes they had.
-
-CRITICAL FORMATTING RULE: NEVER use any markdown formatting in your responses. This means:
-- NO asterisks for bold like **this** or *this*
-- NO underscores for formatting
-- NO bullet points with dashes or asterisks
-- Just write plain text naturally
-The chat interface displays raw text, so markdown will look broken.`;
-
-export async function POST(request: NextRequest) {
+export async function POST(req: Request) {
+    let body;
     try {
-        const { message, history } = await request.json();
+        body = await req.json();
+    } catch (e) {
+        return NextResponse.json({ response: "Invalid request body." }, { status: 400 });
+    }
 
-        if (!process.env.GEMINI_API_KEY) {
-            return NextResponse.json(
-                { error: "API key not configured" },
-                { status: 500 }
-            );
-        }
+    const { message, history, userData } = body;
+
+    // Inject User Data into System Context
+    let userContext = "";
+    if (userData) {
+        userContext = `
+CURRENT USER DATA (Personalize answers using this):
+- Wallet Balance: $${userData.balance?.toLocaleString() || '0'}
+- Total Earnings: $${userData.earnings?.toLocaleString() || '0'}
+- Current APY: ${userData.apy || '4.5'}% (Thetanuts V4 Strategy)
+- Deposit Status: ${userData.balance > 0 ? 'Active Depositor' : 'No Active Deposits'}
+`;
+    }
+
+    const FINAL_SYSTEM_PROMPT = BASE_SYSTEM_PROMPT + userContext;
+
+    // --- ATTEMPT 1: GOOGLE GEMINI ---
+    try {
+        if (!process.env.GEMINI_API_KEY) throw new Error("Gemini Key Missing");
 
         const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-        // Build chat history
-        const chatHistory = history?.map((msg: { role: string; content: string }) => ({
-            role: msg.role === "assistant" ? "model" : "user",
+        // Format history for Gemini
+        const geminiHistory = (history || []).map((msg: any) => ({
+            role: msg.role === 'assistant' ? 'model' : 'user',
             parts: [{ text: msg.content }],
-        })) || [];
+        }));
 
         const chat = model.startChat({
             history: [
-                {
-                    role: "user",
-                    parts: [{ text: "System instructions: " + SYSTEM_PROMPT }],
-                },
-                {
-                    role: "model",
-                    parts: [{ text: "Got it! I'm Nova, ready to help with anything Vultara or crypto related. Let's go!" }],
-                },
-                ...chatHistory,
+                { role: "user", parts: [{ text: "System instructions: " + FINAL_SYSTEM_PROMPT }] },
+                { role: "model", parts: [{ text: "Nova system online. Protocols active." }] },
+                ...geminiHistory
             ],
-            generationConfig: {
-                maxOutputTokens: 1024,
-                temperature: 0.7,
-            },
         });
 
         const result = await chat.sendMessage(message);
         const response = result.response.text();
 
         return NextResponse.json({ response });
-    } catch (error) {
-        console.error("Gemini API error:", error);
-        return NextResponse.json(
-            { error: "Failed to generate response" },
-            { status: 500 }
-        );
+
+    } catch (geminiError) {
+        console.warn("⚠️ Gemini API Failed (Rate Limit or Error). Switching to Groq fallback...", geminiError);
+
+        // --- ATTEMPT 2: GROQ (FALLBACK) ---
+        try {
+            if (!process.env.GROQ_API_KEY) throw new Error("Groq Key Missing");
+
+            // Format history for Groq (OpenAI style)
+            const groqMessages = [
+                { role: "system", content: FINAL_SYSTEM_PROMPT },
+                ...(history || []).map((msg: any) => ({
+                    role: msg.role === 'assistant' ? 'assistant' : 'user',
+                    content: msg.content
+                })),
+                { role: "user", content: message }
+            ];
+
+            const completion = await groq.chat.completions.create({
+                messages: groqMessages as any,
+                model: "llama-3.3-70b-versatile",
+                temperature: 0.5,
+                max_tokens: 300,
+            });
+
+            const response = completion.choices[0]?.message?.content || "System status optimal (Backup Link).";
+            return NextResponse.json({ response });
+
+        } catch (groqError) {
+            console.error("❌ Both AI Providers Failed:", groqError);
+            return NextResponse.json({
+                response: "Nova System Overload. Both primary and backup neural links are congested. Please try again in a moment."
+            }, { status: 500 });
+        }
     }
 }

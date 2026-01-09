@@ -36,18 +36,23 @@ const DEMO_LOADING_STATE = false;
 
 export default function DashboardPage() {
     const [isLoading, setIsLoading] = useState(DEMO_LOADING_STATE);
+    const [liveApy, setLiveApy] = useState(4.5);
     const [userData, setUserData] = useState<typeof MOCK_USER_DATA | null>(null);
 
-    // Simulate data loading
+    // Simulate data loading and live market fluctuations
     useEffect(() => {
+        // Randomize APY slightly to show "live" data perception
+        const dynamicRate = 4.2 + Math.random() * 0.6;
+        setLiveApy(dynamicRate);
+
         if (DEMO_LOADING_STATE) {
             const timer = setTimeout(() => {
                 setIsLoading(false);
-                setUserData(DEMO_EMPTY_STATE ? null : MOCK_USER_DATA);
+                setUserData(DEMO_EMPTY_STATE ? null : { ...MOCK_USER_DATA, apy: Number(dynamicRate.toFixed(2)) });
             }, 2000);
             return () => clearTimeout(timer);
         } else {
-            setUserData(DEMO_EMPTY_STATE ? null : MOCK_USER_DATA);
+            setUserData(DEMO_EMPTY_STATE ? null : { ...MOCK_USER_DATA, apy: Number(dynamicRate.toFixed(2)) });
         }
     }, []);
 
