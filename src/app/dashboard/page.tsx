@@ -189,7 +189,7 @@ export default function DashboardPage() {
                 {[
                     { title: "Deposit Funds", desc: "Add USDC to start earning", icon: ArrowCircleUp, href: "#", color: "text-[var(--volt)]" },
                     { title: "Withdraw IDR", desc: "Instant transfer to Bank/E-wallet", icon: ArrowCircleDown, href: "/dashboard/withdraw", color: "text-[var(--info)]" },
-                    { title: "Shieldie AI", desc: "Analyze risks & strategies", icon: Lightning, href: "/dashboard/ai", color: "text-purple-400" },
+                    { title: "Nova AI", desc: "Analyze risks & strategies", icon: Lightning, href: "/dashboard/ai", color: "text-amber-400" },
                 ].map((action, i) => (
                     <Link key={i} href={action.href}>
                         <motion.div

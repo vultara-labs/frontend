@@ -17,7 +17,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: "Vultara | Secure Your Income, Amplify Your Growth",
-  description: "The smart USDC vault for Indonesian Web3 freelancers. Earn organic yield with Thetanuts V3, powered by Shieldie AI and seamless IDRX off-ramp.",
+  description: "The smart USDC vault for Indonesian Web3 freelancers. Earn organic yield with Thetanuts V3, powered by Nova AI and seamless IDRX off-ramp.",
   keywords: ["Web3", "DeFi", "USDC", "Yield", "Indonesia", "Freelancer", "Crypto", "Base", "Stablecoin", "Payroll"],
   authors: [{ name: "Vultara Labs" }],
   creator: "Vultara Labs",

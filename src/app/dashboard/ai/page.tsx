@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import {
     PaperPlaneTilt,
-    Robot,
+    Alien,
     User,
     Sparkle,
     ShieldCheck,
@@ -32,7 +32,7 @@ const quickPrompts = [
 const initialMessages: Message[] = [
     {
         role: "assistant",
-        content: "Hello! I analyze DeFi protocols to help you optimize your crypto salary. Paste a contract address or ask me about a strategy.",
+        content: "Hey! I'm Nova, your DeFi advisor. Ask me anything about Vultara, yield strategies, or just chat about crypto. What's on your mind?",
         time: "Now"
     }
 ];
@@ -55,20 +55,42 @@ export default function AIAdvisorPage() {
         const text = messageText || input;
         if (!text.trim()) return;
 
-        setMessages(prev => [...prev, { role: "user", content: text, time: getCurrentTime() }]);
+        const userMessage: Message = { role: "user", content: text, time: getCurrentTime() };
+        setMessages(prev => [...prev, userMessage]);
         setInput("");
         setIsTyping(true);
 
-        setTimeout(() => {
-            let response: Message = {
+        try {
+            // Prepare history for API (exclude cards, just content)
+            const history = messages.map(m => ({
+                role: m.role,
+                content: m.content
+            }));
+
+            const res = await fetch("/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: text, history }),
+            });
+
+            if (!res.ok) throw new Error("API request failed");
+
+            const data = await res.json();
+
+            const assistantMessage: Message = {
                 role: "assistant",
-                content: "",
+                content: data.response || "I apologize, I couldn't process that request. Please try again.",
                 time: getCurrentTime()
             };
 
-            if (text.toLowerCase().includes("risk") || text.toLowerCase().includes("vault") || text.toLowerCase().includes("safe")) {
-                response.content = "Let's look at the breakdown. The Vultara Pool is currently audited by CertiK. The smart contract has a time-lock feature preventing immediate liquidity draining.\n\nRegarding your concern, since this is a stablecoin-only pool, impermanent loss is negligible.";
-                response.card = {
+            // Add safety card only if explicitly discussing vault risk/safety analysis
+            const lowerResponse = data.response?.toLowerCase() || "";
+            const lowerQuestion = text.toLowerCase();
+            const isRiskQuestion = lowerQuestion.includes("risk") || lowerQuestion.includes("safe") || lowerQuestion.includes("audit") || lowerQuestion.includes("aman");
+            const isRiskResponse = lowerResponse.includes("risk assessment") || lowerResponse.includes("safety score") || lowerResponse.includes("certik");
+
+            if (isRiskQuestion && isRiskResponse) {
+                assistantMessage.card = {
                     title: "Safety Score",
                     score: "8.5 / 10",
                     items: [
@@ -76,17 +98,19 @@ export default function AIAdvisorPage() {
                         { label: "Volatility", value: "Low", percent: 15, color: "#10B981" },
                     ]
                 };
-            } else if (text.toLowerCase().includes("yield") || text.toLowerCase().includes("farm")) {
-                response.content = "Yield farming di Vultara bekerja melalui strategi Cash-Secured Put di Thetanuts Finance V3.\n\nUSDC Anda digunakan sebagai collateral untuk menjual options, dan premium yang diterima menjadi yield Anda. APY saat ini 4.5% - ini organic yield dari market activity.";
-            } else if (text.toLowerCase().includes("withdraw") || text.toLowerCase().includes("idr")) {
-                response.content = "Untuk withdraw ke Rupiah:\n\n1. Pergi ke menu Withdraw\n2. Masukkan jumlah USDC\n3. Konfirmasi rekening bank\n4. Klik Confirm\n\nProses menggunakan IDRX bridge dengan fee 0.5%. Dana sampai dalam 1-5 menit!";
-            } else {
-                response.content = "I can help you with:\n\n• Vault safety analysis\n• Yield optimization strategies\n• Withdrawal guidance\n• Risk assessment\n\nAsk me anything about DeFi!";
             }
 
-            setMessages(prev => [...prev, response]);
+            setMessages(prev => [...prev, assistantMessage]);
+        } catch (error) {
+            console.error("Chat error:", error);
+            setMessages(prev => [...prev, {
+                role: "assistant",
+                content: "I'm having trouble connecting right now. Please try again in a moment.",
+                time: getCurrentTime()
+            }]);
+        } finally {
             setIsTyping(false);
-        }, 1500);
+        }
     };
 
     return (
@@ -95,13 +119,13 @@ export default function AIAdvisorPage() {
             <header className="h-14 lg:h-16 border-b border-[var(--border-subtle)] flex items-center justify-between px-4 lg:px-6 bg-[var(--obsidian-base)]/80 backdrop-blur-md shrink-0 absolute top-0 w-full z-20">
                 <div className="flex items-center gap-3">
                     <div className="flex items-center gap-2 lg:gap-3">
-                        <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-purple-500/20">
-                            <Robot size={16} weight="duotone" className="lg:w-[18px] lg:h-[18px] text-white" />
+                        <div className="w-8 h-8 lg:w-9 lg:h-9 flex items-center justify-center -ml-1">
+                            <Alien size={28} weight="duotone" className="text-amber-500 drop-shadow-[0_0_8px_rgba(245,158,11,0.3)]" />
                         </div>
                         <div>
                             <h2 className="text-xs lg:text-sm font-bold text-white flex items-center gap-2">
-                                Shieldie AI
-                                <span className="text-[9px] lg:text-[10px] px-1.5 py-0.5 rounded bg-purple-500/10 border border-purple-500/20 text-purple-400 font-medium">BETA</span>
+                                Nova
+                                <span className="text-[9px] lg:text-[10px] px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-amber-400 font-medium">BETA</span>
                             </h2>
                             <div className="flex items-center gap-1.5">
                                 <span className="w-1.5 h-1.5 rounded-full bg-[var(--success)] animate-pulse" />
@@ -131,8 +155,8 @@ export default function AIAdvisorPage() {
                         >
                             {/* Avatar */}
                             {msg.role === "assistant" ? (
-                                <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-lg bg-[var(--obsidian-uplift)] border border-[var(--border-medium)] flex items-center justify-center shrink-0">
-                                    <Sparkle size={12} weight="duotone" className="lg:w-[14px] lg:h-[14px] text-purple-400" />
+                                <div className="w-8 h-8 lg:w-9 lg:h-9 flex items-center justify-center shrink-0 -ml-1">
+                                    <Alien size={24} weight="duotone" className="lg:w-[28px] lg:h-[28px] text-amber-500 drop-shadow-[0_0_8px_rgba(245,158,11,0.3)]" />
                                 </div>
                             ) : (
                                 <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-lg bg-white/[0.05] border border-[var(--border-medium)] flex items-center justify-center shrink-0">
@@ -144,7 +168,7 @@ export default function AIAdvisorPage() {
                             <div className={`flex flex-col gap-1 max-w-[85%] lg:max-w-[80%] ${msg.role === "user" ? "items-end" : ""}`}>
                                 <div className={`flex items-baseline gap-2 ${msg.role === "user" ? "flex-row-reverse" : ""}`}>
                                     <span className="text-[10px] lg:text-xs font-bold text-white">
-                                        {msg.role === "assistant" ? "Shieldie AI" : "You"}
+                                        {msg.role === "assistant" ? "Nova" : "You"}
                                     </span>
                                     <span className="text-[10px] text-[var(--text-tertiary)]">{msg.time}</span>
                                 </div>
@@ -211,8 +235,8 @@ export default function AIAdvisorPage() {
                             animate={{ opacity: 1 }}
                             className="flex items-start gap-3 lg:gap-4"
                         >
-                            <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-lg bg-[var(--obsidian-uplift)] border border-[var(--border-medium)] flex items-center justify-center">
-                                <Sparkle size={12} weight="duotone" className="lg:w-[14px] lg:h-[14px] text-purple-400" />
+                            <div className="w-8 h-8 lg:w-9 lg:h-9 flex items-center justify-center -ml-1">
+                                <Alien size={24} weight="duotone" className="lg:w-[28px] lg:h-[28px] text-amber-500 drop-shadow-[0_0_8px_rgba(245,158,11,0.3)]" />
                             </div>
                             <div className="flex items-center gap-1 mt-2 lg:mt-3">
                                 <div className="w-1.5 h-1.5 bg-[var(--text-tertiary)] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
@@ -250,7 +274,7 @@ export default function AIAdvisorPage() {
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), handleSend())}
-                                placeholder="Ask Shieldie about your strategy..."
+                                placeholder="Ask Nova anything..."
                                 rows={1}
                                 className="w-full bg-transparent border-none text-white placeholder-[var(--text-tertiary)] focus:ring-0 resize-none py-2 lg:py-3 px-2 lg:px-3 text-sm outline-none leading-relaxed"
                                 style={{ minHeight: '40px', maxHeight: '128px' }}

@@ -19,7 +19,7 @@ const navItems = [
     { label: "Dashboard", href: "/dashboard", icon: SquaresFour },
     { label: "Vault Strategy", href: "/dashboard/vault", icon: Vault },
     { label: "Withdraw IDR", href: "/dashboard/withdraw", icon: ArrowCircleDown },
-    { label: "Shieldie AI", href: "/dashboard/ai", icon: Lightning },
+    { label: "Nova AI", href: "/dashboard/ai", icon: Lightning },
 ];
 
 export default function DashboardLayout({
