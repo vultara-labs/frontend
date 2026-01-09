@@ -14,6 +14,7 @@ import {
     Tray,
 } from "@phosphor-icons/react";
 import { EmptyState, ActivitySkeleton, CardSkeleton } from "@/components/ui";
+import { ProtocolStatus } from "@/components/dashboard/ProtocolStatus";
 
 // Mock data - in production this would come from API/blockchain
 const MOCK_USER_DATA = {
@@ -153,33 +154,24 @@ export default function DashboardPage() {
                         <p className="text-2xl lg:text-4xl font-medium tracking-tighter text-[var(--volt)]">
                             {userData?.apy || 4.5}%
                         </p>
-                        <p className="text-[10px] lg:text-xs text-[var(--text-secondary)] mt-2 leading-relaxed hidden lg:block">
-                            Organic yield from Thetanuts V3 options strategies.
-                        </p>
+                        <div className="mt-3 pt-3 border-t border-white/5">
+                            <p className="text-[10px] lg:text-xs text-[var(--text-secondary)] leading-relaxed">
+                                Powered by <a href="https://thetanuts.finance" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[var(--volt)] transition-colors font-bold border-b border-white/20 hover:border-[var(--volt)]">Thetanuts Finance</a>
+                            </p>
+                            <p className="text-[10px] text-[var(--text-tertiary)] mt-0.5">
+                                Basic Volatility Strategy (V4)
+                            </p>
+                        </div>
                     </motion.div>
 
-                    {/* Next Payout Card */}
+                    {/* Protocol Status Module (Gamification) */}
                     <motion.div
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.2 }}
-                        className="flex-1 p-4 lg:p-6 rounded-2xl lg:rounded-3xl bg-[var(--obsidian-base)] border border-[var(--border-medium)]"
+                        className="flex-1 p-4 lg:p-6 rounded-2xl lg:rounded-3xl bg-[var(--obsidian-base)] border border-[var(--border-medium)] flex flex-col justify-center"
                     >
-                        <div className="flex justify-between items-start mb-3 lg:mb-4">
-                            <span className="text-[10px] lg:text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
-                                Next Payout
-                            </span>
-                            <Clock size={16} weight="duotone" className="text-[var(--text-tertiary)]" />
-                        </div>
-                        <p className="text-2xl lg:text-4xl font-medium tracking-tighter text-white">
-                            {userData?.nextPayout || "—"}
-                        </p>
-                        <div className="w-full bg-white/[0.05] h-1 mt-3 lg:mt-4 rounded-full overflow-hidden">
-                            <div
-                                className="bg-[var(--volt)] h-full shadow-[0_0_10px_var(--volt)]"
-                                style={{ width: `${userData?.payoutProgress || 0}%` }}
-                            />
-                        </div>
+                        <ProtocolStatus balance={userData?.balance || 0} />
                     </motion.div>
                 </div>
             </div>
