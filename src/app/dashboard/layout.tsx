@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { formatUnits } from "viem";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
+import { useAccount, useConnect, useDisconnect, useBalance } from "wagmi";
+import { injected } from "wagmi/connectors";
 import {
     SquaresFour,
     Vault,
@@ -15,7 +18,8 @@ import {
     X,
     CaretRight,
     GearSix,
-    Wallet
+    Wallet,
+    SignOut
 } from "@phosphor-icons/react";
 
 const navItems = [
@@ -34,6 +38,12 @@ export default function DashboardLayout({
     const pathname = usePathname();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+    // Wagmi Hooks
+    const { address, isConnected } = useAccount();
+    const { connect, isPending: isConnecting } = useConnect();
+    const { disconnect } = useDisconnect();
+    const { data: balance } = useBalance({ address });
+
     // Close mobile menu on route change
     useEffect(() => {
         setMobileMenuOpen(false);
@@ -50,6 +60,24 @@ export default function DashboardLayout({
             document.body.style.overflow = 'unset';
         };
     }, [mobileMenuOpen]);
+
+    const handleConnect = () => {
+        connect({ connector: injected() }, {
+            onSuccess: () => {
+                toast.success("Wallet Connected", { description: "Welcome back to Vultara." });
+            },
+            onError: (err) => {
+                toast.error("Connection Failed", { description: err.message });
+            }
+        });
+    };
+
+    const handleDisconnect = () => {
+        disconnect();
+        toast.info("Wallet Disconnected");
+    };
+
+    const formatAddress = (addr: string) => `${addr.slice(0, 6)}...${addr.slice(-4)}`;
 
     return (
         <div className="min-h-screen bg-[var(--obsidian-base)] flex flex-col lg:flex-row font-sans selection:bg-[var(--volt)] selection:text-black">
@@ -145,13 +173,33 @@ export default function DashboardLayout({
 
                             {/* Mobile User Profile */}
                             <div className="p-4 border-t border-[var(--border-subtle)] bg-[var(--obsidian-surface)]">
-                                <button
-                                    onClick={() => toast.info("Wallet connection coming soon!", { description: "Smart contract is being deployed to Base Network." })}
-                                    className="w-full py-3.5 rounded-xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm shadow-[0_0_20px_rgba(204,255,0,0.15)]"
-                                >
-                                    <Wallet size={18} weight="duotone" />
-                                    Connect Wallet
-                                </button>
+                                {isConnected ? (
+                                    <div className="space-y-3">
+                                        <div className="flex items-center gap-3 p-3 rounded-lg bg-white/[0.03]">
+                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--volt)] to-[var(--success)]" />
+                                            <div>
+                                                <p className="text-sm font-bold text-white">{formatAddress(address || "")}</p>
+                                                {balance ? `${parseFloat(formatUnits(balance.value, balance.decimals)).toFixed(4)} ${balance.symbol}` : 'Loading...'}
+                                            </div>
+                                        </div>
+                                        <button
+                                            onClick={handleDisconnect}
+                                            className="w-full py-3 rounded-xl border border-[var(--border-subtle)] text-[var(--text-secondary)] font-bold uppercase tracking-widest hover:bg-white/[0.05] hover:text-white transition-all flex items-center justify-center gap-2 text-xs"
+                                        >
+                                            <SignOut size={16} weight="bold" />
+                                            Disconnect
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <button
+                                        onClick={handleConnect}
+                                        disabled={isConnecting}
+                                        className="w-full py-3.5 rounded-xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm shadow-[0_0_20px_rgba(204,255,0,0.15)] disabled:opacity-70"
+                                    >
+                                        <Wallet size={18} weight="duotone" />
+                                        {isConnecting ? "Connecting..." : "Connect Wallet"}
+                                    </button>
+                                )}
                             </div>
                         </motion.div>
                     </>
@@ -204,13 +252,33 @@ export default function DashboardLayout({
 
                 {/* Desktop Connect Wallet */}
                 <div className="p-4 border-t border-[var(--border-subtle)] bg-[var(--obsidian-surface)]">
-                    <button
-                        onClick={() => toast.info("Wallet connection coming soon!", { description: "Smart contract is being deployed to Base Network." })}
-                        className="w-full py-3 rounded-xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm shadow-[0_0_20px_rgba(204,255,0,0.15)]"
-                    >
-                        <Wallet size={16} weight="duotone" />
-                        Connect Wallet
-                    </button>
+                    {isConnected ? (
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-[var(--border-subtle)]">
+                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--volt)] to-[var(--success)] shadow-[0_0_10px_rgba(16,185,129,0.2)]" />
+                                <div className="min-w-0">
+                                    <p className="text-sm font-bold text-white truncate">{formatAddress(address || "")}</p>
+                                    <p className="text-[10px] text-[var(--text-tertiary)] uppercase tracking-wide">Connected</p>
+                                </div>
+                            </div>
+                            <button
+                                onClick={handleDisconnect}
+                                className="w-full py-2.5 rounded-lg border border-[var(--border-subtle)] text-[var(--text-secondary)] font-bold uppercase tracking-widest hover:bg-white/[0.05] hover:text-white hover:border-[var(--border-medium)] transition-all flex items-center justify-center gap-2 text-xs"
+                            >
+                                <SignOut size={14} weight="bold" />
+                                Disconnect
+                            </button>
+                        </div>
+                    ) : (
+                        <button
+                            onClick={handleConnect}
+                            disabled={isConnecting}
+                            className="w-full py-3 rounded-xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm shadow-[0_0_20px_rgba(204,255,0,0.15)] disabled:opacity-70"
+                        >
+                            <Wallet size={16} weight="duotone" />
+                            {isConnecting ? "Connecting..." : "Connect Wallet"}
+                        </button>
+                    )}
                 </div>
             </aside>
 

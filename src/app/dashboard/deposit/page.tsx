@@ -14,7 +14,8 @@ import {
     CaretRight,
     ArrowCircleUp,
     ShieldCheck,
-    TrendUp
+    TrendUp,
+    LockKey
 } from "@phosphor-icons/react";
 
 export default function DepositPage() {
@@ -24,16 +25,30 @@ export default function DepositPage() {
 
     const walletBalance = 5420.00; // Mock USDC balance in wallet
     const currentAPY = 4.5;
-    const estimatedMonthlyYield = (parseFloat(amount || "0") * (currentAPY / 100) / 12);
-    const estimatedYearlyYield = (parseFloat(amount || "0") * (currentAPY / 100));
+
+    // Safer calculation for display (avoid NaN)
+    const numericAmount = amount ? parseFloat(amount) : 0;
+    const estimatedMonthlyYield = (numericAmount * (currentAPY / 100) / 12);
+    const estimatedYearlyYield = (numericAmount * (currentAPY / 100));
+
+    const handleApprove = () => {
+        setIsProcessing(true);
+        setTimeout(() => {
+            setIsProcessing(false);
+            setStep(3);
+            toast.success("USDC Approved!", {
+                description: "You have authorized the Vault to spend your USDC.",
+            });
+        }, 2000);
+    };
 
     const handleDeposit = () => {
         setIsProcessing(true);
         setTimeout(() => {
             setIsProcessing(false);
-            setStep(3);
+            setStep(4);
             toast.success("Deposit successful!", {
-                description: `$${parseFloat(amount).toLocaleString()} USDC is now earning 4.5% APY`,
+                description: `$${numericAmount.toLocaleString()} USDC is now earning 4.5% APY`,
             });
             // Celebration confetti!
             confetti({
@@ -70,8 +85,9 @@ export default function DepositPage() {
             <div className="flex items-center gap-2 sm:gap-4 mb-8 lg:mb-12 ml-1 overflow-x-auto">
                 {[
                     { num: 1, label: "Amount" },
-                    { num: 2, label: "Confirm" },
-                    { num: 3, label: "Success" }
+                    { num: 2, label: "Approve" },
+                    { num: 3, label: "Confirm" },
+                    { num: 4, label: "Success" }
                 ].map((s, i) => (
                     <div key={s.num} className="flex items-center gap-2 sm:gap-3">
                         <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 shrink-0 ${step >= s.num
@@ -83,7 +99,7 @@ export default function DepositPage() {
                         <span className={`text-xs sm:text-sm tracking-wide font-medium whitespace-nowrap ${step >= s.num ? "text-white" : "text-[var(--text-muted)]"}`}>
                             {s.label}
                         </span>
-                        {i < 2 && <div className={`w-6 sm:w-8 h-px transition-colors duration-300 ${step > s.num ? "bg-[var(--volt)]" : "bg-[var(--border-subtle)]"}`} />}
+                        {i < 3 && <div className={`w-6 sm:w-8 h-px transition-colors duration-300 ${step > s.num ? "bg-[var(--volt)]" : "bg-[var(--border-subtle)]"}`} />}
                     </div>
                 ))}
             </div>
@@ -166,8 +182,58 @@ export default function DepositPage() {
                 </motion.div>
             )}
 
-            {/* Step 2: Confirm */}
+            {/* Step 2: Approve */}
             {step === 2 && (
+                <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="space-y-6"
+                >
+                    <div className="text-center py-8">
+                        <div className="w-20 h-20 mx-auto bg-[var(--volt)]/10 rounded-full flex items-center justify-center mb-6 border border-[var(--volt)]/20 relative">
+                            <div className="absolute inset-0 bg-[var(--volt)]/10 blur-xl rounded-full" />
+                            <LockKey size={32} weight="duotone" className="text-[var(--volt)] relative z-10" />
+                        </div>
+                        <h3 className="text-xl font-black text-white uppercase tracking-tight mb-2">
+                            Approve USDC
+                        </h3>
+                        <p className="text-[var(--text-secondary)] text-sm max-w-sm mx-auto leading-relaxed">
+                            Before depositing, you must authorize the Vault contract to spend your USDC. This is a one-time permission for this amount.
+                        </p>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-white/[0.02] border border-[var(--border-subtle)] flex justify-between items-center">
+                        <span className="text-sm text-[var(--text-secondary)]">Amount to Approve</span>
+                        <span className="font-mono text-white text-lg font-bold">${numericAmount.toLocaleString()} USDC</span>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-3 lg:gap-4 mt-8">
+                        <button
+                            onClick={() => setStep(1)}
+                            className="flex-1 py-3 lg:py-4 rounded-xl border border-[var(--border-medium)] text-white font-bold uppercase tracking-widest hover:bg-white/[0.05] transition-all text-sm lg:text-base order-2 sm:order-1"
+                        >
+                            Back
+                        </button>
+                        <button
+                            onClick={handleApprove}
+                            disabled={isProcessing}
+                            className="flex-1 py-3 lg:py-4 rounded-xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-70 flex items-center justify-center gap-2 text-sm lg:text-base order-1 sm:order-2 shadow-[0_0_20px_rgba(204,255,0,0.15)]"
+                        >
+                            {isProcessing ? (
+                                <>
+                                    <CircleNotch size={18} className="animate-spin" />
+                                    <span>Approving...</span>
+                                </>
+                            ) : (
+                                "Approve"
+                            )}
+                        </button>
+                    </div>
+                </motion.div>
+            )}
+
+            {/* Step 3: Confirm Deposit */}
+            {step === 3 && (
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -181,7 +247,7 @@ export default function DepositPage() {
                         <div className="space-y-3 lg:space-y-4">
                             <div className="flex justify-between py-2 lg:py-3 border-b border-[var(--border-subtle)]">
                                 <span className="text-xs lg:text-sm text-[var(--text-secondary)]">Deposit Amount</span>
-                                <span className="text-white font-mono text-sm lg:text-base">${parseFloat(amount).toLocaleString()} USDC</span>
+                                <span className="text-white font-mono text-sm lg:text-base">${numericAmount.toLocaleString()} USDC</span>
                             </div>
                             <div className="flex justify-between py-2 lg:py-3 border-b border-[var(--border-subtle)]">
                                 <span className="text-xs lg:text-sm text-[var(--text-secondary)]">Strategy</span>
@@ -215,7 +281,7 @@ export default function DepositPage() {
 
                     <div className="flex flex-col sm:flex-row gap-3 lg:gap-4">
                         <button
-                            onClick={() => setStep(1)}
+                            onClick={() => setStep(2)}
                             className="flex-1 py-3 lg:py-4 rounded-xl border border-[var(--border-medium)] text-white font-bold uppercase tracking-widest hover:bg-white/[0.05] transition-all text-sm lg:text-base order-2 sm:order-1"
                         >
                             Back
@@ -228,7 +294,7 @@ export default function DepositPage() {
                             {isProcessing ? (
                                 <>
                                     <CircleNotch size={18} className="animate-spin" />
-                                    <span>Processing</span>
+                                    <span>Confirming...</span>
                                 </>
                             ) : (
                                 "Confirm Deposit"
@@ -238,8 +304,8 @@ export default function DepositPage() {
                 </motion.div>
             )}
 
-            {/* Step 3: Success */}
-            {step === 3 && (
+            {/* Step 4: Success */}
+            {step === 4 && (
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -251,7 +317,7 @@ export default function DepositPage() {
                     </div>
                     <h2 className="text-2xl lg:text-3xl font-black text-white mb-2 uppercase tracking-tight">Deposit Successful!</h2>
                     <p className="text-[var(--text-secondary)] mb-2">
-                        ${parseFloat(amount).toLocaleString()} USDC is now earning yield.
+                        ${numericAmount.toLocaleString()} USDC is now earning yield.
                     </p>
                     <p className="text-[var(--volt)] text-lg font-mono font-bold mb-8 lg:mb-12">
                         +${estimatedMonthlyYield.toFixed(2)}/month
