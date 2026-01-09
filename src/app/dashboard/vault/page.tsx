@@ -86,10 +86,10 @@ export default function VaultPage() {
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-3 lg:gap-4">
-                        <button className="flex-1 py-3 lg:py-4 rounded-xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm lg:text-base">
+                        <Link href="/dashboard/deposit" className="flex-1 py-3 lg:py-4 rounded-xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm lg:text-base">
                             <Lightning size={18} weight="duotone" />
                             Deposit
-                        </button>
+                        </Link>
                         <Link href="/dashboard/withdraw" className="flex-1 py-3 lg:py-4 rounded-xl border border-[var(--border-medium)] text-white font-bold uppercase tracking-widest hover:bg-white/[0.05] transition-all flex items-center justify-center gap-2 text-sm lg:text-base">
                             Withdraw
                             <CaretRight size={18} weight="bold" />

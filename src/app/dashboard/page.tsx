@@ -187,7 +187,7 @@ export default function DashboardPage() {
             {/* Quick Actions */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6">
                 {[
-                    { title: "Deposit Funds", desc: "Add USDC to start earning", icon: ArrowCircleUp, href: "#", color: "text-[var(--volt)]" },
+                    { title: "Deposit Funds", desc: "Add USDC to start earning", icon: ArrowCircleUp, href: "/dashboard/deposit", color: "text-[var(--volt)]" },
                     { title: "Withdraw IDR", desc: "Instant transfer to Bank/E-wallet", icon: ArrowCircleDown, href: "/dashboard/withdraw", color: "text-[var(--info)]" },
                     { title: "Nova AI", desc: "Analyze risks & strategies", icon: Lightning, href: "/dashboard/ai", color: "text-amber-400" },
                 ].map((action, i) => (
