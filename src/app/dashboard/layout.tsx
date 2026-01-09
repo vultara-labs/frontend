@@ -9,14 +9,17 @@ import {
     Vault,
     Lightning,
     ArrowCircleDown,
+    ArrowCircleUp,
     List,
     X,
     CaretRight,
-    GearSix
+    GearSix,
+    Wallet
 } from "@phosphor-icons/react";
 
 const navItems = [
     { label: "Dashboard", href: "/dashboard", icon: SquaresFour },
+    { label: "Deposit USDC", href: "/dashboard/deposit", icon: ArrowCircleUp },
     { label: "Vault Strategy", href: "/dashboard/vault", icon: Vault },
     { label: "Withdraw IDR", href: "/dashboard/withdraw", icon: ArrowCircleDown },
     { label: "Nova AI", href: "/dashboard/ai", icon: Lightning },
@@ -141,22 +144,10 @@ export default function DashboardLayout({
 
                             {/* Mobile User Profile */}
                             <div className="p-4 border-t border-[var(--border-subtle)] bg-[var(--obsidian-surface)]">
-                                <div className="p-3 rounded-xl bg-white/[0.02] border border-[var(--border-subtle)] hover:border-[var(--border-medium)] transition-colors group cursor-pointer">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[var(--volt)] to-[var(--success)] flex items-center justify-center text-black font-bold text-xs shadow-lg shadow-[var(--volt)]/20">
-                                            0x
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <p className="text-white text-sm font-bold truncate group-hover:text-[var(--volt)] transition-colors">
-                                                0x1a2...3c4d
-                                            </p>
-                                            <p className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wider font-medium">
-                                                Base Network
-                                            </p>
-                                        </div>
-                                        <GearSix size={18} weight="duotone" className="text-[var(--text-tertiary)] group-hover:text-white transition-colors" />
-                                    </div>
-                                </div>
+                                <button className="w-full py-3.5 rounded-xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm shadow-[0_0_20px_rgba(204,255,0,0.15)]">
+                                    <Wallet size={18} weight="duotone" />
+                                    Connect Wallet
+                                </button>
                             </div>
                         </motion.div>
                     </>
@@ -207,24 +198,12 @@ export default function DashboardLayout({
                     })}
                 </nav>
 
-                {/* Desktop User Profile Section */}
+                {/* Desktop Connect Wallet */}
                 <div className="p-4 border-t border-[var(--border-subtle)] bg-[var(--obsidian-surface)]">
-                    <div className="p-3 rounded-xl bg-white/[0.02] border border-[var(--border-subtle)] hover:border-[var(--border-medium)] transition-colors group cursor-pointer">
-                        <div className="flex items-center gap-3">
-                            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[var(--volt)] to-[var(--success)] flex items-center justify-center text-black font-bold text-xs shadow-lg shadow-[var(--volt)]/20">
-                                0x
-                            </div>
-                            <div className="flex-1 min-w-0">
-                                <p className="text-white text-sm font-bold truncate group-hover:text-[var(--volt)] transition-colors">
-                                    0x1a2...3c4d
-                                </p>
-                                <p className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wider font-medium">
-                                    Base Network
-                                </p>
-                            </div>
-                            <GearSix size={16} weight="duotone" className="text-[var(--text-tertiary)] group-hover:text-white transition-colors" />
-                        </div>
-                    </div>
+                    <button className="w-full py-3 rounded-xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm shadow-[0_0_20px_rgba(204,255,0,0.15)]">
+                        <Wallet size={16} weight="duotone" />
+                        Connect Wallet
+                    </button>
                 </div>
             </aside>
 
