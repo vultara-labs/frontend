@@ -8,14 +8,14 @@ export default function CorePillars() {
     const [activeLine, setActiveLine] = useState<number | null>(null);
 
     return (
-        <section id="features" className="py-16 md:py-24 lg:py-32 px-4 sm:px-6 relative z-10">
+        <section id="features" className="py-12 md:py-24 lg:py-32 px-4 sm:px-6 relative z-10">
             <div className="mx-auto max-w-[1280px]">
                 {/* Header */}
                 <div className="mb-12 md:mb-16 lg:mb-24 max-w-3xl">
-                    <h2 className="mb-6 lg:mb-8 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black uppercase tracking-tighter text-white leading-[0.85]">
+                    <h2 className="mb-6 lg:mb-8 text-4xl sm:text-5xl lg:text-7xl font-black uppercase tracking-tighter text-white leading-[0.85]">
                         PROTOCOL <span className="text-[var(--volt)]">ARCHITECTURE</span>
                     </h2>
-                    <p className="max-w-xl text-lg text-[var(--text-secondary)] leading-relaxed tracking-normal font-light">
+                    <p className="max-w-xl text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed tracking-normal font-light">
                         Infrastructure built for the automated economy.
                         Precision-engineered modules working in perfect sync.
                     </p>
@@ -30,16 +30,16 @@ export default function CorePillars() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                        className="col-span-1 md:col-span-12 lg:col-span-6 min-h-[480px] card-solid rounded-[2rem] p-10 flex flex-col justify-between group"
+                        className="col-span-1 md:col-span-12 lg:col-span-6 min-h-[400px] lg:min-h-[480px] card-solid rounded-[1.5rem] lg:rounded-[2rem] p-6 sm:p-8 lg:p-10 flex flex-col justify-between group"
                     >
                         <div>
-                            <div className="mb-8 flex w-16 h-16 items-center justify-center rounded-2xl bg-white/5 text-[var(--volt)] border border-white/5 group-hover:bg-[var(--volt-glass)] group-hover:border-[var(--volt)]/20 transition-all duration-500">
-                                <Gavel size={32} />
+                            <div className="mb-6 lg:mb-8 flex w-12 h-12 lg:w-16 lg:h-16 items-center justify-center rounded-2xl bg-white/5 text-[var(--volt)] border border-white/5 group-hover:bg-[var(--volt-glass)] group-hover:border-[var(--volt)]/20 transition-all duration-500">
+                                <Gavel size={24} className="lg:w-8 lg:h-8" />
                             </div>
                             <div className="flex justify-between items-start">
                                 <div>
-                                    <h3 className="mb-4 text-3xl font-bold uppercase tracking-tight text-white">Automated Compliance</h3>
-                                    <p className="max-w-md text-[var(--text-secondary)] text-base leading-relaxed">Automated tax logic embedded directly into payment streams. Never miss a withholding.</p>
+                                    <h3 className="mb-3 lg:mb-4 text-2xl lg:text-3xl font-bold uppercase tracking-tight text-white">Automated Compliance</h3>
+                                    <p className="max-w-md text-[var(--text-secondary)] text-sm lg:text-base leading-relaxed">Automated tax logic embedded directly into payment streams. Never miss a withholding.</p>
                                 </div>
                                 <div className="hidden sm:flex flex-col gap-3 text-[10px] font-bold tracking-widest uppercase">
                                     <div className={`flex items-center gap-2 transition-colors duration-300 ${activeLine === 1 ? 'text-[var(--volt)]' : 'text-[var(--text-tertiary)]'}`}>
@@ -100,13 +100,13 @@ export default function CorePillars() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.1, duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                        className="col-span-1 md:col-span-6 lg:col-span-3 min-h-[480px] card-solid rounded-[2rem] p-8 flex flex-col group overflow-hidden"
+                        className="col-span-1 md:col-span-6 lg:col-span-3 min-h-[360px] lg:min-h-[480px] card-solid rounded-[1.5rem] lg:rounded-[2rem] p-6 lg:p-8 flex flex-col group overflow-hidden"
                     >
                         <div className="relative z-10">
-                            <div className="mb-8 flex w-12 h-12 items-center justify-center rounded-xl bg-white/5 text-[var(--volt)] border border-white/5 group-hover:bg-[var(--volt-glass)] group-hover:border-[var(--volt)]/20 transition-all duration-500">
-                                <Droplets size={24} />
+                            <div className="mb-6 lg:mb-8 flex w-10 h-10 lg:w-12 lg:h-12 items-center justify-center rounded-xl bg-white/5 text-[var(--volt)] border border-white/5 group-hover:bg-[var(--volt-glass)] group-hover:border-[var(--volt)]/20 transition-all duration-500">
+                                <Droplets size={20} className="lg:w-6 lg:h-6" />
                             </div>
-                            <h3 className="mb-4 text-2xl font-bold uppercase tracking-tight text-white">Instant Liquidity</h3>
+                            <h3 className="mb-3 lg:mb-4 text-xl lg:text-2xl font-bold uppercase tracking-tight text-white">Instant Liquidity</h3>
                             <p className="mb-6 text-sm text-[var(--text-secondary)] leading-relaxed">Pay by the second, settled instantly using optimized yield vaults.</p>
                         </div>
 
@@ -132,12 +132,12 @@ export default function CorePillars() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.2, duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                        className="col-span-1 md:col-span-6 lg:col-span-3 min-h-[480px] card-solid rounded-[2rem] p-8 flex flex-col group"
+                        className="col-span-1 md:col-span-6 lg:col-span-3 min-h-[360px] lg:min-h-[480px] card-solid rounded-[1.5rem] lg:rounded-[2rem] p-6 lg:p-8 flex flex-col group"
                     >
-                        <div className="mb-8 flex w-12 h-12 items-center justify-center rounded-xl bg-white/5 text-[var(--volt)] border border-white/5 group-hover:bg-[var(--volt-glass)] group-hover:border-[var(--volt)]/20 transition-all duration-500">
-                            <Network size={24} />
+                        <div className="mb-6 lg:mb-8 flex w-10 h-10 lg:w-12 lg:h-12 items-center justify-center rounded-xl bg-white/5 text-[var(--volt)] border border-white/5 group-hover:bg-[var(--volt-glass)] group-hover:border-[var(--volt)]/20 transition-all duration-500">
+                            <Network size={20} className="lg:w-6 lg:h-6" />
                         </div>
-                        <h3 className="mb-4 text-2xl font-bold uppercase tracking-tight text-white">Cross-Chain</h3>
+                        <h3 className="mb-3 lg:mb-4 text-xl lg:text-2xl font-bold uppercase tracking-tight text-white">Cross-Chain</h3>
                         <p className="mb-8 text-sm text-[var(--text-secondary)] leading-relaxed">Unified liquidity layer across Base, Ethereum, and Solana.</p>
 
                         <div className="mt-auto flex flex-1 items-center justify-center pb-8">
@@ -158,16 +158,16 @@ export default function CorePillars() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.3, duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                        className="col-span-1 md:col-span-12 min-h-[300px] card-solid rounded-[2rem] p-12 flex flex-col md:flex-row items-center gap-16 relative overflow-visible group"
+                        className="col-span-1 md:col-span-12 min-h-[300px] card-solid rounded-[1.5rem] lg:rounded-[2rem] p-6 sm:p-8 lg:p-12 flex flex-col md:flex-row items-center gap-8 lg:gap-16 relative overflow-visible group"
                     >
                         {/* Ambient Glow */}
                         <div className="absolute -right-20 -top-20 w-96 h-96 rounded-full bg-[var(--volt)]/5 blur-[100px] group-hover:bg-[var(--volt)]/10 transition-colors duration-1000" />
 
                         <div className="flex-1 relative z-10">
-                            <div className="mb-8 flex w-16 h-16 items-center justify-center rounded-2xl bg-white/5 text-[var(--volt)] border border-white/5 group-hover:bg-[var(--volt-glass)] group-hover:border-[var(--volt)]/20 transition-all duration-500">
-                                <Fingerprint size={32} />
+                            <div className="mb-6 lg:mb-8 flex w-12 h-12 lg:w-16 lg:h-16 items-center justify-center rounded-2xl bg-white/5 text-[var(--volt)] border border-white/5 group-hover:bg-[var(--volt-glass)] group-hover:border-[var(--volt)]/20 transition-all duration-500">
+                                <Fingerprint size={24} className="lg:w-8 lg:h-8" />
                             </div>
-                            <h3 className="mb-6 text-4xl font-bold uppercase tracking-tighter text-white">Identity Sovereignty</h3>
+                            <h3 className="mb-4 lg:mb-6 text-2xl lg:text-4xl font-bold uppercase tracking-tighter text-white">Identity Sovereignty</h3>
                             <p className="max-w-xl text-lg text-[var(--text-secondary)] leading-relaxed">
                                 Zero-Knowledge Proofs ensure salary data remains private. Your financial data is encrypted, owned by you, and never exposed to 3rd parties.
                             </p>

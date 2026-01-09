@@ -86,7 +86,7 @@ export default function Hero() {
     };
 
     return (
-        <section ref={targetRef} className="relative min-h-screen flex flex-col pt-32 pb-20 overflow-hidden">
+        <section ref={targetRef} className="relative min-h-screen flex flex-col pt-24 pb-16 lg:pt-32 lg:pb-20 overflow-hidden">
             {/* Background */}
             <div className="absolute inset-0 z-0 pointer-events-none bg-grid-animate opacity-50" />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--obsidian-base)]/80 to-[var(--obsidian-base)] z-0" />
@@ -96,17 +96,17 @@ export default function Hero() {
                 style={{ opacity, scale, y: yParallax }}
                 className="relative z-10 mx-auto max-w-[1280px] px-6 w-full flex-grow flex items-center"
             >
-                <div className="grid lg:grid-cols-12 gap-16 lg:gap-8 items-center w-full">
+                <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center w-full">
 
                     {/* Left Content */}
                     <motion.div
                         initial={{ opacity: 0, x: -30, filter: "blur(10px)" }}
                         animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
                         transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
-                        className="lg:col-span-7 flex flex-col gap-8 max-w-2xl"
+                        className="lg:col-span-7 flex flex-col gap-6 lg:gap-8 max-w-2xl mx-auto lg:mx-0 text-center lg:text-left"
                     >
                         {/* Status Badge */}
-                        <div className="inline-flex items-center gap-2 self-start rounded-full border border-[var(--warning)]/30 bg-[var(--warning)]/10 px-3 py-1.5 text-[10px] font-bold text-[var(--warning)] uppercase tracking-widest backdrop-blur-md">
+                        <div className="inline-flex items-center gap-2 self-center lg:self-start rounded-full border border-[var(--warning)]/30 bg-[var(--warning)]/10 px-3 py-1.5 text-[10px] font-bold text-[var(--warning)] uppercase tracking-widest backdrop-blur-md">
                             <span className="relative flex h-2 w-2">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--warning)] opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--warning)]"></span>
@@ -115,7 +115,7 @@ export default function Hero() {
                         </div>
 
                         {/* Headline */}
-                        <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] text-white">
+                        <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter leading-[0.9] text-white">
                             THE SALARY <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/90 to-white/50">
                                 ENGINE.
@@ -123,17 +123,17 @@ export default function Hero() {
                         </h1>
 
                         {/* Description */}
-                        <p className="text-xl text-[var(--text-secondary)] font-normal leading-relaxed max-w-lg">
+                        <p className="text-base sm:text-xl text-[var(--text-secondary)] font-normal leading-relaxed max-w-lg mx-auto lg:mx-0">
                             Streamline crypto payroll and earn generous yield on idle USDC. Automated financial infrastructure for the open economy.
                         </p>
 
-                        <div className="flex flex-wrap items-center gap-4 mt-4">
-                            <Link href="/dashboard" className="h-12 px-8 flex items-center gap-3 btn-primary group">
+                        <div className="flex flex-col sm:flex-row items-center gap-4 mt-4 w-full sm:w-auto">
+                            <Link href="/dashboard" className="h-12 px-8 flex items-center justify-center gap-3 btn-primary group w-full sm:w-auto">
                                 <span className="relative z-10">Start Earning</span>
                                 <ArrowRight size={18} className="relative z-10 group-hover:translate-x-1 transition-transform" />
                             </Link>
                             <button
-                                className="h-12 px-8 flex items-center gap-3 btn-secondary group"
+                                className="h-12 px-8 flex items-center justify-center gap-3 btn-secondary group w-full sm:w-auto"
                                 aria-label="Watch how it works video"
                                 onClick={() => setShowVideoModal(true)}
                             >
@@ -143,7 +143,7 @@ export default function Hero() {
                         </div>
 
                         {/* Social Proof */}
-                        <div className="pt-10 border-t border-white/5 flex flex-col sm:flex-row gap-6 sm:items-center">
+                        <div className="pt-10 border-t border-white/5 flex flex-col sm:flex-row gap-6 items-center justify-center lg:justify-start">
                             <span className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest">Audited & Trusted By</span>
                             <div className="flex gap-4 items-center">
                                 {/* CertiK */}
@@ -168,7 +168,7 @@ export default function Hero() {
                     <div
                         onMouseMove={handleMouseMove}
                         onMouseLeave={handleMouseLeave}
-                        className="lg:col-span-5 relative perspective-1000 w-full flex justify-center lg:justify-end py-10"
+                        className="lg:col-span-5 relative perspective-1000 w-full flex justify-center lg:justify-end py-10 lg:py-10 mt-6 lg:mt-0"
                     >
                         {/* Glow Behind */}
                         <motion.div

@@ -47,7 +47,7 @@ export default function UserJourney() {
                     </div>
 
                     {/* Mobile Vertical Line (Liquid Fill) */}
-                    <div className="lg:hidden absolute left-[47px] top-0 bottom-0 w-[2px] bg-[var(--border-subtle)] rounded-full overflow-hidden">
+                    <div className="lg:hidden absolute left-[39px] top-0 bottom-0 w-[2px] bg-[var(--border-subtle)] rounded-full overflow-hidden">
                         <motion.div
                             style={{ height: lineHeight }}
                             className="w-full bg-gradient-to-b from-[var(--volt)] via-white to-[var(--volt)] opacity-70 shadow-[0_0_20px_#CCFF00]"

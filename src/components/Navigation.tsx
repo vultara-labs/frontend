@@ -84,9 +84,9 @@ export default function Navigation() {
                                 {item.label}
                             </a>
                         ))}
-                        <button className="btn-primary w-full py-4 rounded-xl mt-4">
+                        <Link href="/dashboard" className="btn-primary w-full py-4 rounded-xl mt-4 flex items-center justify-center">
                             Launch App
-                        </button>
+                        </Link>
                     </div>
                 </motion.div>
             )}
