@@ -62,17 +62,17 @@ export default function DashboardPage() {
                         Dashboard
                     </h1>
                     <p className="text-[var(--text-secondary)] font-medium">
-                        {hasBalance ? "Welcome back. Your wealth is compounding." : "Welcome! Start your journey."}
+                        {hasBalance ? "Preview mode. Connect wallet to see your actual data." : "Welcome! Start your journey."}
                     </p>
                 </div>
                 <div className="flex items-center gap-4">
                     <div className={`px-4 py-2 rounded-full flex items-center gap-2 ${hasBalance
-                        ? "bg-[var(--success)]/10 border border-[var(--success)]/20"
+                        ? "bg-[var(--warning)]/10 border border-[var(--warning)]/20"
                         : "bg-white/[0.03] border border-[var(--border-subtle)]"
                         }`}>
-                        <span className={`w-2 h-2 rounded-full ${hasBalance ? "bg-[var(--success)] animate-pulse" : "bg-[var(--text-tertiary)]"}`} />
-                        <span className={`text-xs font-bold uppercase tracking-widest ${hasBalance ? "text-[var(--success)]" : "text-[var(--text-tertiary)]"}`}>
-                            {hasBalance ? "Vault Active" : "No Deposits"}
+                        <span className={`w-2 h-2 rounded-full ${hasBalance ? "bg-[var(--warning)] animate-pulse" : "bg-[var(--text-tertiary)]"}`} />
+                        <span className={`text-xs font-bold uppercase tracking-widest ${hasBalance ? "text-[var(--warning)]" : "text-[var(--text-tertiary)]"}`}>
+                            {hasBalance ? "Demo Mode" : "No Deposits"}
                         </span>
                     </div>
                 </div>

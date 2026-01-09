@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
 import {
     SquaresFour,
     Vault,
@@ -144,7 +145,10 @@ export default function DashboardLayout({
 
                             {/* Mobile User Profile */}
                             <div className="p-4 border-t border-[var(--border-subtle)] bg-[var(--obsidian-surface)]">
-                                <button className="w-full py-3.5 rounded-xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm shadow-[0_0_20px_rgba(204,255,0,0.15)]">
+                                <button
+                                    onClick={() => toast.info("Wallet connection coming soon!", { description: "Smart contract is being deployed to Base Network." })}
+                                    className="w-full py-3.5 rounded-xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm shadow-[0_0_20px_rgba(204,255,0,0.15)]"
+                                >
                                     <Wallet size={18} weight="duotone" />
                                     Connect Wallet
                                 </button>
@@ -200,7 +204,10 @@ export default function DashboardLayout({
 
                 {/* Desktop Connect Wallet */}
                 <div className="p-4 border-t border-[var(--border-subtle)] bg-[var(--obsidian-surface)]">
-                    <button className="w-full py-3 rounded-xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm shadow-[0_0_20px_rgba(204,255,0,0.15)]">
+                    <button
+                        onClick={() => toast.info("Wallet connection coming soon!", { description: "Smart contract is being deployed to Base Network." })}
+                        className="w-full py-3 rounded-xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm shadow-[0_0_20px_rgba(204,255,0,0.15)]"
+                    >
                         <Wallet size={16} weight="duotone" />
                         Connect Wallet
                     </button>
