@@ -130,7 +130,7 @@ export default function DashboardPage() {
                             icon={<Wallet size={28} className="text-[var(--volt)]" />}
                             action={{
                                 label: "Make First Deposit",
-                                onClick: () => console.log("Deposit clicked")
+                                onClick: () => window.location.href = '/dashboard/vault'
                             }}
                         />
                     </motion.div>

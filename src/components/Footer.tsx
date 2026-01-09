@@ -25,10 +25,10 @@ export default function Footer() {
                         </p>
                         {/* Social Links */}
                         <div className="flex gap-3">
-                            <a href="#" className="w-12 h-12 rounded-xl card-solid flex items-center justify-center text-[var(--text-secondary)] hover:text-white hover:border-[var(--border-bright)] transition-all" aria-label="Twitter">
+                            <button className="w-12 h-12 rounded-xl card-solid flex items-center justify-center text-[var(--text-tertiary)] cursor-not-allowed opacity-50" aria-label="Twitter - Coming Soon" title="Coming Soon">
                                 <Twitter className="w-5 h-5" />
-                            </a>
-                            <a href="#" className="w-12 h-12 rounded-xl card-solid flex items-center justify-center text-[var(--text-secondary)] hover:text-white hover:border-[var(--border-bright)] transition-all" aria-label="GitHub">
+                            </button>
+                            <a href="https://github.com/vultara-labs" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-xl card-solid flex items-center justify-center text-[var(--text-secondary)] hover:text-white hover:border-[var(--border-bright)] transition-all" aria-label="GitHub">
                                 <Github className="w-5 h-5" />
                             </a>
                         </div>
@@ -40,7 +40,7 @@ export default function Footer() {
                         <ul className="space-y-4">
                             <li><a href="#features" className="text-sm text-[var(--text-tertiary)] hover:text-[var(--volt)] transition-colors">Features</a></li>
                             <li><a href="#how-it-works" className="text-sm text-[var(--text-tertiary)] hover:text-[var(--volt)] transition-colors">How It Works</a></li>
-                            <li><a href="#" className="text-sm text-[var(--text-tertiary)] hover:text-[var(--volt)] transition-colors flex items-center gap-2">Documentation <ExternalLink size={12} /></a></li>
+                            <li><a href="#" className="text-sm text-[var(--text-tertiary)] hover:text-[var(--volt)] transition-colors flex items-center gap-2 cursor-not-allowed opacity-50">Documentation <span className="text-[8px] bg-white/10 px-1.5 py-0.5 rounded">SOON</span></a></li>
                         </ul>
                     </div>
 
@@ -48,9 +48,9 @@ export default function Footer() {
                     <div>
                         <h4 className="text-white font-bold mb-8 uppercase tracking-widest text-xs">Ecosystem</h4>
                         <ul className="space-y-4">
-                            <li><a href="https://base.org" className="text-sm text-[var(--text-tertiary)] hover:text-blue-400 transition-colors">Base Network</a></li>
-                            <li><a href="https://thetanuts.finance" className="text-sm text-[var(--text-tertiary)] hover:text-amber-400 transition-colors">Thetanuts Finance</a></li>
-                            <li><a href="https://idrx.co" className="text-sm text-[var(--text-tertiary)] hover:text-orange-400 transition-colors">IDRX Stablecoin</a></li>
+                            <li><a href="https://base.org" target="_blank" rel="noopener noreferrer" className="text-sm text-[var(--text-tertiary)] hover:text-blue-400 transition-colors flex items-center gap-2">Base Network <ExternalLink size={12} /></a></li>
+                            <li><a href="https://thetanuts.finance" target="_blank" rel="noopener noreferrer" className="text-sm text-[var(--text-tertiary)] hover:text-[#00D9B5] transition-colors flex items-center gap-2">Thetanuts Finance <ExternalLink size={12} /></a></li>
+                            <li><a href="https://idrx.co" target="_blank" rel="noopener noreferrer" className="text-sm text-[var(--text-tertiary)] hover:text-blue-400 transition-colors flex items-center gap-2">IDRX Stablecoin <ExternalLink size={12} /></a></li>
                         </ul>
                     </div>
                 </div>

@@ -44,9 +44,9 @@ export default function Navigation() {
 
                 {/* CTA Button */}
                 <div className="flex items-center gap-6">
-                    <a href="#" className="hidden sm:block text-xs font-bold uppercase tracking-widest text-white hover:text-[var(--volt)] transition-colors">
+                    <Link href="/dashboard" className="hidden sm:block text-xs font-bold uppercase tracking-widest text-white hover:text-[var(--volt)] transition-colors">
                         Log In
-                    </a>
+                    </Link>
                     <Link href="/dashboard" className="btn-primary px-6 py-2.5 text-xs font-bold tracking-widest">
                         Launch App
                     </Link>

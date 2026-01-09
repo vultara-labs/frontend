@@ -105,13 +105,13 @@ export default function Hero() {
                         transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
                         className="lg:col-span-7 flex flex-col gap-8 max-w-2xl"
                     >
-                        {/* Live Badge */}
-                        <div className="inline-flex items-center gap-2 self-start rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[10px] font-bold text-white/80 uppercase tracking-widest backdrop-blur-md">
+                        {/* Status Badge */}
+                        <div className="inline-flex items-center gap-2 self-start rounded-full border border-[var(--warning)]/30 bg-[var(--warning)]/10 px-3 py-1.5 text-[10px] font-bold text-[var(--warning)] uppercase tracking-widest backdrop-blur-md">
                             <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--volt)] opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--volt)]"></span>
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--warning)] opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--warning)]"></span>
                             </span>
-                            <span>V2.0 Mainnet Live</span>
+                            <span>Testnet Beta</span>
                         </div>
 
                         {/* Headline */}

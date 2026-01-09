@@ -102,10 +102,10 @@ export default function DashboardLayout({
                                 <Link href="/" className="flex items-center gap-3">
                                     <img src="/logo-dark.png" alt="Vultara" className="h-8 w-auto" />
                                 </Link>
-                                <div className="mt-3 px-3 py-1.5 rounded-full bg-white/[0.03] border border-[var(--border-subtle)] inline-flex items-center gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--success)] animate-pulse" />
-                                    <span className="text-[10px] uppercase font-bold tracking-widest text-[var(--text-secondary)]">
-                                        Mainnet Alpha
+                                <div className="mt-3 px-3 py-1.5 rounded-full bg-[var(--warning)]/10 border border-[var(--warning)]/20 inline-flex items-center gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--warning)]" />
+                                    <span className="text-[10px] uppercase font-bold tracking-widest text-[var(--warning)]">
+                                        Testnet
                                     </span>
                                 </div>
                             </div>
@@ -170,10 +170,10 @@ export default function DashboardLayout({
                     <Link href="/" className="flex items-center gap-3 group">
                         <img src="/logo-dark.png" alt="Vultara" className="h-8 w-auto opacity-90 group-hover:opacity-100 transition-opacity" />
                     </Link>
-                    <div className="mt-4 px-3 py-1.5 rounded-full bg-white/[0.03] border border-[var(--border-subtle)] inline-flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--success)] animate-pulse" />
-                        <span className="text-[10px] uppercase font-bold tracking-widest text-[var(--text-secondary)]">
-                            Mainnet Alpha
+                    <div className="mt-4 px-3 py-1.5 rounded-full bg-[var(--warning)]/10 border border-[var(--warning)]/20 inline-flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--warning)]" />
+                        <span className="text-[10px] uppercase font-bold tracking-widest text-[var(--warning)]">
+                            Testnet
                         </span>
                     </div>
                 </div>
