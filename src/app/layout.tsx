@@ -37,11 +37,20 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "Vultara",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Vultara - Secure Your Income, Amplify Your Growth",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Vultara | The Salary Engine",
     description: "Secure crypto payroll & earn yield on idle USDC. Built for Indonesian Web3 freelancers.",
+    images: ["/og-image.png"],
   },
 };
 
