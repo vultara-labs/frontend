@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
+import confetti from "canvas-confetti";
 import {
     ArrowLeft,
     CheckCircle,
@@ -30,6 +31,13 @@ export default function WithdrawPage() {
             setStep(3);
             toast.success("Withdrawal initiated!", {
                 description: `Rp ${estimatedIDR.toLocaleString('id-ID')} is being processed to your bank`,
+            });
+            // Celebration confetti!
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#CCFF00', '#3B82F6', '#FFFFFF']
             });
         }, 2000);
     };

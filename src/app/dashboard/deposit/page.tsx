@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
+import confetti from "canvas-confetti";
 import {
     ArrowLeft,
     CheckCircle,
@@ -33,6 +34,13 @@ export default function DepositPage() {
             setStep(3);
             toast.success("Deposit successful!", {
                 description: `$${parseFloat(amount).toLocaleString()} USDC is now earning 4.5% APY`,
+            });
+            // Celebration confetti!
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#CCFF00', '#10B981', '#FFFFFF']
             });
         }, 2000);
     };
