@@ -10,10 +10,10 @@ export default function CorePillars() {
             <div className="mx-auto max-w-[1280px]">
                 <div className="mb-12 md:mb-16 lg:mb-24 max-w-3xl">
                     <h2 className="mb-6 lg:mb-8 text-4xl sm:text-5xl lg:text-7xl font-black uppercase tracking-tighter text-white leading-[0.9]">
-                        WHY <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--volt)] via-white to-[var(--volt)] bg-[length:200%_auto] animate-gradient">VULTARA</span>
+                        BUILT <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--volt)] via-white to-[var(--volt)] bg-[length:200%_auto] animate-gradient">DIFFERENT</span>
                     </h2>
                     <p className="max-w-xl text-[15px] sm:text-base lg:text-lg text-[var(--text-secondary)] leading-relaxed font-normal">
-                        Simple DeFi yield for everyone. Deposit USDC, earn real yield from Thetanuts options strategies.
+                        We stripped away the confusing parts of DeFi and kept the profits.
                     </p>
                 </div>
 
@@ -33,7 +33,7 @@ export default function CorePillars() {
                             </div>
                             <h3 className="mb-2 lg:mb-4 text-xl lg:text-3xl font-black uppercase tracking-tight text-white">Real Yield</h3>
                             <p className="max-w-md text-[var(--text-secondary)] text-sm lg:text-base leading-relaxed">
-                                Earn ~4.5% APY on your USDC through Thetanuts options strategies. No token emissions—real yield from market premiums.
+                                Real cash flow generated from options premiums. No inflationary tokens, just sustainable growth.
                             </p>
                         </div>
 
@@ -68,9 +68,9 @@ export default function CorePillars() {
                             <div className="mb-5 lg:mb-8 flex w-12 h-12 lg:w-12 lg:h-12 items-center justify-center rounded-xl bg-white/5 text-[var(--volt)] border border-white/5 group-hover:bg-[var(--volt-glass)] group-hover:border-[var(--volt)]/20 transition-all duration-500">
                                 <Alien size={24} weight="duotone" className="lg:w-6 lg:h-6" />
                             </div>
-                            <h3 className="mb-2 lg:mb-4 text-xl lg:text-2xl font-black uppercase tracking-tight text-white">AI Advisor</h3>
+                            <h3 className="mb-2 lg:mb-4 text-xl lg:text-2xl font-black uppercase tracking-tight text-white">Nova Copilot</h3>
                             <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-                                Meet Nova—your personal DeFi guide. Get strategy explanations and risk assessments in plain language.
+                                Your always-on DeFi guide. Nova explains risks and strategies in plain English, so you never deposit blind.
                             </p>
                         </div>
 

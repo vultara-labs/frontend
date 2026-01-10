@@ -30,10 +30,10 @@ export default function UserJourney() {
             <div className="mx-auto max-w-[1280px] relative z-10">
                 <div className="mb-12 md:mb-16 lg:mb-24 max-w-3xl">
                     <h2 className="mb-6 lg:mb-8 text-4xl sm:text-5xl lg:text-7xl font-black uppercase tracking-tighter text-white leading-[0.9]">
-                        How It <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--volt)] via-white to-[var(--volt)] bg-[length:200%_auto] animate-gradient">Works</span>
+                        START <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--volt)] via-white to-[var(--volt)] bg-[length:200%_auto] animate-gradient">IN MINUTES</span>
                     </h2>
                     <p className="max-w-xl text-[15px] sm:text-base lg:text-lg text-[var(--text-secondary)] leading-relaxed font-normal">
-                        From deposit to yield in minutes. Simple, transparent, no hidden complexity.
+                        From wallet connect to real yield—streamlined for speed and simplicity.
                     </p>
                 </div>
 
