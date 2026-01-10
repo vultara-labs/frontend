@@ -67,12 +67,6 @@ export function HeroCard() {
                                 </div>
                             </div>
                         </div>
-                        <button
-                            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/5 text-[var(--text-tertiary)] hover:text-white transition-colors"
-                            aria-label="More options"
-                        >
-                            <MoreHorizontal size={20} />
-                        </button>
                     </div>
 
                     <div className="mb-6 lg:mb-8">
@@ -102,7 +96,7 @@ export function HeroCard() {
                                 strokeDashoffset="500"
                                 style={{ animation: "drawLine 2s ease-out 0.3s forwards" }}
                             />
-                            <circle cx="300" cy="5" r="5" fill="#0A0A0A" stroke="#CCFF00" strokeWidth="3" className="drop-shadow-[0_0_10px_#CCFF00] animate-[fadeIn_0.3s_ease-out_2s_both]" />
+                            <circle cx="300" cy="5" r="5" fill="#0A0A0A" stroke="#CCFF00" strokeWidth="3" className="drop-shadow-[0_0_10px_#CCFF00] animate-[fadeIn_0.3s_ease-out_2s_both,pulse_2s_infinite]" />
                         </svg>
                     </div>
 
