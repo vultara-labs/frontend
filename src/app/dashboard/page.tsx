@@ -2,201 +2,157 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { TrendUp, ArrowCircleUp, ArrowCircleDown, Wallet, Lightning, CaretRight, Tray } from "@phosphor-icons/react";
-import { EmptyState, ActivitySkeleton, CardSkeleton } from "@/components/ui";
-import { ProtocolStatus } from "@/components/dashboard/ProtocolStatus";
+import { ArrowUpRight, Vault, Lightning, ArrowCircleDown, Wallet, TrendUp, Crown, Lock } from "@phosphor-icons/react";
 import { PROTOCOL, DEMO } from "@/constants";
-import { splitBalance } from "@/lib/formatters";
-
-const MOCK_ACTIVITIES = [
-    { type: "Yield", amount: "+$2.30", label: "Weekly Premium", date: "2h ago", icon: TrendUp, color: "text-[var(--success)]" },
-    { type: "Deposit", amount: "+$500.00", label: "Salary Deposit", date: "3d ago", icon: ArrowCircleUp, color: "text-[var(--volt)]" },
-    { type: "Withdraw", amount: "-$200.00", label: "IDR Cashout (BCA)", date: "1w ago", icon: ArrowCircleDown, color: "text-white" },
-];
-
-const DEMO_EMPTY_STATE = false;
-const DEMO_LOADING_STATE = false;
+import { Counter } from "@/components/landing/Counter";
 
 export default function DashboardPage() {
-    const [isLoading, setIsLoading] = useState(DEMO_LOADING_STATE);
-    const [liveApy, setLiveApy] = useState<number>(PROTOCOL.APY);
-    const [userData, setUserData] = useState<{
-        balance: number;
-        monthlyEarnings: number;
-        apy: number;
-        activities: typeof MOCK_ACTIVITIES;
-    } | null>(null);
+    const totalBalance = DEMO.USER_BALANCE + DEMO.MONTHLY_EARNINGS;
 
-    useEffect(() => {
-        const dynamicRate = 4.2 + Math.random() * 0.6;
-        const formattedRate = Number(dynamicRate.toFixed(2));
-        setLiveApy(formattedRate);
-
-        if (DEMO_LOADING_STATE) {
-            const timer = setTimeout(() => {
-                setIsLoading(false);
-                setUserData(DEMO_EMPTY_STATE ? null : { balance: DEMO.USER_BALANCE, monthlyEarnings: DEMO.MONTHLY_EARNINGS, apy: formattedRate, activities: MOCK_ACTIVITIES });
-            }, 2000);
-            return () => clearTimeout(timer);
-        } else {
-            setUserData(DEMO_EMPTY_STATE ? null : { balance: DEMO.USER_BALANCE, monthlyEarnings: DEMO.MONTHLY_EARNINGS, apy: formattedRate, activities: MOCK_ACTIVITIES });
-        }
-    }, []);
-
-    const hasBalance = userData && userData.balance > 0;
-    const hasActivities = userData && userData.activities.length > 0;
-
-    const quickActions = [
-        { title: "Deposit Funds", desc: "Add USDC to start earning", icon: ArrowCircleUp, href: "/dashboard/deposit", color: "text-[var(--volt)]" },
-        { title: "Withdraw IDR", desc: "Instant transfer to Bank/E-wallet", icon: ArrowCircleDown, href: "/dashboard/withdraw", color: "text-[var(--info)]" },
-        { title: "Nova AI", desc: "Analyze risks & strategies", icon: Lightning, href: "/dashboard/ai", color: "text-amber-400" },
-    ];
+    // Logic Mockup for Tiers
+    const currentLevel = 2; // Elite
+    const nextLevelThreshold = 10000;
+    const progress = (totalBalance / nextLevelThreshold) * 100;
 
     return (
-        <div className="p-4 sm:p-6 lg:p-8 max-w-[1400px] mx-auto space-y-6 lg:space-y-8">
-            <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[var(--border-subtle)]">
+        <div className="p-4 sm:p-6 lg:p-8 max-w-[1400px] mx-auto space-y-6">
+            <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                 <div>
-                    <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white mb-2">Dashboard</h1>
-                    <p className="text-sm text-[var(--text-secondary)]">{hasBalance ? "Preview mode. Connect wallet to see your actual data." : "Welcome! Start your journey."}</p>
-                </div>
-                <div className="flex items-center gap-4">
-                    <div className={`px-4 py-2 rounded-full flex items-center gap-2 ${hasBalance ? "bg-[var(--warning)]/10 border border-[var(--warning)]/20" : "bg-white/[0.03] border border-[var(--border-subtle)]"}`}>
-                        <span className={`w-2 h-2 rounded-full ${hasBalance ? "bg-[var(--warning)] animate-pulse" : "bg-[var(--text-tertiary)]"}`} />
-                        <span className={`text-xs font-bold uppercase tracking-widest ${hasBalance ? "text-[var(--warning)]" : "text-[var(--text-tertiary)]"}`}>{hasBalance ? "Demo Mode" : "No Deposits"}</span>
-                    </div>
+                    <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white mb-1">
+                        Overview
+                    </h1>
+                    <p className="text-[var(--text-secondary)]">Welcome back to Vultara.</p>
                 </div>
             </header>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
-                {isLoading ? (
+            {/* Main Stats Hero */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="relative rounded-[2rem] overflow-hidden bg-[var(--obsidian-surface)] border border-[var(--border-medium)] p-8 lg:p-12 mb-8 group"
+            >
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--volt)]/5 blur-[120px] rounded-full pointer-events-none group-hover:bg-[var(--volt)]/10 transition-colors duration-700" />
+
+                <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8 items-end">
                     <div className="lg:col-span-2">
-                        <CardSkeleton />
+                        <div className="flex items-center gap-2 mb-4">
+                            <Wallet size={20} className="text-[var(--volt)]" weight="duotone" />
+                            <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">Total Balance</span>
+                        </div>
+                        <h2 className="text-6xl sm:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-2">
+                            <Counter from={0} to={totalBalance} />
+                        </h2>
+                        <div className="flex items-center gap-3">
+                            <span className="text-lg text-[var(--text-secondary)]">USDC</span>
+                            <div className="px-3 py-1 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/20 flex items-center gap-1.5">
+                                <TrendUp size={14} className="text-[var(--success)]" weight="bold" />
+                                <span className="text-xs font-bold text-[var(--success)]">+{PROTOCOL.APY}% APY Active</span>
+                            </div>
+                        </div>
                     </div>
-                ) : hasBalance ? (
+
+                    <div className="flex gap-4">
+                        <Link href="/dashboard/deposit" className="flex-1 h-14 rounded-xl bg-[var(--volt)] text-black font-bold text-sm uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(204,255,0,0.15)]">
+                            Deposit
+                        </Link>
+                        <Link href="/dashboard/withdraw" className="flex-1 h-14 rounded-xl bg-white/[0.05] border border-white/10 text-white font-bold text-sm uppercase tracking-widest hover:bg-white/[0.1] transition-all flex items-center justify-center gap-2">
+                            Withdraw
+                        </Link>
+                    </div>
+                </div>
+            </motion.div>
+
+            {/* Feature Grid - Vault, AI, Tier */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Vault Module */}
+                <Link href="/dashboard/vault" className="block h-full">
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="lg:col-span-2 relative p-4 sm:p-6 lg:p-8 rounded-2xl lg:rounded-3xl bg-gradient-to-br from-[var(--obsidian-uplift)] to-[var(--obsidian-surface)] border border-[var(--border-medium)] overflow-hidden group"
+                        whileHover={{ y: -4 }}
+                        className="group relative h-full min-h-[280px] p-8 rounded-[2rem] bg-[var(--obsidian-surface)] border border-[var(--border-subtle)] overflow-hidden hover:border-[var(--volt)]/50 transition-all duration-500 flex flex-col justify-between"
                     >
-                        <div className="absolute top-0 right-0 w-64 lg:w-96 h-64 lg:h-96 bg-[var(--volt)]/5 blur-[120px] rounded-full pointer-events-none group-hover:bg-[var(--volt)]/10 transition-colors duration-700" />
-
+                        <div className="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500">
+                            <Vault size={120} weight="duotone" className="text-[var(--volt)]" />
+                        </div>
+                        <div className="w-12 h-12 rounded-xl bg-[var(--volt)]/10 border border-[var(--volt)]/20 flex items-center justify-center text-[var(--volt)] mb-6 relative z-10">
+                            <Vault size={24} weight="duotone" />
+                        </div>
                         <div className="relative z-10">
-                            <div className="flex items-center gap-2 mb-4 lg:mb-6 opacity-80">
-                                <span className="w-8 h-8 rounded-full bg-white/[0.05] flex items-center justify-center">
-                                    <Wallet size={14} className="text-[var(--volt)]" />
-                                </span>
-                                <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">Total Balance (USDC)</span>
-                            </div>
-
-                            <div className="mb-6 lg:mb-8">
-                                {(() => {
-                                    const { whole, decimal } = splitBalance(userData!.balance);
-                                    return (
-                                        <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tighter text-white mb-3">
-                                            ${whole}<span className="text-white/40">.{decimal}</span>
-                                        </h2>
-                                    );
-                                })()}
-                                <div className="inline-flex items-center gap-3 px-3 py-1.5 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/10">
-                                    <TrendUp size={14} weight="duotone" className="text-[var(--success)]" />
-                                    <span className="text-sm font-bold text-[var(--success)]">+${userData!.monthlyEarnings.toLocaleString()}</span>
-                                    <span className="text-xs text-[var(--success)]/60 uppercase tracking-widest font-bold">This Month</span>
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div>
-                ) : (
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="lg:col-span-2 relative p-6 lg:p-8 rounded-2xl lg:rounded-3xl bg-[var(--obsidian-surface)] border border-dashed border-[var(--border-medium)] overflow-hidden">
-                        <EmptyState
-                            title="No deposits yet"
-                            description="Make your first deposit to start earning yield on your USDC."
-                            icon={<Wallet size={28} className="text-[var(--volt)]" />}
-                            action={{
-                                label: "Make First Deposit",
-                                onClick: () => (window.location.href = "/dashboard/vault"),
-                            }}
-                        />
-                    </motion.div>
-                )}
-
-                <div className="grid grid-cols-2 lg:grid-cols-1 gap-4 lg:gap-6">
-                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="flex-1 p-4 lg:p-6 rounded-2xl lg:rounded-3xl bg-[var(--obsidian-base)] border border-[var(--border-medium)] relative overflow-hidden">
-                        <div className="flex justify-between items-start mb-3 lg:mb-4">
-                            <span className="text-[10px] lg:text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">Current APY</span>
-                            <Lightning size={16} weight="duotone" className="text-[var(--volt)]" />
-                        </div>
-                        <p className="text-2xl lg:text-4xl font-bold tracking-tighter text-[var(--volt)]">{userData?.apy || PROTOCOL.APY}%</p>
-                        <div className="mt-3 pt-3 border-t border-white/5">
-                            <p className="text-[10px] lg:text-xs text-[var(--text-secondary)] leading-relaxed">
-                                Powered by{" "}
-                                <a href="https://thetanuts.finance" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[var(--volt)] transition-colors font-bold border-b border-white/20 hover:border-[var(--volt)]">
-                                    Thetanuts Finance
-                                </a>
+                            <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-2">Vault Strategy</h3>
+                            <p className="text-[var(--text-secondary)] text-sm mb-4">
+                                Thetanuts V4 Cash-Secured Puts.
                             </p>
-                            <p className="text-[10px] text-[var(--text-tertiary)] mt-0.5">Basic Volatility Strategy (V4)</p>
+                            <div className="flex items-center gap-2 text-[var(--volt)] font-bold text-xs uppercase tracking-widest group-hover:gap-3 transition-all">
+                                Manage <ArrowUpRight weight="bold" />
+                            </div>
                         </div>
                     </motion.div>
+                </Link>
 
-                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="flex-1 p-4 lg:p-6 rounded-2xl lg:rounded-3xl bg-[var(--obsidian-base)] border border-[var(--border-medium)] flex flex-col justify-center">
-                        <ProtocolStatus balance={userData?.balance || 0} />
+                {/* AI Module */}
+                <Link href="/dashboard/ai" className="block h-full">
+                    <motion.div
+                        whileHover={{ y: -4 }}
+                        className="group relative h-full min-h-[280px] p-8 rounded-[2rem] bg-[var(--obsidian-surface)] border border-[var(--border-subtle)] overflow-hidden hover:border-amber-400/50 transition-all duration-500 flex flex-col justify-between"
+                    >
+                        <div className="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500">
+                            <Lightning size={120} weight="duotone" className="text-amber-400" />
+                        </div>
+                        <div className="w-12 h-12 rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-400 mb-6 relative z-10">
+                            <Lightning size={24} weight="duotone" />
+                        </div>
+                        <div className="relative z-10">
+                            <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-2">Nova AI</h3>
+                            <p className="text-[var(--text-secondary)] text-sm mb-4">
+                                Risk analysis & strategy advisor.
+                            </p>
+                            <div className="flex items-center gap-2 text-amber-400 font-bold text-xs uppercase tracking-widest group-hover:gap-3 transition-all">
+                                Chat Now <ArrowUpRight weight="bold" />
+                            </div>
+                        </div>
                     </motion.div>
-                </div>
-            </div>
+                </Link>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6">
-                {quickActions.map((action, i) => (
-                    <Link key={i} href={action.href}>
-                        <motion.div whileHover={{ y: -5 }} className="p-4 lg:p-6 rounded-xl lg:rounded-2xl bg-white/[0.02] border border-[var(--border-subtle)] hover:bg-white/[0.05] hover:border-[var(--border-medium)] transition-all cursor-pointer group h-full">
-                            <div className="flex items-start justify-between mb-4 lg:mb-6">
-                                <div className={`p-2.5 lg:p-3 rounded-lg lg:rounded-xl bg-white/[0.05] ${action.color}`}>
-                                    <action.icon size={20} className="lg:w-6 lg:h-6" />
-                                </div>
-                                <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-full border border-[var(--border-subtle)] flex items-center justify-center text-[var(--text-tertiary)] group-hover:text-white group-hover:border-[var(--border-bright)] transition-all">
-                                    <CaretRight size={14} weight="bold" className="lg:w-4 lg:h-4" />
-                                </div>
-                            </div>
-                            <h3 className="text-base lg:text-lg font-bold text-white mb-1 group-hover:text-[var(--volt)] transition-colors">{action.title}</h3>
-                            <p className="text-xs lg:text-sm text-[var(--text-secondary)]">{action.desc}</p>
-                        </motion.div>
-                    </Link>
-                ))}
-            </div>
-
-            <div className="rounded-2xl lg:rounded-3xl border border-[var(--border-subtle)] bg-[var(--obsidian-surface)] overflow-hidden">
-                <div className="p-4 lg:p-6 border-b border-[var(--border-subtle)] flex items-center justify-between">
-                    <h3 className="text-xs lg:text-sm font-bold uppercase tracking-widest text-[var(--text-secondary)]">Recent Activity</h3>
-                    {hasActivities && (
-                        <button className="text-[10px] lg:text-xs text-[var(--volt)] hover:underline font-bold uppercase tracking-wider">View All</button>
-                    )}
-                </div>
-
-                {isLoading ? (
-                    <div className="divide-y divide-[var(--border-subtle)]">
-                        <ActivitySkeleton />
-                        <ActivitySkeleton />
-                        <ActivitySkeleton />
+                {/* Access Tier Module */}
+                <motion.div
+                    whileHover={{ y: -4 }}
+                    className="group relative h-full min-h-[280px] p-8 rounded-[2rem] bg-gradient-to-b from-[var(--obsidian-surface)] to-black border border-[var(--border-subtle)] overflow-hidden hover:border-blue-500/50 transition-all duration-500 flex flex-col justify-between"
+                >
+                    <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-30 transition-all duration-500">
+                        <Crown size={120} weight="duotone" className="text-blue-500" />
                     </div>
-                ) : hasActivities ? (
-                    <div className="divide-y divide-[var(--border-subtle)]">
-                        {userData!.activities.map((item, i) => (
-                            <div key={i} className="p-4 lg:p-6 flex items-center justify-between hover:bg-white/[0.02] transition-colors">
-                                <div className="flex items-center gap-3 lg:gap-4">
-                                    <div className="w-9 h-9 lg:w-10 lg:h-10 rounded-lg lg:rounded-xl bg-white/[0.03] flex items-center justify-center border border-[var(--border-subtle)]">
-                                        <item.icon size={16} className={`lg:w-[18px] lg:h-[18px] ${item.color}`} />
-                                    </div>
-                                    <div>
-                                        <p className="text-xs lg:text-sm font-bold text-white mb-0.5">{item.label}</p>
-                                        <p className="text-[10px] lg:text-xs text-[var(--text-secondary)]">{item.date}</p>
-                                    </div>
-                                </div>
-                                <span className={`font-mono text-sm lg:text-base font-bold ${item.amount.startsWith("+") ? "text-[var(--success)]" : "text-white"}`}>{item.amount}</span>
+
+                    <div className="relative z-10">
+                        <div className="flex justify-between items-start mb-6">
+                            <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-500">
+                                <Crown size={24} weight="duotone" />
                             </div>
-                        ))}
+                            <span className="px-3 py-1 rounded-lg bg-blue-500/10 border border-blue-500/20 text-[10px] font-bold text-blue-500 uppercase tracking-widest">
+                                Associate
+                            </span>
+                        </div>
+
+                        <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-1">Associate Tier</h3>
+                        <p className="text-[var(--text-secondary)] text-sm mb-6">
+                            Verified member. Unlock Partner status at $5,000.
+                        </p>
+
+                        <div className="space-y-2">
+                            <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
+                                <span className="text-[var(--text-secondary)]">Next: Partner</span>
+                                <span className="text-white">$5,000</span>
+                            </div>
+                            <div className="h-2 w-full bg-white/[0.05] rounded-full overflow-hidden">
+                                <div
+                                    className="h-full bg-blue-500 rounded-full"
+                                    style={{ width: `${(totalBalance / 5000) * 100}%` }}
+                                />
+                            </div>
+                            <p className="text-[10px] text-[var(--text-tertiary)] pt-1">
+                                Deposit ${(5000 - totalBalance).toLocaleString()} more to upgrade
+                            </p>
+                        </div>
                     </div>
-                ) : (
-                    <EmptyState title="No activity yet" description="Your transaction history will appear here once you start using Vultara." icon={<Tray size={28} weight="duotone" className="text-[var(--text-tertiary)]" />} />
-                )}
+                </motion.div>
             </div>
         </div>
     );

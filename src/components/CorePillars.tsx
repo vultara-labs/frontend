@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { TrendingUp, Trophy, ShieldCheck, Lock, Zap } from "lucide-react";
+import { TrendingUp, Trophy, ShieldCheck, Lock } from "lucide-react";
 import { Alien } from "@phosphor-icons/react";
 
 export default function CorePillars() {
@@ -102,30 +102,26 @@ export default function CorePillars() {
 
                         <div className="mt-auto pt-8 space-y-3">
                             {[
-                                { name: "INITIATE", color: "#6B7280" },
-                                { name: "ASSOCIATE", color: "#3B82F6" },
-                                { name: "PARTNER", color: "#CCFF00" },
-                                { name: "SOVEREIGN", color: "#F59E0B" },
-                            ].map((tier, idx) => (
-                                <div key={tier.name} className="flex items-center gap-3 group/tier cursor-default">
-                                    <div
-                                        className={`w-2 h-2 rounded-full transition-all duration-300 group-hover/tier:scale-150`}
-                                        style={{
-                                            backgroundColor: tier.color,
-                                            boxShadow: idx === 2 ? `0 0 10px ${tier.color}` : "none",
-                                        }}
-                                    />
-                                    <span
-                                        className="text-xs font-bold uppercase tracking-wider transition-colors group-hover/tier:text-white"
-                                        style={{ color: idx === 2 ? tier.color : "var(--text-tertiary)" }}
-                                    >
-                                        {tier.name}
-                                    </span>
-                                    {idx === 2 && (
-                                        <span className="ml-auto text-[10px] font-bold flex items-center gap-1" style={{ color: tier.color }}>
-                                            <Zap size={10} /> ACTIVE
+                                { name: "INITIATE", color: "#6B7280", min: "$0" },
+                                { name: "ASSOCIATE", color: "#3B82F6", min: "$1,000" },
+                                { name: "PARTNER", color: "#CCFF00", min: "$5,000" },
+                                { name: "SOVEREIGN", color: "#F59E0B", min: "$10,000" },
+                            ].map((tier) => (
+                                <div key={tier.name} className="flex items-center justify-between group/tier cursor-default">
+                                    <div className="flex items-center gap-3">
+                                        <div
+                                            className="w-2 h-2 rounded-full transition-all duration-300 group-hover/tier:scale-150"
+                                            style={{ backgroundColor: tier.color }}
+                                        />
+                                        <span
+                                            className="text-xs font-bold uppercase tracking-wider text-[var(--text-tertiary)] transition-colors group-hover/tier:text-white"
+                                        >
+                                            {tier.name}
                                         </span>
-                                    )}
+                                    </div>
+                                    <span className="text-[10px] font-mono text-[var(--text-tertiary)] group-hover/tier:text-white transition-colors">
+                                        {tier.min}+
+                                    </span>
                                 </div>
                             ))}
                         </div>

@@ -1,6 +1,6 @@
 export const PROTOCOL = {
     APY: 4.5,
-    STRATEGY_NAME: 'Thetanuts V3',
+    STRATEGY_NAME: 'Thetanuts V4',
     STRATEGY_VERSION: 'V4',
     NETWORK: 'Base',
     NETWORK_COLOR: 'blue-500',
