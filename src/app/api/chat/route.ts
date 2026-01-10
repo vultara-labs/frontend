@@ -61,6 +61,39 @@ CURRENT USER DATA (Personalize answers using this):
 
     const FINAL_SYSTEM_PROMPT = BASE_SYSTEM_PROMPT + userContext;
 
+    // --- ACTION DETECTION ---
+    // Detect if user wants to perform an action (deposit, withdraw, check balance)
+    type ActionType = 'deposit' | 'withdraw' | 'balance' | null;
+    interface DetectedAction {
+        type: ActionType;
+        amount?: number;
+    }
+
+    const detectAction = (msg: string): DetectedAction | null => {
+        const lowerMsg = msg.toLowerCase();
+
+        // Deposit patterns: "deposit 100", "deposit 100 usdc", "setor 500"
+        const depositMatch = lowerMsg.match(/(?:deposit|setor|top.?up|tambah)\s*\$?(\d+(?:\.\d+)?)/i);
+        if (depositMatch) {
+            return { type: 'deposit', amount: parseFloat(depositMatch[1]) };
+        }
+
+        // Withdraw patterns: "withdraw 200", "tarik 1000", "cashout 500"
+        const withdrawMatch = lowerMsg.match(/(?:withdraw|tarik|cashout|ambil)\s*\$?(\d+(?:\.\d+)?)/i);
+        if (withdrawMatch) {
+            return { type: 'withdraw', amount: parseFloat(withdrawMatch[1]) };
+        }
+
+        // Balance check patterns
+        if (/(?:balance|saldo|berapa|how much|total)/i.test(lowerMsg)) {
+            return { type: 'balance' };
+        }
+
+        return null;
+    };
+
+    const detectedAction = detectAction(message);
+
     // --- ATTEMPT 1: GOOGLE GEMINI ---
     try {
         if (!process.env.GEMINI_API_KEY) throw new Error("Gemini Key Missing");
@@ -84,7 +117,10 @@ CURRENT USER DATA (Personalize answers using this):
         const result = await chat.sendMessage(message);
         const response = result.response.text();
 
-        return NextResponse.json({ response });
+        return NextResponse.json({
+            response,
+            action: detectedAction
+        });
 
     } catch (geminiError) {
         console.warn("⚠️ Gemini API Failed (Rate Limit or Error). Switching to Groq fallback...", geminiError);
@@ -111,7 +147,10 @@ CURRENT USER DATA (Personalize answers using this):
             });
 
             const response = completion.choices[0]?.message?.content || "System status optimal (Backup Link).";
-            return NextResponse.json({ response });
+            return NextResponse.json({
+                response,
+                action: detectedAction
+            });
 
         } catch (groqError) {
             console.error("❌ Both AI Providers Failed:", groqError);

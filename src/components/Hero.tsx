@@ -1,9 +1,9 @@
 "use client";
 
-import { motion, useScroll, useTransform, useMotionValue, useSpring, useInView, animate, AnimatePresence } from "framer-motion";
-import { ArrowRight, PlayCircle, MoreHorizontal, X } from "lucide-react";
+import { motion, useScroll, useTransform, useMotionValue, useSpring, useInView, animate } from "framer-motion";
+import { ArrowRight, PlayCircle, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
-import { useRef, MouseEvent, useEffect, useState } from "react";
+import { useRef, MouseEvent, useEffect } from "react";
 
 // Counter Component for "Live" Money Feel
 const Counter = ({ from, to }: { from: number; to: number }) => {
@@ -45,7 +45,6 @@ const Counter = ({ from, to }: { from: number; to: number }) => {
 export default function Hero() {
     const targetRef = useRef<HTMLDivElement>(null);
     const cardRef = useRef<HTMLDivElement>(null);
-    const [showVideoModal, setShowVideoModal] = useState(false);
 
     // Scroll Logic
     const { scrollYProgress } = useScroll({
@@ -134,8 +133,12 @@ export default function Hero() {
                             </Link>
                             <button
                                 className="h-12 px-8 flex items-center justify-center gap-3 btn-secondary group w-full sm:w-auto"
-                                aria-label="Watch how it works video"
-                                onClick={() => setShowVideoModal(true)}
+                                aria-label="Learn how Vultara works"
+                                onClick={() => {
+                                    document.querySelector('#how-it-works')?.scrollIntoView({
+                                        behavior: 'smooth'
+                                    });
+                                }}
                             >
                                 <PlayCircle size={20} className="text-[var(--text-tertiary)] group-hover:text-white transition-colors" />
                                 <span>How it works</span>
@@ -277,56 +280,6 @@ export default function Hero() {
                     </div>
                 </div>
             </motion.div>
-
-            {/* How it Works Video Modal */}
-            <AnimatePresence>
-                {showVideoModal && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-                        onClick={() => setShowVideoModal(false)}
-                    >
-                        <motion.div
-                            initial={{ scale: 0.9, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.9, opacity: 0 }}
-                            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                            className="relative w-full max-w-4xl aspect-video bg-[var(--obsidian-surface)] rounded-2xl border border-[var(--border-medium)] overflow-hidden"
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            {/* Close Button */}
-                            <button
-                                onClick={() => setShowVideoModal(false)}
-                                className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 border border-[var(--border-subtle)] flex items-center justify-center text-white hover:bg-white/20 transition-colors"
-                                aria-label="Close modal"
-                            >
-                                <X size={20} />
-                            </button>
-
-                            {/* Video Placeholder */}
-                            <div className="w-full h-full flex flex-col items-center justify-center gap-6 p-8">
-                                <div className="w-20 h-20 rounded-full bg-[var(--volt)]/10 border border-[var(--volt)]/20 flex items-center justify-center">
-                                    <PlayCircle size={40} className="text-[var(--volt)]" />
-                                </div>
-                                <div className="text-center">
-                                    <h3 className="text-2xl font-bold text-white mb-2">Video Coming Soon</h3>
-                                    <p className="text-[var(--text-secondary)] max-w-md">
-                                        We're creating an amazing explainer video to show you how Vultara works. Stay tuned!
-                                    </p>
-                                </div>
-                                <button
-                                    onClick={() => setShowVideoModal(false)}
-                                    className="px-6 py-3 bg-white/5 border border-[var(--border-medium)] rounded-xl text-white font-medium hover:bg-white/10 transition-colors"
-                                >
-                                    Got it, thanks!
-                                </button>
-                            </div>
-                        </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
         </section>
     );
 }

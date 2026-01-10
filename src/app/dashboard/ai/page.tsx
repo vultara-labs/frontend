@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 import {
     PaperPlaneTilt,
     Alien,
@@ -9,8 +10,17 @@ import {
     Sparkle,
     ShieldCheck,
     TrendUp,
-    ArrowCircleUpRight
+    ArrowCircleUpRight,
+    ArrowRight,
+    Wallet,
+    ArrowCircleDown,
+    ArrowCircleUp
 } from "@phosphor-icons/react";
+
+type ActionData = {
+    type: 'deposit' | 'withdraw' | 'balance';
+    amount?: number;
+};
 
 type Message = {
     role: "user" | "assistant";
@@ -21,6 +31,7 @@ type Message = {
         score: string;
         items: { label: string; value: string; percent: number; color: string }[];
     };
+    action?: ActionData;
 };
 
 const quickPrompts = [
@@ -105,6 +116,11 @@ export default function AIAdvisorPage() {
                         { label: "Volatility", value: "Low", percent: 15, color: "#10B981" },
                     ]
                 };
+            }
+
+            // Add action if detected by API
+            if (data.action) {
+                assistantMessage.action = data.action;
             }
 
             setMessages(prev => [...prev, assistantMessage]);
@@ -229,6 +245,54 @@ export default function AIAdvisorPage() {
                                             Full Report
                                             <span className="text-[8px] bg-white/10 px-1.5 py-0.5 rounded">SOON</span>
                                         </button>
+                                    </motion.div>
+                                )}
+
+                                {/* Action Card - Interactive Quick Actions */}
+                                {msg.action && (
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                                        className="mt-3 p-4 rounded-xl bg-gradient-to-br from-[var(--volt)]/10 to-[var(--volt)]/5 border border-[var(--volt)]/20 w-full md:w-80"
+                                    >
+                                        <div className="flex items-center gap-2 mb-3">
+                                            {msg.action.type === 'deposit' && <ArrowCircleUp size={18} className="text-[var(--volt)]" />}
+                                            {msg.action.type === 'withdraw' && <ArrowCircleDown size={18} className="text-[var(--info)]" />}
+                                            {msg.action.type === 'balance' && <Wallet size={18} className="text-[var(--volt)]" />}
+                                            <span className="text-xs font-bold text-white uppercase tracking-wider">
+                                                Quick Action
+                                            </span>
+                                        </div>
+
+                                        {msg.action.type === 'deposit' && msg.action.amount && (
+                                            <Link
+                                                href={`/dashboard/deposit?amount=${msg.action.amount}`}
+                                                className="w-full py-2.5 px-4 rounded-lg bg-[var(--volt)] text-black font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.98] transition-all"
+                                            >
+                                                Deposit ${msg.action.amount.toLocaleString()} USDC
+                                                <ArrowRight size={14} weight="bold" />
+                                            </Link>
+                                        )}
+
+                                        {msg.action.type === 'withdraw' && msg.action.amount && (
+                                            <Link
+                                                href={`/dashboard/withdraw?amount=${msg.action.amount}`}
+                                                className="w-full py-2.5 px-4 rounded-lg bg-[var(--info)] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.98] transition-all"
+                                            >
+                                                Withdraw ${msg.action.amount.toLocaleString()}
+                                                <ArrowRight size={14} weight="bold" />
+                                            </Link>
+                                        )}
+
+                                        {msg.action.type === 'balance' && (
+                                            <Link
+                                                href="/dashboard"
+                                                className="w-full py-2.5 px-4 rounded-lg bg-white/10 border border-white/20 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-white/20 transition-all"
+                                            >
+                                                View Dashboard
+                                                <ArrowRight size={14} weight="bold" />
+                                            </Link>
+                                        )}
                                     </motion.div>
                                 )}
                             </div>

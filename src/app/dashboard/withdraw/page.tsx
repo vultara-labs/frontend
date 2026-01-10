@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import confetti from "canvas-confetti";
 import {
@@ -14,11 +14,21 @@ import {
     CaretRight,
     ArrowCircleDown
 } from "@phosphor-icons/react";
+import { useSearchParams } from "next/navigation";
 
 export default function WithdrawPage() {
     const [step, setStep] = useState(1);
     const [amount, setAmount] = useState("");
     const [isProcessing, setIsProcessing] = useState(false);
+
+    // Read amount from URL query param (from Nova AI action)
+    const searchParams = useSearchParams();
+    useEffect(() => {
+        const urlAmount = searchParams.get('amount');
+        if (urlAmount && !isNaN(parseFloat(urlAmount))) {
+            setAmount(urlAmount);
+        }
+    }, [searchParams]);
 
     const maxBalance = 2450.00;
     const convenienceFee = 0.5;

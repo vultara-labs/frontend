@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import confetti from "canvas-confetti";
 import {
@@ -19,15 +19,26 @@ import {
 } from "@phosphor-icons/react";
 
 import { useSignMessage, useAccount } from "wagmi";
+import { useSearchParams } from "next/navigation";
 
 export default function DepositPage() {
     const [step, setStep] = useState(1);
     const [amount, setAmount] = useState("");
     const [isProcessing, setIsProcessing] = useState(false);
+    const [riskAcknowledged, setRiskAcknowledged] = useState(false);
 
     // Wagmi Hooks for "Ghost Protocol" Realism
     const { signMessageAsync } = useSignMessage();
     const { isConnected } = useAccount();
+
+    // Read amount from URL query param (from Nova AI action)
+    const searchParams = useSearchParams();
+    useEffect(() => {
+        const urlAmount = searchParams.get('amount');
+        if (urlAmount && !isNaN(parseFloat(urlAmount))) {
+            setAmount(urlAmount);
+        }
+    }, [searchParams]);
 
     const walletBalance = 5420.00; // Mock USDC balance in wallet
     const currentAPY = 4.5;
@@ -208,9 +219,24 @@ export default function DepositPage() {
                         </p>
                     </div>
 
+                    {/* Risk Acknowledgment Checkbox */}
+                    <label className="flex items-start gap-3 p-4 rounded-xl bg-[var(--warning)]/5 border border-[var(--warning)]/10 cursor-pointer group hover:bg-[var(--warning)]/[0.08] transition-colors">
+                        <input
+                            type="checkbox"
+                            checked={riskAcknowledged}
+                            onChange={(e) => setRiskAcknowledged(e.target.checked)}
+                            className="mt-0.5 w-4 h-4 accent-[var(--volt)] cursor-pointer"
+                        />
+                        <span className="text-xs text-[var(--warning)]/80 leading-relaxed">
+                            I understand that this vault uses an <strong className="text-[var(--warning)]">options-based strategy</strong>.
+                            If the underlying asset (ETH) drops significantly below the strike price at expiry,
+                            my deposit may be converted to ETH at that strike price. <a href="/dashboard/vault" className="underline text-[var(--warning)] hover:text-[var(--warning)]/80">Learn more about risks</a>
+                        </span>
+                    </label>
+
                     <button
                         onClick={() => setStep(2)}
-                        disabled={!amount || parseFloat(amount) <= 0 || parseFloat(amount) > walletBalance}
+                        disabled={!amount || parseFloat(amount) <= 0 || parseFloat(amount) > walletBalance || !riskAcknowledged}
                         className="w-full py-4 rounded-xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(204,255,0,0.15)] hover:shadow-[0_0_30px_rgba(204,255,0,0.25)]"
                     >
                         Continue

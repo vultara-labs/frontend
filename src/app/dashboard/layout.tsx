@@ -287,6 +287,30 @@ export default function DashboardLayout({
                 {/* Background Gradients similar to Hero */}
                 <div className="fixed top-0 left-0 w-full h-[500px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[var(--volt)]/5 via-transparent to-transparent pointer-events-none" />
 
+                {/* Demo Mode Banner - Clear indication of simulated data */}
+                {!isConnected && (
+                    <div className="relative z-20 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border-b border-amber-500/20">
+                        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2">
+                            <div className="flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                                <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
+                                    🧪 Preview Mode
+                                </span>
+                                <span className="text-xs text-amber-400/60 hidden sm:inline">
+                                    — All data is simulated for demonstration
+                                </span>
+                            </div>
+                            <button
+                                onClick={handleConnect}
+                                disabled={isConnecting}
+                                className="text-[10px] sm:text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors uppercase tracking-wider flex items-center gap-1.5"
+                            >
+                                {isConnecting ? "Connecting..." : "Connect for real data →"}
+                            </button>
+                        </div>
+                    </div>
+                )}
+
                 <div className="flex-1 overflow-y-auto relative z-10">
                     {children}
                 </div>

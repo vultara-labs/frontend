@@ -40,19 +40,21 @@ export default function DashboardPage() {
     const [userData, setUserData] = useState<typeof MOCK_USER_DATA | null>(null);
 
     // Simulate data loading and live market fluctuations
+    // NOTE: APY randomization happens ONLY client-side to prevent hydration mismatch
     useEffect(() => {
-        // Randomize APY slightly to show "live" data perception
+        // Randomize APY slightly to show "live" data perception (client-side only)
         const dynamicRate = 4.2 + Math.random() * 0.6;
-        setLiveApy(dynamicRate);
+        const formattedRate = Number(dynamicRate.toFixed(2));
+        setLiveApy(formattedRate);
 
         if (DEMO_LOADING_STATE) {
             const timer = setTimeout(() => {
                 setIsLoading(false);
-                setUserData(DEMO_EMPTY_STATE ? null : { ...MOCK_USER_DATA, apy: Number(dynamicRate.toFixed(2)) });
+                setUserData(DEMO_EMPTY_STATE ? null : { ...MOCK_USER_DATA, apy: formattedRate });
             }, 2000);
             return () => clearTimeout(timer);
         } else {
-            setUserData(DEMO_EMPTY_STATE ? null : { ...MOCK_USER_DATA, apy: Number(dynamicRate.toFixed(2)) });
+            setUserData(DEMO_EMPTY_STATE ? null : { ...MOCK_USER_DATA, apy: formattedRate });
         }
     }, []);
 
