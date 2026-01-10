@@ -23,7 +23,7 @@ export const LANDING_NAV_ITEMS = [
 export const FOOTER_PRODUCT_LINKS = [
     { label: 'Features', href: '#features' },
     { label: 'How It Works', href: '#how-it-works' },
-    { label: 'Documentation', href: '#', soon: true },
+    { label: 'Documentation', href: '/docs' },
 ] as const;
 
 export const FOOTER_ECOSYSTEM_LINKS = [
