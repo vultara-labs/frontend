@@ -3,7 +3,7 @@
 import { motion, useScroll, useTransform, useMotionValue, useSpring, useInView, animate } from "framer-motion";
 import { ArrowRight, PlayCircle, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
-import { useRef, MouseEvent, useEffect } from "react";
+import { useRef, MouseEvent, useEffect, useState } from "react";
 
 // Counter Component for "Live" Money Feel
 const Counter = ({ from, to }: { from: number; to: number }) => {
@@ -45,6 +45,14 @@ const Counter = ({ from, to }: { from: number; to: number }) => {
 export default function Hero() {
     const targetRef = useRef<HTMLDivElement>(null);
     const cardRef = useRef<HTMLDivElement>(null);
+    const [isDesktop, setIsDesktop] = useState(false);
+
+    useEffect(() => {
+        const checkDesktop = () => setIsDesktop(window.innerWidth >= 1024);
+        checkDesktop();
+        window.addEventListener('resize', checkDesktop);
+        return () => window.removeEventListener('resize', checkDesktop);
+    }, []);
 
     // Scroll Logic
     const { scrollYProgress } = useScroll({
@@ -92,77 +100,91 @@ export default function Hero() {
 
             {/* Main Content */}
             <motion.div
-                style={{ opacity, scale, y: yParallax }}
+                style={isDesktop ? { opacity, scale, y: yParallax } : {}}
                 className="relative z-10 mx-auto max-w-[1280px] px-6 w-full flex-grow flex items-center"
             >
                 <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center w-full">
 
                     {/* Left Content */}
+                    {/* Left Content */}
+                    {/* Left Content */}
                     <motion.div
                         initial={{ opacity: 0, x: -30, filter: "blur(10px)" }}
                         animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
                         transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
-                        className="lg:col-span-7 flex flex-col gap-6 lg:gap-8 max-w-2xl mx-auto lg:mx-0 text-center lg:text-left"
+                        className="lg:col-span-7 flex flex-col min-h-[85dvh] lg:min-h-0 justify-center lg:justify-start gap-8 lg:gap-8 max-w-2xl mx-auto lg:mx-0 text-center lg:text-left py-12 lg:py-0 relative"
                     >
-                        {/* Status Badge */}
-                        <div className="inline-flex items-center gap-2 self-center lg:self-start rounded-full border border-[var(--warning)]/30 bg-[var(--warning)]/10 px-3 py-1.5 text-[10px] font-bold text-[var(--warning)] uppercase tracking-widest backdrop-blur-md">
-                            <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--warning)] opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--warning)]"></span>
-                            </span>
-                            <span>Testnet Beta</span>
+                        {/* Mobile Ambient Glow */}
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] bg-[var(--volt)]/20 blur-[80px] rounded-full lg:hidden pointer-events-none animate-pulse-slow" />
+
+                        <div className="flex-1 flex flex-col justify-center gap-6 lg:gap-8 relative z-10">
+                            {/* Status Badge */}
+                            <div className="inline-flex items-center gap-2 self-center lg:self-start rounded-full border border-[var(--warning)]/30 bg-[var(--warning)]/10 px-3 py-1.5 text-[10px] font-bold text-[var(--warning)] uppercase tracking-widest backdrop-blur-md shadow-[0_0_15px_rgba(255,170,0,0.1)]">
+                                <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--warning)] opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--warning)]"></span>
+                                </span>
+                                <span>Testnet Beta</span>
+                            </div>
+
+                            {/* Headline */}
+                            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tighter leading-[0.95] text-white">
+                                THE SALARY <br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--volt)] via-white to-[var(--volt)] bg-[length:200%_auto] animate-gradient">
+                                    ENGINE.
+                                </span>
+                            </h1>
+
+                            {/* Description */}
+                            <p className="text-[15px] sm:text-base lg:text-lg text-[var(--text-secondary)] font-normal leading-relaxed max-w-xs sm:max-w-lg mx-auto lg:mx-0">
+                                Streamline crypto payroll and earn generous yield on idle USDC. Automated financial infrastructure for the open economy.
+                            </p>
+
+                            <div className="flex flex-col sm:flex-row items-center gap-3 mt-4 lg:mt-4 w-full sm:w-auto px-4 sm:px-0">
+                                <Link href="/dashboard" className="h-11 lg:h-12 px-6 lg:px-8 w-full sm:w-auto flex items-center justify-center gap-2 btn-primary group shadow-[0_0_20px_rgba(204,255,0,0.15)] text-sm lg:text-base font-bold tracking-wide">
+                                    <span className="relative z-10">Start Earning</span>
+                                    <ArrowRight size={16} className="relative z-10 group-hover:translate-x-1 transition-transform" />
+                                </Link>
+                                <button
+                                    className="h-11 lg:h-12 px-6 lg:px-8 w-full sm:w-auto flex items-center justify-center gap-2 btn-secondary group text-sm lg:text-base font-bold tracking-wide"
+                                    aria-label="Learn how Vultara works"
+                                    onClick={() => {
+                                        document.querySelector('#how-it-works')?.scrollIntoView({
+                                            behavior: 'smooth'
+                                        });
+                                    }}
+                                >
+                                    <PlayCircle size={18} className="text-[var(--text-tertiary)] group-hover:text-white transition-colors" />
+                                    <span>How it works</span>
+                                </button>
+                            </div>
                         </div>
 
-                        {/* Headline */}
-                        <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black tracking-tighter leading-[1] lg:leading-[0.9] text-white">
-                            THE SALARY <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/90 to-white/50">
-                                ENGINE.
-                            </span>
-                        </h1>
+                        {/* Social Proof & Scroll Hint */}
+                        <div className="pt-8 lg:pt-10 border-t border-white/5 flex flex-col justify-end items-center lg:items-start lg:justify-start gap-6 lg:gap-6 mt-auto lg:mt-0 relative z-10">
 
-                        {/* Description */}
-                        <p className="text-sm sm:text-base lg:text-lg text-[var(--text-secondary)] font-normal leading-relaxed max-w-lg mx-auto lg:mx-0">
-                            Streamline crypto payroll and earn generous yield on idle USDC. Automated financial infrastructure for the open economy.
-                        </p>
+                            {/* Logos */}
+                            <div className="flex flex-col sm:flex-row gap-4 lg:gap-6 items-center w-full lg:w-auto">
+                                <span className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest text-center lg:text-left w-full lg:w-auto">Audited & Trusted By</span>
+                                <div className="flex gap-x-6 gap-y-4 flex-wrap justify-center items-center">
+                                    <a href="https://www.certik.com" target="_blank" rel="noopener noreferrer" className="h-8 lg:h-10 px-3 lg:px-4 bg-white/[0.02] rounded-lg flex items-center justify-center border border-white/[0.05] hover:border-[#00D4AA]/30 hover:bg-[#00D4AA]/5 transition-all duration-300 opacity-70 hover:opacity-100 group">
+                                        <img src="/logos/certik.png" alt="CertiK" className="h-4 lg:h-6 w-auto brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity" />
+                                    </a>
+                                    <a href="https://hacken.io" target="_blank" rel="noopener noreferrer" className="h-7 lg:h-9 px-3 lg:px-4 bg-white/[0.02] rounded-lg flex items-center justify-center border border-white/[0.05] hover:border-[#30E3CA]/30 hover:bg-[#30E3CA]/5 transition-all duration-300 opacity-70 hover:opacity-100 group">
+                                        <img src="/logos/hacken.svg" alt="Hacken" className="h-4 lg:h-6 w-auto brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity" />
+                                    </a>
+                                    <a href="https://www.openzeppelin.com" target="_blank" rel="noopener noreferrer" className="h-7 lg:h-9 px-3 lg:px-4 bg-white/[0.02] rounded-lg flex items-center justify-center border border-white/[0.05] hover:border-[#4E5EE4]/30 hover:bg-[#4E5EE4]/5 transition-all duration-300 opacity-70 hover:opacity-100 group">
+                                        <img src="/logos/openzeppelin.svg" alt="OpenZeppelin" className="h-4 lg:h-6 w-auto brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity" />
+                                    </a>
+                                </div>
+                            </div>
 
-                        <div className="flex flex-col sm:flex-row items-center gap-4 mt-2 lg:mt-4 w-full sm:w-auto">
-                            <Link href="/dashboard" className="h-12 px-8 flex items-center justify-center gap-3 btn-primary group w-full sm:w-auto">
-                                <span className="relative z-10">Start Earning</span>
-                                <ArrowRight size={18} className="relative z-10 group-hover:translate-x-1 transition-transform" />
-                            </Link>
-                            <button
-                                className="h-12 px-8 flex items-center justify-center gap-3 btn-secondary group w-full sm:w-auto"
-                                aria-label="Learn how Vultara works"
-                                onClick={() => {
-                                    document.querySelector('#how-it-works')?.scrollIntoView({
-                                        behavior: 'smooth'
-                                    });
-                                }}
-                            >
-                                <PlayCircle size={20} className="text-[var(--text-tertiary)] group-hover:text-white transition-colors" />
-                                <span>How it works</span>
-                            </button>
-                        </div>
-
-                        {/* Social Proof */}
-                        <div className="pt-8 lg:pt-10 border-t border-white/5 flex flex-col sm:flex-row gap-4 lg:gap-6 items-center justify-center lg:justify-start">
-                            <span className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest">Audited & Trusted By</span>
-                            <div className="flex gap-x-6 gap-y-4 flex-wrap justify-center items-center">
-                                {/* CertiK */}
-                                <a href="https://www.certik.com" target="_blank" rel="noopener noreferrer" className="h-9 lg:h-10 px-3 lg:px-4 bg-white/[0.02] rounded-lg flex items-center justify-center border border-white/[0.05] hover:border-[#00D4AA]/30 hover:bg-[#00D4AA]/5 transition-all duration-300 opacity-70 hover:opacity-100 group">
-                                    <img src="/logos/certik.png" alt="CertiK" className="h-5 lg:h-6 w-auto brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity" />
-                                </a>
-
-                                {/* Hacken */}
-                                <a href="https://hacken.io" target="_blank" rel="noopener noreferrer" className="h-8 lg:h-9 px-3 lg:px-4 bg-white/[0.02] rounded-lg flex items-center justify-center border border-white/[0.05] hover:border-[#30E3CA]/30 hover:bg-[#30E3CA]/5 transition-all duration-300 opacity-70 hover:opacity-100 group">
-                                    <img src="/logos/hacken.svg" alt="Hacken" className="h-5 lg:h-6 w-auto brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity" />
-                                </a>
-
-                                {/* OpenZeppelin */}
-                                <a href="https://www.openzeppelin.com" target="_blank" rel="noopener noreferrer" className="h-8 lg:h-9 px-3 lg:px-4 bg-white/[0.02] rounded-lg flex items-center justify-center border border-white/[0.05] hover:border-[#4E5EE4]/30 hover:bg-[#4E5EE4]/5 transition-all duration-300 opacity-70 hover:opacity-100 group">
-                                    <img src="/logos/openzeppelin.svg" alt="OpenZeppelin" className="h-5 lg:h-6 w-auto brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity" />
-                                </a>
+                            {/* Scroll Indicator (Mobile Only) */}
+                            <div className="lg:hidden flex flex-col items-center gap-2 opacity-50 animate-bounce pt-4">
+                                <span className="text-[9px] uppercase tracking-[0.2em] text-white/50">Scroll</span>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50">
+                                    <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
+                                </svg>
                             </div>
                         </div>
                     </motion.div>
