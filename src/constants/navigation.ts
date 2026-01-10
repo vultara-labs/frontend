@@ -15,9 +15,8 @@ export const DASHBOARD_NAV_ITEMS = [
 ] as const;
 
 export const LANDING_NAV_ITEMS = [
-    { label: 'Product', href: '#features' },
+    { label: 'Features', href: '#features' },
     { label: 'How It Works', href: '#how-it-works' },
-    { label: 'Security', href: '#security' },
     { label: 'About', href: '#about' },
 ] as const;
 

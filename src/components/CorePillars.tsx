@@ -25,7 +25,7 @@ export default function CorePillars() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
                         transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                        className="col-span-1 md:col-span-12 lg:col-span-6 min-h-[440px] lg:min-h-[480px] card-solid rounded-[2rem] p-6 sm:p-8 lg:p-10 flex flex-col justify-between group relative overflow-hidden"
+                        className="col-span-1 md:col-span-12 lg:col-span-6 min-h-[440px] lg:min-h-[480px] card-solid rounded-[2rem] p-6 sm:p-8 lg:p-10 flex flex-col justify-between group relative overflow-hidden border border-[var(--border-medium)] hover:border-[var(--volt)]/50 hover:shadow-[0_0_60px_-15px_rgba(204,255,0,0.3)] hover:scale-[1.01] transition-all duration-500"
                     >
                         <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--volt)]/5 blur-[80px] rounded-full pointer-events-none lg:hidden" />
 
@@ -95,7 +95,7 @@ export default function CorePillars() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
                         transition={{ delay: 0.1, duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                        className="col-span-1 md:col-span-6 lg:col-span-3 min-h-[380px] lg:min-h-[480px] card-solid rounded-[2rem] p-6 lg:p-8 flex flex-col group overflow-hidden relative"
+                        className="col-span-1 md:col-span-6 lg:col-span-3 min-h-[380px] lg:min-h-[480px] card-solid rounded-[2rem] p-6 lg:p-8 flex flex-col group overflow-hidden relative border border-[var(--border-medium)] hover:border-[var(--volt)]/50 hover:shadow-[0_0_60px_-15px_rgba(204,255,0,0.3)] hover:scale-[1.01] transition-all duration-500"
                     >
                         <div className="absolute bottom-0 left-0 w-48 h-48 bg-[var(--volt)]/5 blur-[60px] rounded-full pointer-events-none lg:hidden" />
 
@@ -127,7 +127,7 @@ export default function CorePillars() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
                         transition={{ delay: 0.2, duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                        className="col-span-1 md:col-span-6 lg:col-span-3 min-h-[380px] lg:min-h-[480px] card-solid rounded-[2rem] p-6 lg:p-8 flex flex-col group relative overflow-hidden"
+                        className="col-span-1 md:col-span-6 lg:col-span-3 min-h-[380px] lg:min-h-[480px] card-solid rounded-[2rem] p-6 lg:p-8 flex flex-col group relative overflow-hidden border border-[var(--border-medium)] hover:border-[var(--volt)]/50 hover:shadow-[0_0_60px_-15px_rgba(204,255,0,0.3)] hover:scale-[1.01] transition-all duration-500"
                     >
                         <div className="mb-5 lg:mb-8 flex w-12 h-12 lg:w-12 lg:h-12 items-center justify-center rounded-xl bg-white/5 text-[var(--volt)] border border-white/5 group-hover:bg-[var(--volt-glass)] group-hover:border-[var(--volt)]/20 transition-all duration-500">
                             <Network size={24} className="lg:w-6 lg:h-6" />
@@ -152,7 +152,7 @@ export default function CorePillars() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
                         transition={{ delay: 0.3, duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                        className="col-span-1 md:col-span-12 min-h-[440px] card-solid rounded-[2rem] p-6 sm:p-8 lg:p-12 flex flex-col md:flex-row items-center gap-8 lg:gap-16 relative overflow-visible group"
+                        className="col-span-1 md:col-span-12 min-h-[440px] card-solid rounded-[2rem] p-6 sm:p-8 lg:p-12 flex flex-col md:flex-row items-center gap-8 lg:gap-16 relative overflow-visible group border border-[var(--border-medium)] hover:border-[var(--volt)]/50 hover:shadow-[0_0_60px_-15px_rgba(204,255,0,0.3)] hover:scale-[1.005] transition-all duration-500"
                     >
                         <div className="absolute -right-20 -top-20 w-96 h-96 rounded-full bg-[var(--volt)]/5 blur-[100px] group-hover:bg-[var(--volt)]/10 transition-colors duration-1000" />
 
