@@ -148,11 +148,11 @@ export default function AIAdvisorPage() {
                         <div>
                             <h2 className="text-xs lg:text-sm font-bold text-white flex items-center gap-2">
                                 Nova
-                                <span className="text-[9px] lg:text-[10px] px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-amber-400 font-medium">BETA</span>
+                                <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-amber-400 font-bold">BETA</span>
                             </h2>
                             <div className="flex items-center gap-1.5">
                                 <span className="w-1.5 h-1.5 rounded-full bg-[var(--success)] animate-pulse" />
-                                <span className="text-[10px] text-[var(--success)] font-medium">Online</span>
+                                <span className="text-[10px] text-[var(--success)] font-bold">Online</span>
                             </div>
                         </div>
                     </div>
@@ -223,7 +223,7 @@ export default function AIAdvisorPage() {
                                                 <div key={j}>
                                                     <div className="flex justify-between text-xs mb-1.5">
                                                         <span className="text-[#A1A1AA]">{item.label}</span>
-                                                        <span className="text-white font-medium">{item.value}</span>
+                                                        <span className="text-white font-bold">{item.value}</span>
                                                     </div>
                                                     <div className="w-full bg-white/[0.05] h-1 lg:h-1.5 rounded-full overflow-hidden">
                                                         <motion.div
@@ -238,7 +238,7 @@ export default function AIAdvisorPage() {
                                             ))}
                                         </div>
                                         <button
-                                            className="mt-3 lg:mt-4 w-full py-2 bg-white/[0.02] text-[10px] lg:text-xs text-[var(--text-tertiary)] font-medium rounded-lg border border-[var(--border-subtle)] flex items-center justify-center gap-2 cursor-not-allowed opacity-60"
+                                            className="mt-3 lg:mt-4 w-full py-2 bg-white/[0.02] text-[10px] lg:text-xs text-[var(--text-tertiary)] font-bold rounded-lg border border-[var(--border-subtle)] flex items-center justify-center gap-2 cursor-not-allowed opacity-60"
                                             title="Coming Soon"
                                             disabled
                                         >
@@ -330,7 +330,7 @@ export default function AIAdvisorPage() {
                             <button
                                 key={i}
                                 onClick={() => handleSend(prompt)}
-                                className="whitespace-nowrap px-3 lg:px-4 py-1.5 lg:py-2 rounded-full bg-white/[0.02] border border-[var(--border-medium)] text-[10px] lg:text-xs font-medium text-[var(--text-secondary)] hover:text-white hover:border-purple-500/50 hover:bg-purple-500/5 transition-all"
+                                className="whitespace-nowrap px-3 lg:px-4 py-1.5 lg:py-2 rounded-full bg-white/[0.02] border border-[var(--border-medium)] text-[10px] lg:text-xs font-bold text-[var(--text-secondary)] hover:text-white hover:border-purple-500/50 hover:bg-purple-500/5 transition-all"
                             >
                                 {prompt}
                             </button>

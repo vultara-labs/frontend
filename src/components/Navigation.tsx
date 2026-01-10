@@ -36,7 +36,7 @@ export default function Navigation() {
                         { label: 'Security', href: '#security' },
                         { label: 'About', href: '#about' }
                     ].map((item) => (
-                        <a key={item.label} href={item.href} className="text-sm font-medium text-[var(--text-secondary)] hover:text-white transition-colors tracking-wide uppercase text-[11px]">
+                        <a key={item.label} href={item.href} className="text-[11px] font-bold text-[var(--text-secondary)] hover:text-white transition-colors tracking-widest uppercase">
                             {item.label}
                         </a>
                     ))}

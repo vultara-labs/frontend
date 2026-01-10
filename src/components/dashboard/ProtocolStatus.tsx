@@ -68,7 +68,7 @@ export function ProtocolStatus({ balance }: { balance: number }) {
                     />
                 </div>
 
-                <p className="text-[10px] text-[var(--text-secondary)] mt-1 font-medium">
+                <p className="text-[10px] text-[var(--text-secondary)] mt-1 font-bold">
                     {nextMilestone !== "MAX LEVEL" ? (
                         <>Deposit <span className="text-white font-mono gap-1 inline-flex">{nextMilestone.split(' to ')[0]}</span> to unlock {nextLevel.name}</>
                     ) : (

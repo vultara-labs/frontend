@@ -15,7 +15,7 @@ export default function CorePillars() {
                     <h2 className="mb-6 lg:mb-8 text-4xl sm:text-5xl lg:text-7xl font-black uppercase tracking-tighter text-white leading-[0.85]">
                         PROTOCOL <span className="text-[var(--volt)]">ARCHITECTURE</span>
                     </h2>
-                    <p className="max-w-xl text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed tracking-normal font-light">
+                    <p className="max-w-xl text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
                         Infrastructure built for the automated economy.
                         Precision-engineered modules working in perfect sync.
                     </p>

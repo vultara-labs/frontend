@@ -239,12 +239,11 @@ body {
 .btn-primary {
   background: var(--volt);
   color: #000;
-  font-weight: 600;
+  font-weight: 700;
   border-radius: 0.5rem;
   transition: all 0.4s var(--ease-spring);
   position: relative;
   overflow: hidden;
-  letter-spacing: -0.01em;
   text-transform: uppercase;
   font-size: 0.875rem;
   /* 14px */
@@ -374,12 +373,62 @@ html {
   border-radius: 0.5rem;
 }
 
-/* 5. TYPOGRAPHY UTILITIES */
+/* 5. TYPOGRAPHY UTILITIES - STANDARDIZED SYSTEM */
+
+/* Labels: Small uppercase text for categories, badges, statuses */
 .label {
-  font-size: var(--label-size);
-  font-weight: var(--label-weight);
-  letter-spacing: var(--label-tracking);
-  text-transform: var(--label-transform);
+  font-size: 0.625rem;
+  /* 10px */
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+/* Body text variants */
+.text-body {
+  font-size: 0.875rem;
+  /* 14px */
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+
+.text-body-lg {
+  font-size: 1rem;
+  /* 16px */
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+}
+
+.text-body-sm {
+  font-size: 0.75rem;
+  /* 12px */
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* Card/Section titles */
+.text-title {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+/* Hero/Section Headlines */
+.text-headline {
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  line-height: 0.9;
+}
+
+/* Numeric/Data display */
+.text-mono {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
 }
 
 /* 6. PERFORMANCE UTILITIES */

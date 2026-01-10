@@ -69,7 +69,7 @@ export default function DashboardPage() {
                     <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white mb-2">
                         Dashboard
                     </h1>
-                    <p className="text-[var(--text-secondary)] font-medium">
+                    <p className="text-sm text-[var(--text-secondary)]">
                         {hasBalance ? "Preview mode. Connect wallet to see your actual data." : "Welcome! Start your journey."}
                     </p>
                 </div>
@@ -112,13 +112,13 @@ export default function DashboardPage() {
                             </div>
 
                             <div className="mb-6 lg:mb-8">
-                                <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-medium tracking-tighter text-white mb-4">
+                                <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tighter text-white mb-4">
                                     ${Math.floor(userData!.balance).toLocaleString()}<span className="text-white/40">.{(userData!.balance % 1).toFixed(2).slice(2)}</span>
                                 </h2>
                                 <div className="inline-flex items-center gap-3 px-3 py-1.5 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/10">
                                     <TrendUp size={14} weight="duotone" className="text-[var(--success)]" />
                                     <span className="text-sm font-bold text-[var(--success)]">+${userData!.monthlyEarnings.toLocaleString()}</span>
-                                    <span className="text-xs font-medium text-[var(--success)]/60 uppercase tracking-wide">
+                                    <span className="text-xs text-[var(--success)]/60 uppercase tracking-widest font-bold">
                                         This Month
                                     </span>
                                 </div>
@@ -158,7 +158,7 @@ export default function DashboardPage() {
                             </span>
                             <Lightning size={16} weight="duotone" className="text-[var(--volt)]" />
                         </div>
-                        <p className="text-2xl lg:text-4xl font-medium tracking-tighter text-[var(--volt)]">
+                        <p className="text-2xl lg:text-4xl font-bold tracking-tighter text-[var(--volt)]">
                             {userData?.apy || 4.5}%
                         </p>
                         <div className="mt-3 pt-3 border-t border-white/5">
@@ -246,7 +246,7 @@ export default function DashboardPage() {
                                         <p className="text-[10px] lg:text-xs text-[var(--text-secondary)]">{item.date}</p>
                                     </div>
                                 </div>
-                                <span className={`font-mono text-sm lg:text-base font-medium ${item.amount.startsWith("+") ? "text-[var(--success)]" : "text-white"}`}>
+                                <span className={`font-mono text-sm lg:text-base font-bold ${item.amount.startsWith("+") ? "text-[var(--success)]" : "text-white"}`}>
                                     {item.amount}
                                 </span>
                             </div>

@@ -20,7 +20,7 @@ export default function Footer() {
                         <Link href="/" className="flex items-center gap-4 mb-8">
                             <img src="/logo-dark.png" alt="Vultara" className="h-12 w-auto" />
                         </Link>
-                        <p className="text-[var(--text-secondary)] font-light leading-loose max-w-md mb-8">
+                        <p className="text-[var(--text-secondary)] text-sm leading-relaxed max-w-md mb-8">
                             Secure Your Income, Amplify Your Growth. The smart USDC vault for Indonesian Web3 freelancers.
                         </p>
                         {/* Social Links */}

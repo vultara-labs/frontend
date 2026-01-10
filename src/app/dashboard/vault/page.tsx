@@ -22,7 +22,7 @@ export default function VaultPage() {
                 <div>
                     <Link href="/dashboard" className="inline-flex items-center gap-2 text-[var(--text-secondary)] hover:text-white transition-colors mb-4 lg:mb-6 group">
                         <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-                        <span className="text-sm font-medium">Back to Dashboard</span>
+                        <span className="text-sm font-bold">Back to Dashboard</span>
                     </Link>
                     <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-white mb-2">
                         USDC Vault
@@ -61,12 +61,12 @@ export default function VaultPage() {
                             <img src="/logos/usdc.svg" alt="USDC" className="w-12 h-12 lg:w-14 lg:h-14" />
                             <div>
                                 <h2 className="text-xl lg:text-2xl font-bold text-white mb-1">Cash-Secured Put</h2>
-                                <p className="text-sm text-[var(--text-secondary)]">Organic Yield Strategy</p>
+                                <p className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-widest">Organic Yield Strategy</p>
                             </div>
                         </div>
                         <div className="text-left sm:text-right">
                             <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-secondary)] mb-1">Current APY</p>
-                            <p className="text-2xl lg:text-3xl font-mono font-medium text-[var(--volt)]">4.5%</p>
+                            <p className="text-2xl lg:text-3xl font-mono font-bold text-[var(--volt)]">4.5%</p>
                         </div>
                     </div>
 
@@ -79,7 +79,7 @@ export default function VaultPage() {
                         ].map((stat, i) => (
                             <div key={i} className="p-3 lg:p-4 rounded-lg lg:rounded-xl bg-black/20 border border-[var(--border-subtle)]">
                                 <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-tertiary)] mb-2">{stat.label}</p>
-                                <p className={`text-base lg:text-lg font-mono font-medium ${stat.highlight ? "text-[var(--success)]" : "text-white"}`}>{stat.value}</p>
+                                <p className={`text-base lg:text-lg font-mono font-bold ${stat.highlight ? "text-[var(--success)]" : "text-white"}`}>{stat.value}</p>
                                 <p className="text-[10px] text-[var(--text-tertiary)] mt-1">{stat.sub}</p>
                             </div>
                         ))}
@@ -117,8 +117,8 @@ export default function VaultPage() {
                             { label: "Management Fee", value: "0%" },
                         ].map((row, i) => (
                             <div key={i} className="flex justify-between items-center py-2 border-b border-[var(--border-subtle)] last:border-0">
-                                <span className="text-xs lg:text-sm text-[var(--text-secondary)]">{row.label}</span>
-                                <span className="text-xs lg:text-sm font-medium text-white text-right">{row.value}</span>
+                                <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-widest">{row.label}</span>
+                                <span className="text-xs lg:text-sm font-bold text-white text-right">{row.value}</span>
                             </div>
                         ))}
                     </div>

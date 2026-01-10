@@ -162,7 +162,7 @@ export default function DashboardLayout({
                                                 size={22}
                                                 className={`transition-colors duration-300 ${isActive ? "text-[var(--volt)]" : "group-hover:text-white"}`}
                                             />
-                                            <span className="text-base font-medium tracking-wide">{item.label}</span>
+                                            <span className="text-base font-bold tracking-wide">{item.label}</span>
                                             {isActive && (
                                                 <CaretRight size={16} weight="bold" className="ml-auto text-[var(--volt)]" />
                                             )}
@@ -241,7 +241,7 @@ export default function DashboardLayout({
                                     size={20}
                                     className={`transition-colors duration-300 ${isActive ? "text-[var(--volt)]" : "group-hover:text-white"}`}
                                 />
-                                <span className="text-sm font-medium tracking-wide">{item.label}</span>
+                                <span className="text-sm font-bold tracking-wide">{item.label}</span>
                                 {isActive && (
                                     <CaretRight size={14} weight="bold" className="ml-auto text-[var(--volt)]" />
                                 )}
@@ -289,23 +289,26 @@ export default function DashboardLayout({
 
                 {/* Demo Mode Banner - Clear indication of simulated data */}
                 {!isConnected && (
-                    <div className="relative z-20 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border-b border-amber-500/20">
+                    <div className="relative z-20 bg-[var(--warning)]/5 border-b border-[var(--warning)]/20">
                         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2">
-                            <div className="flex items-center gap-2">
-                                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-                                <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
-                                    🧪 Preview Mode
-                                </span>
-                                <span className="text-xs text-amber-400/60 hidden sm:inline">
-                                    — All data is simulated for demonstration
+                            <div className="flex items-center gap-3">
+                                <div className="flex items-center gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--warning)] animate-pulse" />
+                                    <span className="text-[10px] font-bold text-[var(--warning)] uppercase tracking-widest">
+                                        Preview Mode
+                                    </span>
+                                </div>
+                                <span className="text-[10px] text-[var(--warning)]/60 hidden sm:inline">
+                                    All data is simulated for demonstration
                                 </span>
                             </div>
                             <button
                                 onClick={handleConnect}
                                 disabled={isConnecting}
-                                className="text-[10px] sm:text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors uppercase tracking-wider flex items-center gap-1.5"
+                                className="text-[10px] font-bold text-[var(--warning)] hover:text-white transition-colors uppercase tracking-widest flex items-center gap-1.5"
                             >
-                                {isConnecting ? "Connecting..." : "Connect for real data →"}
+                                {isConnecting ? "Connecting..." : "Connect for Real Data"}
+                                <CaretRight size={12} weight="bold" />
                             </button>
                         </div>
                     </div>

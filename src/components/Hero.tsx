@@ -199,7 +199,7 @@ export default function Hero() {
                                         </div>
                                         <div>
                                             <h3 className="text-white font-bold text-lg uppercase tracking-wider">USDC Vault</h3>
-                                            <div className="flex items-center gap-2 text-[9px] text-[var(--volt)] font-bold uppercase tracking-widest bg-[var(--volt-glass)] px-2 py-0.5 rounded-full w-fit mt-1 border border-[var(--volt)]/10">
+                                            <div className="flex items-center gap-2 text-[10px] text-[var(--volt)] font-bold uppercase tracking-widest bg-[var(--volt-glass)] px-2 py-0.5 rounded-full w-fit mt-1 border border-[var(--volt)]/10">
                                                 <span className="w-1.5 h-1.5 rounded-full bg-[var(--volt)] animate-pulse" />
                                                 Active Strategy
                                             </div>

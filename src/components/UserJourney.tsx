@@ -30,7 +30,7 @@ export default function UserJourney() {
                     <h2 className="mb-6 lg:mb-8 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter text-white leading-[0.9]">
                         Flow <span className="text-[var(--volt)]">Timeline</span>
                     </h2>
-                    <p className="text-[var(--text-secondary)] text-base lg:text-lg leading-relaxed max-w-lg tracking-normal font-light">
+                    <p className="text-[var(--text-secondary)] text-sm lg:text-base leading-relaxed max-w-lg">
                         Your earnings journey, automated in seconds. From login to liquidity, fully on-chain.
                     </p>
                 </div>
@@ -76,7 +76,7 @@ export default function UserJourney() {
                                         Step 0{idx + 1}
                                     </span>
                                     <h3 className="text-white font-bold text-lg lg:text-xl mb-2 lg:mb-3 uppercase tracking-tight">{step.title}</h3>
-                                    <p className="text-[var(--text-secondary)] text-sm leading-relaxed tracking-wide font-light">{step.desc}</p>
+                                    <p className="text-[var(--text-secondary)] text-sm leading-relaxed">{step.desc}</p>
                                 </div>
                             </motion.div>
                         ))}

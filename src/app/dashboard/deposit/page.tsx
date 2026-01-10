@@ -113,7 +113,7 @@ export default function DepositPage() {
             <div className="mb-8 lg:mb-12">
                 <Link href="/dashboard" className="inline-flex items-center gap-2 text-[var(--text-secondary)] hover:text-white transition-colors mb-4 lg:mb-6 group">
                     <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-                    <span className="text-sm font-medium">Back to Dashboard</span>
+                    <span className="text-sm font-bold">Back to Dashboard</span>
                 </Link>
                 <div className="flex items-center gap-3 mb-2">
                     <div className="p-2 rounded-lg bg-[var(--volt)]/10 text-[var(--volt)]">
@@ -143,7 +143,7 @@ export default function DepositPage() {
                             }`}>
                             {step > s.num ? <CheckCircle size={14} weight="fill" /> : s.num}
                         </div>
-                        <span className={`text-xs sm:text-sm tracking-wide font-medium whitespace-nowrap ${step >= s.num ? "text-white" : "text-[var(--text-muted)]"}`}>
+                        <span className={`text-xs sm:text-sm tracking-wide font-bold whitespace-nowrap ${step >= s.num ? "text-white" : "text-[var(--text-muted)]"}`}>
                             {s.label}
                         </span>
                         {i < 3 && <div className={`w-6 sm:w-8 h-px transition-colors duration-300 ${step > s.num ? "bg-[var(--volt)]" : "bg-[var(--border-subtle)]"}`} />}
@@ -174,7 +174,7 @@ export default function DepositPage() {
                                 value={amount}
                                 onChange={(e) => setAmount(e.target.value)}
                                 placeholder="0.00"
-                                className="w-full bg-transparent text-4xl font-mono font-medium text-white placeholder:text-white/10 outline-none"
+                                className="w-full bg-transparent text-4xl font-mono font-bold text-white placeholder:text-white/10 outline-none"
                                 autoFocus
                             />
                             <button
@@ -189,7 +189,7 @@ export default function DepositPage() {
                     {/* Yield Preview */}
                     <div className="p-4 lg:p-6 rounded-xl lg:rounded-2xl bg-white/[0.02] border border-[var(--border-subtle)]">
                         <div className="flex justify-between items-center mb-4">
-                            <span className="text-sm text-[var(--text-secondary)]">Estimated Yield</span>
+                            <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-widest">Estimated Yield</span>
                             <div className="flex items-center gap-1.5 text-[var(--success)]">
                                 <TrendUp size={14} weight="bold" />
                                 <span className="text-xs font-bold">{currentAPY}% APY</span>
@@ -197,13 +197,13 @@ export default function DepositPage() {
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <p className="text-[10px] sm:text-xs text-[var(--text-tertiary)] uppercase tracking-wider mb-1">Monthly</p>
+                                <p className="text-[10px] sm:text-xs text-[var(--text-tertiary)] uppercase tracking-widest font-bold mb-1">Monthly</p>
                                 <p className="text-lg sm:text-xl font-mono font-bold text-white">
                                     +${estimatedMonthlyYield.toFixed(2)}
                                 </p>
                             </div>
                             <div>
-                                <p className="text-[10px] sm:text-xs text-[var(--text-tertiary)] uppercase tracking-wider mb-1">Yearly</p>
+                                <p className="text-[10px] sm:text-xs text-[var(--text-tertiary)] uppercase tracking-widest font-bold mb-1">Yearly</p>
                                 <p className="text-lg sm:text-xl font-mono font-bold text-[var(--volt)]">
                                     +${estimatedYearlyYield.toFixed(2)}
                                 </p>
@@ -265,7 +265,7 @@ export default function DepositPage() {
                     </div>
 
                     <div className="p-4 rounded-xl bg-white/[0.02] border border-[var(--border-subtle)] flex justify-between items-center">
-                        <span className="text-sm text-[var(--text-secondary)]">Amount to Approve</span>
+                        <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-widest">Amount to Approve</span>
                         <span className="font-mono text-white text-lg font-bold">${numericAmount.toLocaleString()} USDC</span>
                     </div>
 
@@ -308,23 +308,23 @@ export default function DepositPage() {
 
                         <div className="space-y-3 lg:space-y-4">
                             <div className="flex justify-between py-2 lg:py-3 border-b border-[var(--border-subtle)]">
-                                <span className="text-xs lg:text-sm text-[var(--text-secondary)]">Deposit Amount</span>
+                                <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-widest">Deposit Amount</span>
                                 <span className="text-white font-mono text-sm lg:text-base">${numericAmount.toLocaleString()} USDC</span>
                             </div>
                             <div className="flex justify-between py-2 lg:py-3 border-b border-[var(--border-subtle)]">
-                                <span className="text-xs lg:text-sm text-[var(--text-secondary)]">Strategy</span>
+                                <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-widest">Strategy</span>
                                 <span className="text-white text-sm lg:text-base">Thetanuts V3 CSP</span>
                             </div>
                             <div className="flex justify-between py-2 lg:py-3 border-b border-[var(--border-subtle)]">
-                                <span className="text-xs lg:text-sm text-[var(--text-secondary)]">Current APY</span>
+                                <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-widest">Current APY</span>
                                 <span className="text-[var(--success)] font-bold text-sm lg:text-base">{currentAPY}%</span>
                             </div>
                             <div className="flex justify-between py-2 lg:py-3 border-b border-[var(--border-subtle)]">
-                                <span className="text-xs lg:text-sm text-[var(--text-secondary)]">Est. Monthly Yield</span>
+                                <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-widest">Est. Monthly Yield</span>
                                 <span className="text-[var(--volt)] font-mono font-bold text-base lg:text-lg">+${estimatedMonthlyYield.toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between py-2 lg:py-3">
-                                <span className="text-xs lg:text-sm text-[var(--text-secondary)]">Network</span>
+                                <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-widest">Network</span>
                                 <span className="text-white text-sm flex items-center gap-2">
                                     <span className="w-2 h-2 rounded-full bg-blue-500" />
                                     Base
