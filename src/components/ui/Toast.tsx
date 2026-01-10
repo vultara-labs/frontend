@@ -36,7 +36,6 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         const id = Math.random().toString(36).substring(7);
         setToasts((prev) => [...prev, { id, type, title, description }]);
 
-        // Auto remove after 5 seconds
         setTimeout(() => {
             setToasts((prev) => prev.filter((t) => t.id !== id));
         }, 5000);
@@ -86,25 +85,14 @@ function ToastContainer({ toasts, removeToast }: { toasts: Toast[]; removeToast:
                             className="pointer-events-auto min-w-[320px] max-w-md p-4 rounded-xl bg-[var(--obsidian-surface)] border border-[var(--border-medium)] shadow-2xl flex items-start gap-3"
                             style={{ borderLeftColor: color, borderLeftWidth: "3px" }}
                         >
-                            <div
-                                className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                                style={{ backgroundColor: `${color}20` }}
-                            >
+                            <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: `${color}20` }}>
                                 <Icon size={18} style={{ color }} />
                             </div>
                             <div className="flex-1 min-w-0">
                                 <p className="text-sm font-bold text-white mb-0.5">{toast.title}</p>
-                                {toast.description && (
-                                    <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-                                        {toast.description}
-                                    </p>
-                                )}
+                                {toast.description && <p className="text-xs text-[var(--text-secondary)] leading-relaxed">{toast.description}</p>}
                             </div>
-                            <button
-                                onClick={() => removeToast(toast.id)}
-                                className="w-6 h-6 rounded-lg flex items-center justify-center text-[var(--text-tertiary)] hover:text-white hover:bg-white/5 transition-colors shrink-0"
-                                aria-label="Dismiss"
-                            >
+                            <button onClick={() => removeToast(toast.id)} className="w-6 h-6 rounded-lg flex items-center justify-center text-[var(--text-tertiary)] hover:text-white hover:bg-white/5 transition-colors shrink-0" aria-label="Dismiss">
                                 <X size={14} />
                             </button>
                         </motion.div>

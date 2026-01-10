@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { LANDING_NAV_ITEMS } from "@/constants";
 
 export default function Navigation() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -16,33 +17,18 @@ export default function Navigation() {
             className="fixed top-0 left-0 right-0 z-50 border-b border-[var(--border-subtle)] bg-[var(--obsidian-base)]/80 backdrop-blur-xl"
         >
             <div className="mx-auto max-w-[1280px] px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
-                {/* Logo */}
                 <Link href="/" className="flex items-center gap-3 group">
-                    {/* <div className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-xl border border-white/10 text-[var(--volt)] group-hover:border-[var(--volt)]/50 group-hover:bg-[var(--volt-glass)] transition-all duration-300">
-                        <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 4L11 20" stroke="currentColor" strokeLinecap="round" strokeWidth="3"></path>
-                            <path d="M11 20L18 4L14 4" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
-                            <path d="M18 4L21 7" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
-                        </svg>
-                    </div> */}
                     <img src="/logo-dark.png" alt="Vultara" className="h-10 w-auto" />
                 </Link>
 
-                {/* Desktop Navigation */}
                 <nav className="hidden md:flex items-center gap-8">
-                    {[
-                        { label: 'Product', href: '#features' },
-                        { label: 'How It Works', href: '#how-it-works' },
-                        { label: 'Security', href: '#security' },
-                        { label: 'About', href: '#about' }
-                    ].map((item) => (
+                    {LANDING_NAV_ITEMS.map((item) => (
                         <a key={item.label} href={item.href} className="text-[11px] font-bold text-[var(--text-secondary)] hover:text-white transition-colors tracking-widest uppercase">
                             {item.label}
                         </a>
                     ))}
                 </nav>
 
-                {/* CTA Button */}
                 <div className="flex items-center gap-6">
                     <Link href="/dashboard" className="hidden sm:block text-xs font-bold uppercase tracking-widest text-white hover:text-[var(--volt)] transition-colors">
                         Log In
@@ -51,7 +37,6 @@ export default function Navigation() {
                         Launch App
                     </Link>
 
-                    {/* Mobile Menu Toggle */}
                     <button
                         className="md:hidden text-white p-2 hover:text-[var(--volt)] transition-colors"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -61,7 +46,6 @@ export default function Navigation() {
                 </div>
             </div>
 
-            {/* Mobile Menu */}
             {mobileMenuOpen && (
                 <motion.div
                     initial={{ opacity: 0, y: -10 }}
@@ -69,12 +53,7 @@ export default function Navigation() {
                     className="md:hidden glass-panel border-t border-[var(--border-subtle)] p-6 mx-4 mt-2 rounded-2xl"
                 >
                     <div className="flex flex-col gap-5">
-                        {[
-                            { label: 'Product', href: '#features' },
-                            { label: 'How It Works', href: '#how-it-works' },
-                            { label: 'Security', href: '#security' },
-                            { label: 'About', href: '#about' }
-                        ].map((item) => (
+                        {LANDING_NAV_ITEMS.map((item) => (
                             <a
                                 key={item.label}
                                 href={item.href}

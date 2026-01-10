@@ -10,21 +10,16 @@ export default function CorePillars() {
     return (
         <section id="features" className="py-12 md:py-24 lg:py-32 px-4 sm:px-6 relative z-10">
             <div className="mx-auto max-w-[1280px]">
-                {/* Header */}
                 <div className="mb-12 md:mb-16 lg:mb-24 max-w-3xl">
                     <h2 className="mb-6 lg:mb-8 text-4xl sm:text-5xl lg:text-7xl font-black uppercase tracking-tighter text-white leading-[0.9]">
                         PROTOCOL <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--volt)] via-white to-[var(--volt)] bg-[length:200%_auto] animate-gradient">ARCHITECTURE</span>
                     </h2>
                     <p className="max-w-xl text-[15px] sm:text-base lg:text-lg text-[var(--text-secondary)] leading-relaxed font-normal">
-                        Infrastructure built for the automated economy.
-                        Precision-engineered modules working in perfect sync.
+                        Infrastructure built for the automated economy. Precision-engineered modules working in perfect sync.
                     </p>
                 </div>
 
-                {/* Bento Grid layout */}
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8">
-
-                    {/* Card 1: Compliance (Interactive Code) */}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -32,7 +27,6 @@ export default function CorePillars() {
                         transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
                         className="col-span-1 md:col-span-12 lg:col-span-6 min-h-[440px] lg:min-h-[480px] card-solid rounded-[2rem] p-6 sm:p-8 lg:p-10 flex flex-col justify-between group relative overflow-hidden"
                     >
-                        {/* Mobile Glow */}
                         <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--volt)]/5 blur-[80px] rounded-full pointer-events-none lg:hidden" />
 
                         <div className="relative z-10">
@@ -45,19 +39,18 @@ export default function CorePillars() {
                                     <p className="max-w-md text-[var(--text-secondary)] text-sm lg:text-base leading-relaxed">Automated tax logic embedded directly into payment streams. Never miss a withholding.</p>
                                 </div>
                                 <div className="hidden sm:flex flex-col gap-3 text-[10px] font-bold tracking-widest uppercase shrink-0">
-                                    <div className={`flex items-center gap-2 transition-colors duration-300 ${activeLine === 1 ? 'text-[var(--volt)]' : 'text-[var(--text-tertiary)]'}`}>
-                                        <div className={`w-2 h-2 rounded-full ${activeLine === 1 ? 'bg-[var(--volt)] shadow-[0_0_10px_#CCFF00]' : 'bg-[var(--obsidian-elevated)]'}`} />
+                                    <div className={`flex items-center gap-2 transition-colors duration-300 ${activeLine === 1 ? "text-[var(--volt)]" : "text-[var(--text-tertiary)]"}`}>
+                                        <div className={`w-2 h-2 rounded-full ${activeLine === 1 ? "bg-[var(--volt)] shadow-[0_0_10px_#CCFF00]" : "bg-[var(--obsidian-elevated)]"}`} />
                                         CALCULATED
                                     </div>
-                                    <div className={`flex items-center gap-2 transition-colors duration-300 ${activeLine === 2 ? 'text-[var(--info)]' : 'text-[var(--text-tertiary)]'}`}>
-                                        <div className={`w-2 h-2 rounded-full ${activeLine === 2 ? 'bg-[var(--info)] shadow-[0_0_10px_#3B82F6]' : 'bg-[var(--obsidian-elevated)]'}`} />
+                                    <div className={`flex items-center gap-2 transition-colors duration-300 ${activeLine === 2 ? "text-[var(--info)]" : "text-[var(--text-tertiary)]"}`}>
+                                        <div className={`w-2 h-2 rounded-full ${activeLine === 2 ? "bg-[var(--info)] shadow-[0_0_10px_#3B82F6]" : "bg-[var(--obsidian-elevated)]"}`} />
                                         DISTRIBUTED
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Interactive Code Visual */}
                         <div className="relative mt-8 lg:mt-12 group-hover:translate-y-[-5px] transition-transform duration-500">
                             <div className="absolute -inset-1 bg-gradient-to-r from-[var(--volt)]/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-700 blur-2xl rounded-lg" />
                             <div className="relative w-full overflow-hidden rounded-xl bg-[#080808] border border-white/10 font-mono text-xs p-5 lg:p-6 shadow-2xl">
@@ -77,7 +70,7 @@ export default function CorePillars() {
                                     <div
                                         onMouseEnter={() => setActiveLine(1)}
                                         onMouseLeave={() => setActiveLine(null)}
-                                        className={`pl-4 py-2 border-l-2 transition-all duration-300 cursor-help rounded-r ${activeLine === 1 ? 'border-[var(--volt)] bg-[var(--volt)]/10' : 'border-transparent hover:bg-white/5'}`}
+                                        className={`pl-4 py-2 border-l-2 transition-all duration-300 cursor-help rounded-r ${activeLine === 1 ? "border-[var(--volt)] bg-[var(--volt)]/10" : "border-transparent hover:bg-white/5"}`}
                                     >
                                         <span className="text-purple-400">uint256</span> tax = (amount * TAX_RATE) / 100;
                                     </div>
@@ -85,7 +78,7 @@ export default function CorePillars() {
                                     <div
                                         onMouseEnter={() => setActiveLine(2)}
                                         onMouseLeave={() => setActiveLine(null)}
-                                        className={`pl-4 py-2 border-l-2 transition-all duration-300 cursor-help rounded-r ${activeLine === 2 ? 'border-[var(--info)] bg-[var(--info)]/10' : 'border-transparent hover:bg-white/5'}`}
+                                        className={`pl-4 py-2 border-l-2 transition-all duration-300 cursor-help rounded-r ${activeLine === 2 ? "border-[var(--info)] bg-[var(--info)]/10" : "border-transparent hover:bg-white/5"}`}
                                     >
                                         payable(taxAuthority).transfer(tax);
                                     </div>
@@ -97,7 +90,6 @@ export default function CorePillars() {
                         </div>
                     </motion.div>
 
-                    {/* Card 2: Liquidity */}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -105,7 +97,6 @@ export default function CorePillars() {
                         transition={{ delay: 0.1, duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
                         className="col-span-1 md:col-span-6 lg:col-span-3 min-h-[380px] lg:min-h-[480px] card-solid rounded-[2rem] p-6 lg:p-8 flex flex-col group overflow-hidden relative"
                     >
-                        {/* Mobile Glow */}
                         <div className="absolute bottom-0 left-0 w-48 h-48 bg-[var(--volt)]/5 blur-[60px] rounded-full pointer-events-none lg:hidden" />
 
                         <div className="relative z-10">
@@ -116,7 +107,6 @@ export default function CorePillars() {
                             <p className="mb-6 text-sm text-[var(--text-secondary)] leading-relaxed">Pay by the second, settled instantly using optimized yield vaults.</p>
                         </div>
 
-                        {/* Animated Mesh/Liquid Visual */}
                         <div className="mt-auto relative h-48 w-[120%] -mx-8 -mb-8 translate-y-6 group-hover:translate-y-0 transition-transform duration-700 ease-out z-0">
                             <div className="absolute inset-0 bg-gradient-to-t from-[var(--volt)]/20 to-transparent blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                             <svg className="absolute bottom-0 left-0 right-0 h-40 w-full" preserveAspectRatio="none" viewBox="0 0 100 50">
@@ -132,7 +122,6 @@ export default function CorePillars() {
                         </div>
                     </motion.div>
 
-                    {/* Card 3: Cross-Chain */}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -157,7 +146,6 @@ export default function CorePillars() {
                         </div>
                     </motion.div>
 
-                    {/* Card 4: Identity */}
                     <motion.div
                         id="security"
                         initial={{ opacity: 0, y: 30 }}
@@ -166,7 +154,6 @@ export default function CorePillars() {
                         transition={{ delay: 0.3, duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
                         className="col-span-1 md:col-span-12 min-h-[440px] card-solid rounded-[2rem] p-6 sm:p-8 lg:p-12 flex flex-col md:flex-row items-center gap-8 lg:gap-16 relative overflow-visible group"
                     >
-                        {/* Ambient Glow */}
                         <div className="absolute -right-20 -top-20 w-96 h-96 rounded-full bg-[var(--volt)]/5 blur-[100px] group-hover:bg-[var(--volt)]/10 transition-colors duration-1000" />
 
                         <div className="flex-1 relative z-10 w-full">
@@ -185,18 +172,15 @@ export default function CorePillars() {
                             </div>
                         </div>
 
-                        {/* Visual */}
                         <div className="relative h-40 w-40 lg:h-48 lg:w-48 flex-shrink-0 flex items-center justify-center mt-4 lg:mt-0">
                             <div className="relative w-full h-full rounded-[2rem] bg-[#0A0A0A] border border-white/10 flex items-center justify-center shadow-2xl group-hover:rotate-3 transition-transform duration-700">
                                 <Lock size={40} className="text-white/30 group-hover:text-white/60 transition-colors lg:w-12 lg:h-12" />
                                 <div className="absolute top-4 right-4 w-2 h-2 bg-[var(--volt)] rounded-full animate-pulse shadow-[0_0_10px_#CCFF00]" />
-                                {/* Biometric Lines */}
                                 <div className="absolute inset-5 border border-[var(--border-subtle)] rounded-3xl" />
-                                <div className="absolute inset-0 bg-grid-animate opacity-30" style={{ maskImage: 'radial-gradient(ellipse at center, black, transparent)' }} />
+                                <div className="absolute inset-0 bg-grid-animate opacity-30" style={{ maskImage: "radial-gradient(ellipse at center, black, transparent)" }} />
                             </div>
                         </div>
                     </motion.div>
-
                 </div>
             </div>
         </section>

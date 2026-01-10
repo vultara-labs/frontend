@@ -1,8 +1,8 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Groq } from "groq-sdk";
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
+import type { ActionType } from "@/types";
 
-// Initialize Clients
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY || "" });
 
@@ -37,6 +37,31 @@ INSTRUCTIONS:
 - DO NOT use markdown. Plain text only.
 `;
 
+interface DetectedAction {
+    type: ActionType;
+    amount?: number;
+}
+
+function detectAction(msg: string): DetectedAction | null {
+    const lowerMsg = msg.toLowerCase();
+
+    const depositMatch = lowerMsg.match(/(?:deposit|setor|top.?up|tambah)\s*\$?(\d+(?:\.\d+)?)/i);
+    if (depositMatch) {
+        return { type: "deposit", amount: parseFloat(depositMatch[1]) };
+    }
+
+    const withdrawMatch = lowerMsg.match(/(?:withdraw|tarik|cashout|ambil)\s*\$?(\d+(?:\.\d+)?)/i);
+    if (withdrawMatch) {
+        return { type: "withdraw", amount: parseFloat(withdrawMatch[1]) };
+    }
+
+    if (/(?:balance|saldo|berapa|how much|total)/i.test(lowerMsg)) {
+        return { type: "balance" };
+    }
+
+    return null;
+}
+
 export async function POST(req: Request) {
     let body;
     try {
@@ -47,62 +72,27 @@ export async function POST(req: Request) {
 
     const { message, history, userData } = body;
 
-    // Inject User Data into System Context
     let userContext = "";
     if (userData) {
         userContext = `
 CURRENT USER DATA (Personalize answers using this):
-- Wallet Balance: $${userData.balance?.toLocaleString() || '0'}
-- Total Earnings: $${userData.earnings?.toLocaleString() || '0'}
-- Current APY: ${userData.apy || '4.5'}% (Thetanuts V4 Strategy)
-- Deposit Status: ${userData.balance > 0 ? 'Active Depositor' : 'No Active Deposits'}
+- Wallet Balance: $${userData.balance?.toLocaleString() || "0"}
+- Total Earnings: $${userData.earnings?.toLocaleString() || "0"}
+- Current APY: ${userData.apy || "4.5"}% (Thetanuts V4 Strategy)
+- Deposit Status: ${userData.balance > 0 ? "Active Depositor" : "No Active Deposits"}
 `;
     }
 
     const FINAL_SYSTEM_PROMPT = BASE_SYSTEM_PROMPT + userContext;
-
-    // --- ACTION DETECTION ---
-    // Detect if user wants to perform an action (deposit, withdraw, check balance)
-    type ActionType = 'deposit' | 'withdraw' | 'balance' | null;
-    interface DetectedAction {
-        type: ActionType;
-        amount?: number;
-    }
-
-    const detectAction = (msg: string): DetectedAction | null => {
-        const lowerMsg = msg.toLowerCase();
-
-        // Deposit patterns: "deposit 100", "deposit 100 usdc", "setor 500"
-        const depositMatch = lowerMsg.match(/(?:deposit|setor|top.?up|tambah)\s*\$?(\d+(?:\.\d+)?)/i);
-        if (depositMatch) {
-            return { type: 'deposit', amount: parseFloat(depositMatch[1]) };
-        }
-
-        // Withdraw patterns: "withdraw 200", "tarik 1000", "cashout 500"
-        const withdrawMatch = lowerMsg.match(/(?:withdraw|tarik|cashout|ambil)\s*\$?(\d+(?:\.\d+)?)/i);
-        if (withdrawMatch) {
-            return { type: 'withdraw', amount: parseFloat(withdrawMatch[1]) };
-        }
-
-        // Balance check patterns
-        if (/(?:balance|saldo|berapa|how much|total)/i.test(lowerMsg)) {
-            return { type: 'balance' };
-        }
-
-        return null;
-    };
-
     const detectedAction = detectAction(message);
 
-    // --- ATTEMPT 1: GOOGLE GEMINI ---
     try {
         if (!process.env.GEMINI_API_KEY) throw new Error("Gemini Key Missing");
 
         const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-        // Format history for Gemini
-        const geminiHistory = (history || []).map((msg: any) => ({
-            role: msg.role === 'assistant' ? 'model' : 'user',
+        const geminiHistory = (history || []).map((msg: { role: string; content: string }) => ({
+            role: msg.role === "assistant" ? "model" : "user",
             parts: [{ text: msg.content }],
         }));
 
@@ -110,7 +100,7 @@ CURRENT USER DATA (Personalize answers using this):
             history: [
                 { role: "user", parts: [{ text: "System instructions: " + FINAL_SYSTEM_PROMPT }] },
                 { role: "model", parts: [{ text: "Nova system online. Protocols active." }] },
-                ...geminiHistory
+                ...geminiHistory,
             ],
         });
 
@@ -119,28 +109,25 @@ CURRENT USER DATA (Personalize answers using this):
 
         return NextResponse.json({
             response,
-            action: detectedAction
+            action: detectedAction,
         });
-
     } catch (geminiError) {
-        console.warn("⚠️ Gemini API Failed (Rate Limit or Error). Switching to Groq fallback...", geminiError);
+        console.warn("⚠️ Gemini API Failed. Switching to Groq fallback...", geminiError);
 
-        // --- ATTEMPT 2: GROQ (FALLBACK) ---
         try {
             if (!process.env.GROQ_API_KEY) throw new Error("Groq Key Missing");
 
-            // Format history for Groq (OpenAI style)
             const groqMessages = [
-                { role: "system", content: FINAL_SYSTEM_PROMPT },
-                ...(history || []).map((msg: any) => ({
-                    role: msg.role === 'assistant' ? 'assistant' : 'user',
-                    content: msg.content
+                { role: "system" as const, content: FINAL_SYSTEM_PROMPT },
+                ...(history || []).map((msg: { role: string; content: string }) => ({
+                    role: (msg.role === "assistant" ? "assistant" : "user") as "assistant" | "user",
+                    content: msg.content,
                 })),
-                { role: "user", content: message }
+                { role: "user" as const, content: message },
             ];
 
             const completion = await groq.chat.completions.create({
-                messages: groqMessages as any,
+                messages: groqMessages,
                 model: "llama-3.3-70b-versatile",
                 temperature: 0.5,
                 max_tokens: 300,
@@ -149,14 +136,16 @@ CURRENT USER DATA (Personalize answers using this):
             const response = completion.choices[0]?.message?.content || "System status optimal (Backup Link).";
             return NextResponse.json({
                 response,
-                action: detectedAction
+                action: detectedAction,
             });
-
         } catch (groqError) {
             console.error("❌ Both AI Providers Failed:", groqError);
-            return NextResponse.json({
-                response: "Nova System Overload. Both primary and backup neural links are congested. Please try again in a moment."
-            }, { status: 500 });
+            return NextResponse.json(
+                {
+                    response: "Nova System Overload. Both primary and backup neural links are congested. Please try again in a moment.",
+                },
+                { status: 500 }
+            );
         }
     }
 }
