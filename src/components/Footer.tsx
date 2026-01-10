@@ -32,20 +32,16 @@ export default function Footer() {
                     <div>
                         <h4 className="text-white font-bold mb-8 uppercase tracking-widest text-xs">Product</h4>
                         <ul className="space-y-4">
-                            {FOOTER_PRODUCT_LINKS.map((link) => {
-                                const hasSoon = "soon" in link && link.soon;
-                                return (
-                                    <li key={link.label}>
-                                        <a
-                                            href={link.href}
-                                            className={`text-sm text-[var(--text-tertiary)] hover:text-[var(--volt)] transition-colors flex items-center gap-2 ${hasSoon ? "cursor-not-allowed opacity-50" : ""}`}
-                                        >
-                                            {link.label}
-                                            {hasSoon && <span className="text-[8px] bg-white/10 px-1.5 py-0.5 rounded">SOON</span>}
-                                        </a>
-                                    </li>
-                                );
-                            })}
+                            {FOOTER_PRODUCT_LINKS.map((link) => (
+                                <li key={link.label}>
+                                    <a
+                                        href={link.href}
+                                        className="text-sm text-[var(--text-tertiary)] hover:text-[var(--volt)] transition-colors flex items-center gap-2"
+                                    >
+                                        {link.label}
+                                    </a>
+                                </li>
+                            ))}
                         </ul>
                     </div>
 
