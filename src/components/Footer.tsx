@@ -17,7 +17,7 @@ export default function Footer() {
                             <img src="/logo-dark.png" alt="Vultara" className="h-12 w-auto" />
                         </Link>
                         <p className="text-[var(--text-secondary)] text-sm leading-relaxed max-w-md mb-8">
-                            Secure Your Income, Amplify Your Growth. The smart USDC vault for Indonesian Web3 freelancers.
+                            Simple DeFi yield for everyone. Deposit USDC, earn real returns from Thetanuts strategies.
                         </p>
                         <div className="flex gap-3">
                             <button className="w-12 h-12 rounded-xl card-solid flex items-center justify-center text-[var(--text-tertiary)] cursor-not-allowed opacity-50" aria-label="Twitter - Coming Soon" title="Coming Soon">

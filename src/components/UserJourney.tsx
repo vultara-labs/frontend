@@ -1,18 +1,19 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Fingerprint, FileCode2, CircleDollarSign, ArrowRightLeft, Banknote } from "lucide-react";
+import { Wallet, ArrowDownToLine, TrendingUp, ArrowUpFromLine } from "lucide-react";
+import { Alien } from "@phosphor-icons/react";
 import { useRef } from "react";
 import { TECH_STATS } from "@/constants";
 
-const JOURNEY_ICONS = [Fingerprint, FileCode2, CircleDollarSign, ArrowRightLeft, Banknote];
+const JOURNEY_ICONS = [Wallet, ArrowDownToLine, TrendingUp, Alien, ArrowUpFromLine];
 
 const steps = [
-    { title: "Passkey Login", desc: "Secure 2-second auth with biometrics. No seed phrase required." },
-    { title: "Contract Setup", desc: "One-click smart contract deployment to receive stablecoins." },
-    { title: "Salary Deposit", desc: "Employer deposits USDC. Real-time yield accrual begins." },
-    { title: "Auto-Swap", desc: "Seamless conversion to IDRX stablecoin at market-best rates." },
-    { title: "Rupiah Withdrawal", desc: "Lightning-fast transfer to local bank. Cash in minutes." },
+    { title: "Connect Wallet", desc: "Link your wallet in seconds. MetaMask, Coinbase, or any WalletConnect compatible wallet." },
+    { title: "Deposit USDC", desc: "Transfer USDC to the Vultara vault. Minimum deposit: $10 USDC." },
+    { title: "Earn Yield", desc: "Your USDC is deployed to Thetanuts strategies. Watch your balance grow in real-time." },
+    { title: "Ask Nova", desc: "Get personalized insights from our AI advisor. Understand risks, strategies, and optimize returns." },
+    { title: "Withdraw Anytime", desc: "No lock-ups. Withdraw your USDC plus earned yield whenever you want." },
 ];
 
 export default function UserJourney() {
@@ -29,10 +30,10 @@ export default function UserJourney() {
             <div className="mx-auto max-w-[1280px] relative z-10">
                 <div className="mb-12 md:mb-16 lg:mb-24 max-w-3xl">
                     <h2 className="mb-6 lg:mb-8 text-4xl sm:text-5xl lg:text-7xl font-black uppercase tracking-tighter text-white leading-[0.9]">
-                        Flow <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--volt)] via-white to-[var(--volt)] bg-[length:200%_auto] animate-gradient">Timeline</span>
+                        How It <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--volt)] via-white to-[var(--volt)] bg-[length:200%_auto] animate-gradient">Works</span>
                     </h2>
                     <p className="max-w-xl text-[15px] sm:text-base lg:text-lg text-[var(--text-secondary)] leading-relaxed font-normal">
-                        Your earnings journey, automated in seconds. From login to liquidity, fully on-chain.
+                        From deposit to yield in minutes. Simple, transparent, no hidden complexity.
                     </p>
                 </div>
 
@@ -66,8 +67,8 @@ export default function UserJourney() {
                                     <div className="mb-0 lg:mb-10 flex flex-shrink-0 justify-center lg:justify-start">
                                         <div
                                             className={`w-16 h-16 lg:w-24 lg:h-24 rounded-[1.25rem] lg:rounded-[1.5rem] bg-[var(--obsidian-surface)] border flex items-center justify-center transition-all duration-500 relative z-10 ${idx === 0
-                                                    ? "border-[var(--volt)] text-[var(--volt)] shadow-[0_0_40px_-10px_rgba(204,255,0,0.3)]"
-                                                    : "border-[var(--border-medium)] text-[var(--text-tertiary)] group-hover:border-[var(--volt)]/50 group-hover:text-[var(--volt)] group-hover:scale-110 group-hover:shadow-[0_0_30px_-5px_rgba(204,255,0,0.2)]"
+                                                ? "border-[var(--volt)] text-[var(--volt)] shadow-[0_0_40px_-10px_rgba(204,255,0,0.3)]"
+                                                : "border-[var(--border-medium)] text-[var(--text-tertiary)] group-hover:border-[var(--volt)]/50 group-hover:text-[var(--volt)] group-hover:scale-110 group-hover:shadow-[0_0_30px_-5px_rgba(204,255,0,0.2)]"
                                                 } `}
                                         >
                                             <StepIcon size={28} className="lg:w-9 lg:h-9" />

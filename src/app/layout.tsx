@@ -18,9 +18,10 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Vultara | Secure Your Income, Amplify Your Growth",
-  description: "The smart USDC vault for Indonesian Web3 freelancers. Earn organic yield with Thetanuts V3, powered by Nova AI and seamless IDRX off-ramp.",
-  keywords: ["Web3", "DeFi", "USDC", "Yield", "Indonesia", "Freelancer", "Crypto", "Base", "Stablecoin", "Payroll"],
+  metadataBase: new URL("https://vultara.xyz"),
+  title: "Vultara | Simple DeFi Yield",
+  description: "Deposit USDC, earn real yield from Thetanuts options strategies. Simple DeFi made accessible with Nova AI advisor.",
+  keywords: ["DeFi", "USDC", "Yield", "Thetanuts", "Base", "Crypto", "Stablecoin", "Options", "Web3"],
   authors: [{ name: "Vultara Labs" }],
   creator: "Vultara Labs",
   publisher: "Vultara Labs",
@@ -33,8 +34,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Vultara | Secure Your Income, Amplify Your Growth",
-    description: "The smart USDC vault for Indonesian Web3 freelancers. Earn organic yield with Thetanuts V3.",
+    title: "Vultara | Simple DeFi Yield",
+    description: "Deposit USDC, earn ~4.5% APY from Thetanuts strategies. No complexity, no lock-ups.",
     type: "website",
     locale: "en_US",
     siteName: "Vultara",
@@ -43,14 +44,14 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Vultara - Secure Your Income, Amplify Your Growth",
+        alt: "Vultara - Simple DeFi Yield",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Vultara | The Salary Engine",
-    description: "Secure crypto payroll & earn yield on idle USDC. Built for Indonesian Web3 freelancers.",
+    title: "Vultara | Simple DeFi Yield",
+    description: "Deposit USDC, earn real yield from Thetanuts options strategies. DeFi made simple.",
     images: ["/og-image.png"],
   },
 };

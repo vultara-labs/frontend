@@ -55,14 +55,14 @@ export default function Hero() {
                             </div>
 
                             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tighter leading-[0.95] text-white">
-                                THE SALARY <br />
+                                SIMPLE DEFI <br />
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--volt)] via-white to-[var(--volt)] bg-[length:200%_auto] animate-gradient">
-                                    ENGINE.
+                                    YIELD.
                                 </span>
                             </h1>
 
                             <p className="text-[15px] sm:text-base lg:text-lg text-[var(--text-secondary)] font-normal leading-relaxed max-w-xs sm:max-w-lg mx-auto lg:mx-0">
-                                Streamline crypto payroll and earn generous yield on idle USDC. Automated financial infrastructure for the open economy.
+                                Deposit USDC, earn real yield from Thetanuts options strategies. No complexity, no lock-ups, just DeFi made simple.
                             </p>
 
                             <div className="flex flex-col sm:flex-row items-center gap-3 mt-4 lg:mt-4 w-full sm:w-auto px-4 sm:px-0">
