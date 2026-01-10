@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { toast } from "sonner";
 import confetti from "canvas-confetti";
 import {
@@ -16,7 +16,27 @@ import {
 } from "@phosphor-icons/react";
 import { useSearchParams } from "next/navigation";
 
+// Loading fallback for Suspense boundary
+function WithdrawLoading() {
+    return (
+        <div className="p-4 sm:p-6 lg:p-8 max-w-2xl mx-auto min-h-full flex flex-col justify-center items-center">
+            <CircleNotch size={32} className="animate-spin text-[var(--volt)]" />
+            <p className="text-[var(--text-secondary)] mt-4 text-sm">Loading...</p>
+        </div>
+    );
+}
+
+// Main page wrapper with Suspense boundary
 export default function WithdrawPage() {
+    return (
+        <Suspense fallback={<WithdrawLoading />}>
+            <WithdrawContent />
+        </Suspense>
+    );
+}
+
+// Actual page content that uses useSearchParams
+function WithdrawContent() {
     const [step, setStep] = useState(1);
     const [amount, setAmount] = useState("");
     const [isProcessing, setIsProcessing] = useState(false);
