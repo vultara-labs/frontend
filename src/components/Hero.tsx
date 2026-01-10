@@ -85,7 +85,7 @@ export default function Hero() {
     };
 
     return (
-        <section ref={targetRef} className="relative min-h-screen flex flex-col pt-24 pb-16 lg:pt-32 lg:pb-20 overflow-hidden">
+        <section ref={targetRef} className="relative min-h-screen flex flex-col pt-36 pb-16 lg:pt-32 lg:pb-20 overflow-hidden">
             {/* Background */}
             <div className="absolute inset-0 z-0 pointer-events-none bg-grid-animate opacity-50" />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--obsidian-base)]/80 to-[var(--obsidian-base)] z-0" />
@@ -114,7 +114,7 @@ export default function Hero() {
                         </div>
 
                         {/* Headline */}
-                        <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter leading-[0.9] text-white">
+                        <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black tracking-tighter leading-[1] lg:leading-[0.9] text-white">
                             THE SALARY <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/90 to-white/50">
                                 ENGINE.
@@ -122,11 +122,11 @@ export default function Hero() {
                         </h1>
 
                         {/* Description */}
-                        <p className="text-base sm:text-xl text-[var(--text-secondary)] font-normal leading-relaxed max-w-lg mx-auto lg:mx-0">
+                        <p className="text-sm sm:text-base lg:text-lg text-[var(--text-secondary)] font-normal leading-relaxed max-w-lg mx-auto lg:mx-0">
                             Streamline crypto payroll and earn generous yield on idle USDC. Automated financial infrastructure for the open economy.
                         </p>
 
-                        <div className="flex flex-col sm:flex-row items-center gap-4 mt-4 w-full sm:w-auto">
+                        <div className="flex flex-col sm:flex-row items-center gap-4 mt-2 lg:mt-4 w-full sm:w-auto">
                             <Link href="/dashboard" className="h-12 px-8 flex items-center justify-center gap-3 btn-primary group w-full sm:w-auto">
                                 <span className="relative z-10">Start Earning</span>
                                 <ArrowRight size={18} className="relative z-10 group-hover:translate-x-1 transition-transform" />
@@ -146,22 +146,22 @@ export default function Hero() {
                         </div>
 
                         {/* Social Proof */}
-                        <div className="pt-10 border-t border-white/5 flex flex-col sm:flex-row gap-6 items-center justify-center lg:justify-start">
+                        <div className="pt-8 lg:pt-10 border-t border-white/5 flex flex-col sm:flex-row gap-4 lg:gap-6 items-center justify-center lg:justify-start">
                             <span className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest">Audited & Trusted By</span>
-                            <div className="flex gap-4 items-center">
+                            <div className="flex gap-x-6 gap-y-4 flex-wrap justify-center items-center">
                                 {/* CertiK */}
-                                <a href="https://www.certik.com" target="_blank" rel="noopener noreferrer" className="h-10 px-4 bg-white/[0.02] rounded-lg flex items-center justify-center border border-white/[0.05] hover:border-[#00D4AA]/30 hover:bg-[#00D4AA]/5 transition-all duration-300 opacity-70 hover:opacity-100 group">
-                                    <img src="/logos/certik.png" alt="CertiK" className="h-6 w-auto brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity" />
+                                <a href="https://www.certik.com" target="_blank" rel="noopener noreferrer" className="h-9 lg:h-10 px-3 lg:px-4 bg-white/[0.02] rounded-lg flex items-center justify-center border border-white/[0.05] hover:border-[#00D4AA]/30 hover:bg-[#00D4AA]/5 transition-all duration-300 opacity-70 hover:opacity-100 group">
+                                    <img src="/logos/certik.png" alt="CertiK" className="h-5 lg:h-6 w-auto brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity" />
                                 </a>
 
                                 {/* Hacken */}
-                                <a href="https://hacken.io" target="_blank" rel="noopener noreferrer" className="h-9 px-4 bg-white/[0.02] rounded-lg flex items-center justify-center border border-white/[0.05] hover:border-[#30E3CA]/30 hover:bg-[#30E3CA]/5 transition-all duration-300 opacity-70 hover:opacity-100 group">
-                                    <img src="/logos/hacken.svg" alt="Hacken" className="h-6 w-auto brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity" />
+                                <a href="https://hacken.io" target="_blank" rel="noopener noreferrer" className="h-8 lg:h-9 px-3 lg:px-4 bg-white/[0.02] rounded-lg flex items-center justify-center border border-white/[0.05] hover:border-[#30E3CA]/30 hover:bg-[#30E3CA]/5 transition-all duration-300 opacity-70 hover:opacity-100 group">
+                                    <img src="/logos/hacken.svg" alt="Hacken" className="h-5 lg:h-6 w-auto brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity" />
                                 </a>
 
                                 {/* OpenZeppelin */}
-                                <a href="https://www.openzeppelin.com" target="_blank" rel="noopener noreferrer" className="h-9 px-4 bg-white/[0.02] rounded-lg flex items-center justify-center border border-white/[0.05] hover:border-[#4E5EE4]/30 hover:bg-[#4E5EE4]/5 transition-all duration-300 opacity-70 hover:opacity-100 group">
-                                    <img src="/logos/openzeppelin.svg" alt="OpenZeppelin" className="h-6 w-auto brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity" />
+                                <a href="https://www.openzeppelin.com" target="_blank" rel="noopener noreferrer" className="h-8 lg:h-9 px-3 lg:px-4 bg-white/[0.02] rounded-lg flex items-center justify-center border border-white/[0.05] hover:border-[#4E5EE4]/30 hover:bg-[#4E5EE4]/5 transition-all duration-300 opacity-70 hover:opacity-100 group">
+                                    <img src="/logos/openzeppelin.svg" alt="OpenZeppelin" className="h-5 lg:h-6 w-auto brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity" />
                                 </a>
                             </div>
                         </div>
@@ -169,14 +169,16 @@ export default function Hero() {
 
                     {/* Right Content: 3D Kinetic Card */}
                     <div
-                        onMouseMove={handleMouseMove}
+                        onMouseMove={(e) => {
+                            if (window.innerWidth >= 1024) handleMouseMove(e);
+                        }}
                         onMouseLeave={handleMouseLeave}
                         className="lg:col-span-5 relative perspective-1000 w-full flex justify-center lg:justify-end py-10 lg:py-10 mt-6 lg:mt-0"
                     >
                         {/* Glow Behind */}
                         <motion.div
                             style={{ rotateX, rotateY }}
-                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[var(--volt)] opacity-20 blur-[120px] rounded-full pointer-events-none will-change-transform"
+                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] lg:w-[300px] h-[250px] lg:h-[300px] bg-[var(--volt)] opacity-20 blur-[80px] lg:blur-[120px] rounded-full pointer-events-none will-change-transform"
                         />
 
                         {/* Main Card */}
@@ -186,21 +188,21 @@ export default function Hero() {
                             initial={{ opacity: 0, scale: 0.9, y: 50 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1], delay: 0.2 }}
-                            className="card-solid w-full max-w-md rounded-[2rem] p-8 relative bg-[var(--obsidian-surface)] will-change-transform"
+                            className="card-solid w-full max-w-[340px] sm:max-w-md rounded-[1.5rem] lg:rounded-[2rem] p-5 sm:p-6 lg:p-8 relative bg-[var(--obsidian-surface)] will-change-transform mx-auto"
                         >
 
                             {/* Card Content Layer */}
                             <motion.div style={{ z: 30 }} className="transform-style-3d">
                                 {/* Header */}
-                                <div className="flex justify-between items-start mb-10">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center shadow-[0_4px_20px_rgba(39,117,202,0.4)] ring-1 ring-white/5">
+                                <div className="flex justify-between items-start mb-6 lg:mb-10">
+                                    <div className="flex items-center gap-3 lg:gap-4">
+                                        <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full overflow-hidden flex items-center justify-center shadow-[0_4px_20px_rgba(39,117,202,0.4)] ring-1 ring-white/5">
                                             <img src="/logos/usdc.svg" alt="USDC" className="w-full h-full object-cover" />
                                         </div>
                                         <div>
-                                            <h3 className="text-white font-bold text-lg uppercase tracking-wider">USDC Vault</h3>
-                                            <div className="flex items-center gap-2 text-[10px] text-[var(--volt)] font-bold uppercase tracking-widest bg-[var(--volt-glass)] px-2 py-0.5 rounded-full w-fit mt-1 border border-[var(--volt)]/10">
-                                                <span className="w-1.5 h-1.5 rounded-full bg-[var(--volt)] animate-pulse" />
+                                            <h3 className="text-white font-bold text-base lg:text-lg uppercase tracking-wider">USDC Vault</h3>
+                                            <div className="flex items-center gap-2 text-[8px] lg:text-[10px] text-[var(--volt)] font-bold uppercase tracking-widest bg-[var(--volt-glass)] px-2 py-0.5 rounded-full w-fit mt-1 border border-[var(--volt)]/10">
+                                                <span className="w-1 h-1 lg:w-1.5 lg:h-1.5 rounded-full bg-[var(--volt)] animate-pulse" />
                                                 Active Strategy
                                             </div>
                                         </div>
@@ -214,15 +216,15 @@ export default function Hero() {
                                 </div>
 
                                 {/* Balance */}
-                                <div className="mb-8">
-                                    <p className="text-[var(--text-tertiary)] text-[10px] font-bold uppercase tracking-widest mb-2">Total Balance</p>
-                                    <h2 className="text-5xl font-bold text-white tracking-tighter tabular-nums">
+                                <div className="mb-6 lg:mb-8">
+                                    <p className="text-[var(--text-tertiary)] text-[10px] font-bold uppercase tracking-widest mb-1 lg:mb-2">Total Balance</p>
+                                    <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tighter tabular-nums">
                                         <Counter from={100000} to={124592.50} />
                                     </h2>
                                 </div>
 
                                 {/* Graph - Animated */}
-                                <div className="relative h-24 w-full mb-8">
+                                <div className="relative h-16 lg:h-24 w-full mb-6 lg:mb-8">
                                     <svg className="w-full h-full overflow-visible" viewBox="0 0 300 100" preserveAspectRatio="none">
                                         <defs>
                                             <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
@@ -247,32 +249,32 @@ export default function Hero() {
                                 </div>
 
                                 {/* Stats Grid */}
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300 hover:scale-[1.02] cursor-default">
-                                        <p className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">APY</p>
-                                        <p className="text-2xl font-bold text-[var(--volt)] tracking-tighter">4.5%</p>
+                                <div className="grid grid-cols-2 gap-3 lg:gap-4">
+                                    <div className="p-3 lg:p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300 hover:scale-[1.02] cursor-default">
+                                        <p className="text-[8px] lg:text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">APY</p>
+                                        <p className="text-xl lg:text-2xl font-bold text-[var(--volt)] tracking-tighter">4.5%</p>
                                     </div>
-                                    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300 hover:scale-[1.02] cursor-default">
-                                        <p className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">Next Payout</p>
-                                        <p className="text-2xl font-bold text-white tabular-nums tracking-tighter">4h 12m</p>
+                                    <div className="p-3 lg:p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300 hover:scale-[1.02] cursor-default">
+                                        <p className="text-[8px] lg:text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">Next Payout</p>
+                                        <p className="text-xl lg:text-2xl font-bold text-white tabular-nums tracking-tighter">4h 12m</p>
                                     </div>
                                 </div>
 
                                 {/* Earnings Indicator - Integrated */}
-                                <div className="mt-6 pt-5 border-t border-white/5">
+                                <div className="mt-5 lg:mt-6 pt-4 lg:pt-5 border-t border-white/5">
                                     <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-8 h-8 rounded-full bg-[var(--volt)]/10 flex items-center justify-center">
-                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--volt)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                        <div className="flex items-center gap-2 lg:gap-3">
+                                            <div className="w-6 h-6 lg:w-8 lg:h-8 rounded-full bg-[var(--volt)]/10 flex items-center justify-center">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--volt)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                                                     <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
                                                     <polyline points="17 6 23 6 23 12"></polyline>
                                                 </svg>
                                             </div>
                                             <div>
-                                                <p className="text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest">Total Yield Earned</p>
+                                                <p className="text-[8px] lg:text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest">Total Yield Earned</p>
                                             </div>
                                         </div>
-                                        <p className="text-[var(--volt)] font-bold tracking-tight text-lg">+$1,240.50</p>
+                                        <p className="text-[var(--volt)] font-bold tracking-tight text-base lg:text-lg">+$1,240.50</p>
                                     </div>
                                 </div>
                             </motion.div>
