@@ -118,7 +118,7 @@ export default function WithdrawPage() {
                                 value={amount}
                                 onChange={(e) => setAmount(e.target.value)}
                                 placeholder="0.00"
-                                className="w-full bg-transparent text-4xl font-mono font-bold text-white placeholder:text-white/10 outline-none"
+                                className="w-full bg-transparent text-3xl sm:text-4xl font-mono font-bold text-white placeholder:text-white/10 outline-none"
                                 autoFocus
                             />
                             <button

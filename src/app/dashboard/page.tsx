@@ -97,7 +97,7 @@ export default function DashboardPage() {
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="lg:col-span-2 relative p-6 lg:p-8 rounded-2xl lg:rounded-3xl bg-gradient-to-br from-[var(--obsidian-uplift)] to-[var(--obsidian-surface)] border border-[var(--border-medium)] overflow-hidden group"
+                        className="lg:col-span-2 relative p-4 sm:p-6 lg:p-8 rounded-2xl lg:rounded-3xl bg-gradient-to-br from-[var(--obsidian-uplift)] to-[var(--obsidian-surface)] border border-[var(--border-medium)] overflow-hidden group"
                     >
                         <div className="absolute top-0 right-0 w-64 lg:w-96 h-64 lg:h-96 bg-[var(--volt)]/5 blur-[120px] rounded-full pointer-events-none group-hover:bg-[var(--volt)]/10 transition-colors duration-700" />
 
@@ -112,7 +112,7 @@ export default function DashboardPage() {
                             </div>
 
                             <div className="mb-6 lg:mb-8">
-                                <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tighter text-white mb-4">
+                                <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tighter text-white mb-3">
                                     ${Math.floor(userData!.balance).toLocaleString()}<span className="text-white/40">.{(userData!.balance % 1).toFixed(2).slice(2)}</span>
                                 </h2>
                                 <div className="inline-flex items-center gap-3 px-3 py-1.5 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/10">
@@ -193,9 +193,9 @@ export default function DashboardPage() {
                     <Link key={i} href={action.href}>
                         <motion.div
                             whileHover={{ y: -5 }}
-                            className="p-5 lg:p-6 rounded-xl lg:rounded-2xl bg-white/[0.02] border border-[var(--border-subtle)] hover:bg-white/[0.05] hover:border-[var(--border-medium)] transition-all cursor-pointer group h-full"
+                            className="p-4 lg:p-6 rounded-xl lg:rounded-2xl bg-white/[0.02] border border-[var(--border-subtle)] hover:bg-white/[0.05] hover:border-[var(--border-medium)] transition-all cursor-pointer group h-full"
                         >
-                            <div className="flex items-start justify-between mb-6 lg:mb-8">
+                            <div className="flex items-start justify-between mb-4 lg:mb-6">
                                 <div className={`p-2.5 lg:p-3 rounded-lg lg:rounded-xl bg-white/[0.05] ${action.color}`}>
                                     <action.icon size={20} className="lg:w-6 lg:h-6" />
                                 </div>

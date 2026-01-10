@@ -129,24 +129,24 @@ export default function DepositPage() {
             </div>
 
             {/* Stepper */}
-            <div className="flex items-center gap-2 sm:gap-4 mb-8 lg:mb-12 ml-1 overflow-x-auto">
+            <div className="flex items-center justify-between sm:justify-start gap-2 sm:gap-4 mb-8 lg:mb-12">
                 {[
                     { num: 1, label: "Amount" },
                     { num: 2, label: "Approve" },
                     { num: 3, label: "Confirm" },
                     { num: 4, label: "Success" }
                 ].map((s, i) => (
-                    <div key={s.num} className="flex items-center gap-2 sm:gap-3">
-                        <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 shrink-0 ${step >= s.num
+                    <div key={s.num} className="flex items-center gap-1.5 sm:gap-3">
+                        <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 shrink-0 ${step >= s.num
                             ? "bg-[var(--volt)] text-black shadow-[0_0_15px_var(--volt-glow)]"
                             : "bg-white/[0.05] text-[var(--text-secondary)] border border-[var(--border-subtle)]"
                             }`}>
                             {step > s.num ? <CheckCircle size={14} weight="fill" /> : s.num}
                         </div>
-                        <span className={`text-xs sm:text-sm tracking-wide font-bold whitespace-nowrap ${step >= s.num ? "text-white" : "text-[var(--text-muted)]"}`}>
+                        <span className={`hidden sm:inline text-xs sm:text-sm tracking-wide font-bold whitespace-nowrap ${step >= s.num ? "text-white" : "text-[var(--text-muted)]"}`}>
                             {s.label}
                         </span>
-                        {i < 3 && <div className={`w-6 sm:w-8 h-px transition-colors duration-300 ${step > s.num ? "bg-[var(--volt)]" : "bg-[var(--border-subtle)]"}`} />}
+                        {i < 3 && <div className={`w-4 sm:w-8 h-px transition-colors duration-300 ${step > s.num ? "bg-[var(--volt)]" : "bg-[var(--border-subtle)]"}`} />}
                     </div>
                 ))}
             </div>
@@ -174,7 +174,7 @@ export default function DepositPage() {
                                 value={amount}
                                 onChange={(e) => setAmount(e.target.value)}
                                 placeholder="0.00"
-                                className="w-full bg-transparent text-4xl font-mono font-bold text-white placeholder:text-white/10 outline-none"
+                                className="w-full bg-transparent text-3xl sm:text-4xl font-mono font-bold text-white placeholder:text-white/10 outline-none"
                                 autoFocus
                             />
                             <button

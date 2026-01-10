@@ -12,7 +12,7 @@ export default function CorePillars() {
             <div className="mx-auto max-w-[1280px]">
                 {/* Header */}
                 <div className="mb-12 md:mb-16 lg:mb-24 max-w-3xl">
-                    <h2 className="mb-6 lg:mb-8 text-4xl sm:text-5xl lg:text-7xl font-black uppercase tracking-tighter text-white leading-[0.85]">
+                    <h2 className="mb-6 lg:mb-8 text-2xl sm:text-4xl lg:text-6xl font-black uppercase tracking-tighter text-white leading-[0.85]">
                         PROTOCOL <span className="text-[var(--volt)]">ARCHITECTURE</span>
                     </h2>
                     <p className="max-w-xl text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">

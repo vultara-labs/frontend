@@ -27,7 +27,7 @@ export default function UserJourney() {
             <div className="mx-auto max-w-[1280px] relative z-10">
                 {/* Header */}
                 <div className="mb-12 md:mb-16 lg:mb-24 max-w-3xl">
-                    <h2 className="mb-6 lg:mb-8 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter text-white leading-[0.9]">
+                    <h2 className="mb-6 lg:mb-8 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter text-white leading-[0.9]">
                         Flow <span className="text-[var(--volt)]">Timeline</span>
                     </h2>
                     <p className="text-[var(--text-secondary)] text-sm lg:text-base leading-relaxed max-w-lg">
