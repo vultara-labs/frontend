@@ -8,9 +8,9 @@ import {
 
 export const DASHBOARD_NAV_ITEMS = [
     { label: "Dashboard", href: "/dashboard", icon: SquaresFour },
-    { label: "Deposit USDC", href: "/dashboard/deposit", icon: ArrowCircleUp },
+    { label: "Deposit", href: "/dashboard/deposit", icon: ArrowCircleUp },
     { label: "Vault Strategy", href: "/dashboard/vault", icon: Vault },
-    { label: "Withdraw USDC", href: "/dashboard/withdraw", icon: ArrowCircleDown },
+    { label: "Withdraw", href: "/dashboard/withdraw", icon: ArrowCircleDown },
     { label: "Nova AI", href: "/dashboard/ai", icon: Lightning },
 ] as const;
 

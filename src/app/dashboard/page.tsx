@@ -4,25 +4,40 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
 import { ArrowUpRight, Vault, Lightning, ArrowCircleDown, Wallet, TrendUp, Crown, Lock } from "@phosphor-icons/react";
-import { PROTOCOL, DEMO, ACCESS_LEVELS } from "@/constants";
+import { PROTOCOL, DEMO, ACCESS_LEVELS, VULTARA_ETH_VAULT_ABI } from "@/constants";
 import { Counter } from "@/components/landing/Counter";
 import { MissionsWidget } from "@/components/dashboard/MissionsWidget";
 import { TierDetailsModal } from "@/components/dashboard/TierDetailsModal";
 import { useMarketData, useWalletConnection } from "@/hooks";
 import { formatUnits } from "viem";
+import { useChainId, useReadContract } from "wagmi";
 
 export default function DashboardPage() {
-    const { usdcBalance, isConnected } = useWalletConnection();
+    const { isConnected, address } = useWalletConnection();
+    const chainId = useChainId();
     const { data: marketData, loading } = useMarketData("ETH");
     const [isTierModalOpen, setIsTierModalOpen] = useState(false);
 
-    // Real Wallet Balance Calculation
-    const walletBalance = isConnected && usdcBalance
-        ? parseFloat(formatUnits(usdcBalance, 6))
-        : 0;
+    // Get contract addresses for current chain
+    const contracts = PROTOCOL.CONTRACTS[chainId as keyof typeof PROTOCOL.CONTRACTS] || PROTOCOL.CONTRACTS[84532];
 
-    // For now, let's assume monthly earnings are 0 for a new wallet.
-    const totalBalance = walletBalance;
+    // Read user's vault balance from smart contract
+    const { data: vaultBalanceRaw } = useReadContract({
+        address: contracts.ETH_VAULT,
+        abi: VULTARA_ETH_VAULT_ABI,
+        functionName: "getUserBalance",
+        args: address ? [address] : undefined,
+        query: {
+            enabled: !!address,
+        }
+    });
+
+    // Vault Balance in ETH
+    const vaultBalance = vaultBalanceRaw ? parseFloat(formatUnits(vaultBalanceRaw as bigint, 18)) : 0;
+
+    // Convert to USD for tier calculation (using live ETH price)
+    const ethPrice = marketData?.price || 2500;
+    const totalBalance = vaultBalance * ethPrice;
 
     // Dynamic APY Calculation (Synced with Vault Page)
     const priceChange = marketData?.change24h || 0;
@@ -78,14 +93,15 @@ export default function DashboardPage() {
                 <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8 items-end">
                     <div className="lg:col-span-2">
                         <div className="flex items-center gap-2 mb-4">
-                            <Wallet size={20} className="text-[var(--volt)]" weight="duotone" />
-                            <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">Total Balance</span>
+                            <Vault size={20} className="text-[var(--volt)]" weight="duotone" />
+                            <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">Vault Balance</span>
                         </div>
                         <h2 className="text-6xl sm:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-2">
-                            <Counter from={0} to={totalBalance} />
+                            {vaultBalance.toFixed(4)}
+                            <span className="text-3xl sm:text-4xl text-[var(--text-tertiary)] ml-2">ETH</span>
                         </h2>
                         <div className="flex items-center gap-3">
-                            <span className="text-lg text-[var(--text-secondary)]">USDC</span>
+                            <span className="text-lg text-[var(--text-secondary)]">≈ ${totalBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>
                             <div className="px-3 py-1 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/20 flex items-center gap-1.5">
                                 <TrendUp size={14} className="text-[var(--success)]" weight="bold" />
                                 <span className="text-xs font-bold text-[var(--success)]">+{loading ? "..." : currentAPY}% APY Active</span>

@@ -6,12 +6,26 @@ export const PROTOCOL = {
     NETWORK_COLOR: 'blue-500',
     VAULT: {
         NAME: 'ETH Covered Put',
-        STRIKE_PRICE: 2150, // Slightly OTM
+        STRIKE_PRICE: 2150,
         ASSET: 'ETH',
         EPOCH_END: '2d 14h',
         CAPACITY: 84,
         TVL: '2.4M',
-    }
+    },
+    CONTRACTS: {
+        // Base Sepolia (Testnet)
+        84532: {
+            ETH_VAULT: '0xedef77ed8a73d9a6ed9b4309451e5fce6705b677' as `0x${string}`,
+            USDC_VAULT: '0xF370f3a126B1148A2826D0b39d859a0744098309' as `0x${string}`,
+            USDC: '0x036CbD53842c5426634e7929541eC2318f3dCF7e' as `0x${string}`,
+        },
+        // Base Mainnet (Future)
+        8453: {
+            ETH_VAULT: '0x0000000000000000000000000000000000000000' as `0x${string}`,
+            USDC_VAULT: '0x0000000000000000000000000000000000000000' as `0x${string}`,
+            USDC: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' as `0x${string}`,
+        },
+    },
 } as const;
 
 export const DEMO = {

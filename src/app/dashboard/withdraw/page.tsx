@@ -2,73 +2,90 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowCircleDown, CheckCircle, CircleNotch, Wallet } from "@phosphor-icons/react";
-import { useState } from "react";
-import { useAccount } from "wagmi";
+import { useState, useEffect } from "react";
+import { useChainId, useWriteContract, useWaitForTransactionReceipt, useReadContract } from "wagmi";
 import { toast } from "sonner";
 import confetti from "canvas-confetti";
 import Link from "next/link";
-import { formatUnits } from "viem";
+import { formatUnits, parseEther } from "viem";
 import { useWalletConnection } from "@/hooks";
+import { PROTOCOL, VULTARA_ETH_VAULT_ABI } from "@/constants";
 
 export default function WithdrawPage() {
-    const { usdcBalance, isConnected } = useWalletConnection();
+    const { isConnected, address } = useWalletConnection();
+    const chainId = useChainId();
     const [step, setStep] = useState<"input" | "processing" | "success">("input");
     const [amount, setAmount] = useState("");
 
-    const walletBalance = isConnected && usdcBalance
-        ? parseFloat(formatUnits(usdcBalance, 6))
-        : 0;
+    // Get contract addresses for current chain
+    const contracts = PROTOCOL.CONTRACTS[chainId as keyof typeof PROTOCOL.CONTRACTS] || PROTOCOL.CONTRACTS[84532];
 
-    // For withdraw, we are withdrawing from the VAULT (deposited funds), not wallet balance.
-    // However, since we haven't implemented Vault Deposits state yet (only Wallet Connection),
-    // and the user asked for "total balance... update dong biar pake saldo asli from wallet",
-    // logic implies they want to handle their wallet funds or see real data.
-    // But logically, "Withdraw" usually means Withdraw from Protocol -> Wallet.
-    // If I use Wallet Balance here, I am saying "Withdraw from Wallet to... Wallet?"
-    // That doesn't make sense.
-    // "Deposit" = Wallet -> Vault.
-    // "Withdraw" = Vault -> Wallet.
-    // So "Withdraw Page" should show "Available to Withdraw" = "Vault Balance".
-    // Does the contract read "Vault Balance"?
-    // Currently we don't have a "Vault Balance" hook.
-    // The previous code was `DEMO.USER_BALANCE + DEMO.MONTHLY_EARNINGS`. This implies Vault Balance.
+    // Read user's vault balance (shares = ETH value in vault)
+    const { data: vaultBalance, refetch: refetchVaultBalance } = useReadContract({
+        address: contracts.ETH_VAULT,
+        abi: VULTARA_ETH_VAULT_ABI,
+        functionName: "getUserBalance",
+        args: address ? [address] : undefined,
+        query: {
+            enabled: !!address,
+        }
+    });
 
-    // IF the user wants "saldo asli" everywhere, they might mean they want to see "0" if they haven't deposited anything.
-    // So if we don't have a record of deposit, the Vault Balance should be 0.
-    // So "Available" should be 0.
-    // This is "Real Time" because they really have 0 in the vault.
+    // Contract write hook for withdraw
+    const { writeContract: writeWithdraw, data: withdrawHash, isPending: isWithdrawing } = useWriteContract();
 
-    // So I should set `totalBalance` (which is Vault Balance here) to 0, or some mock state if we want to simulate?
-    // User said "saldo asli". So 0 is the honest answer if they haven't deposited.
-    // Let's set it to 0 for now (or a small persistent mock if we had a database, but we don't).
+    // Transaction receipt hook
+    const { isLoading: isWithdrawConfirming, isSuccess: isWithdrawSuccess } = useWaitForTransactionReceipt({ hash: withdrawHash });
 
-    // Wait, maybe I should check if I can simulate a "Deposited Balance".
-    // For now, to satisfy "real data", it should be 0 unless we implemented the write to contract.
-    // Since we aren't actually writing to mainnet vault, it's 0.
+    // Handle withdraw success
+    useEffect(() => {
+        if (isWithdrawSuccess && step === "processing") {
+            toast.dismiss();
+            setStep("success");
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ["#CCFF00", "#ffffff", "#22c55e"],
+            });
+            toast.success("Withdrawal Complete!");
+            refetchVaultBalance();
+        }
+    }, [isWithdrawSuccess]);
 
-    // But if I show 0, they can't test Withdraw UI.
-    // But they asked for "real data". "Real data" means 0.
-    // I will stick to 0. It proves it's real.
+    // Vault balance in ETH
+    const totalBalance = vaultBalance ? parseFloat(formatUnits(vaultBalance as bigint, 18)) : 0;
 
-    const totalBalance = 0; // Real Vault Balance (Not connected to actual vault yet)
     const numAmount = parseFloat(amount.replace(/,/g, '')) || 0;
     const isValidAmount = numAmount > 0 && numAmount <= totalBalance;
 
     const handleWithdraw = async () => {
         if (!isValidAmount) return;
+        if (!isConnected || !address) {
+            toast.error("Please connect your wallet");
+            return;
+        }
+
         setStep("processing");
-        await new Promise((r) => setTimeout(r, 2000));
-        setStep("success");
-        confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: ["#CCFF00", "#ffffff", "#22c55e"],
-        });
-        toast.success("Withdrawal Complete!");
+
+        try {
+            const withdrawAmountWei = parseEther(numAmount.toString());
+
+            toast.loading("Withdrawing from Vault...");
+            writeWithdraw({
+                address: contracts.ETH_VAULT,
+                abi: VULTARA_ETH_VAULT_ABI,
+                functionName: "withdraw",
+                args: [withdrawAmountWei],
+            });
+        } catch (error) {
+            toast.dismiss();
+            toast.error("Transaction failed");
+            setStep("input");
+        }
     };
 
-    const handleMax = () => setAmount(totalBalance.toLocaleString());
+    const handleMax = () => setAmount(totalBalance.toFixed(6));
 
     return (
         <div className="min-h-[80vh] flex items-center justify-center p-4">
@@ -95,16 +112,16 @@ export default function WithdrawPage() {
                                         </div>
                                     </div>
                                     <div className="text-right">
-                                        <p className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider mb-1">Available</p>
-                                        <p className="text-xl font-black text-white tracking-tight">${totalBalance.toLocaleString()}</p>
+                                        <p className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider mb-1">In Vault</p>
+                                        <p className="text-xl font-black text-white tracking-tight">{totalBalance.toFixed(4)} ETH</p>
                                     </div>
                                 </div>
 
                                 <div className="mb-8">
                                     <div className="flex justify-between items-center mb-3 px-2">
-                                        <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">Amount (USDC)</span>
+                                        <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">Amount (ETH)</span>
                                         <span className="text-xs font-mono text-[var(--text-tertiary)] hover:text-white cursor-pointer" onClick={handleMax}>
-                                            Max: ${totalBalance.toLocaleString()}
+                                            Max: {totalBalance.toFixed(4)} ETH
                                         </span>
                                     </div>
 
@@ -118,15 +135,14 @@ export default function WithdrawPage() {
                                                 : "border-[var(--border-medium)] group-focus-within/input:border-blue-500"
                                                 }`}
                                         >
-                                            <span className={`text-3xl ${numAmount > totalBalance ? "text-[var(--error)]" : "text-[var(--text-tertiary)]"}`}>$</span>
+                                            <span className={`text-3xl ${numAmount > totalBalance ? "text-[var(--error)]" : "text-[var(--text-tertiary)]"}`}>Ξ</span>
                                             <input
                                                 type="text"
                                                 value={amount}
                                                 onChange={(e) => {
                                                     const val = e.target.value.replace(/,/g, '');
                                                     if (!isNaN(Number(val)) || val === '') {
-                                                        const formatted = val.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                                                        setAmount(formatted);
+                                                        setAmount(val);
                                                     }
                                                 }}
                                                 placeholder="0"
@@ -152,12 +168,25 @@ export default function WithdrawPage() {
                                             animate={{ opacity: 1, y: 0 }}
                                             className="mt-4 px-2 flex items-center gap-2 text-[var(--error)]"
                                         >
-                                            <span className="text-sm font-bold">Insufficient balance</span>
+                                            <span className="text-sm font-bold">Insufficient vault balance</span>
+                                        </motion.div>
+                                    ) : totalBalance === 0 ? (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: -10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            className="mt-4 px-2"
+                                        >
+                                            <Link
+                                                href="/dashboard/deposit"
+                                                className="text-sm font-bold text-[var(--volt)] hover:underline"
+                                            >
+                                                No funds in vault. Deposit first →
+                                            </Link>
                                         </motion.div>
                                     ) : (
                                         <div className="mt-4 px-2 flex justify-between text-xs">
                                             <span className="text-[var(--text-secondary)] font-bold">Network Fee</span>
-                                            <span className="text-[var(--success)] font-bold">~$0.01</span>
+                                            <span className="text-[var(--success)] font-bold">~0.0001 ETH</span>
                                         </div>
                                     )}
                                 </div>
@@ -179,7 +208,7 @@ export default function WithdrawPage() {
                                     <CircleNotch size={64} className="text-blue-400 animate-spin relative z-10" />
                                 </div>
                                 <h3 className="text-xl font-black uppercase tracking-tight text-white mb-2">Processing</h3>
-                                <p className="text-sm text-[var(--text-secondary)]">Sending funds to your wallet...</p>
+                                <p className="text-sm text-[var(--text-secondary)]">Sending ETH to your wallet...</p>
                             </motion.div>
                         )}
 
@@ -190,7 +219,7 @@ export default function WithdrawPage() {
                                 </div>
                                 <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-2">Funds Sent</h3>
                                 <p className="text-[var(--text-secondary)] text-center mb-8 max-w-xs mx-auto">
-                                    ${numAmount.toLocaleString()} USDC has been sent to your wallet.
+                                    {numAmount.toFixed(4)} ETH has been sent to your wallet.
                                 </p>
                                 <Link
                                     href="/dashboard"

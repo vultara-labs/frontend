@@ -57,12 +57,10 @@ export function useWalletConnection() {
 
     const formattedAddress = address ? formatAddress(address) : "";
 
-    // Prioritize USDC display for this app (Standard USDC Decimals = 6)
-    const formattedBalance = usdcBalanceRaw !== undefined
-        ? `${parseFloat(formatUnits(usdcBalanceRaw, 6)).toFixed(2)} USDC`
-        : ethBalance
-            ? `${parseFloat(formatUnits(ethBalance.value, ethBalance.decimals)).toFixed(4)} ETH`
-            : "0.00 USDC";
+    // Prioritize ETH display for this app (ETH Vault)
+    const formattedBalance = ethBalance
+        ? `${parseFloat(formatUnits(ethBalance.value, ethBalance.decimals)).toFixed(4)} ETH`
+        : "0.00 ETH";
 
     return {
         address,
