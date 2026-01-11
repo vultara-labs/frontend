@@ -38,6 +38,7 @@ export default function UserJourney() {
                 </div>
 
                 <div className="relative w-full mb-12 lg:mb-16">
+                    {/* Horizontal line for desktop */}
                     <div className="hidden lg:block absolute top-[48px] left-0 w-full h-[2px] bg-[var(--border-subtle)] rounded-full overflow-hidden">
                         <motion.div
                             style={{ width: lineWidth }}
@@ -45,14 +46,15 @@ export default function UserJourney() {
                         />
                     </div>
 
-                    <div className="lg:hidden absolute left-[39px] top-0 bottom-0 w-[2px] bg-[var(--border-subtle)] rounded-full overflow-hidden">
+                    {/* Vertical line for mobile - centered with icon (w-16 = 64px, center = 32px) */}
+                    <div className="lg:hidden absolute left-[31px] top-8 bottom-8 w-[2px] bg-[var(--border-subtle)] rounded-full overflow-hidden">
                         <motion.div
                             style={{ height: lineHeight }}
                             className="w-full bg-gradient-to-b from-[var(--volt)] via-white to-[var(--volt)] opacity-70 shadow-[0_0_20px_#CCFF00]"
                         />
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-6">
                         {steps.map((step, idx) => {
                             const StepIcon = JOURNEY_ICONS[idx];
                             return (
@@ -62,25 +64,27 @@ export default function UserJourney() {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     transition={{ delay: idx * 0.1 }}
                                     viewport={{ once: true }}
-                                    className="group relative flex lg:flex-col flex-row gap-6 lg:gap-0 items-start"
+                                    className="group relative flex lg:flex-col flex-row gap-4 lg:gap-0 items-start"
                                 >
-                                    <div className="mb-0 lg:mb-10 flex flex-shrink-0 justify-center lg:justify-start">
+                                    {/* Icon container */}
+                                    <div className="mb-0 lg:mb-10 flex flex-shrink-0 justify-center lg:justify-start relative z-10">
                                         <div
-                                            className={`w-16 h-16 lg:w-24 lg:h-24 rounded-[1.25rem] lg:rounded-[1.5rem] bg-[var(--obsidian-surface)] border flex items-center justify-center transition-all duration-500 relative z-10 ${idx === 0
+                                            className={`w-16 h-16 lg:w-24 lg:h-24 rounded-2xl lg:rounded-[1.5rem] bg-[var(--obsidian-base)] border flex items-center justify-center transition-all duration-500 ${idx === 0
                                                 ? "border-[var(--volt)] text-[var(--volt)] shadow-[0_0_40px_-10px_rgba(204,255,0,0.3)]"
                                                 : "border-[var(--border-medium)] text-[var(--text-tertiary)] group-hover:border-[var(--volt)]/50 group-hover:text-[var(--volt)] group-hover:scale-110 group-hover:shadow-[0_0_30px_-5px_rgba(204,255,0,0.2)]"
-                                                } `}
+                                                }`}
                                         >
-                                            <StepIcon size={28} className="lg:w-9 lg:h-9" />
+                                            <StepIcon size={24} className="lg:w-9 lg:h-9" />
                                         </div>
                                     </div>
 
-                                    <div className="text-left pt-1 lg:pt-0">
-                                        <span className={`text-[10px] font-bold uppercase tracking-widest mb-2 lg:mb-3 block ${idx === 0 ? "text-[var(--volt)]" : "text-[var(--text-tertiary)] group-hover:text-[var(--volt)] transition-colors"}`}>
+                                    {/* Text content */}
+                                    <div className="text-left pt-0.5 lg:pt-0 flex-1">
+                                        <span className={`text-[10px] font-bold uppercase tracking-widest mb-1.5 lg:mb-3 block ${idx === 0 ? "text-[var(--volt)]" : "text-[var(--text-tertiary)] group-hover:text-[var(--volt)] transition-colors"}`}>
                                             Step 0{idx + 1}
                                         </span>
-                                        <h3 className="text-white font-bold text-lg lg:text-xl mb-2 lg:mb-3 uppercase tracking-tight">{step.title}</h3>
-                                        <p className="text-[var(--text-secondary)] text-sm leading-relaxed max-w-xs">{step.desc}</p>
+                                        <h3 className="text-white font-bold text-base lg:text-xl mb-1.5 lg:mb-3 uppercase tracking-tight">{step.title}</h3>
+                                        <p className="text-[var(--text-secondary)] text-sm leading-relaxed">{step.desc}</p>
                                     </div>
                                 </motion.div>
                             );
