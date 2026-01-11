@@ -18,7 +18,29 @@ export default function VaultPage() {
     const volatilityPremium = Math.abs(priceChange) * 0.3;
     const dynamicAPY = (PROTOCOL.APY + volatilityPremium).toFixed(2);
 
-    const strikePrice = currentPrice ? Math.floor((currentPrice * 0.9) / 50) * 50 : 0; // ~10% OTM
+    // Helper to calculate time until next Friday 08:00 UTC
+    function getNextFridayExpiry() {
+        const now = new Date();
+        const nextFriday = new Date();
+        const daysUntilFriday = (5 - now.getUTCDay() + 7) % 7;
+
+        nextFriday.setUTCDate(now.getUTCDate() + daysUntilFriday);
+        nextFriday.setUTCHours(8, 0, 0, 0);
+
+        // If today is Friday and past 8 AM, move to next Friday
+        if (now > nextFriday) {
+            nextFriday.setUTCDate(nextFriday.getUTCDate() + 7);
+        }
+
+        const diff = nextFriday.getTime() - now.getTime();
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+        return `${days}d ${hours}h`;
+    }
+
+    const epochEnd = getNextFridayExpiry();
+    const strikePrice = currentPrice ? Math.floor(currentPrice * PROTOCOL.VAULT.STRIKE_PERCENTAGE / 50) * 50 : 0; // 110% OTM Call rounded to nearest 50
     const tvl = currentPrice ? (2400000 * (currentPrice / 2500)).toLocaleString(undefined, { maximumFractionDigits: 0 }) : "2.4M";
 
     return (
@@ -39,9 +61,9 @@ export default function VaultPage() {
                                 </div>
                             )}
                         </div>
-                        <h1 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tight">ETH Growth Vault</h1>
+                        <h1 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tight">ETH Yield Vault</h1>
                         <p className="text-[var(--text-secondary)] mt-2 max-w-xl">
-                            Institutional-grade yield via automated Cash-Secured Puts on <span className="text-white font-bold">ETH</span>.
+                            Institutional-grade yield via automated Covered Calls on <span className="text-white font-bold">ETH</span>.
                         </p>
                     </div>
                     <div className="text-right">
@@ -116,7 +138,7 @@ export default function VaultPage() {
                                     </div>
                                     <div>
                                         <p className="font-bold text-white text-sm">Option Selling</p>
-                                        <p className="text-[10px] text-[var(--text-secondary)]">Selling {loading ? "..." : `$${strikePrice}`} Strike Puts.</p>
+                                        <p className="text-[10px] text-[var(--text-secondary)]">Selling {loading ? "..." : `$${strikePrice}`} Strike Calls.</p>
                                     </div>
                                 </div>
 
@@ -161,7 +183,7 @@ export default function VaultPage() {
                                 </div>
                                 <div className="flex justify-between items-center">
                                     <span className="text-sm text-[var(--text-secondary)]">Epoch Ends</span>
-                                    <span className="text-sm font-mono font-bold text-[var(--warning)]">{PROTOCOL.VAULT.EPOCH_END}</span>
+                                    <span className="text-sm font-mono font-bold text-[var(--warning)]">{epochEnd}</span>
                                 </div>
                                 <div className="flex justify-between items-center">
                                     <span className="text-sm text-[var(--text-secondary)]">Est. TVL (Dynamic)</span>

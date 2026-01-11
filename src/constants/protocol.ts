@@ -5,17 +5,15 @@ export const PROTOCOL = {
     NETWORK: 'Base',
     NETWORK_COLOR: 'blue-500',
     VAULT: {
-        NAME: 'ETH Covered Put',
-        STRIKE_PRICE: 2150,
+        NAME: 'ETH Covered Call', // Strategy Name
         ASSET: 'ETH',
-        EPOCH_END: '2d 14h',
-        CAPACITY: 84,
-        TVL: '2.4M',
+        STRIKE_PERCENTAGE: 1.1, // 110% of Current Price (OTM Call)
+        EPOCH_DURATION_DAYS: 7, // Weekly Epochs
     },
     CONTRACTS: {
         // Base Sepolia (Testnet)
         84532: {
-            ETH_VAULT: '0xedef77ed8a73d9a6ed9b4309451e5fce6705b677' as `0x${string}`,
+            ETH_VAULT: '0x3C90E5477C9016eec4c48b9886a1Bc3c1c5C5bBa' as `0x${string}`,
         },
         // Base Mainnet (Future)
         8453: {
