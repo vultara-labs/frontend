@@ -62,7 +62,7 @@ export default function Hero() {
                             </h1>
 
                             <p className="text-[15px] sm:text-base lg:text-lg text-[var(--text-secondary)] font-normal leading-relaxed max-w-xs sm:max-w-xl mx-auto lg:mx-0">
-                                Institutional options strategies, simplified directly on-chain. No inflationary tokens, just pure ETH growth.
+                                Automated strategies powered by Thetanuts V4. Earn sustainable returns on your ETH with zero complexity.
                             </p>
 
                             <div className="flex flex-col sm:flex-row items-center gap-3 mt-4 lg:mt-4 w-full sm:w-auto px-4 sm:px-0">
