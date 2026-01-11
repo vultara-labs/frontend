@@ -288,21 +288,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <div className="flex-1 flex flex-col relative z-10 w-full">
                     {!isConnectedSafe && (
                         <div className="relative z-20 bg-[var(--warning)]/5 border-b border-[var(--warning)]/20 flex-shrink-0">
-                            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2">
-                                <div className="flex items-center gap-3">
-                                    <div className="flex items-center gap-2">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--warning)] animate-pulse" />
-                                        <span className="text-[10px] font-bold text-[var(--warning)] uppercase tracking-widest">Preview Mode</span>
-                                    </div>
-                                    <span className="text-[10px] text-[var(--warning)]/60 hidden sm:inline">All data is simulated for demonstration</span>
+                            <div className="max-w-[1400px] mx-auto px-3 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2">
+                                <div className="flex items-center gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--warning)] animate-pulse flex-shrink-0" />
+                                    <span className="text-[9px] sm:text-[10px] font-bold text-[var(--warning)] uppercase tracking-wider sm:tracking-widest">Preview</span>
+                                    <span className="text-[9px] text-[var(--warning)]/60 hidden sm:inline">• Demo data</span>
                                 </div>
                                 <button
                                     onClick={handleConnect}
                                     disabled={isConnecting}
-                                    className="text-[10px] font-bold text-[var(--warning)] hover:text-white transition-colors uppercase tracking-widest flex items-center gap-1.5"
+                                    className="text-[9px] sm:text-[10px] font-bold bg-[var(--warning)]/10 hover:bg-[var(--warning)]/20 text-[var(--warning)] px-2 sm:px-3 py-1 rounded-md transition-colors uppercase tracking-wide flex items-center gap-1"
                                 >
-                                    {isConnecting ? "Connecting..." : "Connect for Real Data"}
-                                    <CaretRight size={12} weight="bold" />
+                                    {isConnecting ? "..." : "Connect"}
+                                    <CaretRight size={10} weight="bold" />
                                 </button>
                             </div>
                         </div>

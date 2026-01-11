@@ -69,7 +69,7 @@ export default function DashboardPage() {
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="relative rounded-[2rem] overflow-hidden bg-[var(--obsidian-surface)] border border-[var(--border-medium)] p-8 lg:p-12 mb-8 group"
+                className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden bg-[var(--obsidian-surface)] border border-[var(--border-medium)] p-5 sm:p-8 lg:p-12 mb-6 sm:mb-8 group"
             >
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--volt)]/5 blur-[120px] rounded-full pointer-events-none group-hover:bg-[var(--volt)]/10 transition-colors duration-700" />
 
@@ -79,24 +79,24 @@ export default function DashboardPage() {
                             <Vault size={20} className="text-[var(--volt)]" weight="duotone" />
                             <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">Vault Balance</span>
                         </div>
-                        <h2 className="text-6xl sm:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-2">
+                        <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter text-white mb-2">
                             {vaultBalance.toFixed(4)}
-                            <span className="text-3xl sm:text-4xl text-[var(--text-tertiary)] ml-2">ETH</span>
+                            <span className="text-2xl sm:text-3xl lg:text-4xl text-[var(--text-tertiary)] ml-1 sm:ml-2">ETH</span>
                         </h2>
-                        <div className="flex items-center gap-3">
-                            <span className="text-lg text-[var(--text-secondary)]">≈ ${totalBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>
-                            <div className="px-3 py-1 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/20 flex items-center gap-1.5">
-                                <TrendUp size={14} className="text-[var(--success)]" weight="bold" />
-                                <span className="text-xs font-bold text-[var(--success)]">+{loading ? "..." : currentAPY}% APY Active</span>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+                            <span className="text-base sm:text-lg text-[var(--text-secondary)]">≈ ${totalBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>
+                            <div className="px-2 sm:px-3 py-1 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/20 flex items-center gap-1.5 w-fit">
+                                <TrendUp size={12} className="text-[var(--success)]" weight="bold" />
+                                <span className="text-[10px] sm:text-xs font-bold text-[var(--success)]">+{loading ? "..." : currentAPY}% APY</span>
                             </div>
                         </div>
                     </div>
 
-                    <div className="flex gap-4">
-                        <Link href="/dashboard/deposit" className="flex-1 h-14 rounded-xl bg-[var(--volt)] text-black font-bold text-sm uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(204,255,0,0.15)]">
+                    <div className="flex gap-3 sm:gap-4">
+                        <Link href="/dashboard/deposit" className="flex-1 h-12 sm:h-14 rounded-xl bg-[var(--volt)] text-black font-bold text-xs sm:text-sm uppercase tracking-wider sm:tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(204,255,0,0.15)]">
                             Deposit
                         </Link>
-                        <Link href="/dashboard/withdraw" className="flex-1 h-14 rounded-xl bg-white/[0.05] border border-white/10 text-white font-bold text-sm uppercase tracking-widest hover:bg-white/[0.1] transition-all flex items-center justify-center gap-2">
+                        <Link href="/dashboard/withdraw" className="flex-1 h-12 sm:h-14 rounded-xl bg-white/[0.05] border border-white/10 text-white font-bold text-xs sm:text-sm uppercase tracking-wider sm:tracking-widest hover:bg-white/[0.1] transition-all flex items-center justify-center gap-2">
                             Withdraw
                         </Link>
                     </div>

@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Shield, Zap, Database, ArrowLeft } from "lucide-react";
+import { BookOpen, Shield, Zap, Database, ArrowLeft, Menu, X } from "lucide-react";
+import { useState } from "react";
 
 const DOCS_NAV = [
     {
@@ -23,11 +24,62 @@ const DOCS_NAV = [
 
 export default function DocsLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
+    const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
     return (
         <div className="min-h-screen bg-[var(--obsidian-base)] flex flex-col lg:flex-row">
-            {/* Sidebar Navigation */}
-            <aside className="w-full lg:w-64 shrink-0 border-r border-[var(--border-subtle)] bg-[var(--obsidian-base)] lg:h-screen lg:sticky lg:top-0 z-40">
+            {/* Mobile Header */}
+            <div className="lg:hidden sticky top-0 z-50 bg-[var(--obsidian-base)]/95 backdrop-blur-xl border-b border-[var(--border-subtle)]">
+                <div className="flex items-center justify-between px-4 h-14">
+                    <Link href="/" className="flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)]">
+                        <ArrowLeft size={16} />
+                        Back
+                    </Link>
+                    <span className="text-sm font-bold text-white">Documentation</span>
+                    <button
+                        onClick={() => setMobileNavOpen(!mobileNavOpen)}
+                        className="p-2 text-[var(--text-secondary)] hover:text-white"
+                    >
+                        {mobileNavOpen ? <X size={24} /> : <Menu size={24} />}
+                    </button>
+                </div>
+
+                {/* Mobile Nav Dropdown */}
+                {mobileNavOpen && (
+                    <div className="border-t border-[var(--border-subtle)] bg-[var(--obsidian-surface)] p-4 space-y-4">
+                        {DOCS_NAV.map((section) => (
+                            <div key={section.category}>
+                                <h4 className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-tertiary)] mb-2">
+                                    {section.category}
+                                </h4>
+                                <div className="space-y-1">
+                                    {section.items.map((item) => {
+                                        const isActive = pathname === item.href;
+                                        const Icon = item.icon;
+                                        return (
+                                            <Link
+                                                key={item.href}
+                                                href={item.href}
+                                                onClick={() => setMobileNavOpen(false)}
+                                                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm ${isActive
+                                                    ? "bg-[var(--volt)]/10 text-[var(--volt)] font-bold"
+                                                    : "text-[var(--text-secondary)]"
+                                                    }`}
+                                            >
+                                                <Icon size={16} />
+                                                {item.label}
+                                            </Link>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+
+            {/* Sidebar Navigation - Desktop Only */}
+            <aside className="hidden lg:block w-64 shrink-0 border-r border-[var(--border-subtle)] bg-[var(--obsidian-base)] h-screen sticky top-0 z-40">
                 <div className="p-6 h-full flex flex-col">
                     <Link href="/" className="flex items-center gap-2 text-[var(--text-secondary)] hover:text-white transition-colors mb-8 group text-sm font-medium">
                         <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
@@ -77,7 +129,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
 
             {/* Main Content Area */}
             <main className="flex-1 min-w-0">
-                <div className="max-w-4xl mx-auto px-6 py-12 lg:px-12 lg:py-16">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:px-12 lg:py-16">
                     {children}
                 </div>
             </main>

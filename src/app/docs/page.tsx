@@ -7,14 +7,14 @@ export default function DocsIntroductionPage() {
     return (
         <div className="space-y-12 animate-[fadeIn_0.5s_ease-out]">
             {/* Header */}
-            <div className="border-b border-[var(--border-subtle)] pb-8">
+            <div className="border-b border-[var(--border-subtle)] pb-6 sm:pb-8">
                 <p className="text-[var(--volt)] font-bold uppercase tracking-widest text-xs mb-3">
                     Getting Started
                 </p>
-                <h1 className="text-4xl lg:text-5xl font-black text-white tracking-tight mb-6">
+                <h1 className="text-2xl sm:text-3xl lg:text-5xl font-black text-white tracking-tight mb-4 sm:mb-6">
                     Introduction to Vultara
                 </h1>
-                <p className="text-xl text-[var(--text-secondary)] leading-relaxed max-w-2xl">
+                <p className="text-base sm:text-lg lg:text-xl text-[var(--text-secondary)] leading-relaxed max-w-2xl">
                     Vultara is the simplest way to earn real, sustainable yield on your ETH through institutional-grade options strategies on Base.
                 </p>
             </div>
