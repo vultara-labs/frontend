@@ -1,14 +1,16 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowCircleUp, CheckCircle, CircleNotch, Info, Warning, TrendUp } from "@phosphor-icons/react";
+import { ArrowCircleUp, CheckCircle, CircleNotch, Info, Warning, TrendUp, ArrowUpRight, ArrowCircleDown, ArrowsLeftRight } from "@phosphor-icons/react";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { useSignMessage, useAccount } from "wagmi";
+import { useSignMessage, useAccount, useChainId } from "wagmi";
 import { toast } from "sonner";
 import confetti from "canvas-confetti";
 import Link from "next/link";
-import { PROTOCOL, DEMO, YIELD } from "@/constants";
+import { PROTOCOL, YIELD } from "@/constants";
+import { useWalletConnection } from "@/hooks";
+import { formatUnits } from "viem";
 
 function DepositLoading() {
     return (
@@ -32,7 +34,8 @@ function DepositContent() {
     const [riskAcknowledged, setRiskAcknowledged] = useState(false);
 
     const { signMessageAsync } = useSignMessage();
-    const { isConnected } = useAccount();
+    const { usdcBalance, isConnected, balance: ethBalance } = useWalletConnection();
+    const chainId = useChainId();
 
     const searchParams = useSearchParams();
     useEffect(() => {
@@ -42,7 +45,25 @@ function DepositContent() {
         }
     }, [searchParams]);
 
-    const walletBalance = DEMO.WALLET_BALANCE;
+    const walletBalance = isConnected && usdcBalance
+        ? parseFloat(formatUnits(usdcBalance, 6))
+        : 0;
+
+    // Check if user has ETH for "Smart Swap Suggestion"
+    const ethBalanceVal = ethBalance ? parseFloat(formatUnits(ethBalance.value, ethBalance.decimals)) : 0;
+    const hasEth = ethBalanceVal > 0.0001;
+
+    useEffect(() => {
+        console.log("🔍 DEBUG DEPOSIT:", {
+            chainId,
+            networkName: chainId === 84532 ? "Base Sepolia" : "Unknown",
+            isConnected,
+            ETH: ethBalanceVal,
+            USDC: walletBalance,
+            rawETH: ethBalance,
+        });
+    }, [chainId, isConnected, ethBalance, ethBalanceVal, walletBalance]);
+
     const numAmount = parseFloat(amount.replace(/,/g, '')) || 0;
     const isValidAmount = numAmount >= 10 && numAmount <= walletBalance;
     const monthlyYield = YIELD.calculateMonthly(numAmount);
@@ -130,8 +151,8 @@ function DepositContent() {
                                             animate={numAmount > walletBalance ? { x: [0, -4, 4, -4, 4, 0] } : {}}
                                             transition={{ duration: 0.4 }}
                                             className={`relative flex items-center gap-2 p-6 rounded-2xl bg-[var(--obsidian-base)] border transition-colors ${numAmount > walletBalance
-                                                    ? "border-[var(--error)] bg-[var(--error)]/5"
-                                                    : "border-[var(--border-medium)] group-focus-within/input:border-[var(--volt)]"
+                                                ? "border-[var(--error)] bg-[var(--error)]/5"
+                                                : "border-[var(--border-medium)] group-focus-within/input:border-[var(--volt)]"
                                                 }`}
                                         >
                                             <span className={`text-3xl ${numAmount > walletBalance ? "text-[var(--error)]" : "text-[var(--text-tertiary)]"}`}>$</span>
@@ -153,8 +174,8 @@ function DepositContent() {
                                             <button
                                                 onClick={() => setAmount(walletBalance.toLocaleString())}
                                                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors uppercase tracking-wider ${numAmount > walletBalance
-                                                        ? "bg-[var(--error)]/10 text-[var(--error)] hover:bg-[var(--error)] hover:text-white"
-                                                        : "bg-[var(--volt)]/10 text-[var(--volt)] hover:bg-[var(--volt)] hover:text-black"
+                                                    ? "bg-[var(--error)]/10 text-[var(--error)] hover:bg-[var(--error)] hover:text-white"
+                                                    : "bg-[var(--volt)]/10 text-[var(--volt)] hover:bg-[var(--volt)] hover:text-black"
                                                     }`}
                                             >
                                                 Max
@@ -162,6 +183,7 @@ function DepositContent() {
                                         </motion.div>
                                     </div>
 
+                                    {/* Validation States */}
                                     {numAmount > walletBalance ? (
                                         <motion.div
                                             initial={{ opacity: 0, y: -10 }}
@@ -176,8 +198,72 @@ function DepositContent() {
                                             <TrendUp size={16} weight="bold" />
                                             <span className="text-sm font-bold">Est. yield: ~${monthlyYield.toFixed(2)} / month</span>
                                         </div>
-                                    ) : (
-                                        <div className="h-9" />
+                                    ) : null}
+
+                                    {/* Low Balance / Smart Helper - Always visible if eligible */}
+                                    {walletBalance < 10 && (
+                                        <motion.div
+                                            initial={{ opacity: 0, height: 0 }}
+                                            animate={{ opacity: 1, height: "auto" }}
+                                            className="mt-6 space-y-3"
+                                        >
+                                            {/* Smart Detection Message */}
+                                            {ethBalanceVal > 0.0001 && (
+                                                <div className="flex items-start gap-2 p-3 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs">
+                                                    <Info size={16} weight="bold" className="mt-0.5 shrink-0" />
+                                                    <div>
+                                                        <span className="font-bold block mb-0.5">Assets Detected</span>
+                                                        We found <span className="text-white font-bold">{ethBalanceVal.toFixed(4)} ETH</span> in your wallet. Swap efficiently to USDC to start generating yield.
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            <div className="grid gap-2">
+                                                {/* Option 2: Swap (Primary if ETH detected) */}
+                                                <a
+                                                    href="https://app.uniswap.org/swap?chain=base_sepolia&inputCurrency=ETH&outputCurrency=0x036CbD53842c5426634e7929541eC2318f3dCF7e"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className={`flex items-center justify-between p-3 rounded-xl border transition-all group/swap cursor-pointer ${ethBalanceVal > 0.0001
+                                                        ? "bg-blue-500/10 border-blue-500/40 hover:bg-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.1)] order-first"
+                                                        : "bg-blue-500/5 border-blue-500/10 hover:bg-blue-500/10 order-last"
+                                                        }`}
+                                                >
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500">
+                                                            <ArrowsLeftRight size={18} weight="duotone" />
+                                                        </div>
+                                                        <div>
+                                                            <p className="text-xs font-bold text-white uppercase tracking-wide">Swap ETH to USDC</p>
+                                                            <p className="text-[10px] text-[var(--text-secondary)]">Instant via Uniswap</p>
+                                                        </div>
+                                                    </div>
+                                                    <ArrowUpRight size={14} weight="bold" className="text-blue-500 group-hover/swap:translate-x-0.5 group-hover/swap:-translate-y-0.5 transition-transform" />
+                                                </a>
+
+                                                {/* Option 1: Faucet (Primary if NO ETH) */}
+                                                <a
+                                                    href="https://faucet.circle.com/"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className={`flex items-center justify-between p-3 rounded-xl border transition-all group/faucet cursor-pointer ${ethBalanceVal <= 0.0001
+                                                        ? "bg-[var(--volt)]/10 border-[var(--volt)]/40 hover:bg-[var(--volt)]/20 shadow-[0_0_15px_rgba(204,255,0,0.1)] order-first"
+                                                        : "bg-[var(--volt)]/5 border-[var(--volt)]/10 hover:bg-[var(--volt)]/10 order-last"
+                                                        }`}
+                                                >
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-8 h-8 rounded-lg bg-[var(--volt)]/10 flex items-center justify-center text-[var(--volt)]">
+                                                            <ArrowCircleDown size={18} weight="duotone" />
+                                                        </div>
+                                                        <div>
+                                                            <p className="text-xs font-bold text-white uppercase tracking-wide">Mint Free USDC</p>
+                                                            <p className="text-[10px] text-[var(--text-secondary)]">Official Circle Faucet</p>
+                                                        </div>
+                                                    </div>
+                                                    <ArrowUpRight size={14} weight="bold" className="text-[var(--volt)] group-hover/faucet:translate-x-0.5 group-hover/faucet:-translate-y-0.5 transition-transform" />
+                                                </a>
+                                            </div>
+                                        </motion.div>
                                     )}
                                 </div>
 

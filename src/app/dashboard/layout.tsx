@@ -11,6 +11,7 @@ import { DASHBOARD_NAV_ITEMS } from "@/constants";
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
 
     const {
         isConnected,
@@ -20,6 +21,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         connect: handleConnect,
         disconnect: handleDisconnect,
     } = useWalletConnection();
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     useEffect(() => {
         setMobileMenuOpen(false);
@@ -35,6 +40,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             document.body.style.overflow = "unset";
         };
     }, [mobileMenuOpen]);
+
+    const isConnectedSafe = mounted && isConnected;
 
     return (
         <div className="min-h-screen bg-[var(--obsidian-base)] flex flex-col lg:flex-row font-sans selection:bg-[var(--volt)] selection:text-black">
@@ -110,7 +117,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                             </nav>
 
                             <div className="p-4 border-t border-[var(--border-subtle)] bg-[var(--obsidian-surface)]">
-                                {isConnected ? (
+                                {isConnectedSafe ? (
                                     <div className="space-y-3">
                                         <div className="flex items-center gap-3 p-3 rounded-lg bg-white/[0.03]">
                                             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--volt)] to-[var(--success)]" />
@@ -158,14 +165,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
                         <div className="flex justify-between items-start mb-4">
                             <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider flex items-center gap-1.5">
-                                <span className={`w-1.5 h-1.5 rounded-full ${isConnected ? "bg-[var(--success)] shadow-[0_0_8px_var(--success)]" : "bg-[var(--warning)]"}`} />
-                                {isConnected ? "Connected" : "Wallet"}
+                                <span className={`w-1.5 h-1.5 rounded-full ${isConnectedSafe ? "bg-[var(--success)] shadow-[0_0_8px_var(--success)]" : "bg-[var(--warning)]"}`} />
+                                {isConnectedSafe ? "Connected" : "Wallet"}
                             </span>
                             <Wallet size={18} className="text-[var(--text-tertiary)]" />
                         </div>
 
                         <div className="mb-4">
-                            {!isConnected ? (
+                            {!isConnectedSafe ? (
                                 <button
                                     onClick={handleConnect}
                                     className="w-full py-2.5 rounded-xl bg-[var(--volt)] text-black font-bold text-xs uppercase tracking-widest hover:brightness-110 transition-all shadow-[0_0_15px_rgba(204,255,0,0.15)]"
@@ -211,7 +218,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 </nav>
 
                 <div className="mt-auto px-2">
-                    {isConnected && (
+                    {isConnectedSafe && (
                         <button
                             onClick={handleDisconnect}
                             className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-[var(--text-tertiary)] hover:text-white hover:bg-white/[0.03] transition-all"
@@ -257,7 +264,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 </div>
 
                 <div className="flex-1 flex flex-col relative z-10 w-full">
-                    {!isConnected && (
+                    {!isConnectedSafe && (
                         <div className="relative z-20 bg-[var(--warning)]/5 border-b border-[var(--warning)]/20 flex-shrink-0">
                             <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2">
                                 <div className="flex items-center gap-3">

@@ -2,17 +2,59 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useState } from "react";
 import { ArrowUpRight, Vault, Lightning, ArrowCircleDown, Wallet, TrendUp, Crown, Lock } from "@phosphor-icons/react";
-import { PROTOCOL, DEMO } from "@/constants";
+import { PROTOCOL, DEMO, ACCESS_LEVELS } from "@/constants";
 import { Counter } from "@/components/landing/Counter";
+import { MissionsWidget } from "@/components/dashboard/MissionsWidget";
+import { TierDetailsModal } from "@/components/dashboard/TierDetailsModal";
+import { useMarketData, useWalletConnection } from "@/hooks";
+import { formatUnits } from "viem";
 
 export default function DashboardPage() {
-    const totalBalance = DEMO.USER_BALANCE + DEMO.MONTHLY_EARNINGS;
+    const { usdcBalance, isConnected } = useWalletConnection();
+    const { data: marketData, loading } = useMarketData("ETH");
+    const [isTierModalOpen, setIsTierModalOpen] = useState(false);
 
-    // Logic Mockup for Tiers
-    const currentLevel = 2; // Elite
-    const nextLevelThreshold = 10000;
-    const progress = (totalBalance / nextLevelThreshold) * 100;
+    // Real Wallet Balance Calculation
+    const walletBalance = isConnected && usdcBalance
+        ? parseFloat(formatUnits(usdcBalance, 6))
+        : 0;
+
+    // For now, let's assume monthly earnings are 0 for a new wallet.
+    const totalBalance = walletBalance;
+
+    // Dynamic APY Calculation (Synced with Vault Page)
+    const priceChange = marketData?.change24h || 0;
+    const volatilityPremium = Math.abs(priceChange) * 0.3;
+    const currentAPY = (PROTOCOL.APY + volatilityPremium).toFixed(2);
+
+    // Dynamic Tier Logic based on ACCESS_LEVELS
+    // [INITIATE, ASSOCIATE, PARTNER, SOVEREIGN]
+    const matchedTierIndex = [...ACCESS_LEVELS].reverse().findIndex(t => totalBalance >= t.min);
+    // Because we reversed, the index is from the end. Convert back to original index.
+    const originalIndex = ACCESS_LEVELS.length - 1 - matchedTierIndex;
+    const currentTier = ACCESS_LEVELS[originalIndex >= 0 ? originalIndex : 0];
+    const nextTier = ACCESS_LEVELS[originalIndex + 1];
+
+    const toTitleCase = (str: string) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
+    const currentTierName = toTitleCase(currentTier.name);
+    const nextTierName = nextTier ? toTitleCase(nextTier.name) : "Max Level";
+    const nextLevelThreshold = nextTier ? nextTier.min : currentTier.min;
+
+    const progress = nextTier
+        ? Math.min((totalBalance / nextTier.min) * 100, 100)
+        : 100;
+
+    const CurrentTierIcon = currentTier.icon;
+    const tierColorMap: Record<string, string> = {
+        INITIATE: "var(--text-secondary)",
+        ASSOCIATE: "var(--info)",
+        PARTNER: "var(--volt)",
+        SOVEREIGN: "var(--warning)"
+    };
+    const tierColor = tierColorMap[currentTier.name] || "var(--text-secondary)";
 
     return (
         <div className="p-4 sm:p-6 lg:p-8 max-w-[1400px] mx-auto space-y-6">
@@ -46,7 +88,7 @@ export default function DashboardPage() {
                             <span className="text-lg text-[var(--text-secondary)]">USDC</span>
                             <div className="px-3 py-1 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/20 flex items-center gap-1.5">
                                 <TrendUp size={14} className="text-[var(--success)]" weight="bold" />
-                                <span className="text-xs font-bold text-[var(--success)]">+{PROTOCOL.APY}% APY Active</span>
+                                <span className="text-xs font-bold text-[var(--success)]">+{loading ? "..." : currentAPY}% APY Active</span>
                             </div>
                         </div>
                     </div>
@@ -115,45 +157,73 @@ export default function DashboardPage() {
                 {/* Access Tier Module */}
                 <motion.div
                     whileHover={{ y: -4 }}
-                    className="group relative h-full min-h-[280px] p-8 rounded-[2rem] bg-gradient-to-b from-[var(--obsidian-surface)] to-black border border-[var(--border-subtle)] overflow-hidden hover:border-blue-500/50 transition-all duration-500 flex flex-col justify-between"
+                    onClick={() => setIsTierModalOpen(true)}
+                    className="group relative h-full min-h-[280px] p-8 rounded-[2rem] bg-gradient-to-b from-[var(--obsidian-surface)] to-black border border-[var(--border-subtle)] overflow-hidden transition-all duration-500 flex flex-col justify-between cursor-pointer"
+                    style={{ borderColor: `color-mix(in srgb, ${tierColor} 20%, transparent)` }}
                 >
                     <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-30 transition-all duration-500">
-                        <Crown size={120} weight="duotone" className="text-blue-500" />
+                        <CurrentTierIcon size={120} weight="duotone" style={{ color: tierColor }} />
                     </div>
 
                     <div className="relative z-10">
                         <div className="flex justify-between items-start mb-6">
-                            <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-500">
-                                <Crown size={24} weight="duotone" />
+                            <div
+                                className="w-12 h-12 rounded-xl flex items-center justify-center border"
+                                style={{
+                                    backgroundColor: `color-mix(in srgb, ${tierColor} 10%, transparent)`,
+                                    borderColor: `color-mix(in srgb, ${tierColor} 20%, transparent)`,
+                                    color: tierColor
+                                }}
+                            >
+                                <CurrentTierIcon size={24} weight="duotone" />
                             </div>
-                            <span className="px-3 py-1 rounded-lg bg-blue-500/10 border border-blue-500/20 text-[10px] font-bold text-blue-500 uppercase tracking-widest">
-                                Associate
+                            <span
+                                className="px-3 py-1 rounded-lg border text-[10px] font-bold uppercase tracking-widest"
+                                style={{
+                                    backgroundColor: `color-mix(in srgb, ${tierColor} 10%, transparent)`,
+                                    borderColor: `color-mix(in srgb, ${tierColor} 20%, transparent)`,
+                                    color: tierColor
+                                }}
+                            >
+                                {currentTierName}
                             </span>
                         </div>
 
-                        <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-1">Associate Tier</h3>
+                        <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-1">{currentTierName} Tier</h3>
                         <p className="text-[var(--text-secondary)] text-sm mb-6">
-                            Verified member. Unlock Partner status at $5,000.
+                            Verified member. Unlock {nextTierName} status at ${nextLevelThreshold.toLocaleString()}.
                         </p>
 
                         <div className="space-y-2">
                             <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
-                                <span className="text-[var(--text-secondary)]">Next: Partner</span>
-                                <span className="text-white">$5,000</span>
+                                <span className="text-[var(--text-secondary)]">Next: {nextTierName}</span>
+                                <span className="text-white">${nextLevelThreshold.toLocaleString()}</span>
                             </div>
                             <div className="h-2 w-full bg-white/[0.05] rounded-full overflow-hidden">
                                 <div
-                                    className="h-full bg-blue-500 rounded-full"
-                                    style={{ width: `${(totalBalance / 5000) * 100}%` }}
+                                    className="h-full rounded-full transition-all duration-1000"
+                                    style={{ width: `${progress}%`, backgroundColor: tierColor }}
                                 />
                             </div>
                             <p className="text-[10px] text-[var(--text-tertiary)] pt-1">
-                                Deposit ${(5000 - totalBalance).toLocaleString()} more to upgrade
+                                Deposit ${(nextLevelThreshold - totalBalance).toLocaleString()} more to upgrade
                             </p>
                         </div>
                     </div>
                 </motion.div>
             </div>
+
+            {/* Gamification / Missions */}
+            <div className="pt-4">
+                <MissionsWidget balance={totalBalance} />
+            </div>
+
+            <TierDetailsModal
+                isOpen={isTierModalOpen}
+                onClose={() => setIsTierModalOpen(false)}
+                currentTierName={currentTierName}
+                totalBalance={totalBalance}
+            />
         </div>
     );
 }

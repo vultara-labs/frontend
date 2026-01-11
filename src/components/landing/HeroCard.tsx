@@ -5,9 +5,22 @@ import { MoreHorizontal } from "lucide-react";
 import { useRef, MouseEvent } from "react";
 import { Counter } from "./Counter";
 import { PROTOCOL } from "@/constants";
+import { useMarketData } from "@/hooks";
 
 export function HeroCard() {
     const cardRef = useRef<HTMLDivElement>(null);
+    const { data: marketData, loading } = useMarketData("ETH");
+
+    // Dynamic Calculations
+    const priceChange = marketData?.change24h || 0;
+    const volatilityPremium = Math.abs(priceChange) * 0.3;
+    const currentAPY = (PROTOCOL.APY + volatilityPremium).toFixed(2);
+
+    // Simulate Portfolio fluctuation based on live price
+    // Base Portfolio Value: $124,592.50
+    // If ETH is up/down 2% -> Portfolio up/down 2% (Simulating exposure)
+    const basePortfolio = 124592.50;
+    const portfolioValue = basePortfolio * (1 + (priceChange / 100));
 
     const x = useMotionValue(0);
     const y = useMotionValue(0);
@@ -61,9 +74,16 @@ export function HeroCard() {
                             </div>
                             <div>
                                 <h3 className="text-white font-bold text-base lg:text-lg uppercase tracking-wider">USDC Vault</h3>
-                                <div className="flex items-center gap-2 text-[8px] lg:text-[10px] text-[var(--volt)] font-bold uppercase tracking-widest bg-[var(--volt-glass)] px-2 py-0.5 rounded-full w-fit mt-1 border border-[var(--volt)]/10">
-                                    <span className="w-1 h-1 lg:w-1.5 lg:h-1.5 rounded-full bg-[var(--volt)] animate-pulse" />
-                                    Active Strategy
+                                <div className="flex items-center gap-2 mt-1">
+                                    <div className="flex items-center gap-2 text-[8px] lg:text-[10px] text-[var(--volt)] font-bold uppercase tracking-widest bg-[var(--volt-glass)] px-2 py-0.5 rounded-full border border-[var(--volt)]/10">
+                                        <span className="w-1 h-1 lg:w-1.5 lg:h-1.5 rounded-full bg-[var(--volt)] animate-pulse" />
+                                        Active
+                                    </div>
+                                    {!loading && (
+                                        <span className="text-[8px] text-[var(--text-tertiary)] bg-white/5 px-1.5 py-0.5 rounded border border-white/5">
+                                            Live
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -72,7 +92,8 @@ export function HeroCard() {
                     <div className="mb-6 lg:mb-8">
                         <p className="text-[var(--text-tertiary)] text-[10px] font-bold uppercase tracking-widest mb-1 lg:mb-2">Total Balance</p>
                         <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tighter tabular-nums">
-                            <Counter from={100000} to={124592.5} />
+                            {/* Key change: using calculated portfolioValue */}
+                            <Counter from={100000} to={portfolioValue} />
                         </h2>
                     </div>
 
@@ -102,8 +123,8 @@ export function HeroCard() {
 
                     <div className="grid grid-cols-2 gap-3 lg:gap-4">
                         <div className="p-3 lg:p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300 hover:scale-[1.02] cursor-default">
-                            <p className="text-[8px] lg:text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">APY</p>
-                            <p className="text-xl lg:text-2xl font-bold text-[var(--volt)] tracking-tighter">{PROTOCOL.APY}%</p>
+                            <p className="text-[8px] lg:text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">APY (Live)</p>
+                            <p className="text-xl lg:text-2xl font-bold text-[var(--volt)] tracking-tighter">{loading ? "..." : `${currentAPY}%`}</p>
                         </div>
                         <div className="p-3 lg:p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300 hover:scale-[1.02] cursor-default">
                             <p className="text-[8px] lg:text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">Next Payout</p>

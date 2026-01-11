@@ -11,7 +11,7 @@ import type { Message, ActionData } from "@/types";
 const initialMessages: Message[] = [
     {
         role: "assistant",
-        content: "Hey! I'm Nova, your DeFi advisor. Ask me anything about Vultara, yield strategies, or just chat about crypto. What's on your mind?",
+        content: "Online and monitoring.\n\nI'm Nova. My job is to make sure you're getting the most out of Vultara.\n\nI noticed you have an active 'Risk Analysis' mission. Want me to break down the Vault's strategy so you know exactly where the yield comes from?",
         time: "Now",
     },
 ];
@@ -124,107 +124,90 @@ export default function AIAdvisorPage() {
             <div className="flex-1 overflow-y-auto px-4 pt-20 lg:pt-24 pb-4 md:px-0">
                 <div className="max-w-3xl mx-auto flex flex-col gap-4 lg:gap-6 min-h-full">
 
-                    {/* Empty State: Hero Prompts */}
-                    {messages.length === 1 && (
-                        <motion.div
-                            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                            className="flex-1 flex flex-col justify-center items-center py-12"
-                        >
-                            <div className="w-24 h-24 rounded-full bg-amber-500/10 flex items-center justify-center border border-amber-500/20 mb-6 relative group cursor-default">
-                                <div className="absolute inset-0 bg-amber-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                                <Alien size={48} weight="duotone" className="text-amber-500 relative z-10" />
-                            </div>
-                            <h3 className="text-3xl font-black text-white uppercase tracking-tight mb-3">How can I help?</h3>
-                            <p className="text-[var(--text-secondary)] text-base font-medium mb-10 text-center max-w-sm leading-relaxed">
-                                I analyze on-chain data and strategies.
-                            </p>
+                    {/* Message List */}
+                    <div className="flex justify-center mb-6">
+                        <span className="text-[10px] font-bold text-[var(--text-secondary)] bg-white/[0.03] px-3 py-1 rounded-full border border-[var(--border-subtle)] uppercase tracking-wider">Session Active</span>
+                    </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-xl">
+                    {messages.map((msg, i) => (
+                        <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className={`flex items-start gap-4 ${msg.role === "user" ? "flex-row-reverse" : ""}`}>
+                            {msg.role === "assistant" ? (
+                                <div className="w-8 h-8 lg:w-9 lg:h-9 flex items-center justify-center shrink-0 -ml-1 mt-1">
+                                    <div className="relative">
+                                        <div className="absolute inset-0 bg-amber-500/20 blur-md rounded-full" />
+                                        <Alien size={24} weight="duotone" className="relative z-10 lg:w-[28px] lg:h-[28px] text-amber-500" />
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="w-8 h-8 lg:w-9 lg:h-9 rounded-full bg-white/10 border border-white/10 flex items-center justify-center shrink-0 mt-1">
+                                    <User size={14} weight="bold" className="text-white" />
+                                </div>
+                            )}
+
+                            <div className={`flex flex-col gap-1 max-w-[85%] lg:max-w-[80%] ${msg.role === "user" ? "items-end" : ""}`}>
+                                <div className={`p-4 rounded-2xl shadow-sm backdrop-blur-md ${msg.role === "user" ? "bg-[var(--volt)] text-black rounded-tr-sm" : "bg-white/[0.08] border border-white/10 text-gray-100 rounded-tl-sm"}`}>
+                                    <p className={`text-base leading-relaxed whitespace-pre-line tracking-tight ${msg.role === "user" ? "font-medium" : ""}`}>{msg.content}</p>
+                                </div>
+
+                                {msg.card && (
+                                    <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="mt-2 bg-[var(--obsidian-surface)] border border-[var(--border-medium)] rounded-xl p-4 lg:p-5 w-full md:w-96 hover:border-purple-500/30 transition-colors group">
+                                        <div className="flex items-center justify-between mb-5">
+                                            <div className="flex items-center gap-2.5">
+                                                <ShieldCheck size={18} weight="duotone" className="text-purple-400" />
+                                                <span className="text-base font-bold text-white">{msg.card.title}</span>
+                                            </div>
+                                            <span className="bg-purple-500/10 text-purple-400 text-xs px-2.5 py-1 rounded-md font-bold border border-purple-500/20">{msg.card.score}</span>
+                                        </div>
+                                        <div className="space-y-5">
+                                            {msg.card.items.map((item, j) => (
+                                                <div key={j}>
+                                                    <div className="flex justify-between text-sm mb-2">
+                                                        <span className="text-[#A1A1AA] font-medium">{item.label}</span>
+                                                        <span className="text-white font-bold">{item.value}</span>
+                                                    </div>
+                                                    <div className="w-full bg-white/[0.05] h-1.5 rounded-full overflow-hidden">
+                                                        <motion.div initial={{ width: 0 }} animate={{ width: `${item.percent}%` }} transition={{ duration: 1, delay: 0.5 }} className="h-full rounded-full" style={{ backgroundColor: item.color }} />
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </motion.div>
+                                )}
+
+                                {msg.action && (
+                                    <motion.div initial={{ opacity: 0, scale: 0.95, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} className="mt-3 p-4 rounded-xl bg-gradient-to-br from-[var(--volt)]/10 to-[var(--volt)]/5 border border-[var(--volt)]/20 w-full md:w-80">
+                                        <div className="flex items-center gap-2 mb-3">
+                                            <span className="text-xs font-bold text-white uppercase tracking-wider">Quick Action</span>
+                                        </div>
+
+                                        {msg.action.type === "deposit" && msg.action.amount && (
+                                            <Link href={`/dashboard/deposit?amount=${msg.action.amount}`} className="w-full py-2.5 px-4 rounded-lg bg-[var(--volt)] text-black font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.98] transition-all">
+                                                Deposit ${msg.action.amount.toLocaleString()} USDC
+                                                <ArrowRight size={14} weight="bold" />
+                                            </Link>
+                                        )}
+                                    </motion.div>
+                                )}
+                            </div>
+                        </motion.div>
+                    ))}
+
+                    {/* Quick Prompts (Only if just 1 message) */}
+                    {messages.length === 1 && (
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="pl-12 lg:pl-14 pt-2">
+                            <p className="text-xs font-bold text-[var(--text-tertiary)] uppercase tracking-wider mb-3">Suggested:</p>
+                            <div className="flex flex-wrap gap-2">
                                 {QUICK_PROMPTS.map((prompt, i) => (
                                     <button
                                         key={i}
                                         onClick={() => handleSend(prompt)}
-                                        className="text-left p-5 rounded-2xl bg-white/[0.03] border border-[var(--border-subtle)] hover:bg-white/[0.06] hover:border-amber-500/30 transition-all group"
+                                        className="text-xs font-bold text-[var(--volt)] bg-[var(--volt)]/10 border border-[var(--volt)]/20 px-3 py-2 rounded-lg hover:bg-[var(--volt)]/20 hover:scale-105 transition-all text-left"
                                     >
-                                        <span className="block text-sm font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">{prompt}</span>
-                                        <span className="block text-xs text-[var(--text-tertiary)] font-medium">Ask Nova &rarr;</span>
+                                        {prompt}
                                     </button>
                                 ))}
                             </div>
                         </motion.div>
-                    )}
-
-                    {/* Message List (Only show if > 1 message or not empty state) */}
-                    {messages.length > 1 && (
-                        <>
-                            <div className="flex justify-center">
-                                <span className="text-[10px] font-bold text-[var(--text-secondary)] bg-white/[0.03] px-3 py-1 rounded-full border border-[var(--border-subtle)] uppercase tracking-wider">Session Active</span>
-                            </div>
-
-                            {messages.slice(1).map((msg, i) => (
-                                <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className={`flex items-start gap-4 ${msg.role === "user" ? "flex-row-reverse" : ""}`}>
-                                    {msg.role === "assistant" ? (
-                                        <div className="w-8 h-8 lg:w-9 lg:h-9 flex items-center justify-center shrink-0 -ml-1 mt-1">
-                                            <div className="relative">
-                                                <div className="absolute inset-0 bg-amber-500/20 blur-md rounded-full" />
-                                                <Alien size={24} weight="duotone" className="relative z-10 lg:w-[28px] lg:h-[28px] text-amber-500" />
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div className="w-8 h-8 lg:w-9 lg:h-9 rounded-full bg-white/10 border border-white/10 flex items-center justify-center shrink-0 mt-1">
-                                            <User size={14} weight="bold" className="text-white" />
-                                        </div>
-                                    )}
-
-                                    <div className={`flex flex-col gap-1 max-w-[85%] lg:max-w-[80%] ${msg.role === "user" ? "items-end" : ""}`}>
-                                        <div className={`p-4 rounded-2xl shadow-sm backdrop-blur-md ${msg.role === "user" ? "bg-[var(--volt)] text-black rounded-tr-sm" : "bg-white/[0.08] border border-white/10 text-gray-100 rounded-tl-sm"}`}>
-                                            <p className={`text-base leading-relaxed whitespace-pre-line tracking-tight ${msg.role === "user" ? "font-medium" : ""}`}>{msg.content}</p>
-                                        </div>
-
-                                        {msg.card && (
-                                            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="mt-2 bg-[var(--obsidian-surface)] border border-[var(--border-medium)] rounded-xl p-4 lg:p-5 w-full md:w-96 hover:border-purple-500/30 transition-colors group">
-                                                <div className="flex items-center justify-between mb-5">
-                                                    <div className="flex items-center gap-2.5">
-                                                        <ShieldCheck size={18} weight="duotone" className="text-purple-400" />
-                                                        <span className="text-base font-bold text-white">{msg.card.title}</span>
-                                                    </div>
-                                                    <span className="bg-purple-500/10 text-purple-400 text-xs px-2.5 py-1 rounded-md font-bold border border-purple-500/20">{msg.card.score}</span>
-                                                </div>
-                                                <div className="space-y-5">
-                                                    {msg.card.items.map((item, j) => (
-                                                        <div key={j}>
-                                                            <div className="flex justify-between text-sm mb-2">
-                                                                <span className="text-[#A1A1AA] font-medium">{item.label}</span>
-                                                                <span className="text-white font-bold">{item.value}</span>
-                                                            </div>
-                                                            <div className="w-full bg-white/[0.05] h-1.5 rounded-full overflow-hidden">
-                                                                <motion.div initial={{ width: 0 }} animate={{ width: `${item.percent}%` }} transition={{ duration: 1, delay: 0.5 }} className="h-full rounded-full" style={{ backgroundColor: item.color }} />
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </motion.div>
-                                        )}
-
-                                        {msg.action && (
-                                            <motion.div initial={{ opacity: 0, scale: 0.95, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} className="mt-3 p-4 rounded-xl bg-gradient-to-br from-[var(--volt)]/10 to-[var(--volt)]/5 border border-[var(--volt)]/20 w-full md:w-80">
-                                                <div className="flex items-center gap-2 mb-3">
-                                                    <span className="text-xs font-bold text-white uppercase tracking-wider">Quick Action</span>
-                                                </div>
-
-                                                {msg.action.type === "deposit" && msg.action.amount && (
-                                                    <Link href={`/dashboard/deposit?amount=${msg.action.amount}`} className="w-full py-2.5 px-4 rounded-lg bg-[var(--volt)] text-black font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.98] transition-all">
-                                                        Deposit ${msg.action.amount.toLocaleString()} USDC
-                                                        <ArrowRight size={14} weight="bold" />
-                                                    </Link>
-                                                )}
-                                                {/* Other actions omitted for brevity, logic remains same */}
-                                            </motion.div>
-                                        )}
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </>
                     )}
 
                     {isTyping && (

@@ -1,11 +1,35 @@
-import { Lightning, SealCheck, Trophy, Crown } from "@phosphor-icons/react";
+import { Lightning, SealCheck, Trophy, Crown, Wallet, Bank, ChartLineUp, Sparkle } from "@phosphor-icons/react";
 import type { AccessLevel } from "@/types";
 
 export const ACCESS_LEVELS: AccessLevel[] = [
-    { name: "INITIATE", min: 0, icon: Lightning, color: "text-[var(--text-secondary)]" },
-    { name: "ASSOCIATE", min: 1000, icon: SealCheck, color: "text-[var(--info)]" },
-    { name: "PARTNER", min: 5000, icon: Trophy, color: "text-[var(--volt)]" },
-    { name: "SOVEREIGN", min: 10000, icon: Crown, color: "text-[var(--warning)]" },
+    {
+        name: "INITIATE",
+        min: 0,
+        icon: Lightning,
+        color: "text-[var(--text-secondary)]",
+        benefits: ["Standard Yields", "Basic Nova Support"]
+    },
+    {
+        name: "ASSOCIATE",
+        min: 1000,
+        icon: SealCheck,
+        color: "text-[var(--info)]",
+        benefits: ["Yield Boost 1.05x", "Reduced Gas Fees", "Priority Support"]
+    },
+    {
+        name: "PARTNER",
+        min: 5000,
+        icon: Trophy,
+        color: "text-[var(--volt)]",
+        benefits: ["Yield Boost 1.1x", "Zero Platform Fees", "Private Strategy Access"]
+    },
+    {
+        name: "SOVEREIGN",
+        min: 10000,
+        icon: Crown,
+        color: "text-[var(--warning)]",
+        benefits: ["Yield Boost 1.25x", "Concierge Onboarding", "Custom Vault Strategy"]
+    },
 ];
 
 export const QUICK_PROMPTS = [
@@ -33,4 +57,39 @@ export const USER_JOURNEY_STEPS = [
     { title: "Salary Deposit", desc: "Employer deposits USDC. Real-time yield accrual begins." },
     { title: "Auto-Swap", desc: "Seamless conversion to IDRX stablecoin at market-best rates." },
     { title: "Rupiah Withdrawal", desc: "Lightning-fast transfer to local bank. Cash in minutes." },
+] as const;
+
+export const MISSIONS = [
+    {
+        id: "connect",
+        title: "Connect Wallet",
+        desc: "Link your Web3 wallet to start.",
+        reward: "Verify",
+        xp: 100,
+        icon: Wallet,
+    },
+    {
+        id: "deposit",
+        title: "First Deposit",
+        desc: "Fund your account with >$100 USDC.",
+        reward: "Associate Status",
+        xp: 500,
+        icon: Bank,
+    },
+    {
+        id: "nova",
+        title: "Risk Analysis",
+        desc: "Ask Nova AI about your portfolio.",
+        reward: "Strategy Intel",
+        xp: 300,
+        icon: Sparkle,
+    },
+    {
+        id: "vault",
+        title: "Vault Explorer",
+        desc: "View Thetanuts V4 Strategy details.",
+        reward: "Yield Boost",
+        xp: 200,
+        icon: ChartLineUp,
+    },
 ] as const;

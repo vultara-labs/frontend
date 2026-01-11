@@ -4,6 +4,14 @@ export const PROTOCOL = {
     STRATEGY_VERSION: 'V4',
     NETWORK: 'Base',
     NETWORK_COLOR: 'blue-500',
+    VAULT: {
+        NAME: 'ETH Covered Put',
+        STRIKE_PRICE: 2150, // Slightly OTM
+        ASSET: 'ETH',
+        EPOCH_END: '2d 14h',
+        CAPACITY: 84,
+        TVL: '2.4M',
+    }
 } as const;
 
 export const DEMO = {

@@ -29,6 +29,7 @@ export type AccessTier = "INITIATE" | "ASSOCIATE" | "PARTNER" | "SOVEREIGN";
 export interface AccessLevel {
     name: AccessTier;
     min: number;
-    icon: ComponentType<Record<string, unknown>>;
+    icon: ComponentType<any>;
     color: string;
+    benefits: string[];
 }

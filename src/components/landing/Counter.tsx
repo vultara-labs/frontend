@@ -29,18 +29,6 @@ export function Counter({ from, to }: CounterProps) {
                     })}`;
                 }
             },
-            onComplete() {
-                if (!node) return;
-                let currentValue = to;
-                intervalId = setInterval(() => {
-                    const increment = Math.random() * (0.05 - 0.01) + 0.01;
-                    currentValue += increment;
-                    node.textContent = `$${currentValue.toLocaleString("en-US", {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                    })}`;
-                }, 4000);
-            },
         });
 
         return () => {
