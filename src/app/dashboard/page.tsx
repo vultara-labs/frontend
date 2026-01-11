@@ -4,45 +4,28 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
 import { ArrowUpRight, Vault, Lightning, ArrowCircleDown, Wallet, TrendUp, Crown, Lock } from "@phosphor-icons/react";
-import { PROTOCOL, DEMO, ACCESS_LEVELS, VULTARA_ETH_VAULT_ABI } from "@/constants";
+import { PROTOCOL, ACCESS_LEVELS } from "@/constants";
 import { Counter } from "@/components/landing/Counter";
 import { MissionsWidget } from "@/components/dashboard/MissionsWidget";
 import { TierDetailsModal } from "@/components/dashboard/TierDetailsModal";
-import { useMarketData, useWalletConnection } from "@/hooks";
-import { formatUnits } from "viem";
-import { useChainId, useReadContract } from "wagmi";
+import { useDashboardData } from "@/hooks";
 
 export default function DashboardPage() {
-    const { isConnected, address } = useWalletConnection();
-    const chainId = useChainId();
-    const { data: marketData, loading } = useMarketData("ETH");
+    // Use centralized dashboard data hook (auto-switches between demo/live)
+    const {
+        isPreviewMode,
+        vaultBalanceETH,
+        vaultBalanceUSD,
+        currentAPY,
+        marketLoading,
+    } = useDashboardData();
+
     const [isTierModalOpen, setIsTierModalOpen] = useState(false);
 
-    // Get contract addresses for current chain
-    const contracts = PROTOCOL.CONTRACTS[chainId as keyof typeof PROTOCOL.CONTRACTS] || PROTOCOL.CONTRACTS[84532];
-
-    // Read user's vault balance from smart contract
-    const { data: vaultBalanceRaw } = useReadContract({
-        address: contracts.ETH_VAULT,
-        abi: VULTARA_ETH_VAULT_ABI,
-        functionName: "getUserBalance",
-        args: address ? [address] : undefined,
-        query: {
-            enabled: !!address,
-        }
-    });
-
-    // Vault Balance in ETH
-    const vaultBalance = vaultBalanceRaw ? parseFloat(formatUnits(vaultBalanceRaw as bigint, 18)) : 0;
-
-    // Convert to USD for tier calculation (using live ETH price)
-    const ethPrice = marketData?.price || 2500;
-    const totalBalance = vaultBalance * ethPrice;
-
-    // Dynamic APY Calculation (Synced with Vault Page)
-    const priceChange = marketData?.change24h || 0;
-    const volatilityPremium = Math.abs(priceChange) * 0.3;
-    const currentAPY = (PROTOCOL.APY + volatilityPremium).toFixed(2);
+    // For display purposes
+    const vaultBalance = vaultBalanceETH;
+    const totalBalance = vaultBalanceUSD;
+    const loading = marketLoading;
 
     // Dynamic Tier Logic based on ACCESS_LEVELS
     // [INITIATE, ASSOCIATE, PARTNER, SOVEREIGN]

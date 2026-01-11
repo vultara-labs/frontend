@@ -10,6 +10,7 @@ import confetti from "canvas-confetti";
 import Link from "next/link";
 import { formatUnits, parseEther } from "viem";
 import { useWalletConnection } from "@/hooks";
+import { useDashboardData } from "@/hooks";
 import { PROTOCOL, VULTARA_ETH_VAULT_ABI } from "@/constants";
 
 function WithdrawLoading() {
@@ -30,6 +31,7 @@ export default function WithdrawPage() {
 
 function WithdrawContent() {
     const { isConnected, address } = useWalletConnection();
+    const { isPreviewMode, vaultBalanceETH } = useDashboardData();
     const chainId = useChainId();
     const [step, setStep] = useState<"input" | "processing" | "success">("input");
     const [amount, setAmount] = useState("");
@@ -45,14 +47,14 @@ function WithdrawContent() {
     // Get contract addresses for current chain
     const contracts = PROTOCOL.CONTRACTS[chainId as keyof typeof PROTOCOL.CONTRACTS] || PROTOCOL.CONTRACTS[84532];
 
-    // Read user's vault balance (shares = ETH value in vault)
+    // Read user's vault balance (shares = ETH value in vault) - only when connected
     const { data: vaultBalance, refetch: refetchVaultBalance } = useReadContract({
         address: contracts.ETH_VAULT,
         abi: VULTARA_ETH_VAULT_ABI,
         functionName: "getUserBalance",
         args: address ? [address] : undefined,
         query: {
-            enabled: !!address,
+            enabled: !!address && isConnected,
         }
     });
 
@@ -78,8 +80,9 @@ function WithdrawContent() {
         }
     }, [isWithdrawSuccess]);
 
-    // Vault balance in ETH
-    const totalBalance = vaultBalance ? parseFloat(formatUnits(vaultBalance as bigint, 18)) : 0;
+    // Use demo or real vault balance
+    const realVaultBalance = vaultBalance ? parseFloat(formatUnits(vaultBalance as bigint, 18)) : 0;
+    const totalBalance = isPreviewMode ? vaultBalanceETH : realVaultBalance;
 
     const numAmount = parseFloat(amount.replace(/,/g, '')) || 0;
     const isValidAmount = numAmount > 0 && numAmount <= totalBalance;
@@ -216,13 +219,28 @@ function WithdrawContent() {
                                     )}
                                 </div>
 
-                                <button
-                                    onClick={handleWithdraw}
-                                    disabled={!isValidAmount}
-                                    className="w-full h-16 rounded-2xl bg-white text-black font-black text-base uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(255,255,255,0.15)]"
-                                >
-                                    Withdraw Now
-                                </button>
+                                {isPreviewMode ? (
+                                    <div className="space-y-3">
+                                        <div className="p-3 rounded-xl bg-[var(--warning)]/10 border border-[var(--warning)]/20 flex items-center gap-3">
+                                            <Wallet size={18} className="text-[var(--warning)]" />
+                                            <span className="text-xs text-[var(--warning)] font-bold">Connect wallet to withdraw real funds</span>
+                                        </div>
+                                        <button
+                                            disabled
+                                            className="w-full h-16 rounded-2xl bg-white/50 text-black/50 font-black text-base uppercase tracking-widest cursor-not-allowed"
+                                        >
+                                            Preview Mode
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <button
+                                        onClick={handleWithdraw}
+                                        disabled={!isValidAmount}
+                                        className="w-full h-16 rounded-2xl bg-white text-black font-black text-base uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+                                    >
+                                        Withdraw Now
+                                    </button>
+                                )}
                             </motion.div>
                         )}
 

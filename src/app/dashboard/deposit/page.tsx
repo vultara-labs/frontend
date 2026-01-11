@@ -1,15 +1,15 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowCircleUp, CheckCircle, CircleNotch, Info, Warning, TrendUp, ArrowUpRight, ArrowCircleDown, ArrowsLeftRight } from "@phosphor-icons/react";
+import { ArrowCircleUp, CheckCircle, CircleNotch, Info, Warning, TrendUp, ArrowUpRight, ArrowCircleDown, ArrowsLeftRight, Wallet } from "@phosphor-icons/react";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useChainId, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { toast } from "sonner";
 import confetti from "canvas-confetti";
 import Link from "next/link";
-import { PROTOCOL, YIELD, VULTARA_ETH_VAULT_ABI } from "@/constants";
-import { useWalletConnection } from "@/hooks";
+import { PROTOCOL, YIELD, VULTARA_ETH_VAULT_ABI, DEMO_DATA } from "@/constants";
+import { useWalletConnection, useDashboardData } from "@/hooks";
 import { formatUnits, parseEther } from "viem";
 
 function DepositLoading() {
@@ -34,6 +34,7 @@ function DepositContent() {
     const [riskAcknowledged, setRiskAcknowledged] = useState(false);
 
     const { isConnected, ethBalance, address } = useWalletConnection();
+    const { isPreviewMode, walletBalanceETH, ethPrice } = useDashboardData();
     const chainId = useChainId();
 
     // Get contract addresses for current chain
@@ -68,8 +69,9 @@ function DepositContent() {
         }
     }, [isDepositSuccess]);
 
-    // ETH Balance as wallet balance
-    const walletBalance = ethBalance ? parseFloat(formatUnits(ethBalance.value, ethBalance.decimals)) : 0;
+    // ETH Balance as wallet balance - use demo data in preview mode
+    const realWalletBalance = ethBalance ? parseFloat(formatUnits(ethBalance.value, ethBalance.decimals)) : 0;
+    const walletBalance = isPreviewMode ? walletBalanceETH : realWalletBalance;
 
     // Reserve some ETH for gas (0.005 ETH should be enough)
     const gasReserve = 0.005;
@@ -83,7 +85,7 @@ function DepositContent() {
     const isOverMaxDepositable = numAmount > maxDepositable + epsilon;
     const isValidAmount = numAmount >= 0.001 && !isOverMaxDepositable;
     const needsGasWarning = isOverMaxDepositable && !isOverBalance;
-    const monthlyYield = YIELD.calculateMonthly(numAmount * 2500); // Approximate ETH to USD for yield calc
+    const monthlyYield = YIELD.calculateMonthly(numAmount * ethPrice); // Use live or demo ETH price for yield calc
 
     const handleContinue = () => {
         if (!isValidAmount) return;
@@ -309,13 +311,20 @@ function DepositContent() {
                                     >
                                         Cancel
                                     </button>
-                                    <button
-                                        onClick={handleDeposit}
-                                        disabled={!riskAcknowledged}
-                                        className="h-14 rounded-2xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-40 text-xs"
-                                    >
-                                        Confirm
-                                    </button>
+                                    {isPreviewMode ? (
+                                        <div className="h-14 rounded-2xl bg-[var(--warning)]/10 border border-[var(--warning)]/20 flex items-center justify-center gap-2 text-[var(--warning)]">
+                                            <Wallet size={16} weight="bold" />
+                                            <span className="text-xs font-bold uppercase tracking-wider">Connect Wallet</span>
+                                        </div>
+                                    ) : (
+                                        <button
+                                            onClick={handleDeposit}
+                                            disabled={!riskAcknowledged}
+                                            className="h-14 rounded-2xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-40 text-xs"
+                                        >
+                                            Confirm
+                                        </button>
+                                    )}
                                 </div>
                             </motion.div>
                         )}

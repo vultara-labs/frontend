@@ -4,8 +4,9 @@ import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { PaperPlaneTilt, Alien, User, ShieldCheck, ArrowRight, Wallet, ArrowCircleDown, ArrowCircleUp, ArrowCircleUpRight } from "@phosphor-icons/react";
-import { QUICK_PROMPTS, DEMO } from "@/constants";
+import { QUICK_PROMPTS, DEMO_DATA } from "@/constants";
 import { formatTime } from "@/lib/formatters";
+import { useDashboardData } from "@/hooks";
 import type { Message, ActionData } from "@/types";
 
 const initialMessages: Message[] = [
@@ -17,6 +18,15 @@ const initialMessages: Message[] = [
 ];
 
 export default function AIAdvisorPage() {
+    // Get current user data (demo or real based on connection status)
+    const {
+        isPreviewMode,
+        vaultBalanceETH,
+        vaultBalanceUSD,
+        totalEarningsUSD,
+        currentAPY,
+    } = useDashboardData();
+
     const [messages, setMessages] = useState<Message[]>(initialMessages);
     const [input, setInput] = useState("");
     const [isTyping, setIsTyping] = useState(false);
@@ -41,16 +51,19 @@ export default function AIAdvisorPage() {
                 content: m.content,
             }));
 
-            const mockUserData = {
-                balance: DEMO.USER_BALANCE,
-                earnings: DEMO.TOTAL_EARNINGS,
-                apy: 4.5,
+            // Use real data when connected, demo data when not
+            const userData = {
+                balance: vaultBalanceUSD,
+                balanceETH: vaultBalanceETH,
+                earnings: totalEarningsUSD,
+                apy: currentAPY,
+                isPreviewMode: isPreviewMode,
             };
 
             const res = await fetch("/api/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: text, history, userData: mockUserData }),
+                body: JSON.stringify({ message: text, history, userData }),
             });
 
             if (!res.ok) throw new Error("API request failed");

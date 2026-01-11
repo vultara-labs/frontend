@@ -31,6 +31,39 @@ export const DEMO = {
     PAYOUT_PROGRESS: 85,
 } as const;
 
+// Comprehensive Demo Data for Preview Mode (when wallet is NOT connected)
+export const DEMO_DATA = {
+    // ETH Price (baseline for calculations)
+    ETH_PRICE: 3200,
+
+    // Vault Balance (funds deposited in Vultara)
+    VAULT_BALANCE_ETH: 2.5,
+    VAULT_BALANCE_USD: 8000, // 2.5 * 3200
+
+    // Wallet Balance (ETH in connected wallet)
+    WALLET_BALANCE_ETH: 1.85,
+    WALLET_BALANCE_USD: 5920, // 1.85 * 3200
+
+    // Earnings (simulated yield)
+    MONTHLY_EARNINGS: 30.00, // ~4.5% APY per month
+    TOTAL_EARNINGS: 245.50, // Simulated 8 months of earnings
+
+    // Epoch Info
+    NEXT_PAYOUT: '3d 14h',
+    EPOCH_PROGRESS: 65,
+
+    // For AI Chat Context
+    DEMO_USER_SUMMARY: `
+DEMO USER PROFILE (Preview Mode):
+- Vault Balance: 2.5 ETH (~$8,000 USD)
+- Wallet Balance: 1.85 ETH (~$5,920 USD)
+- Monthly Yield: ~$30 (4.5% APY)
+- Total Earnings: $245.50
+- Status: Active Depositor (Demo Account)
+- NOTE: This is simulated data for preview purposes.
+`,
+} as const;
+
 export const YIELD = {
     calculateMonthly: (amount: number, apy: number = PROTOCOL.APY) =>
         (amount * (apy / 100) / 12),

@@ -67,12 +67,22 @@ export async function POST(req: Request) {
 
     let userContext = "";
     if (userData) {
+        const isPreview = userData.isPreviewMode;
+        const modeLabel = isPreview ? "Preview Mode (Demo Account)" : "Live Mode (Connected Wallet)";
+
         userContext = `
-CURRENT USER DATA (Personalize answers using this):
-- Wallet Balance: $${userData.balance?.toLocaleString() || "0"}
+CURRENT USER DATA (${modeLabel}):
+- Vault Balance: ${userData.balanceETH?.toFixed(4) || "0"} ETH (~$${userData.balance?.toLocaleString() || "0"} USD)
 - Total Earnings: $${userData.earnings?.toLocaleString() || "0"}
 - Current APY: ${userData.apy || "4.5"}% (Thetanuts V4 Strategy)
 - Deposit Status: ${userData.balance > 0 ? "Active Depositor" : "No Active Deposits"}
+${isPreview ? `
+NOTE: User is in PREVIEW MODE. This is simulated demo data to showcase the platform.
+When they ask about deposits/withdrawals, remind them they need to connect their wallet for real transactions.
+Keep it casual - don't be preachy about it.
+` : `
+NOTE: User is CONNECTED with their real wallet. All data shown is their actual on-chain position.
+`}
 `;
     }
 
