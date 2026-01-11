@@ -186,6 +186,20 @@ export default function AIAdvisorPage() {
                                                 <ArrowRight size={14} weight="bold" />
                                             </Link>
                                         )}
+
+                                        {msg.action.type === "withdraw" && msg.action.amount && (
+                                            <Link href={`/dashboard/withdraw?amount=${msg.action.amount}`} className="w-full py-2.5 px-4 rounded-lg bg-white text-black font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.98] transition-all">
+                                                Withdraw {msg.action.amount} ETH
+                                                <ArrowRight size={14} weight="bold" />
+                                            </Link>
+                                        )}
+
+                                        {msg.action.type === "balance" && (
+                                            <Link href="/dashboard" className="w-full py-2.5 px-4 rounded-lg bg-[var(--obsidian-surface)] border border-[var(--border-light)] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-white/10 active:scale-[0.98] transition-all">
+                                                View Portfolio
+                                                <Wallet size={14} weight="bold" />
+                                            </Link>
+                                        )}
                                     </motion.div>
                                 )}
                             </div>

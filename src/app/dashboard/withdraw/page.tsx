@@ -2,7 +2,8 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowCircleDown, CheckCircle, CircleNotch, Wallet } from "@phosphor-icons/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { useChainId, useWriteContract, useWaitForTransactionReceipt, useReadContract } from "wagmi";
 import { toast } from "sonner";
 import confetti from "canvas-confetti";
@@ -11,11 +12,35 @@ import { formatUnits, parseEther } from "viem";
 import { useWalletConnection } from "@/hooks";
 import { PROTOCOL, VULTARA_ETH_VAULT_ABI } from "@/constants";
 
+function WithdrawLoading() {
+    return (
+        <div className="min-h-[60vh] flex flex-col justify-center items-center">
+            <CircleNotch size={32} className="animate-spin text-blue-400" />
+        </div>
+    );
+}
+
 export default function WithdrawPage() {
+    return (
+        <Suspense fallback={<WithdrawLoading />}>
+            <WithdrawContent />
+        </Suspense>
+    );
+}
+
+function WithdrawContent() {
     const { isConnected, address } = useWalletConnection();
     const chainId = useChainId();
     const [step, setStep] = useState<"input" | "processing" | "success">("input");
     const [amount, setAmount] = useState("");
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const urlAmount = searchParams.get("amount");
+        if (urlAmount && !isNaN(parseFloat(urlAmount))) {
+            setAmount(urlAmount);
+        }
+    }, [searchParams]);
 
     // Get contract addresses for current chain
     const contracts = PROTOCOL.CONTRACTS[chainId as keyof typeof PROTOCOL.CONTRACTS] || PROTOCOL.CONTRACTS[84532];
