@@ -69,11 +69,11 @@ export function HeroCard() {
                 <motion.div style={{ z: 30 }} className="transform-style-3d">
                     <div className="flex justify-between items-start mb-6 lg:mb-10">
                         <div className="flex items-center gap-3 lg:gap-4">
-                            <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full overflow-hidden flex items-center justify-center shadow-[0_4px_20px_rgba(39,117,202,0.4)] ring-1 ring-white/5">
-                                <img src="/logos/usdc.svg" alt="USDC" className="w-full h-full object-cover" />
+                            <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full overflow-hidden flex items-center justify-center shadow-[0_4px_20px_rgba(255,255,255,0.1)] ring-1 ring-white/10 bg-[#ecf0f1]">
+                                <img src="/logos/eth.svg" alt="ETH" className="w-6 h-6 lg:w-8 lg:h-8" />
                             </div>
                             <div>
-                                <h3 className="text-white font-bold text-base lg:text-lg uppercase tracking-wider">USDC Vault</h3>
+                                <h3 className="text-white font-bold text-base lg:text-lg uppercase tracking-wider">ETH Vault</h3>
                                 <div className="flex items-center gap-2 mt-1">
                                     <div className="flex items-center gap-2 text-[8px] lg:text-[10px] text-[var(--volt)] font-bold uppercase tracking-widest bg-[var(--volt-glass)] px-2 py-0.5 rounded-full border border-[var(--volt)]/10">
                                         <span className="w-1 h-1 lg:w-1.5 lg:h-1.5 rounded-full bg-[var(--volt)] animate-pulse" />

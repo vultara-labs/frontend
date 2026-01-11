@@ -54,7 +54,7 @@ export const TECH_STATS = [
 export const USER_JOURNEY_STEPS = [
     { title: "Passkey Login", desc: "Secure 2-second auth with biometrics. No seed phrase required." },
     { title: "Contract Setup", desc: "One-click smart contract deployment to receive stablecoins." },
-    { title: "Salary Deposit", desc: "Employer deposits USDC. Real-time yield accrual begins." },
+    { title: "Salary Deposit", desc: "Employer deposits ETH. Real-time yield accrual begins." },
     { title: "Auto-Swap", desc: "Seamless conversion to IDRX stablecoin at market-best rates." },
     { title: "Rupiah Withdrawal", desc: "Lightning-fast transfer to local bank. Cash in minutes." },
 ] as const;
@@ -71,7 +71,7 @@ export const MISSIONS = [
     {
         id: "deposit",
         title: "First Deposit",
-        desc: "Fund your account with >$100 USDC.",
+        desc: "Fund your account with >0.01 ETH.",
         reward: "Associate Status",
         xp: 500,
         icon: Bank,

@@ -31,13 +31,13 @@ export default function CoreConceptsPage() {
                         <h2 className="text-2xl font-bold text-white">The Vault</h2>
                     </div>
                     <p className="leading-relaxed text-[var(--text-body-lg)]">
-                        In Vultara, a <strong>Vault</strong> is a smart contract where you deposit your USDC. Think of it as a communal savings pot.
+                        In Vultara, a <strong>Vault</strong> is a smart contract where you deposit your ETH. Think of it as a communal savings pot.
                         Instead of your money sitting idle, the Vault puts it to work automatically.
                     </p>
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <li className="p-4 bg-[var(--obsidian-surface)] rounded-xl border border-[var(--border-subtle)]">
                             <strong className="text-white block mb-2">Pooled Liquidity</strong>
-                            <span className="text-sm">Your USDC is combined with others to execute larger, institutional-grade strategies.</span>
+                            <span className="text-sm">Your ETH is combined with others to execute larger, institutional-grade strategies.</span>
                         </li>
                         <li className="p-4 bg-[var(--obsidian-surface)] rounded-xl border border-[var(--border-subtle)]">
                             <strong className="text-white block mb-2">Auto-Compounding</strong>

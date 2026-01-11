@@ -63,9 +63,9 @@ export default function SecurityPage() {
                         </div>
 
                         <div className="bg-[var(--obsidian-surface)] p-6 rounded-xl border border-[var(--border-subtle)]">
-                            <h4 className="text-white font-bold mb-2">Peg Risk</h4>
+                            <h4 className="text-white font-bold mb-2">Volatility Risk</h4>
                             <p className="text-sm mb-0">
-                                Vultara relies on USDC. While highly stable, any de-pegging event of USDC would affect the dollar value of your deposits.
+                                Vultara holds your deposits in ETH. The dollar value of your holdings fluctuates with ETH market price movements.
                             </p>
                         </div>
                     </div>

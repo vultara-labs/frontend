@@ -39,7 +39,7 @@ export default function VaultPage() {
                                 </div>
                             )}
                         </div>
-                        <h1 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tight">USDC Growth Vault</h1>
+                        <h1 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tight">ETH Growth Vault</h1>
                         <p className="text-[var(--text-secondary)] mt-2 max-w-xl">
                             Institutional-grade yield via automated Cash-Secured Puts on <span className="text-white font-bold">ETH</span>.
                         </p>
@@ -102,7 +102,7 @@ export default function VaultPage() {
                                     </div>
                                     <div>
                                         <p className="font-bold text-white text-sm">Collateral Pool</p>
-                                        <p className="text-[10px] text-[var(--text-secondary)]">Your USDC is secured in the V4 Vault Contract.</p>
+                                        <p className="text-[10px] text-[var(--text-secondary)]">Your ETH is secured in the V4 Vault Contract.</p>
                                     </div>
                                 </div>
 

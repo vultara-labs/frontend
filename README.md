@@ -1,6 +1,6 @@
 # Vultara
 
-**The Salary Engine** — Automate crypto payroll and earn yield on idle USDC.
+**Simple DeFi Yield** — Deposit ETH, earn real yield from institutional-grade strategies.
 
 ![Status](https://img.shields.io/badge/Status-Testnet%20Beta-yellow?style=flat-square)
 ![Next.js](https://img.shields.io/badge/Next.js-16.1-black?style=flat-square&logo=next.js)
@@ -11,11 +11,11 @@
 
 ## Overview
 
-Vultara is an automated financial infrastructure for the open economy. We streamline crypto payroll management while allowing users to earn competitive yield on their idle USDC through battle-tested DeFi strategies.
+Vultara is a simple DeFi yield platform built on Base. Deposit ETH into our vault and earn competitive yield through battle-tested options strategies powered by Thetanuts Finance.
 
 ### Key Features
 
-- **USDC Vault** — Deposit USDC and earn competitive APY powered by Thetanuts Finance
+- **ETH Vault** — Deposit ETH and earn competitive APY powered by Thetanuts Finance
 - **IDR Off-Ramp** — Instant withdrawal to Indonesian Bank/E-wallet
 - **Nova AI** — AI-powered assistant for risk analysis & strategy insights
 - **Real-time Dashboard** — Live balance tracking with yield visualization

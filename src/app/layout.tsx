@@ -21,8 +21,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://vultara.xyz"),
   title: "Vultara",
-  description: "Deposit USDC, earn real yield from Thetanuts options strategies. Simple DeFi made accessible with Nova AI advisor.",
-  keywords: ["DeFi", "USDC", "Yield", "Thetanuts", "Base", "Crypto", "Stablecoin", "Options", "Web3"],
+  description: "Deposit ETH, earn real yield from Thetanuts options strategies. Simple DeFi made accessible with Nova AI advisor.",
+  keywords: ["DeFi", "ETH", "Yield", "Thetanuts", "Base", "Crypto", "Ethereum", "Options", "Web3"],
   authors: [{ name: "Vultara Labs" }],
   creator: "Vultara Labs",
   publisher: "Vultara Labs",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Vultara",
-    description: "Deposit USDC, earn ~4.5% APY from Thetanuts strategies. No complexity, no lock-ups.",
+    description: "Deposit ETH, earn ~4.5% APY from Thetanuts strategies. No complexity, no lock-ups.",
     type: "website",
     locale: "en_US",
     siteName: "Vultara",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Vultara",
-    description: "Deposit USDC, earn real yield from Thetanuts options strategies. DeFi made simple.",
+    description: "Deposit ETH, earn real yield from Thetanuts options strategies. DeFi made simple.",
     images: ["/og-image.png"],
   },
 };

@@ -33,7 +33,7 @@ function DepositContent() {
     const [amount, setAmount] = useState("");
     const [riskAcknowledged, setRiskAcknowledged] = useState(false);
 
-    const { isConnected, balance: ethBalance, address } = useWalletConnection();
+    const { isConnected, ethBalance, address } = useWalletConnection();
     const chainId = useChainId();
 
     // Get contract addresses for current chain

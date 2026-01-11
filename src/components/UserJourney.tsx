@@ -10,10 +10,10 @@ const JOURNEY_ICONS = [Wallet, ArrowDownToLine, TrendingUp, Alien, ArrowUpFromLi
 
 const steps = [
     { title: "Connect Wallet", desc: "Link your wallet in seconds. MetaMask, Coinbase, or any WalletConnect compatible wallet." },
-    { title: "Deposit USDC", desc: "Transfer USDC to the Vultara vault. Minimum deposit: $10 USDC." },
-    { title: "Earn Yield", desc: "Your USDC is deployed to Thetanuts strategies. Watch your balance grow in real-time." },
+    { title: "Deposit ETH", desc: "Transfer ETH to the Vultara vault. Minimum deposit: 0.001 ETH." },
+    { title: "Earn Yield", desc: "Your ETH is deployed to Thetanuts strategies. Watch your balance grow in real-time." },
     { title: "Ask Nova", desc: "Get personalized insights from our AI advisor. Understand risks, strategies, and optimize returns." },
-    { title: "Withdraw Anytime", desc: "No lock-ups. Withdraw your USDC plus earned yield whenever you want." },
+    { title: "Withdraw Anytime", desc: "No lock-ups. Withdraw your ETH plus earned yield whenever you want." },
 ];
 
 export default function UserJourney() {

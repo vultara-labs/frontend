@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, PlayCircle } from "lucide-react";
+import { ArrowRight, ArrowDown } from "lucide-react";
 import Link from "next/link";
 import { useRef, useEffect, useState } from "react";
 import { HeroCard } from "./landing/HeroCard";
@@ -62,7 +62,7 @@ export default function Hero() {
                             </h1>
 
                             <p className="text-[15px] sm:text-base lg:text-lg text-[var(--text-secondary)] font-normal leading-relaxed max-w-xs sm:max-w-xl mx-auto lg:mx-0">
-                                Institutional options strategies, simplified directly on-chain. No inflationary tokens, just pure USDC growth.
+                                Institutional options strategies, simplified directly on-chain. No inflationary tokens, just pure ETH growth.
                             </p>
 
                             <div className="flex flex-col sm:flex-row items-center gap-3 mt-4 lg:mt-4 w-full sm:w-auto px-4 sm:px-0">
@@ -79,7 +79,7 @@ export default function Hero() {
                                         });
                                     }}
                                 >
-                                    <PlayCircle size={18} className="text-[var(--text-tertiary)] group-hover:text-white transition-colors" />
+                                    <ArrowDown size={18} className="text-[var(--text-tertiary)] group-hover:text-white transition-colors" />
                                     <span>How it works</span>
                                 </button>
                             </div>

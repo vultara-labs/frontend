@@ -30,9 +30,6 @@ export default function Navigation() {
                 </nav>
 
                 <div className="flex items-center gap-6">
-                    <Link href="/dashboard" className="hidden sm:block text-sm font-bold uppercase tracking-widest text-white hover:text-[var(--volt)] transition-colors">
-                        Log In
-                    </Link>
                     <Link href="/dashboard" className="btn-primary px-8 py-3 text-sm font-bold tracking-widest">
                         Launch App
                     </Link>

@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export const metadata = {
     title: "Terms of Service | Vultara",
-    description: "Terms of Service for Vultara - The smart USDC vault for Indonesian Web3 freelancers.",
+    description: "Terms of Service for Vultara - The smart ETH vault for Web3 users.",
 };
 
 export default function TermsOfService() {

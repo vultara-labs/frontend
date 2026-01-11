@@ -182,7 +182,7 @@ export default function AIAdvisorPage() {
 
                                         {msg.action.type === "deposit" && msg.action.amount && (
                                             <Link href={`/dashboard/deposit?amount=${msg.action.amount}`} className="w-full py-2.5 px-4 rounded-lg bg-[var(--volt)] text-black font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.98] transition-all">
-                                                Deposit ${msg.action.amount.toLocaleString()} USDC
+                                                Deposit {msg.action.amount} ETH
                                                 <ArrowRight size={14} weight="bold" />
                                             </Link>
                                         )}

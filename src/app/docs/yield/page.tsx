@@ -25,7 +25,7 @@ export default function YieldMechanicsPage() {
                     <h2 className="text-2xl font-bold text-white mb-4">No Inflationary Tokens</h2>
                     <p className="leading-relaxed mb-6">
                         Most DeFi yield comes from protocol emissions (printing new tokens). This dilutes supply and crashes prices.
-                        <strong>Vultara is different.</strong> Our yield is paid in USDC, generated from actual market activity.
+                        <strong>Vultara is different.</strong> Our yield is paid in ETH, generated from actual market activity.
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="card-solid p-6 rounded-xl border border-red-500/20 bg-red-500/5">
@@ -44,7 +44,7 @@ export default function YieldMechanicsPage() {
                 <section>
                     <h2 className="text-2xl font-bold text-white mb-4">The "Short Put" Strategy</h2>
                     <p className="leading-relaxed mb-6">
-                        Specifically, our USDC Vault sells <strong>Out-of-the-Money (OTM) Put Options</strong> on ETH or BTC.
+                        Specifically, our ETH Vault sells <strong>Covered Call Options</strong> on ETH.
                         Here is the simplified flow:
                     </p>
 
@@ -53,7 +53,7 @@ export default function YieldMechanicsPage() {
                             {
                                 step: "1",
                                 title: "Deposit Collateral",
-                                desc: "Your USDC is locked in the vault as collateral."
+                                desc: "Your ETH is locked in the vault as collateral."
                             },
                             {
                                 step: "2",

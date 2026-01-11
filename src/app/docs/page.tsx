@@ -15,7 +15,7 @@ export default function DocsIntroductionPage() {
                     Introduction to Vultara
                 </h1>
                 <p className="text-xl text-[var(--text-secondary)] leading-relaxed max-w-2xl">
-                    Vultara is the simplest way to earn real, sustainable yield on your USDC through institutional-grade options strategies on Base.
+                    Vultara is the simplest way to earn real, sustainable yield on your ETH through institutional-grade options strategies on Base.
                 </p>
             </div>
 
@@ -33,7 +33,7 @@ export default function DocsIntroductionPage() {
                             <h3 className="text-white font-bold text-lg">Why Vultara?</h3>
                             <p className="text-sm leading-relaxed text-[var(--text-primary)]/80">
                                 We abstract away the complexity of managing options vaults. You don't need to understand "Delta", "Theta", or "Strike Prices".
-                                You simply deposit USDC, and our protocol (powered by Thetanuts) automates the strategy for you.
+                                You simply deposit ETH, and our protocol (powered by Thetanuts) automates the strategy for you.
                             </p>
                         </div>
                     </div>
@@ -65,7 +65,7 @@ export default function DocsIntroductionPage() {
                         </Link>
                         <Link href="/dashboard" className="group p-6 rounded-xl border border-[var(--border-subtle)] bg-[var(--obsidian-surface)] hover:border-[var(--volt)]/50 transition-all">
                             <h4 className="text-white font-bold mb-2 group-hover:text-[var(--volt)] transition-colors">Start Earning &rarr;</h4>
-                            <p className="text-sm">Jump straight into the app and deposit your first USDC.</p>
+                            <p className="text-sm">Jump straight into the app and deposit your first ETH.</p>
                         </Link>
                     </div>
                 </div>
