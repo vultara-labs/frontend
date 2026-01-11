@@ -214,7 +214,7 @@ export default function DashboardPage() {
 
             {/* Gamification / Missions */}
             <div className="pt-4">
-                <MissionsWidget balance={totalBalance} />
+                <MissionsWidget balance={totalBalance} isPreviewMode={isPreviewMode} />
             </div>
 
             <TierDetailsModal

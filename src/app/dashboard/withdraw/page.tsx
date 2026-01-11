@@ -30,7 +30,7 @@ export default function WithdrawPage() {
 }
 
 function WithdrawContent() {
-    const { isConnected, address } = useWalletConnection();
+    const { isConnected, address, connect: handleConnect } = useWalletConnection();
     const { isPreviewMode, vaultBalanceETH } = useDashboardData();
     const chainId = useChainId();
     const [step, setStep] = useState<"input" | "processing" | "success">("input");
@@ -221,15 +221,12 @@ function WithdrawContent() {
 
                                 {isPreviewMode ? (
                                     <div className="space-y-3">
-                                        <div className="p-3 rounded-xl bg-[var(--warning)]/10 border border-[var(--warning)]/20 flex items-center gap-3">
-                                            <Wallet size={18} className="text-[var(--warning)]" />
-                                            <span className="text-xs text-[var(--warning)] font-bold">Connect wallet to withdraw real funds</span>
-                                        </div>
                                         <button
-                                            disabled
-                                            className="w-full h-16 rounded-2xl bg-white/50 text-black/50 font-black text-base uppercase tracking-widest cursor-not-allowed"
+                                            onClick={handleConnect}
+                                            className="w-full h-16 rounded-2xl bg-[var(--volt)] text-black font-black text-base uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                                         >
-                                            Preview Mode
+                                            <Wallet size={20} weight="bold" />
+                                            Connect Wallet
                                         </button>
                                     </div>
                                 ) : (

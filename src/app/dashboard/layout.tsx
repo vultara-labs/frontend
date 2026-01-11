@@ -4,9 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { List, X, CaretRight, Wallet, SignOut } from "@phosphor-icons/react";
-import { useWalletConnection } from "@/hooks";
-import { DASHBOARD_NAV_ITEMS } from "@/constants";
+import { List, X, CaretRight, Wallet, SignOut, Eye } from "@phosphor-icons/react";
+import { useWalletConnection, useDashboardData } from "@/hooks";
+import { DASHBOARD_NAV_ITEMS, DEMO_DATA } from "@/constants";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
@@ -21,6 +21,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         connect: handleConnect,
         disconnect: handleDisconnect,
     } = useWalletConnection();
+
+    // Get preview mode data
+    const { isPreviewMode, vaultBalanceETH, walletBalanceETH } = useDashboardData();
 
     useEffect(() => {
         setMounted(true);
@@ -166,13 +169,32 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         <div className="flex justify-between items-start mb-4">
                             <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider flex items-center gap-1.5">
                                 <span className={`w-1.5 h-1.5 rounded-full ${isConnectedSafe ? "bg-[var(--success)] shadow-[0_0_8px_var(--success)]" : "bg-[var(--warning)]"}`} />
-                                {isConnectedSafe ? "Connected" : "Wallet"}
+                                {isConnectedSafe ? "Connected" : "Preview"}
                             </span>
-                            <Wallet size={18} className="text-[var(--text-tertiary)]" />
+                            {isPreviewMode ? (
+                                <Eye size={18} className="text-[var(--warning)]" />
+                            ) : (
+                                <Wallet size={18} className="text-[var(--text-tertiary)]" />
+                            )}
                         </div>
 
                         <div className="mb-4">
-                            {!isConnectedSafe ? (
+                            {isPreviewMode ? (
+                                <div>
+                                    <p className="text-3xl font-black text-white tracking-tight mb-1">{walletBalanceETH.toFixed(2)} ETH</p>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-[10px] text-[var(--warning)] font-bold bg-[var(--warning)]/10 px-2 py-1 rounded border border-[var(--warning)]/20">
+                                            Demo Data
+                                        </span>
+                                        <button
+                                            onClick={handleConnect}
+                                            className="text-[10px] text-[var(--volt)] font-bold hover:underline"
+                                        >
+                                            Connect →
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : !isConnectedSafe ? (
                                 <button
                                     onClick={handleConnect}
                                     className="w-full py-2.5 rounded-xl bg-[var(--volt)] text-black font-bold text-xs uppercase tracking-widest hover:brightness-110 transition-all shadow-[0_0_15px_rgba(204,255,0,0.15)]"

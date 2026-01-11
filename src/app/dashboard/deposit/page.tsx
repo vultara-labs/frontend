@@ -33,7 +33,7 @@ function DepositContent() {
     const [amount, setAmount] = useState("");
     const [riskAcknowledged, setRiskAcknowledged] = useState(false);
 
-    const { isConnected, ethBalance, address } = useWalletConnection();
+    const { isConnected, ethBalance, address, connect: handleConnect } = useWalletConnection();
     const { isPreviewMode, walletBalanceETH, ethPrice } = useDashboardData();
     const chainId = useChainId();
 
@@ -312,10 +312,13 @@ function DepositContent() {
                                         Cancel
                                     </button>
                                     {isPreviewMode ? (
-                                        <div className="h-14 rounded-2xl bg-[var(--warning)]/10 border border-[var(--warning)]/20 flex items-center justify-center gap-2 text-[var(--warning)]">
+                                        <button
+                                            onClick={handleConnect}
+                                            className="h-14 rounded-2xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all text-xs flex items-center justify-center gap-2"
+                                        >
                                             <Wallet size={16} weight="bold" />
-                                            <span className="text-xs font-bold uppercase tracking-wider">Connect Wallet</span>
-                                        </div>
+                                            Connect Wallet
+                                        </button>
                                     ) : (
                                         <button
                                             onClick={handleDeposit}

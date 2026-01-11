@@ -6,12 +6,22 @@ import Link from "next/link";
 import { MISSIONS } from "@/constants/gamification";
 import { useState } from "react";
 
-export function MissionsWidget({ balance }: { balance: number }) {
+interface MissionsWidgetProps {
+    balance: number;
+    isPreviewMode?: boolean;
+}
+
+export function MissionsWidget({ balance, isPreviewMode = false }: MissionsWidgetProps) {
     // Mock state - in real app would come from backend/context
     const [claimedIds, setClaimedIds] = useState<string[]>([]);
 
     const getStatus = (id: string) => {
         if (claimedIds.includes(id)) return "claimed";
+
+        // In preview mode, show first 2 missions as completed for demo wow-factor
+        if (isPreviewMode) {
+            if (id === "connect" || id === "deposit") return "completed";
+        }
 
         switch (id) {
             case "connect":
@@ -53,8 +63,8 @@ export function MissionsWidget({ balance }: { balance: number }) {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
                             className={`group relative p-4 rounded-2xl border transition-all duration-300 ${isCompleted
-                                    ? "bg-[var(--success)]/5 border-[var(--success)]/20"
-                                    : "bg-[var(--obsidian-surface)] border-[var(--border-subtle)] hover:border-[var(--volt)]/30"
+                                ? "bg-[var(--success)]/5 border-[var(--success)]/20"
+                                : "bg-[var(--obsidian-surface)] border-[var(--border-subtle)] hover:border-[var(--volt)]/30"
                                 }`}
                         >
                             <div className="flex justify-between items-start mb-3">

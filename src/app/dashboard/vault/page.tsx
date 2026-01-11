@@ -4,19 +4,16 @@ import { motion } from "framer-motion";
 import { TrendUp, ArrowSquareOut, ShieldCheck, LockKey, Clock, Pulse, ChartLineUp, Database, Bank, Coins, ArrowsLeftRight, Lightning } from "@phosphor-icons/react";
 import Link from "next/link";
 import { PROTOCOL } from "@/constants";
-import { useMarketData } from "@/hooks";
+import { useDashboardData } from "@/hooks";
 
 export default function VaultPage() {
-    const { data: marketData, loading } = useMarketData("ETH");
+    // Use centralized dashboard data for consistency
+    const { ethPrice, priceChange, currentAPY, marketLoading } = useDashboardData();
 
-    // Dynamic Calculations based on LIVE Price & Volatility (IV Proxy)
-    const currentPrice = marketData?.price || 0;
-    const priceChange = marketData?.change24h || 0;
-
-    // Volatility-Based APY: Higher volatility (price change) = Higher Options Premiums = Higher APY
-    // Base 4.5% + (Volatility Factor * Multiplier)
-    const volatilityPremium = Math.abs(priceChange) * 0.3;
-    const dynamicAPY = (PROTOCOL.APY + volatilityPremium).toFixed(2);
+    // For display
+    const currentPrice = ethPrice;
+    const loading = marketLoading;
+    const dynamicAPY = currentAPY.toFixed(2);
 
     // Helper to calculate time until next Friday 08:00 UTC
     function getNextFridayExpiry() {
@@ -90,7 +87,7 @@ export default function VaultPage() {
                         ) : (
                             <span className="text-sm font-mono font-bold text-white flex items-center gap-2">
                                 ${currentPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}
-                                <span className="text-[10px] text-[var(--text-tertiary)] font-sans normal-case">(Updated: {marketData?.lastUpdated.toLocaleTimeString()})</span>
+                                <span className="text-[10px] text-[var(--text-tertiary)] font-sans normal-case">(Updated: {new Date().toLocaleTimeString()})</span>
                             </span>
                         )}
                     </div>
