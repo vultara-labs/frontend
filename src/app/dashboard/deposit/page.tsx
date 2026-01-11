@@ -35,7 +35,6 @@ function DepositContent() {
 
     const { signMessageAsync } = useSignMessage();
     const { usdcBalance, isConnected, balance: ethBalance } = useWalletConnection();
-    const chainId = useChainId();
 
     const searchParams = useSearchParams();
     useEffect(() => {
@@ -52,17 +51,6 @@ function DepositContent() {
     // Check if user has ETH for "Smart Swap Suggestion"
     const ethBalanceVal = ethBalance ? parseFloat(formatUnits(ethBalance.value, ethBalance.decimals)) : 0;
     const hasEth = ethBalanceVal > 0.0001;
-
-    useEffect(() => {
-        console.log("🔍 DEBUG DEPOSIT:", {
-            chainId,
-            networkName: chainId === 84532 ? "Base Sepolia" : "Unknown",
-            isConnected,
-            ETH: ethBalanceVal,
-            USDC: walletBalance,
-            rawETH: ethBalance,
-        });
-    }, [chainId, isConnected, ethBalance, ethBalanceVal, walletBalance]);
 
     const numAmount = parseFloat(amount.replace(/,/g, '')) || 0;
     const isValidAmount = numAmount >= 10 && numAmount <= walletBalance;
