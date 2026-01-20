@@ -194,23 +194,34 @@ export default function DashboardPage() {
 
                         <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white mb-1">{currentTierName} Tier</h3>
                         <p className="text-body-sm text-[var(--text-secondary)] mb-6">
-                            Verified member. Unlock {nextTierName} status at ${nextLevelThreshold.toLocaleString()}.
+                            {nextTier
+                                ? `Unlock ${nextTierName} benefits at $${nextLevelThreshold.toLocaleString()}.`
+                                : "You have reached the highest tier status."}
                         </p>
 
-                        <div className="space-y-2">
-                            <div className="flex justify-between label">
-                                <span className="text-[var(--text-secondary)]">Next: {nextTierName}</span>
-                                <span className="text-white">${nextLevelThreshold.toLocaleString()}</span>
-                            </div>
-                            <div className="h-2 w-full bg-white/[0.05] rounded-full overflow-hidden">
-                                <div
-                                    className="h-full rounded-full transition-all duration-1000"
-                                    style={{ width: `${progress}%`, backgroundColor: tierColor }}
-                                />
-                            </div>
-                            <p className="text-[10px] text-[var(--text-tertiary)] pt-1">
-                                Deposit ${(nextLevelThreshold - totalBalance).toLocaleString()} more to upgrade
-                            </p>
+                        <div className="space-y-3">
+                            {nextTier ? (
+                                <>
+                                    <div className="flex justify-between label">
+                                        <span className="text-[var(--text-secondary)]">Progress</span>
+                                        <span className="text-white">${Math.floor(totalBalance).toLocaleString()} / ${nextLevelThreshold.toLocaleString()}</span>
+                                    </div>
+                                    <div className="h-2 w-full bg-white/[0.05] rounded-full overflow-hidden">
+                                        <div
+                                            className="h-full rounded-full transition-all duration-1000"
+                                            style={{ width: `${progress}%`, backgroundColor: tierColor }}
+                                        />
+                                    </div>
+                                    <p className="label text-[var(--text-tertiary)] lowercase">
+                                        ${Math.max(0, nextLevelThreshold - totalBalance).toLocaleString()} more to unlock {nextTierName}
+                                    </p>
+                                </>
+                            ) : (
+                                <div className="p-3 rounded-xl bg-white/[0.05] border border-white/10 flex items-center gap-3">
+                                    <Crown size={20} weight="duotone" className="text-[var(--volt)]" />
+                                    <span className="label text-white">Max Level Achieved</span>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </motion.div>
