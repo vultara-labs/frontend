@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { MoreHorizontal } from "lucide-react";
+import { DotsThree } from "@phosphor-icons/react";
 import { useRef, MouseEvent } from "react";
 import { Counter } from "./Counter";
 import { PROTOCOL } from "@/constants";

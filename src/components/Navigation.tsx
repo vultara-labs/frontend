@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { List, X } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useState } from "react";
 import { LANDING_NAV_ITEMS } from "@/constants";
@@ -39,7 +39,7 @@ export default function Navigation() {
                         className="md:hidden text-white p-2 hover:text-[var(--volt)] transition-colors"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                     >
-                        {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+                        {mobileMenuOpen ? <X size={28} weight="bold" /> : <List size={28} weight="bold" />}
                     </button>
                 </div>
             </div>

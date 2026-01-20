@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Info, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Info, CheckCircle } from "@phosphor-icons/react";
 import Link from "next/link";
 
 export default function DocsIntroductionPage() {
@@ -49,7 +49,7 @@ export default function DocsIntroductionPage() {
                             "Nova AI Advisor to explain risks in real-time."
                         ].map((item, i) => (
                             <li key={i} className="flex items-start gap-3">
-                                <CheckCircle2 className="text-[var(--volt)] mt-1 flex-shrink-0" size={20} />
+                                <CheckCircle className="text-[var(--volt)] mt-1 flex-shrink-0" size={20} weight="fill" />
                                 <span className="leading-relaxed font-medium">{item}</span>
                             </li>
                         ))}

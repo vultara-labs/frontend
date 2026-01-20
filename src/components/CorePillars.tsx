@@ -1,8 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { TrendingUp, Trophy, ShieldCheck, Lock } from "lucide-react";
-import { Alien } from "@phosphor-icons/react";
+import { TrendUp, Trophy, ShieldCheck, Lock, Alien } from "@phosphor-icons/react";
 
 export default function CorePillars() {
     return (
@@ -29,7 +28,7 @@ export default function CorePillars() {
 
                         <div className="relative z-10">
                             <div className="mb-5 lg:mb-8 flex w-12 h-12 lg:w-16 lg:h-16 items-center justify-center rounded-2xl bg-white/5 text-[var(--volt)] border border-white/5 group-hover:bg-[var(--volt-glass)] group-hover:border-[var(--volt)]/20 transition-all duration-500 shadow-[0_0_20px_rgba(0,0,0,0.2)]">
-                                <TrendingUp size={24} className="lg:w-8 lg:h-8" />
+                                <TrendUp size={24} weight="duotone" className="lg:w-8 lg:h-8" />
                             </div>
                             <h3 className="mb-2 lg:mb-4 text-xl lg:text-3xl font-black uppercase tracking-tight text-white">Real Yield</h3>
                             <p className="max-w-md text-[var(--text-secondary)] text-sm lg:text-base leading-relaxed">

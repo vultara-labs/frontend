@@ -1,6 +1,6 @@
 "use client";
 
-import { PieChart, TrendingUp, DollarSign } from "lucide-react";
+import { ChartPie, TrendUp, CurrencyDollar } from "@phosphor-icons/react";
 
 export default function YieldMechanicsPage() {
     return (
@@ -86,7 +86,7 @@ export default function YieldMechanicsPage() {
 
                 <section className="bg-[var(--obsidian-uplift)] p-6 rounded-xl border border-[var(--border-subtle)]">
                     <div className="flex gap-4 items-start">
-                        <TrendingUp className="text-[var(--volt)] flex-shrink-0" />
+                        <TrendUp className="text-[var(--volt)] flex-shrink-0" weight="duotone" />
                         <div>
                             <h4 className="text-white font-bold mb-2">Example Scenario</h4>
                             <p className="text-sm text-[var(--text-secondary)] leading-relaxed">

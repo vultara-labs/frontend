@@ -1,12 +1,11 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Wallet, ArrowDownToLine, TrendingUp, ArrowUpFromLine } from "lucide-react";
-import { Alien } from "@phosphor-icons/react";
+import { Wallet, ArrowLineDown, TrendUp, Alien, ArrowLineUp } from "@phosphor-icons/react";
 import { useRef } from "react";
 import { TECH_STATS } from "@/constants";
 
-const JOURNEY_ICONS = [Wallet, ArrowDownToLine, TrendingUp, Alien, ArrowUpFromLine];
+const JOURNEY_ICONS = [Wallet, ArrowLineDown, TrendUp, Alien, ArrowLineUp];
 
 const steps = [
     { title: "Connect Wallet", desc: "Link your wallet in seconds. MetaMask, Coinbase, or any WalletConnect compatible wallet." },

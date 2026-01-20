@@ -1,6 +1,6 @@
 "use client";
 
-import { ShieldAlert, ShieldCheck, Lock } from "lucide-react";
+import { ShieldWarning, ShieldCheck, Lock } from "@phosphor-icons/react";
 import Link from "next/link";
 
 export default function SecurityPage() {
@@ -44,7 +44,7 @@ export default function SecurityPage() {
 
                 <section>
                     <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                        <ShieldAlert className="text-[var(--warning)]" />
+                        <ShieldWarning className="text-[var(--warning)]" weight="fill" />
                         Risk Disclosure
                     </h2>
                     <div className="space-y-6">

@@ -1,6 +1,6 @@
 "use client";
 
-import { Github, Twitter, ExternalLink } from "lucide-react";
+import { GithubLogo, TwitterLogo, ArrowSquareOut } from "@phosphor-icons/react";
 import Link from "next/link";
 import { FOOTER_PRODUCT_LINKS, FOOTER_ECOSYSTEM_LINKS } from "@/constants";
 
@@ -21,10 +21,10 @@ export default function Footer() {
                         </p>
                         <div className="flex gap-3">
                             <button className="w-12 h-12 rounded-xl card-solid flex items-center justify-center text-[var(--text-tertiary)] cursor-not-allowed opacity-50" aria-label="Twitter - Coming Soon" title="Coming Soon">
-                                <Twitter className="w-5 h-5" />
+                                <TwitterLogo className="w-5 h-5" weight="fill" />
                             </button>
                             <a href="https://github.com/vultara-labs" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-xl card-solid flex items-center justify-center text-[var(--text-secondary)] hover:text-white hover:border-[var(--border-bright)] transition-all" aria-label="GitHub">
-                                <Github className="w-5 h-5" />
+                                <GithubLogo className="w-5 h-5" weight="fill" />
                             </a>
                         </div>
                     </div>
@@ -56,7 +56,7 @@ export default function Footer() {
                                         rel="noopener noreferrer"
                                         className={`text-sm text-[var(--text-tertiary)] hover:text-${link.color} transition-colors flex items-center gap-2`}
                                     >
-                                        {link.label} <ExternalLink size={12} />
+                                        {link.label} <ArrowSquareOut size={12} />
                                     </a>
                                 </li>
                             ))}

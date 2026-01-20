@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, ArrowDown } from "lucide-react";
+import { ArrowRight, ArrowDown } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useRef, useEffect, useState } from "react";
 import { HeroCard } from "./landing/HeroCard";

@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, RefreshCw, BarChart3, ArrowRight } from "lucide-react";
+import { Cube, ArrowsClockwise, ChartBar, ArrowRight } from "@phosphor-icons/react";
 import Link from "next/link";
 
 export default function CoreConceptsPage() {
@@ -26,7 +26,7 @@ export default function CoreConceptsPage() {
                 <section className="space-y-6">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-xl bg-[var(--volt)]/10 flex items-center justify-center text-[var(--volt)]">
-                            <Box size={24} />
+                            <Cube size={24} weight="duotone" />
                         </div>
                         <h2 className="text-2xl font-bold text-white">The Vault</h2>
                     </div>
@@ -50,7 +50,7 @@ export default function CoreConceptsPage() {
                 <section className="space-y-6">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400">
-                            <RefreshCw size={24} />
+                            <ArrowsClockwise size={24} weight="duotone" />
                         </div>
                         <h2 className="text-2xl font-bold text-white">Epochs (Weekly Cycles)</h2>
                     </div>
@@ -83,7 +83,7 @@ export default function CoreConceptsPage() {
                 <section className="space-y-6">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400">
-                            <BarChart3 size={24} />
+                            <ChartBar size={24} weight="duotone" />
                         </div>
                         <h2 className="text-2xl font-bold text-white">The Strategy</h2>
                     </div>

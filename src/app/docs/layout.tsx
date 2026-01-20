@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Shield, Zap, Database, ArrowLeft, Menu, X } from "lucide-react";
+import { BookOpen, Shield, Lightning, Database, ArrowLeft, List, X } from "@phosphor-icons/react";
 import { useState } from "react";
 
 const DOCS_NAV = [
@@ -16,7 +16,7 @@ const DOCS_NAV = [
     {
         category: "Protocol",
         items: [
-            { label: "Yield Mechanics", href: "/docs/yield", icon: Zap },
+            { label: "Yield Mechanics", href: "/docs/yield", icon: Lightning },
             { label: "Security & Risks", href: "/docs/security", icon: Shield },
         ]
     }
@@ -40,7 +40,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
                         onClick={() => setMobileNavOpen(!mobileNavOpen)}
                         className="p-2 text-[var(--text-secondary)] hover:text-white"
                     >
-                        {mobileNavOpen ? <X size={24} /> : <Menu size={24} />}
+                        {mobileNavOpen ? <X size={24} weight="bold" /> : <List size={24} weight="bold" />}
                     </button>
                 </div>
 
