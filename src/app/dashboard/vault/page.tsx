@@ -8,7 +8,8 @@ import { useDashboardData } from "@/hooks";
 
 export default function VaultPage() {
     // Use centralized dashboard data for consistency
-    const { ethPrice, priceChange, currentAPY, marketLoading } = useDashboardData();
+    const { ethPrice, priceChange, currentAPY, marketLoading, vaultBalanceETH, vaultBalanceUSD } = useDashboardData();
+    const hasPosition = vaultBalanceETH > 0;
 
     // For display
     const currentPrice = ethPrice;
@@ -201,11 +202,22 @@ export default function VaultPage() {
                             <p className="text-[10px] text-[var(--text-tertiary)] mt-1 text-right">Score: 98/100</p>
                         </div>
 
+                        {/* User Position (if applicable) */}
+                        {hasPosition && (
+                            <div className="p-5 rounded-2xl bg-[var(--volt)]/5 border border-[var(--volt)]/20">
+                                <p className="text-[10px] font-bold text-[var(--volt)] uppercase tracking-widest mb-2">Your Position</p>
+                                <div className="flex justify-between items-baseline">
+                                    <p className="text-2xl font-black text-white">{vaultBalanceETH.toFixed(4)} ETH</p>
+                                    <p className="text-sm text-[var(--text-secondary)]">${vaultBalanceUSD.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
+                                </div>
+                            </div>
+                        )}
+
                         <Link
                             href="/dashboard/deposit"
                             className="w-full py-4 rounded-xl bg-[var(--volt)] text-black font-bold text-sm uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_0_20px_rgba(204,255,0,0.15)] flex items-center justify-center gap-2"
                         >
-                            Deposit Now
+                            {hasPosition ? "Add More" : "Deposit Now"}
                         </Link>
                     </div>
                 </div>

@@ -4,16 +4,18 @@ import { useWalletConnection, useMarketData } from "@/hooks";
 import { PROTOCOL, DEMO_DATA, VULTARA_ETH_VAULT_ABI } from "@/constants";
 import { formatUnits } from "viem";
 import { useChainId, useReadContract } from "wagmi";
+import { useDemoStore } from "./useDemoStore";
 
 /**
  * Central hook to manage dashboard data
- * - Returns DEMO_DATA when wallet is NOT connected (Preview Mode)
+ * - Returns DEMO store data when wallet is NOT connected (Preview Mode)
  * - Returns REAL-TIME data from wallet when connected (Live Mode)
  */
 export function useDashboardData() {
     const { isConnected, address, ethBalance } = useWalletConnection();
     const chainId = useChainId();
     const { data: marketData, loading: marketLoading } = useMarketData("ETH");
+    const { state: demoState, deposit: demoDeposit, withdraw: demoWithdraw, reset: demoReset } = useDemoStore();
 
     // Get contract addresses for current chain
     const contracts = PROTOCOL.CONTRACTS[chainId as keyof typeof PROTOCOL.CONTRACTS] || PROTOCOL.CONTRACTS[84532];
@@ -53,17 +55,18 @@ export function useDashboardData() {
     // ============================================
     const isPreviewMode = !isConnected;
 
-    // Vault balance
-    const vaultBalanceETH = isPreviewMode ? DEMO_DATA.VAULT_BALANCE_ETH : realVaultBalanceETH;
-    const vaultBalanceUSD = isPreviewMode ? DEMO_DATA.VAULT_BALANCE_USD : realVaultBalanceUSD;
+    // Vault balance - use demo store state for preview
+    const vaultBalanceETH = isPreviewMode ? demoState.vaultBalanceETH : realVaultBalanceETH;
+    const vaultBalanceUSD = isPreviewMode ? demoState.vaultBalanceETH * ethPrice : realVaultBalanceUSD;
 
-    // Wallet balance
-    const walletBalanceETH = isPreviewMode ? DEMO_DATA.WALLET_BALANCE_ETH : realWalletBalanceETH;
-    const walletBalanceUSD = isPreviewMode ? DEMO_DATA.WALLET_BALANCE_USD : realWalletBalanceUSD;
+    // Wallet balance - use demo store state for preview
+    const walletBalanceETH = isPreviewMode ? demoState.walletBalanceETH : realWalletBalanceETH;
+    const walletBalanceUSD = isPreviewMode ? demoState.walletBalanceETH * ethPrice : realWalletBalanceUSD;
 
-    // Earnings
-    const monthlyEarningsUSD = isPreviewMode ? DEMO_DATA.MONTHLY_EARNINGS : realMonthlyEarningsUSD;
-    const totalEarningsUSD = isPreviewMode ? DEMO_DATA.TOTAL_EARNINGS : (realMonthlyEarningsUSD * 3); // Simulated 3 months
+    // Earnings - calculate based on demo vault balance
+    const demoMonthlyEarningsUSD = (vaultBalanceUSD * (currentAPY / 100)) / 12;
+    const monthlyEarningsUSD = isPreviewMode ? demoMonthlyEarningsUSD : realMonthlyEarningsUSD;
+    const totalEarningsUSD = isPreviewMode ? DEMO_DATA.TOTAL_EARNINGS + (demoState.totalDeposited * 0.01) : (realMonthlyEarningsUSD * 3);
 
     return {
         // Mode indicator
@@ -89,8 +92,14 @@ export function useDashboardData() {
         monthlyEarningsUSD,
         totalEarningsUSD,
 
+        // Demo actions (for deposit/withdraw pages)
+        demoDeposit,
+        demoWithdraw,
+        demoReset,
+
         // Raw data for advanced usage
         contracts,
         chainId,
     };
 }
+

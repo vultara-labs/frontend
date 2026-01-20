@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 import { Web3Provider } from "@/providers/Web3Provider";
+import { DemoProvider } from "@/hooks/useDemoStore";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -66,7 +67,9 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={`${inter.variable} antialiased`}>
         <Web3Provider>
-          {children}
+          <DemoProvider>
+            {children}
+          </DemoProvider>
         </Web3Provider>
         <Toaster
           position="bottom-right"

@@ -85,11 +85,15 @@ export default function DashboardPage() {
                         </h2>
                         <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
                             <span className="text-base sm:text-lg text-[var(--text-secondary)]">≈ ${totalBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>
-                            <div className="px-2 sm:px-3 py-1 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/20 flex items-center gap-1.5 w-fit">
-                                <TrendUp size={12} className="text-[var(--success)]" weight="bold" />
-                                <span className="text-[10px] sm:text-xs font-bold text-[var(--success)]">+{loading ? "..." : currentAPY}% APY</span>
+                            <div className="flex items-center gap-2">
+                                <div className="px-2 sm:px-3 py-1 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/20 flex items-center gap-1.5 w-fit">
+                                    <TrendUp size={12} className="text-[var(--success)]" weight="bold" />
+                                    <span className="text-[10px] sm:text-xs font-bold text-[var(--success)]">+{loading ? "..." : currentAPY}% APY</span>
+                                </div>
+                                <span className="text-[10px] text-[var(--text-tertiary)] italic hidden sm:inline">*Variable</span>
                             </div>
                         </div>
+                        <p className="text-[10px] text-[var(--text-tertiary)] mt-1 sm:hidden italic">*APY is variable and not guaranteed</p>
                     </div>
 
                     <div className="flex gap-3 sm:gap-4">

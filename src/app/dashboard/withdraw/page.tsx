@@ -31,7 +31,7 @@ export default function WithdrawPage() {
 
 function WithdrawContent() {
     const { isConnected, address, connect: handleConnect } = useWalletConnection();
-    const { isPreviewMode, vaultBalanceETH } = useDashboardData();
+    const { isPreviewMode, vaultBalanceETH, demoWithdraw } = useDashboardData();
     const chainId = useChainId();
     const [step, setStep] = useState<"input" | "processing" | "success">("input");
     const [amount, setAmount] = useState("");
@@ -114,6 +114,25 @@ function WithdrawContent() {
     };
 
     const handleMax = () => setAmount(totalBalance.toFixed(6));
+
+    // Simulated withdraw for preview/demo mode
+    const handlePreviewWithdraw = () => {
+        if (!isValidAmount) return;
+        setStep("processing");
+        toast.loading("Simulating withdrawal...");
+        setTimeout(() => {
+            demoWithdraw(numAmount);
+            toast.dismiss();
+            setStep("success");
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ["#CCFF00", "#ffffff", "#22c55e"],
+            });
+            toast.success("Demo Withdrawal Complete!");
+        }, 2000);
+    };
 
     return (
         <div className="min-h-[80vh] flex items-center justify-center p-4">
@@ -220,15 +239,13 @@ function WithdrawContent() {
                                 </div>
 
                                 {isPreviewMode ? (
-                                    <div className="space-y-3">
-                                        <button
-                                            onClick={handleConnect}
-                                            className="w-full h-16 rounded-2xl bg-[var(--volt)] text-black font-black text-base uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
-                                        >
-                                            <Wallet size={20} weight="bold" />
-                                            Connect Wallet
-                                        </button>
-                                    </div>
+                                    <button
+                                        onClick={handlePreviewWithdraw}
+                                        disabled={!isValidAmount}
+                                        className="w-full h-16 rounded-2xl bg-white text-black font-black text-base uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+                                    >
+                                        Withdraw (Demo)
+                                    </button>
                                 ) : (
                                     <button
                                         onClick={handleWithdraw}

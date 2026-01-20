@@ -25,25 +25,24 @@ export function useMarketData(asset: string = "ETH") {
 
         const fetchPrice = async () => {
             try {
-                // Primary: CoinGecko (Rich Data: Price + 24h Change)
-                const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd&include_24h_change=true`);
-                if (!res.ok) throw new Error("CoinGecko limit");
+                // Primary: Use our own API route (bypasses CORS)
+                const res = await fetch("/api/price");
+                if (!res.ok) throw new Error("Local API failed");
 
                 const json = await res.json();
-                const ethData = json.ethereum;
 
-                if (mounted && ethData) {
+                if (mounted) {
                     setData({
-                        price: ethData.usd,
-                        change24h: ethData.usd_24h_change,
+                        price: json.price,
+                        change24h: json.change24h,
                         lastUpdated: new Date()
                     });
                     setLoading(false);
                     setError(null);
                 }
             } catch (err) {
-                // Fallback: Coinbase (Reliable Price, Mock Volatility)
-                console.warn("CoinGecko fetch failed, trying Coinbase fallback...");
+                // Fallback: Direct API calls (may have CORS issues on localhost)
+                console.warn("Local API failed, trying external fallback...");
                 try {
                     const res = await fetch(`https://api.coinbase.com/v2/prices/${asset}-USD/spot`);
                     if (!res.ok) throw new Error("Coinbase failed");
@@ -52,7 +51,6 @@ export function useMarketData(asset: string = "ETH") {
                     const price = parseFloat(json.data.amount);
 
                     if (mounted) {
-                        // Simulate volatility between -2% and +2% if live data fails
                         const mockVol = (Math.random() * 4) - 2;
                         setData({
                             price,
@@ -63,19 +61,18 @@ export function useMarketData(asset: string = "ETH") {
                         setError(null);
                     }
                 } catch (fallbackErr) {
-                    // Ultimate fallback: Use default data (handles CORS issues on localhost)
-                    console.warn("All external APIs failed (likely CORS), using default data");
+                    // Ultimate fallback: Use default data
+                    console.warn("All APIs failed, using default data");
                     if (mounted) {
-                        // Add some variation to make it feel "live"
-                        const priceVariation = (Math.random() * 100) - 50; // +/- $50
-                        const volVariation = (Math.random() * 4) - 2; // +/- 2%
+                        const priceVariation = (Math.random() * 100) - 50;
+                        const volVariation = (Math.random() * 4) - 2;
 
                         setData({
                             price: DEFAULT_MARKET_DATA.price + priceVariation,
                             change24h: DEFAULT_MARKET_DATA.change24h + volVariation,
                             lastUpdated: new Date()
                         });
-                        setError(null); // Not a real error, just using fallback
+                        setError(null);
                         setLoading(false);
                     }
                 }

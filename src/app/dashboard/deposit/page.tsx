@@ -34,7 +34,7 @@ function DepositContent() {
     const [riskAcknowledged, setRiskAcknowledged] = useState(false);
 
     const { isConnected, ethBalance, address, connect: handleConnect } = useWalletConnection();
-    const { isPreviewMode, walletBalanceETH, ethPrice } = useDashboardData();
+    const { isPreviewMode, walletBalanceETH, ethPrice, demoDeposit } = useDashboardData();
     const chainId = useChainId();
 
     // Get contract addresses for current chain
@@ -90,6 +90,31 @@ function DepositContent() {
     const handleContinue = () => {
         if (!isValidAmount) return;
         setStep("confirm");
+    };
+
+    // Simulated deposit for preview/demo mode
+    const handlePreviewDeposit = () => {
+        if (!riskAcknowledged) {
+            toast.error("Please acknowledge the risks first");
+            return;
+        }
+        setStep("processing");
+        toast.loading("Simulating deposit...");
+        // Simulate transaction delay
+        setTimeout(() => {
+            // Persist to demo store
+            demoDeposit(numAmount);
+
+            toast.dismiss();
+            setStep("success");
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ["#CCFF00", "#ffffff", "#22c55e"],
+            });
+            toast.success("Demo Deposit Successful!");
+        }, 2000);
     };
 
     const handleDeposit = async () => {
@@ -225,9 +250,16 @@ function DepositContent() {
                                             <span className="text-sm font-bold">Leave ~0.005 ETH for gas. Max: {maxDepositable.toFixed(4)} ETH</span>
                                         </motion.div>
                                     ) : numAmount >= 0.001 ? (
-                                        <div className="mt-4 flex items-center gap-2 px-2 text-[var(--volt)]">
-                                            <TrendUp size={16} weight="bold" />
-                                            <span className="text-sm font-bold">Est. yield: ~${monthlyYield.toFixed(2)} / month</span>
+                                        <div className="mt-4 px-2 space-y-1">
+                                            <div className="flex items-center gap-2 text-[var(--volt)]">
+                                                <TrendUp size={16} weight="bold" />
+                                                <span className="text-sm font-bold">Est. yield: ~${monthlyYield.toFixed(2)} / month</span>
+                                            </div>
+                                            {numAmount >= maxDepositable - 0.001 && (
+                                                <p className="text-[10px] text-[var(--text-tertiary)] italic pl-6">
+                                                    * 0.005 ETH reserved for gas fees
+                                                </p>
+                                            )}
                                         </div>
                                     ) : null}
 
@@ -292,6 +324,28 @@ function DepositContent() {
                                     </div>
                                 </div>
 
+                                {/* Risk Disclosure Box */}
+                                <div className="p-4 rounded-xl bg-[var(--warning)]/5 border border-[var(--warning)]/20 mb-4">
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <Warning size={16} weight="bold" className="text-[var(--warning)]" />
+                                        <span className="text-xs font-bold uppercase tracking-wider text-[var(--warning)]">Important Risk Information</span>
+                                    </div>
+                                    <ul className="space-y-2 text-xs text-[var(--text-secondary)] leading-relaxed">
+                                        <li className="flex items-start gap-2">
+                                            <span className="text-[var(--warning)] mt-0.5">•</span>
+                                            <span><strong className="text-white">Yields are variable</strong> — APY fluctuates based on market volatility and is not guaranteed.</span>
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <span className="text-[var(--warning)] mt-0.5">•</span>
+                                            <span><strong className="text-white">Smart contract risk</strong> — Funds are held in non-custodial contracts. While audited, no code is 100% bug-free.</span>
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <span className="text-[var(--warning)] mt-0.5">•</span>
+                                            <span><strong className="text-white">Downside scenario</strong> — If ETH price drops significantly during an epoch, the vault may realize losses.</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
                                 <label className="flex items-start gap-3 p-4 rounded-xl border border-[var(--border-subtle)] cursor-pointer mb-6 hover:bg-white/[0.02] transition-colors">
                                     <input
                                         type="checkbox"
@@ -300,7 +354,7 @@ function DepositContent() {
                                         className="mt-1 w-4 h-4 rounded border-gray-600 bg-transparent text-[var(--volt)] focus:ring-[var(--volt)]"
                                     />
                                     <span className="text-xs text-[var(--text-secondary)] leading-relaxed">
-                                        I verify that I am depositing funds into the Smart Contract Vault and understand the associated risks.
+                                        I understand that yields are variable, not guaranteed, and I accept the risks of depositing into this vault.
                                     </span>
                                 </label>
 
@@ -313,11 +367,11 @@ function DepositContent() {
                                     </button>
                                     {isPreviewMode ? (
                                         <button
-                                            onClick={handleConnect}
-                                            className="h-14 rounded-2xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all text-xs flex items-center justify-center gap-2"
+                                            onClick={handlePreviewDeposit}
+                                            disabled={!riskAcknowledged}
+                                            className="h-14 rounded-2xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-40 text-xs"
                                         >
-                                            <Wallet size={16} weight="bold" />
-                                            Connect Wallet
+                                            Confirm (Demo)
                                         </button>
                                     ) : (
                                         <button
