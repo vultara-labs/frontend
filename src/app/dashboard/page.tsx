@@ -61,7 +61,7 @@ export default function DashboardPage() {
                     <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white mb-1">
                         Overview
                     </h1>
-                    <p className="text-[var(--text-secondary)]">Welcome back to Vultara.</p>
+                    <p className="text-body text-[var(--text-secondary)]">Welcome back to Vultara.</p>
                 </div>
             </header>
 
@@ -69,7 +69,7 @@ export default function DashboardPage() {
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden bg-[var(--obsidian-surface)] border border-[var(--border-medium)] p-5 sm:p-8 lg:p-12 mb-6 sm:mb-8 group"
+                className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden bg-[var(--obsidian-surface)] border border-[var(--border-medium)] p-6 sm:p-10 lg:p-12 mb-6 sm:mb-8 group"
             >
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--volt)]/5 blur-[120px] rounded-full pointer-events-none group-hover:bg-[var(--volt)]/10 transition-colors duration-700" />
 
@@ -77,30 +77,30 @@ export default function DashboardPage() {
                     <div className="lg:col-span-2">
                         <div className="flex items-center gap-2 mb-4">
                             <Vault size={20} className="text-[var(--volt)]" weight="duotone" />
-                            <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">Vault Balance</span>
+                            <span className="label text-[var(--text-secondary)]">Vault Balance</span>
                         </div>
-                        <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter text-white mb-2">
+                        <h2 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-2 leading-none">
                             {vaultBalance.toFixed(4)}
-                            <span className="text-2xl sm:text-3xl lg:text-4xl text-[var(--text-tertiary)] ml-1 sm:ml-2">ETH</span>
+                            <span className="text-2xl sm:text-3xl lg:text-4xl text-[var(--text-tertiary)] ml-2">ETH</span>
                         </h2>
                         <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-                            <span className="text-base sm:text-lg text-[var(--text-secondary)]">≈ ${totalBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>
+                            <span className="text-lg sm:text-xl text-[var(--text-secondary)] font-medium">≈ ${totalBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>
                             <div className="flex items-center gap-2">
                                 <div className="px-2 sm:px-3 py-1 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/20 flex items-center gap-1.5 w-fit">
                                     <TrendUp size={12} className="text-[var(--success)]" weight="bold" />
                                     <span className="text-[10px] sm:text-xs font-bold text-[var(--success)]">+{loading ? "..." : currentAPY}% APY</span>
                                 </div>
-                                <span className="text-[10px] text-[var(--text-tertiary)] italic hidden sm:inline">*Variable</span>
+                                <span className="text-[10px] text-[var(--text-tertiary)] italic hidden sm:inline label lowercase">*Variable</span>
                             </div>
                         </div>
                         <p className="text-[10px] text-[var(--text-tertiary)] mt-1 sm:hidden italic">*APY is variable and not guaranteed</p>
                     </div>
 
-                    <div className="flex gap-3 sm:gap-4">
-                        <Link href="/dashboard/deposit" className="flex-1 h-12 sm:h-14 rounded-xl bg-[var(--volt)] text-black font-bold text-xs sm:text-sm uppercase tracking-wider sm:tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(204,255,0,0.15)]">
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full lg:w-auto">
+                        <Link href="/dashboard/deposit" className="btn-primary h-12 sm:h-14 px-8 flex items-center justify-center gap-2 w-full sm:w-auto">
                             Deposit
                         </Link>
-                        <Link href="/dashboard/withdraw" className="flex-1 h-12 sm:h-14 rounded-xl bg-white/[0.05] border border-white/10 text-white font-bold text-xs sm:text-sm uppercase tracking-wider sm:tracking-widest hover:bg-white/[0.1] transition-all flex items-center justify-center gap-2">
+                        <Link href="/dashboard/withdraw" className="btn-secondary h-12 sm:h-14 px-8 flex items-center justify-center gap-2 w-full sm:w-auto">
                             Withdraw
                         </Link>
                     </div>
@@ -108,12 +108,12 @@ export default function DashboardPage() {
             </motion.div>
 
             {/* Feature Grid - Vault, AI, Tier */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {/* Vault Module */}
                 <Link href="/dashboard/vault" className="block h-full">
                     <motion.div
                         whileHover={{ y: -4 }}
-                        className="group relative h-full min-h-[280px] p-8 rounded-[2rem] bg-[var(--obsidian-surface)] border border-[var(--border-subtle)] overflow-hidden hover:border-[var(--volt)]/50 transition-all duration-500 flex flex-col justify-between"
+                        className="group relative h-full min-h-[260px] p-6 sm:p-8 rounded-[2rem] bg-[var(--obsidian-surface)] border border-[var(--border-subtle)] overflow-hidden hover:border-[var(--volt)]/50 transition-all duration-500 flex flex-col justify-between"
                     >
                         <div className="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500">
                             <Vault size={120} weight="duotone" className="text-[var(--volt)]" />
@@ -122,11 +122,11 @@ export default function DashboardPage() {
                             <Vault size={24} weight="duotone" />
                         </div>
                         <div className="relative z-10">
-                            <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-2">Vault Strategy</h3>
-                            <p className="text-[var(--text-secondary)] text-sm mb-4">
+                            <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white mb-2">Vault Strategy</h3>
+                            <p className="text-body-sm text-[var(--text-secondary)] mb-4">
                                 Thetanuts V4 Cash-Secured Puts.
                             </p>
-                            <div className="flex items-center gap-2 text-[var(--volt)] font-bold text-xs uppercase tracking-widest group-hover:gap-3 transition-all">
+                            <div className="flex items-center gap-2 text-[var(--volt)] label group-hover:gap-3 transition-all">
                                 Manage <ArrowUpRight weight="bold" />
                             </div>
                         </div>
@@ -137,7 +137,7 @@ export default function DashboardPage() {
                 <Link href="/dashboard/ai" className="block h-full">
                     <motion.div
                         whileHover={{ y: -4 }}
-                        className="group relative h-full min-h-[280px] p-8 rounded-[2rem] bg-[var(--obsidian-surface)] border border-[var(--border-subtle)] overflow-hidden hover:border-amber-400/50 transition-all duration-500 flex flex-col justify-between"
+                        className="group relative h-full min-h-[260px] p-6 sm:p-8 rounded-[2rem] bg-[var(--obsidian-surface)] border border-[var(--border-subtle)] overflow-hidden hover:border-amber-400/50 transition-all duration-500 flex flex-col justify-between"
                     >
                         <div className="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500">
                             <Lightning size={120} weight="duotone" className="text-amber-400" />
@@ -146,11 +146,11 @@ export default function DashboardPage() {
                             <Lightning size={24} weight="duotone" />
                         </div>
                         <div className="relative z-10">
-                            <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-2">Nova AI</h3>
-                            <p className="text-[var(--text-secondary)] text-sm mb-4">
+                            <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white mb-2">Nova AI</h3>
+                            <p className="text-body-sm text-[var(--text-secondary)] mb-4">
                                 Risk analysis & strategy advisor.
                             </p>
-                            <div className="flex items-center gap-2 text-amber-400 font-bold text-xs uppercase tracking-widest group-hover:gap-3 transition-all">
+                            <div className="flex items-center gap-2 text-amber-400 label group-hover:gap-3 transition-all">
                                 Chat Now <ArrowUpRight weight="bold" />
                             </div>
                         </div>
@@ -161,7 +161,7 @@ export default function DashboardPage() {
                 <motion.div
                     whileHover={{ y: -4 }}
                     onClick={() => setIsTierModalOpen(true)}
-                    className="group relative h-full min-h-[280px] p-8 rounded-[2rem] bg-gradient-to-b from-[var(--obsidian-surface)] to-black border border-[var(--border-subtle)] overflow-hidden transition-all duration-500 flex flex-col justify-between cursor-pointer"
+                    className="group relative h-full min-h-[260px] p-6 sm:p-8 rounded-[2rem] bg-gradient-to-b from-[var(--obsidian-surface)] to-black border border-[var(--border-subtle)] overflow-hidden transition-all duration-500 flex flex-col justify-between cursor-pointer md:col-span-2 lg:col-span-1"
                     style={{ borderColor: `color-mix(in srgb, ${tierColor} 20%, transparent)` }}
                 >
                     <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-30 transition-all duration-500">
@@ -181,7 +181,7 @@ export default function DashboardPage() {
                                 <CurrentTierIcon size={24} weight="duotone" />
                             </div>
                             <span
-                                className="px-3 py-1 rounded-lg border text-[10px] font-bold uppercase tracking-widest"
+                                className="px-3 py-1 rounded-lg border label"
                                 style={{
                                     backgroundColor: `color-mix(in srgb, ${tierColor} 10%, transparent)`,
                                     borderColor: `color-mix(in srgb, ${tierColor} 20%, transparent)`,
@@ -192,13 +192,13 @@ export default function DashboardPage() {
                             </span>
                         </div>
 
-                        <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-1">{currentTierName} Tier</h3>
-                        <p className="text-[var(--text-secondary)] text-sm mb-6">
+                        <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white mb-1">{currentTierName} Tier</h3>
+                        <p className="text-body-sm text-[var(--text-secondary)] mb-6">
                             Verified member. Unlock {nextTierName} status at ${nextLevelThreshold.toLocaleString()}.
                         </p>
 
                         <div className="space-y-2">
-                            <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
+                            <div className="flex justify-between label">
                                 <span className="text-[var(--text-secondary)]">Next: {nextTierName}</span>
                                 <span className="text-white">${nextLevelThreshold.toLocaleString()}</span>
                             </div>

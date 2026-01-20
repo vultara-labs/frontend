@@ -154,20 +154,20 @@ function WithdrawContent() {
                                             <ArrowCircleDown size={24} weight="duotone" />
                                         </div>
                                         <div>
-                                            <h1 className="text-2xl font-black uppercase tracking-tight text-white leading-none mb-1">Withdraw</h1>
-                                            <p className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider">Remove Liquidity</p>
+                                            <h1 className="text-3xl font-black uppercase tracking-tight text-white leading-none mb-1">Withdraw</h1>
+                                            <p className="label text-[var(--text-secondary)]">Remove Liquidity</p>
                                         </div>
                                     </div>
                                     <div className="text-right">
-                                        <p className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider mb-1">In Vault</p>
+                                        <p className="label text-[var(--text-secondary)] mb-1">In Vault</p>
                                         <p className="text-xl font-black text-white tracking-tight">{totalBalance.toFixed(4)} ETH</p>
                                     </div>
                                 </div>
 
                                 <div className="mb-8">
                                     <div className="flex justify-between items-center mb-3 px-2">
-                                        <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">Amount (ETH)</span>
-                                        <span className="text-xs font-mono text-[var(--text-tertiary)] hover:text-white cursor-pointer" onClick={handleMax}>
+                                        <span className="label text-[var(--text-secondary)]">Amount (ETH)</span>
+                                        <span className="text-xs font-mono text-[var(--text-tertiary)] hover:text-white cursor-pointer transition-colors" onClick={handleMax}>
                                             Max: {totalBalance.toFixed(4)} ETH
                                         </span>
                                     </div>
@@ -242,7 +242,7 @@ function WithdrawContent() {
                                     <button
                                         onClick={handlePreviewWithdraw}
                                         disabled={!isValidAmount}
-                                        className="w-full h-16 rounded-2xl bg-white text-black font-black text-base uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+                                        className="btn-primary bg-white text-black hover:bg-white/90 disabled:bg-white/40 w-full h-16 text-base tracking-widest shadow-[0_0_20px_rgba(255,255,255,0.15)]"
                                     >
                                         Withdraw (Demo)
                                     </button>
@@ -250,7 +250,7 @@ function WithdrawContent() {
                                     <button
                                         onClick={handleWithdraw}
                                         disabled={!isValidAmount}
-                                        className="w-full h-16 rounded-2xl bg-white text-black font-black text-base uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+                                        className="btn-primary bg-white text-black hover:bg-white/90 disabled:bg-white/40 w-full h-16 text-base tracking-widest shadow-[0_0_20px_rgba(255,255,255,0.15)]"
                                     >
                                         Withdraw Now
                                     </button>

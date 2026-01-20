@@ -174,20 +174,20 @@ function DepositContent() {
                                             <ArrowCircleUp size={24} weight="duotone" />
                                         </div>
                                         <div>
-                                            <h1 className="text-2xl font-black uppercase tracking-tight text-white leading-none mb-1">Deposit</h1>
-                                            <p className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider">Add Liquidity</p>
+                                            <h1 className="text-3xl font-black uppercase tracking-tight text-white leading-none mb-1">Deposit</h1>
+                                            <p className="label text-[var(--text-secondary)]">Add Liquidity</p>
                                         </div>
                                     </div>
                                     <div className="text-right">
-                                        <p className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider mb-1">APY Rate</p>
+                                        <p className="label text-[var(--text-secondary)] mb-1">APY Rate</p>
                                         <p className="text-xl font-black text-[var(--volt)] tracking-tight">{PROTOCOL.APY}%</p>
                                     </div>
                                 </div>
 
                                 <div className="mb-8">
                                     <div className="flex justify-between items-center mb-3 px-2">
-                                        <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">Amount (ETH)</span>
-                                        <span className="text-xs font-mono text-[var(--text-tertiary)] hover:text-white cursor-pointer" onClick={handleMax}>
+                                        <span className="label text-[var(--text-secondary)]">Amount (ETH)</span>
+                                        <span className="text-xs font-mono text-[var(--text-tertiary)] hover:text-white cursor-pointer transition-colors" onClick={handleMax}>
                                             Bal: {walletBalance.toFixed(4)} ETH
                                         </span>
                                     </div>
@@ -294,7 +294,7 @@ function DepositContent() {
                                 <button
                                     onClick={handleContinue}
                                     disabled={!isValidAmount}
-                                    className="w-full h-16 rounded-2xl bg-[var(--volt)] text-black font-black text-base uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(204,255,0,0.15)]"
+                                    className="btn-primary w-full h-16 text-base tracking-widest shadow-[0_0_20px_rgba(204,255,0,0.15)] disabled:opacity-40 disabled:cursor-not-allowed"
                                 >
                                     Continue
                                 </button>
@@ -361,7 +361,7 @@ function DepositContent() {
                                 <div className="grid grid-cols-2 gap-4">
                                     <button
                                         onClick={() => setStep("input")}
-                                        className="h-14 rounded-2xl border border-[var(--border-medium)] text-white font-bold uppercase tracking-widest hover:bg-white/5 transition-all text-xs"
+                                        className="btn-secondary h-14 text-xs"
                                     >
                                         Cancel
                                     </button>
@@ -369,7 +369,7 @@ function DepositContent() {
                                         <button
                                             onClick={handlePreviewDeposit}
                                             disabled={!riskAcknowledged}
-                                            className="h-14 rounded-2xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-40 text-xs"
+                                            className="btn-primary h-14 text-xs disabled:opacity-40"
                                         >
                                             Confirm (Demo)
                                         </button>
@@ -377,7 +377,7 @@ function DepositContent() {
                                         <button
                                             onClick={handleDeposit}
                                             disabled={!riskAcknowledged}
-                                            className="h-14 rounded-2xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-40 text-xs"
+                                            className="btn-primary h-14 text-xs disabled:opacity-40"
                                         >
                                             Confirm
                                         </button>
@@ -408,7 +408,7 @@ function DepositContent() {
                                 </p>
                                 <Link
                                     href="/dashboard"
-                                    className="h-14 px-8 rounded-2xl border border-[var(--border-medium)] text-white font-bold uppercase tracking-widest hover:bg-white/5 transition-all flex items-center justify-center text-xs"
+                                    className="btn-secondary h-14 px-8 w-full flex items-center justify-center text-xs"
                                 >
                                     Return to Dashboard
                                 </Link>

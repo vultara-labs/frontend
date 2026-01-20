@@ -48,29 +48,29 @@ export default function VaultPage() {
                 <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                     <div>
                         <div className="inline-flex items-center gap-2 mb-2">
-                            <div className="px-2 py-0.5 rounded bg-[var(--volt)]/10 border border-[var(--volt)]/20 text-[10px] font-bold text-[var(--volt)] uppercase tracking-widest flex items-center gap-1.5">
+                            <div className="px-2 py-0.5 rounded bg-[var(--volt)]/10 border border-[var(--volt)]/20 label text-[var(--volt)] flex items-center gap-1.5">
                                 <Lightning weight="fill" />
                                 Thetanuts V4 Powered
                             </div>
                             {!loading && (
-                                <div className="px-2 py-0.5 rounded bg-[var(--success)]/10 border border-[var(--success)]/20 text-[10px] font-bold text-[var(--success)] uppercase tracking-widest flex items-center gap-1.5">
+                                <div className="px-2 py-0.5 rounded bg-[var(--success)]/10 border border-[var(--success)]/20 label text-[var(--success)] flex items-center gap-1.5">
                                     <span className="w-1.5 h-1.5 rounded-full bg-[var(--success)] animate-pulse" />
                                     Live Volatility Feed
                                 </div>
                             )}
                         </div>
-                        <h1 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tight">ETH Yield Vault</h1>
-                        <p className="text-[var(--text-secondary)] mt-2 max-w-xl">
+                        <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tight leading-none mb-2">ETH Yield Vault</h1>
+                        <p className="text-body text-[var(--text-secondary)] max-w-xl">
                             Institutional-grade yield via automated Covered Calls on <span className="text-white font-bold">ETH</span>.
                         </p>
                     </div>
                     <div className="text-right">
                         <div className="flex flex-col items-end">
-                            <p className="text-sm font-bold text-[var(--text-tertiary)] uppercase tracking-widest mb-1">Live APY (IV-Adjusted)</p>
+                            <p className="label text-[var(--text-tertiary)] mb-1">Live APY (IV-Adjusted)</p>
                             <div className="flex items-baseline gap-2">
-                                <p className="text-4xl md:text-6xl font-black text-[var(--volt)] tracking-tighter">{loading ? "..." : `${dynamicAPY}%`}</p>
+                                <p className="text-5xl md:text-7xl font-black text-[var(--volt)] tracking-tighter leading-none">{loading ? "..." : `${dynamicAPY}%`}</p>
                                 {!loading && (
-                                    <span className={`text-xs font-bold px-1.5 py-0.5 rounded border ${priceChange >= 0 ? "text-[var(--success)] bg-[var(--success)]/10 border-[var(--success)]/20" : "text-red-400 bg-red-400/10 border-red-400/20"}`}>
+                                    <span className={`label px-1.5 py-0.5 rounded border ${priceChange >= 0 ? "text-[var(--success)] bg-[var(--success)]/10 border-[var(--success)]/20" : "text-red-400 bg-red-400/10 border-red-400/20"}`}>
                                         {priceChange >= 0 ? "+" : ""}{priceChange.toFixed(2)}% Vol
                                     </span>
                                 )}
@@ -203,19 +203,20 @@ export default function VaultPage() {
                         </div>
 
                         {/* User Position (if applicable) */}
+                        {/* User Position (if applicable) */}
                         {hasPosition && (
                             <div className="p-5 rounded-2xl bg-[var(--volt)]/5 border border-[var(--volt)]/20">
-                                <p className="text-[10px] font-bold text-[var(--volt)] uppercase tracking-widest mb-2">Your Position</p>
+                                <p className="label text-[var(--volt)] mb-2">Your Position</p>
                                 <div className="flex justify-between items-baseline">
                                     <p className="text-2xl font-black text-white">{vaultBalanceETH.toFixed(4)} ETH</p>
-                                    <p className="text-sm text-[var(--text-secondary)]">${vaultBalanceUSD.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
+                                    <p className="text-body-sm text-[var(--text-secondary)]">${vaultBalanceUSD.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
                                 </div>
                             </div>
                         )}
 
                         <Link
                             href="/dashboard/deposit"
-                            className="w-full py-4 rounded-xl bg-[var(--volt)] text-black font-bold text-sm uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_0_20px_rgba(204,255,0,0.15)] flex items-center justify-center gap-2"
+                            className="btn-primary w-full h-14 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(204,255,0,0.15)]"
                         >
                             {hasPosition ? "Add More" : "Deposit Now"}
                         </Link>
