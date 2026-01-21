@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Shield, Lightning, Database, ArrowLeft, List, X } from "@phosphor-icons/react";
+import { BookOpen, Shield, Lightning, Database, ArrowLeft, List, X, Blueprint } from "@phosphor-icons/react";
 import { useState } from "react";
 
 const DOCS_NAV = [
@@ -16,6 +16,7 @@ const DOCS_NAV = [
     {
         category: "Protocol",
         items: [
+            { label: "Vault Architecture", href: "/docs/architecture", icon: Blueprint },
             { label: "Yield Mechanics", href: "/docs/yield", icon: Lightning },
             { label: "Security & Risks", href: "/docs/security", icon: Shield },
         ]
