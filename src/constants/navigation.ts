@@ -31,5 +31,4 @@ export const FOOTER_PRODUCT_LINKS = [
 export const FOOTER_ECOSYSTEM_LINKS = [
     { label: 'Base Network', href: 'https://base.org', color: 'blue-400' },
     { label: 'Thetanuts Finance', href: 'https://thetanuts.finance', color: '[#00D9B5]' },
-    { label: 'IDRX Stablecoin', href: 'https://idrx.co', color: 'blue-400' },
 ] as const;

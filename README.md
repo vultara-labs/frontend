@@ -16,7 +16,6 @@ Vultara is a simple DeFi yield platform built on Base. Deposit ETH into our vaul
 ### Key Features
 
 - **ETH Vault** — Deposit ETH and earn competitive APY powered by Thetanuts Finance
-- **IDR Off-Ramp** — Instant withdrawal to Indonesian Bank/E-wallet
 - **Nova AI** — AI-powered assistant for risk analysis & strategy insights
 - **Real-time Dashboard** — Live balance tracking with yield visualization
 - **Protocol Status** — Gamified progress tracking for user engagement

@@ -87,11 +87,6 @@ THETANUTS V4 INTEGRATION:
 AUDIT STATUS:
 - Thetanuts Finance (underlying protocol): Audited by Peckshield, Sherlock
 - Vultara Vault: Currently in Testnet Beta, audits planned for mainnet
-
-FIAT WITHDRAWALS:
-- Vultara doesn't directly handle fiat
-- Users can use licensed Off-Ramp partners (e.g., local exchanges)
-- Keep ETH liquid, withdraw anytime (if not locked in active strategy)
 `;
 
 

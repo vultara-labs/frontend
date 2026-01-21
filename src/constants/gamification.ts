@@ -55,8 +55,8 @@ export const USER_JOURNEY_STEPS = [
     { title: "Passkey Login", desc: "Secure 2-second auth with biometrics. No seed phrase required." },
     { title: "Contract Setup", desc: "One-click smart contract deployment to receive stablecoins." },
     { title: "Salary Deposit", desc: "Employer deposits ETH. Real-time yield accrual begins." },
-    { title: "Auto-Swap", desc: "Seamless conversion to IDRX stablecoin at market-best rates." },
-    { title: "Rupiah Withdrawal", desc: "Lightning-fast transfer to local bank. Cash in minutes." },
+    { title: "Watch It Grow", desc: "Track your earnings in real-time through the dashboard." },
+    { title: "Easy Withdraw", desc: "Withdraw your ETH and yield anytime you need it." },
 ] as const;
 
 export const MISSIONS = [
