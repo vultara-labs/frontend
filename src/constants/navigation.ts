@@ -4,12 +4,14 @@ import {
     Lightning,
     ArrowCircleDown,
     ArrowCircleUp,
+    Calculator,
 } from "@phosphor-icons/react";
 
 export const DASHBOARD_NAV_ITEMS = [
     { label: "Dashboard", href: "/dashboard", icon: SquaresFour },
     { label: "Deposit", href: "/dashboard/deposit", icon: ArrowCircleUp },
     { label: "Vault Strategy", href: "/dashboard/vault", icon: Vault },
+    { label: "Calculator", href: "/dashboard/calculator", icon: Calculator },
     { label: "Withdraw", href: "/dashboard/withdraw", icon: ArrowCircleDown },
     { label: "Nova AI", href: "/dashboard/ai", icon: Lightning },
 ] as const;
