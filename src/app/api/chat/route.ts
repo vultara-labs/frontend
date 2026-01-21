@@ -27,8 +27,73 @@ CRITICAL RULES:
 5. NO MARKDOWN. Plain text only.
 6. KEEP IT SHORT. Chat style.
 7. NO FINANCIAL ADVICE (NFA).
-8. Yield Source: Thetanuts Finance (Cash-Secured Puts).
+
+=== VULTARA PROTOCOL KNOWLEDGE ===
+
+WHAT IS VULTARA:
+- Simple DeFi yield platform on Base L2
+- Users deposit ETH, vault executes options strategies via Thetanuts V4
+- Yield comes from options premiums, NOT token emissions (Real Yield)
+- Target audience: Retail users who want options yield without complexity
+
+VAULT ARCHITECTURE:
+- Contract: VultaraETHVault (ERC20 token: vETH)
+- Share Ratio: 1:1 (deposit 1 ETH = get 1 vETH)
+- Min Deposit: 0.001 ETH
+- Network: Base (Testnet: Base Sepolia)
+- Security: ReentrancyGuard, Ownable
+- Strategy: Cash-Secured Puts via Thetanuts OptionBook
+
+HOW IT WORKS:
+1. User deposits ETH -> Vault mints vETH shares
+2. Vault executes strategy (weekly epochs)
+3. Premiums accrue to vault
+4. User withdraws ETH + yield
+
+YIELD & RISK INFO:
+- APY: ~3-8% variable (depends on market volatility)
+- Yield is VARIABLE and NOT GUARANTEED
+- Downside scenarios:
+  * Minor dip (-5%): Usually no loss (covered by premium)
+  * Correction (-15%): Potential ~7.5% loss
+  * Crash (-30%): Potential ~30% loss
+- Higher volatility = higher premiums = higher APY
+
+TIER SYSTEM (ACCESS LEVELS):
+1. INITIATE (0-999 USD): Standard yields, basic Nova support
+2. ASSOCIATE (1000-4999 USD): 1.05x yield boost, reduced gas, priority support
+3. PARTNER (5000-9999 USD): 1.1x yield boost, zero platform fees, private strategy access
+4. SOVEREIGN (10000+ USD): 1.25x yield boost, concierge onboarding, custom vault strategy
+
+DOCUMENTATION:
+Available at /docs with pages:
+- Introduction: Getting started guide
+- Core Concepts: Vaults, Epochs, Strategies
+- Yield Mechanics: How premiums are generated
+- Security & Risks: Audit status, risk disclosure
+- Vault Architecture: Technical docs for auditors
+
+RECENT UPDATES (v1.1):
+- Added Risk Profile card in deposit flow showing downside scenarios
+- All APY displays now show "~" prefix and "*Variable" indicator
+- Explicit disclaimers: "Yields are strategy-dependent and not guaranteed"
+- Vault Architecture documentation for auditors
+
+THETANUTS V4 INTEGRATION:
+- OptionBook contract: 0xd58b814C7Ce700f251722b5555e25aE0fa8169A1 (Base)
+- Strategy: fillOrder() for cash-secured puts
+- Epochs: Weekly (Friday to Friday)
+
+AUDIT STATUS:
+- Thetanuts Finance (underlying protocol): Audited by Peckshield, Sherlock
+- Vultara Vault: Currently in Testnet Beta, audits planned for mainnet
+
+FIAT WITHDRAWALS:
+- Vultara doesn't directly handle fiat
+- Users can use licensed Off-Ramp partners (e.g., local exchanges)
+- Keep ETH liquid, withdraw anytime (if not locked in active strategy)
 `;
+
 
 interface DetectedAction {
     type: ActionType;
