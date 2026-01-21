@@ -1,14 +1,14 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowCircleUp, CheckCircle, CircleNotch, Info, Warning, TrendUp, ArrowUpRight, ArrowCircleDown, ArrowsLeftRight, Wallet } from "@phosphor-icons/react";
+import { ArrowCircleUp, CheckCircle, CircleNotch, Info, Warning, TrendUp, ArrowUpRight, ArrowCircleDown, ArrowsLeftRight, Wallet, ChartLineDown, ShieldWarning } from "@phosphor-icons/react";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useChainId, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { toast } from "sonner";
 import confetti from "canvas-confetti";
 import Link from "next/link";
-import { PROTOCOL, YIELD, VULTARA_ETH_VAULT_ABI, DEMO_DATA } from "@/constants";
+import { PROTOCOL, YIELD, RISK, VULTARA_ETH_VAULT_ABI, DEMO_DATA } from "@/constants";
 import { useWalletConnection, useDashboardData } from "@/hooks";
 import { formatUnits, parseEther } from "viem";
 
@@ -86,6 +86,7 @@ function DepositContent() {
     const isValidAmount = numAmount >= 0.001 && !isOverMaxDepositable;
     const needsGasWarning = isOverMaxDepositable && !isOverBalance;
     const monthlyYield = YIELD.calculateMonthly(numAmount * ethPrice); // Use live or demo ETH price for yield calc
+    const depositValueUSD = numAmount * ethPrice;
 
     const handleContinue = () => {
         if (!isValidAmount) return;
@@ -289,6 +290,63 @@ function DepositContent() {
                                             </a>
                                         </motion.div>
                                     )}
+
+                                    {/* Risk Indicator Card - Balanced: Premium + Informative */}
+                                    {numAmount >= 0.001 && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            className="mt-6 p-5 rounded-2xl bg-white/[0.03] backdrop-blur-sm border border-white/[0.1]"
+                                        >
+                                            {/* Header */}
+                                            <div className="flex items-center justify-between mb-4">
+                                                <div className="flex items-center gap-2">
+                                                    <ShieldWarning size={16} weight="duotone" className="text-[var(--text-secondary)]" />
+                                                    <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">Risk Profile</span>
+                                                </div>
+                                            </div>
+
+                                            {/* Yield Expectation */}
+                                            <div className="flex items-center justify-between p-3 rounded-xl bg-[var(--volt)]/5 border border-[var(--volt)]/20 mb-4">
+                                                <span className="text-xs text-[var(--text-secondary)]">Expected Yield</span>
+                                                <span className="text-sm font-bold text-[var(--volt)]">+${(depositValueUSD * 0.03 / 12).toFixed(0)} to +${(depositValueUSD * 0.08 / 12).toFixed(0)} / month</span>
+                                            </div>
+
+                                            {/* Downside Scenarios - Informative Vertical Layout */}
+                                            <div className="space-y-2">
+                                                <p className="text-[10px] text-[var(--text-tertiary)] uppercase tracking-wide">If ETH Price Drops:</p>
+                                                {RISK.DOWNSIDE_SCENARIOS.map((scenario) => {
+                                                    const potentialLoss = RISK.calculateDownsideLoss(depositValueUSD, scenario.dropPercent);
+                                                    const isNoLoss = scenario.lossPercent === 0;
+                                                    return (
+                                                        <div
+                                                            key={scenario.dropPercent}
+                                                            className={`flex items-center justify-between p-2.5 rounded-lg border ${isNoLoss
+                                                                    ? 'bg-[var(--success)]/5 border-[var(--success)]/20'
+                                                                    : 'bg-white/[0.02] border-white/[0.06]'
+                                                                }`}
+                                                        >
+                                                            <div className="flex items-center gap-2">
+                                                                <ChartLineDown size={14} className={isNoLoss ? 'text-[var(--success)]' : 'text-[var(--error)]'} />
+                                                                <div>
+                                                                    <span className="text-xs font-bold text-white">{scenario.label}</span>
+                                                                    <span className="text-xs text-[var(--text-tertiary)] ml-1.5">(-{scenario.dropPercent}%)</span>
+                                                                </div>
+                                                            </div>
+                                                            <span className={`text-xs font-bold ${isNoLoss ? 'text-[var(--success)]' : 'text-[var(--error)]'}`}>
+                                                                {isNoLoss ? '✓ No loss' : `-$${potentialLoss.toFixed(0)}`}
+                                                            </span>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+
+                                            {/* Subtle Disclaimer */}
+                                            <p className="mt-3 text-[9px] text-[var(--text-tertiary)] italic">
+                                                Yields are variable and not guaranteed. Past performance ≠ future results.
+                                            </p>
+                                        </motion.div>
+                                    )}
                                 </div>
 
                                 <button
@@ -324,26 +382,35 @@ function DepositContent() {
                                     </div>
                                 </div>
 
-                                {/* Risk Disclosure Box */}
-                                <div className="p-4 rounded-xl bg-[var(--warning)]/5 border border-[var(--warning)]/20 mb-4">
-                                    <div className="flex items-center gap-2 mb-3">
-                                        <Warning size={16} weight="bold" className="text-[var(--warning)]" />
-                                        <span className="text-xs font-bold uppercase tracking-wider text-[var(--warning)]">Important Risk Information</span>
+                                {/* Risk Disclosure - Matching Glassmorphism Style */}
+                                <div className="p-4 rounded-2xl bg-white/[0.02] backdrop-blur-sm border border-white/[0.08] mb-4">
+                                    <div className="flex items-center justify-between mb-3">
+                                        <div className="flex items-center gap-2">
+                                            <Info size={14} weight="bold" className="text-[var(--text-tertiary)]" />
+                                            <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-tertiary)]">Risk Summary</span>
+                                        </div>
                                     </div>
-                                    <ul className="space-y-2 text-xs text-[var(--text-secondary)] leading-relaxed">
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-[var(--warning)] mt-0.5">•</span>
-                                            <span><strong className="text-white">Yields are variable</strong> — APY fluctuates based on market volatility and is not guaranteed.</span>
-                                        </li>
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-[var(--warning)] mt-0.5">•</span>
-                                            <span><strong className="text-white">Smart contract risk</strong> — Funds are held in non-custodial contracts. While audited, no code is 100% bug-free.</span>
-                                        </li>
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-[var(--warning)] mt-0.5">•</span>
-                                            <span><strong className="text-white">Downside scenario</strong> — If ETH price drops significantly during an epoch, the vault may realize losses.</span>
-                                        </li>
-                                    </ul>
+
+                                    {/* Worst Case Scenario Highlight */}
+                                    <div className="p-3 rounded-xl bg-[var(--error)]/5 border border-[var(--error)]/20 mb-3">
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-2">
+                                                <ChartLineDown size={14} className="text-[var(--error)]" />
+                                                <span className="text-xs text-[var(--text-secondary)]">Worst case (-30% ETH)</span>
+                                            </div>
+                                            <span className="text-sm font-bold text-[var(--error)]">-${RISK.calculateDownsideLoss(depositValueUSD, 30).toFixed(0)}</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Compact Disclaimers */}
+                                    <div className="space-y-1.5">
+                                        {RISK.DISCLAIMERS.slice(0, 2).map((disclaimer, idx) => (
+                                            <p key={idx} className="text-[10px] text-[var(--text-tertiary)] flex items-start gap-1.5">
+                                                <span className="text-[var(--text-tertiary)]">•</span>
+                                                <span>{disclaimer}</span>
+                                            </p>
+                                        ))}
+                                    </div>
                                 </div>
 
                                 <label className="flex items-start gap-3 p-4 rounded-xl border border-[var(--border-subtle)] cursor-pointer mb-6 hover:bg-white/[0.02] transition-colors">

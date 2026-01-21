@@ -70,3 +70,32 @@ export const YIELD = {
     calculateYearly: (amount: number, apy: number = PROTOCOL.APY) =>
         (amount * (apy / 100)),
 } as const;
+
+// Risk visibility constants for explicit downside scenarios
+export const RISK = {
+    // Volatility-based yield ranges
+    VOLATILITY_BANDS: {
+        LOW: { label: 'Low Volatility', apyMin: 3, apyMax: 5, description: 'Stable market conditions' },
+        NORMAL: { label: 'Normal', apyMin: 4, apyMax: 8, description: 'Average market volatility' },
+        HIGH: { label: 'High Volatility', apyMin: 6, apyMax: 15, description: 'Volatile market, higher premiums' },
+    },
+    // Downside scenarios for put options (ETH price drop -> potential loss %)
+    DOWNSIDE_SCENARIOS: [
+        { dropPercent: 5, lossPercent: 0, label: 'Minor Dip', description: 'Options expire OTM, no loss' },
+        { dropPercent: 15, lossPercent: 5, label: 'Correction', description: 'Options near ATM, partial loss' },
+        { dropPercent: 30, lossPercent: 20, label: 'Crash', description: 'Deep ITM, significant loss' },
+    ],
+    // Calculate potential loss in USD
+    calculateDownsideLoss: (depositUSD: number, dropPercent: number): number => {
+        const scenario = RISK.DOWNSIDE_SCENARIOS.find(s => s.dropPercent === dropPercent);
+        if (!scenario) return 0;
+        return depositUSD * (scenario.lossPercent / 100);
+    },
+    // Risk disclaimers
+    DISCLAIMERS: [
+        'Yields are variable and depend on market volatility — not guaranteed.',
+        'Smart contract risk exists. While Thetanuts is audited, no code is 100% bug-free.',
+        'If ETH price drops significantly during an epoch, the vault may realize losses.',
+        'Never deposit more than you can afford to lose.',
+    ],
+} as const;
