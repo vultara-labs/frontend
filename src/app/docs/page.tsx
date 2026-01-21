@@ -1,45 +1,30 @@
 "use client";
 
-import { ArrowRight, Info, CheckCircle } from "@phosphor-icons/react";
+import { Info, CheckCircle, ArrowRight } from "@phosphor-icons/react";
 import Link from "next/link";
+import { DocsPageWrapper, DocsHeader, DocsContent, DocsInfoBox } from "@/components/docs";
 
 export default function DocsIntroductionPage() {
     return (
-        <div className="space-y-12 animate-[fadeIn_0.5s_ease-out]">
-            {/* Header */}
-            <div className="border-b border-[var(--border-subtle)] pb-6 sm:pb-8">
-                <p className="text-[var(--volt)] font-bold uppercase tracking-widest text-xs mb-3">
-                    Getting Started
-                </p>
-                <h1 className="text-2xl sm:text-3xl lg:text-5xl font-black text-white tracking-tight mb-4 sm:mb-6">
-                    Introduction to Vultara
-                </h1>
-                <p className="text-base sm:text-lg lg:text-xl text-[var(--text-secondary)] leading-relaxed max-w-2xl">
-                    Vultara is the simplest way to earn real, sustainable yield on your ETH through institutional-grade options strategies on Base.
-                </p>
-            </div>
+        <DocsPageWrapper>
+            <DocsHeader
+                category="Getting Started"
+                title="Introduction to Vultara"
+                subtitle="Vultara is the simplest way to earn real, sustainable yield on your ETH through institutional-grade options strategies on Base."
+            />
 
-            {/* Content Body */}
-            <div className="space-y-8 text-[var(--text-secondary)]">
+            <DocsContent>
                 <p className="leading-relaxed">
                     Traditional DeFi yield farming is broken. It's often complicated, risky, and reliant on inflationary token emissions (Ponzi-nomics).
                     Vultara changes this by identifying a clear, sustainable source of yield: <strong>Options Premiums</strong>.
                 </p>
 
-                <div className="glass-panel p-6 rounded-xl border border-[var(--volt)]/20 bg-[var(--volt)]/5 relative overflow-hidden">
-                    <div className="flex gap-4">
-                        <Info className="flex-shrink-0 text-[var(--volt)]" size={24} />
-                        <div className="space-y-2">
-                            <h3 className="text-white font-bold text-lg">Why Vultara?</h3>
-                            <p className="text-sm leading-relaxed text-[var(--text-primary)]/80">
-                                We abstract away the complexity of managing options vaults. You don't need to understand "Delta", "Theta", or "Strike Prices".
-                                You simply deposit ETH, and our protocol (powered by Thetanuts) automates the strategy for you.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <DocsInfoBox icon={Info} title="Why Vultara?">
+                    We abstract away the complexity of managing options vaults. You don't need to understand "Delta", "Theta", or "Strike Prices".
+                    You simply deposit ETH, and our protocol (powered by Thetanuts) automates the strategy for you.
+                </DocsInfoBox>
 
-                <div className="pt-8">
+                <div className="pt-4">
                     <h2 className="text-2xl font-bold text-white mb-6">Key Features</h2>
                     <ul className="space-y-4">
                         {[
@@ -56,7 +41,7 @@ export default function DocsIntroductionPage() {
                     </ul>
                 </div>
 
-                <div className="pt-8 w-full">
+                <div className="pt-4 w-full">
                     <h2 className="text-2xl font-bold text-white mb-6">Next Steps</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <Link href="/docs/concepts" className="group p-6 rounded-xl border border-[var(--border-subtle)] bg-[var(--obsidian-surface)] hover:border-[var(--volt)]/50 transition-all">
@@ -69,7 +54,7 @@ export default function DocsIntroductionPage() {
                         </Link>
                     </div>
                 </div>
-            </div>
-        </div>
+            </DocsContent>
+        </DocsPageWrapper>
     );
 }

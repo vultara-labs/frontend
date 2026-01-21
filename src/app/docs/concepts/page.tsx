@@ -2,62 +2,40 @@
 
 import { Cube, ArrowsClockwise, ChartBar, ArrowRight } from "@phosphor-icons/react";
 import Link from "next/link";
+import { DocsPageWrapper, DocsHeader, DocsContent, DocsSection, DocsCard } from "@/components/docs";
 
 export default function CoreConceptsPage() {
     return (
-        <div className="space-y-12 animate-[fadeIn_0.5s_ease-out]">
-            {/* Header */}
-            <div className="border-b border-[var(--border-subtle)] pb-8">
-                <p className="text-[var(--volt)] font-bold uppercase tracking-widest text-xs mb-3">
-                    Getting Started
-                </p>
-                <h1 className="text-4xl lg:text-5xl font-black text-white tracking-tight mb-6">
-                    Core Concepts
-                </h1>
-                <p className="text-xl text-[var(--text-secondary)] leading-relaxed max-w-2xl">
-                    Understand the fundamental building blocks of Vultara: Vaults, Strategies, and Epochs.
-                </p>
-            </div>
+        <DocsPageWrapper>
+            <DocsHeader
+                category="Getting Started"
+                title="Core Concepts"
+                subtitle="Understand the fundamental building blocks of Vultara: Vaults, Strategies, and Epochs."
+            />
 
-            {/* Content Body */}
-            <div className="space-y-16 text-[var(--text-secondary)]">
-
+            <DocsContent>
                 {/* Section 1: The Vault */}
-                <section className="space-y-6">
-                    <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-[var(--volt)]/10 flex items-center justify-center text-[var(--volt)]">
-                            <Cube size={24} weight="duotone" />
-                        </div>
-                        <h2 className="text-2xl font-bold text-white">The Vault</h2>
-                    </div>
-                    <p className="leading-relaxed text-[var(--text-body-lg)]">
+                <DocsSection icon={Cube} title="The Vault">
+                    <p className="leading-relaxed">
                         In Vultara, a <strong>Vault</strong> is a smart contract where you deposit your ETH. Think of it as a communal savings pot.
                         Instead of your money sitting idle, the Vault puts it to work automatically.
                     </p>
-                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <li className="p-4 bg-[var(--obsidian-surface)] rounded-xl border border-[var(--border-subtle)]">
-                            <strong className="text-white block mb-2">Pooled Liquidity</strong>
-                            <span className="text-sm">Your ETH is combined with others to execute larger, institutional-grade strategies.</span>
-                        </li>
-                        <li className="p-4 bg-[var(--obsidian-surface)] rounded-xl border border-[var(--border-subtle)]">
-                            <strong className="text-white block mb-2">Auto-Compounding</strong>
-                            <span className="text-sm">Yield earned is automatically added back to your balance, accelerating growth over time.</span>
-                        </li>
+                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <DocsCard title="Pooled Liquidity">
+                            Your ETH is combined with others to execute larger, institutional-grade strategies.
+                        </DocsCard>
+                        <DocsCard title="Auto-Compounding">
+                            Yield earned is automatically added back to your balance, accelerating growth over time.
+                        </DocsCard>
                     </ul>
-                </section>
+                </DocsSection>
 
                 {/* Section 2: Epochs */}
-                <section className="space-y-6">
-                    <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400">
-                            <ArrowsClockwise size={24} weight="duotone" />
-                        </div>
-                        <h2 className="text-2xl font-bold text-white">Epochs (Weekly Cycles)</h2>
-                    </div>
-                    <p className="leading-relaxed text-[var(--text-body-lg)]">
+                <DocsSection icon={ArrowsClockwise} iconColor="#3b82f6" title="Epochs (Weekly Cycles)">
+                    <p className="leading-relaxed">
                         Vultara operates on <strong>Weekly Epochs</strong>. This is the duration of one options strategy round.
                     </p>
-                    <div className="glass-panel p-6 rounded-xl border border-[var(--border-subtle)] relative overflow-hidden">
+                    <div className="glass-panel p-6 rounded-xl border border-[var(--border-subtle)] relative overflow-hidden mt-4">
                         <div className="relative z-10 space-y-4">
                             <div className="flex flex-col md:flex-row gap-6">
                                 <div className="flex-1">
@@ -77,17 +55,11 @@ export default function CoreConceptsPage() {
                             </div>
                         </div>
                     </div>
-                </section>
+                </DocsSection>
 
                 {/* Section 3: The Strategy */}
-                <section className="space-y-6">
-                    <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400">
-                            <ChartBar size={24} weight="duotone" />
-                        </div>
-                        <h2 className="text-2xl font-bold text-white">The Strategy</h2>
-                    </div>
-                    <p className="leading-relaxed text-[var(--text-body-lg)]">
+                <DocsSection icon={ChartBar} iconColor="#a855f7" title="The Strategy">
+                    <p className="leading-relaxed">
                         Vultara primarily utilizes <strong>covered options strategies</strong> (facilitated by Thetanuts Finance) to generate yield.
                         We sell "volatility" to market makers who pay a premium for it.
                     </p>
@@ -96,8 +68,8 @@ export default function CoreConceptsPage() {
                             Deep dive into Yield Mechanics <ArrowRight size={16} />
                         </Link>
                     </div>
-                </section>
-            </div>
-        </div>
+                </DocsSection>
+            </DocsContent>
+        </DocsPageWrapper>
     );
 }
