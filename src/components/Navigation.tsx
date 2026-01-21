@@ -16,9 +16,9 @@ export default function Navigation() {
             transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
             className="fixed top-0 left-0 right-0 z-50 border-b border-[var(--border-subtle)] bg-[var(--obsidian-base)]/80 backdrop-blur-xl"
         >
-            <div className="mx-auto max-w-[1280px] px-4 sm:px-6 h-20 sm:h-24 flex items-center justify-between">
+            <div className="mx-auto max-w-[1280px] px-4 sm:px-6 h-16 sm:h-[72px] flex items-center justify-between">
                 <Link href="/" className="flex items-center gap-3 group">
-                    <img src="/logo-dark.png" alt="Vultara" className="h-10 w-auto" />
+                    <img src="/logo-dark.png" alt="Vultara" className="h-8 w-auto" />
                 </Link>
 
                 <nav className="hidden md:flex items-center gap-8">

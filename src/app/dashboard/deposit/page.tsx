@@ -11,6 +11,7 @@ import Link from "next/link";
 import { PROTOCOL, YIELD, RISK, VULTARA_ETH_VAULT_ABI, DEMO_DATA } from "@/constants";
 import { useWalletConnection, useDashboardData } from "@/hooks";
 import { formatUnits, parseEther } from "viem";
+import { TransactionFeedback } from "@/components/ui";
 
 function DepositLoading() {
     return (

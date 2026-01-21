@@ -1,3 +1,7 @@
+// UI Components barrel export
 export { EmptyState, Skeleton, CardSkeleton, ActivitySkeleton, ErrorState } from './States';
 export { ToastProvider, useToast } from './Toast';
-export { YieldCalculator } from './YieldCalculator';
+export { SkeletonCard, SkeletonText, SkeletonBalance, SkeletonChart, DashboardSkeleton } from "./Skeleton";
+export { TransactionFeedback, useTransactionStatus } from "./TransactionFeedback";
+export { YieldCalculator } from "./YieldCalculator";
+export { ErrorBoundary, withErrorBoundary } from "./ErrorBoundary";
