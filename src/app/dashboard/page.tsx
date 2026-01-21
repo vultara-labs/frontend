@@ -8,6 +8,7 @@ import { PROTOCOL, ACCESS_LEVELS } from "@/constants";
 import { Counter } from "@/components/landing/Counter";
 import { MissionsWidget } from "@/components/dashboard/MissionsWidget";
 import { TierDetailsModal } from "@/components/dashboard/TierDetailsModal";
+import { VaultEmptyState, SkeletonBalance } from "@/components/ui";
 import { useDashboardData } from "@/hooks";
 
 export default function DashboardPage() {
@@ -65,47 +66,64 @@ export default function DashboardPage() {
                 </div>
             </header>
 
-            {/* Main Stats Hero */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden bg-[var(--obsidian-surface)] border border-[var(--border-medium)] p-6 sm:p-10 lg:p-12 mb-6 sm:mb-8 group"
-            >
-                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--volt)]/5 blur-[120px] rounded-full pointer-events-none group-hover:bg-[var(--volt)]/10 transition-colors duration-700" />
+            {/* Main Stats Hero - Show Empty State for First-Time Users */}
+            {vaultBalance === 0 ? (
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden bg-[var(--obsidian-surface)] border border-[var(--border-medium)] mb-6 sm:mb-8"
+                >
+                    <VaultEmptyState />
+                </motion.div>
+            ) : (
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden bg-[var(--obsidian-surface)] border border-[var(--border-medium)] p-6 sm:p-10 lg:p-12 mb-6 sm:mb-8 group"
+                >
+                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--volt)]/5 blur-[120px] rounded-full pointer-events-none group-hover:bg-[var(--volt)]/10 transition-colors duration-700" />
 
-                <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8 items-end">
-                    <div className="lg:col-span-2">
-                        <div className="flex items-center gap-2 mb-4">
-                            <Vault size={20} className="text-[var(--volt)]" weight="duotone" />
-                            <span className="label text-[var(--text-secondary)]">Vault Balance</span>
-                        </div>
-                        <h2 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-2 leading-none">
-                            {vaultBalance.toFixed(4)}
-                            <span className="text-2xl sm:text-3xl lg:text-4xl text-[var(--text-tertiary)] ml-2">ETH</span>
-                        </h2>
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-                            <span className="text-lg sm:text-xl text-[var(--text-secondary)] font-medium">≈ ${totalBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>
-                            <div className="flex items-center gap-2">
-                                <div className="px-2 sm:px-3 py-1 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/20 flex items-center gap-1.5 w-fit">
-                                    <TrendUp size={12} className="text-[var(--success)]" weight="bold" />
-                                    <span className="text-[10px] sm:text-xs font-bold text-[var(--success)]">~{loading ? "..." : currentAPY}% APY</span>
-                                </div>
-                                <span className="text-[10px] text-[var(--text-tertiary)] italic label lowercase">*Variable</span>
+                    <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8 items-end">
+                        <div className="lg:col-span-2">
+                            <div className="flex items-center gap-2 mb-4">
+                                <Vault size={20} className="text-[var(--volt)]" weight="duotone" />
+                                <span className="label text-[var(--text-secondary)]">Vault Balance</span>
                             </div>
+                            {loading ? (
+                                <SkeletonBalance />
+                            ) : (
+                                <>
+                                    <h2 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-2 leading-none">
+                                        {vaultBalance.toFixed(4)}
+                                        <span className="text-2xl sm:text-3xl lg:text-4xl text-[var(--text-tertiary)] ml-2">ETH</span>
+                                    </h2>
+                                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+                                        <span className="text-lg sm:text-xl text-[var(--text-secondary)] font-medium">≈ ${totalBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>
+                                        <div className="flex items-center gap-2">
+                                            <div className="px-2 sm:px-3 py-1 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/20 flex items-center gap-1.5 w-fit">
+                                                <TrendUp size={12} className="text-[var(--success)]" weight="bold" />
+                                                <span className="text-[10px] sm:text-xs font-bold text-[var(--success)]">~{currentAPY}% APY</span>
+                                            </div>
+                                            <span className="text-[10px] text-[var(--text-tertiary)] italic label lowercase">*Variable</span>
+                                        </div>
+                                    </div>
+                                    <p className="text-[9px] text-[var(--text-tertiary)] mt-1 italic">Yields are strategy-dependent and not guaranteed.</p>
+                                </>
+                            )}
                         </div>
-                        <p className="text-[9px] text-[var(--text-tertiary)] mt-1 italic">Yields are strategy-dependent and not guaranteed.</p>
-                    </div>
 
-                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full lg:w-auto">
-                        <Link href="/dashboard/deposit" className="btn-primary h-12 sm:h-14 px-8 flex items-center justify-center gap-2 w-full sm:w-auto">
-                            Deposit
-                        </Link>
-                        <Link href="/dashboard/withdraw" className="btn-secondary h-12 sm:h-14 px-8 flex items-center justify-center gap-2 w-full sm:w-auto">
-                            Withdraw
-                        </Link>
+                        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full lg:w-auto">
+                            <Link href="/dashboard/deposit" className="btn-primary h-12 sm:h-14 px-8 flex items-center justify-center gap-2 w-full sm:w-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--volt)] focus-visible:outline-offset-2">
+                                Deposit
+                            </Link>
+                            <Link href="/dashboard/withdraw" className="btn-secondary h-12 sm:h-14 px-8 flex items-center justify-center gap-2 w-full sm:w-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2">
+                                Withdraw
+                            </Link>
+                        </div>
                     </div>
-                </div>
-            </motion.div>
+                </motion.div>
+            )}
+
 
             {/* Feature Grid - Vault, AI, Tier */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">

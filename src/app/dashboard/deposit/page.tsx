@@ -200,14 +200,15 @@ function DepositContent() {
                                         <motion.div
                                             animate={isOverBalance ? { x: [0, -4, 4, -4, 4, 0] } : {}}
                                             transition={{ duration: 0.4 }}
-                                            className={`relative flex items-center gap-2 p-6 rounded-2xl bg-[var(--obsidian-base)] border transition-colors ${isOverBalance
+                                            className={`relative flex items-center gap-3 p-5 sm:p-6 rounded-2xl bg-[var(--obsidian-base)] border transition-colors ${isOverBalance
                                                 ? "border-[var(--error)] bg-[var(--error)]/5"
                                                 : "border-[var(--border-medium)] group-focus-within/input:border-[var(--volt)]"
                                                 }`}
                                         >
-                                            <span className={`text-3xl ${isOverBalance ? "text-[var(--error)]" : "text-[var(--text-tertiary)]"}`}>Ξ</span>
+                                            <span className={`text-2xl sm:text-3xl ${isOverBalance ? "text-[var(--error)]" : "text-[var(--text-tertiary)]"}`}>Ξ</span>
                                             <input
                                                 type="text"
+                                                inputMode="decimal"
                                                 value={amount}
                                                 onChange={(e) => {
                                                     const val = e.target.value.replace(/,/g, '');
@@ -217,15 +218,15 @@ function DepositContent() {
                                                     }
                                                 }}
                                                 placeholder="0"
-                                                className={`w-full bg-transparent text-4xl font-black placeholder:text-white/10 outline-none ${isOverBalance ? "text-[var(--error)]" : "text-white"
+                                                className={`w-full bg-transparent text-3xl sm:text-4xl font-black placeholder:text-white/10 outline-none focus-visible:ring-0 ${isOverBalance ? "text-[var(--error)]" : "text-white"
                                                     }`}
                                                 autoFocus
                                             />
                                             <button
                                                 onClick={() => setAmount(maxDepositable.toFixed(4))}
-                                                className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors uppercase tracking-wider ${isOverBalance
-                                                    ? "bg-[var(--error)]/10 text-[var(--error)] hover:bg-[var(--error)] hover:text-white"
-                                                    : "bg-[var(--volt)]/10 text-[var(--volt)] hover:bg-[var(--volt)] hover:text-black"
+                                                className={`min-h-[44px] min-w-[60px] px-4 py-2.5 rounded-xl text-xs font-bold transition-colors uppercase tracking-wider active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${isOverBalance
+                                                    ? "bg-[var(--error)]/10 text-[var(--error)] hover:bg-[var(--error)] hover:text-white focus-visible:outline-[var(--error)]"
+                                                    : "bg-[var(--volt)]/10 text-[var(--volt)] hover:bg-[var(--volt)] hover:text-black focus-visible:outline-[var(--volt)]"
                                                     }`}
                                             >
                                                 Max
@@ -354,7 +355,7 @@ function DepositContent() {
                                 <button
                                     onClick={handleContinue}
                                     disabled={!isValidAmount}
-                                    className="btn-primary w-full h-16 text-base tracking-widest shadow-[0_0_20px_rgba(204,255,0,0.15)] disabled:opacity-40 disabled:cursor-not-allowed"
+                                    className="btn-primary w-full h-14 sm:h-16 text-sm sm:text-base tracking-widest shadow-[0_0_20px_rgba(204,255,0,0.15)] disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--volt)] focus-visible:outline-offset-2"
                                 >
                                     Continue
                                 </button>
@@ -427,10 +428,10 @@ function DepositContent() {
                                     </span>
                                 </label>
 
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid grid-cols-2 gap-3 sm:gap-4">
                                     <button
                                         onClick={() => setStep("input")}
-                                        className="btn-secondary h-14 text-xs"
+                                        className="btn-secondary h-12 sm:h-14 text-xs active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2"
                                     >
                                         Cancel
                                     </button>
@@ -438,7 +439,7 @@ function DepositContent() {
                                         <button
                                             onClick={handlePreviewDeposit}
                                             disabled={!riskAcknowledged}
-                                            className="btn-primary h-14 text-xs disabled:opacity-40"
+                                            className="btn-primary h-12 sm:h-14 text-xs disabled:opacity-40 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--volt)] focus-visible:outline-offset-2"
                                         >
                                             Confirm (Demo)
                                         </button>
@@ -446,7 +447,7 @@ function DepositContent() {
                                         <button
                                             onClick={handleDeposit}
                                             disabled={!riskAcknowledged}
-                                            className="btn-primary h-14 text-xs disabled:opacity-40"
+                                            className="btn-primary h-12 sm:h-14 text-xs disabled:opacity-40 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--volt)] focus-visible:outline-offset-2"
                                         >
                                             Confirm
                                         </button>

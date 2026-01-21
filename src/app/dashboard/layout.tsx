@@ -213,14 +213,48 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     </div>
                 </div>
 
-                <nav className="flex-1 space-y-2">
-                    {DASHBOARD_NAV_ITEMS.map((item) => {
+                <nav className="flex-1 space-y-1">
+                    {/* Core Section */}
+                    {DASHBOARD_NAV_ITEMS.filter(item => item.group === "core").map((item) => {
                         const isActive = pathname === item.href;
                         return (
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className={`group relative flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all duration-300 ${isActive ? "scale-[1.02]" : "hover:bg-white/[0.05]"}`}
+                                className={`group relative flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--volt)] ${isActive ? "scale-[1.02]" : "hover:bg-white/[0.05]"}`}
+                            >
+                                {isActive && (
+                                    <motion.div
+                                        layoutId="sidebar-nav-bg"
+                                        className="absolute inset-0 bg-[var(--volt)] rounded-2xl shadow-[0_0_20px_rgba(204,255,0,0.2)]"
+                                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                                    />
+                                )}
+
+                                <span className={`relative z-10 flex items-center gap-3 ${isActive ? "text-black" : "text-[var(--text-secondary)] group-hover:text-white"}`}>
+                                    <item.icon size={20} weight={isActive ? "fill" : "regular"} className={`transition-colors ${isActive ? "text-black" : "group-hover:text-white"}`} />
+                                    <span className={`text-sm tracking-wide ${isActive ? "font-bold" : "font-medium"}`}>{item.label}</span>
+                                </span>
+                            </Link>
+                        );
+                    })}
+
+                    {/* Tools Section Divider */}
+                    <div className="pt-4 pb-2 px-4">
+                        <div className="flex items-center gap-3">
+                            <span className="text-[9px] font-bold text-[var(--text-tertiary)] uppercase tracking-widest">Tools</span>
+                            <div className="flex-1 h-px bg-[var(--border-subtle)]" />
+                        </div>
+                    </div>
+
+                    {/* Tools Section */}
+                    {DASHBOARD_NAV_ITEMS.filter(item => item.group === "tools").map((item) => {
+                        const isActive = pathname === item.href;
+                        return (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                className={`group relative flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--volt)] ${isActive ? "scale-[1.02]" : "hover:bg-white/[0.05]"}`}
                             >
                                 {isActive && (
                                     <motion.div

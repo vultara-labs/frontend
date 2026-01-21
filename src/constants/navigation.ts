@@ -7,13 +7,16 @@ import {
     Calculator,
 } from "@phosphor-icons/react";
 
+// Dashboard nav items with section grouping for visual hierarchy
 export const DASHBOARD_NAV_ITEMS = [
-    { label: "Dashboard", href: "/dashboard", icon: SquaresFour },
-    { label: "Deposit", href: "/dashboard/deposit", icon: ArrowCircleUp },
-    { label: "Vault Strategy", href: "/dashboard/vault", icon: Vault },
-    { label: "Calculator", href: "/dashboard/calculator", icon: Calculator },
-    { label: "Withdraw", href: "/dashboard/withdraw", icon: ArrowCircleDown },
-    { label: "Nova AI", href: "/dashboard/ai", icon: Lightning },
+    // Core
+    { label: "Dashboard", href: "/dashboard", icon: SquaresFour, group: "core" },
+    { label: "Deposit", href: "/dashboard/deposit", icon: ArrowCircleUp, group: "core" },
+    { label: "Vault Strategy", href: "/dashboard/vault", icon: Vault, group: "core" },
+    { label: "Withdraw", href: "/dashboard/withdraw", icon: ArrowCircleDown, group: "core" },
+    // Tools
+    { label: "Calculator", href: "/dashboard/calculator", icon: Calculator, group: "tools" },
+    { label: "Nova AI", href: "/dashboard/ai", icon: Lightning, group: "tools" },
 ] as const;
 
 export const LANDING_NAV_ITEMS = [
