@@ -180,8 +180,9 @@ function DepositContent() {
                                         </div>
                                     </div>
                                     <div className="text-right">
-                                        <p className="label text-[var(--text-secondary)] mb-1">APY Rate</p>
-                                        <p className="text-xl font-black text-[var(--volt)] tracking-tight">{PROTOCOL.APY}%</p>
+                                        <p className="label text-[var(--text-secondary)] mb-0.5">Est. APY</p>
+                                        <p className="text-xl font-black text-[var(--volt)] tracking-tight">~{PROTOCOL.APY}%</p>
+                                        <p className="text-[8px] text-[var(--text-tertiary)] italic">*Variable</p>
                                     </div>
                                 </div>
 
@@ -322,8 +323,8 @@ function DepositContent() {
                                                         <div
                                                             key={scenario.dropPercent}
                                                             className={`flex items-center justify-between p-2.5 rounded-lg border ${isNoLoss
-                                                                    ? 'bg-[var(--success)]/5 border-[var(--success)]/20'
-                                                                    : 'bg-white/[0.02] border-white/[0.06]'
+                                                                ? 'bg-[var(--success)]/5 border-[var(--success)]/20'
+                                                                : 'bg-white/[0.02] border-white/[0.06]'
                                                                 }`}
                                                         >
                                                             <div className="flex items-center gap-2">

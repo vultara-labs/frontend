@@ -124,7 +124,8 @@ export function HeroCard() {
                     <div className="grid grid-cols-2 gap-3 lg:gap-4">
                         <div className="p-3 lg:p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300 hover:scale-[1.02] cursor-default">
                             <p className="text-[8px] lg:text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">APY (Live)</p>
-                            <p className="text-xl lg:text-2xl font-bold text-[var(--volt)] tracking-tighter">{loading ? "..." : `${currentAPY}%`}</p>
+                            <p className="text-xl lg:text-2xl font-bold text-[var(--volt)] tracking-tighter">{loading ? "..." : `~${currentAPY}%`}</p>
+                            <p className="text-[7px] lg:text-[8px] text-[var(--text-tertiary)] italic mt-0.5">*Variable</p>
                         </div>
                         <div className="p-3 lg:p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300 hover:scale-[1.02] cursor-default">
                             <p className="text-[8px] lg:text-[10px] text-[var(--text-tertiary)] font-bold uppercase tracking-widest mb-1">Next Payout</p>
