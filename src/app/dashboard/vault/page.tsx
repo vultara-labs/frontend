@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { PROTOCOL } from "@/constants";
 import { useDashboardData } from "@/hooks";
+import { EpochTimerCompact } from "@/components/dashboard/EpochTimer";
+import { TransactionHistory } from "@/components/dashboard/TransactionHistory";
 
 export default function VaultPage() {
     const { ethPrice, currentAPY, marketLoading, vaultBalanceETH, vaultBalanceUSD } = useDashboardData();
@@ -116,7 +118,7 @@ export default function VaultPage() {
                         </div>
                         <div className="text-center">
                             <p className="text-[10px] uppercase tracking-wider text-[var(--text-tertiary)] mb-1">Epoch Ends</p>
-                            <p className="text-sm font-bold text-[var(--warning)] font-mono">{epochEnd}</p>
+                            <EpochTimerCompact />
                         </div>
                         <div className="text-center sm:text-right">
                             <p className="text-[10px] uppercase tracking-wider text-[var(--text-tertiary)] mb-1">Security</p>
@@ -201,34 +203,109 @@ export default function VaultPage() {
                                 transition={{ duration: 0.3 }}
                                 className="overflow-hidden"
                             >
-                                <div className="p-6 mt-2 rounded-xl bg-white/[0.02] border border-[var(--border-subtle)] space-y-6">
+                                <div className="p-6 sm:p-8 mt-3 rounded-2xl bg-[var(--obsidian-surface)] border border-[var(--border-medium)] space-y-6">
+
+                                    {/* Strategy Visual Flow */}
                                     <div>
-                                        <h4 className="text-sm font-bold text-white mb-3">How It Works</h4>
-                                        <ul className="space-y-2 text-sm text-[var(--text-secondary)]">
-                                            <li className="flex items-start gap-2">
-                                                <span className="w-1 h-1 rounded-full bg-[var(--volt)] mt-2 shrink-0" />
-                                                Your ETH is used as collateral to sell out-of-the-money covered calls
-                                            </li>
-                                            <li className="flex items-start gap-2">
-                                                <span className="w-1 h-1 rounded-full bg-[var(--volt)] mt-2 shrink-0" />
-                                                Premiums are collected weekly and auto-compounded
-                                            </li>
-                                            <li className="flex items-start gap-2">
-                                                <span className="w-1 h-1 rounded-full bg-[var(--volt)] mt-2 shrink-0" />
-                                                Trades executed via Thetanuts V4 RFQ system (zero slippage)
-                                            </li>
-                                        </ul>
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <div className="w-8 h-8 rounded-lg bg-[var(--volt)]/10 border border-[var(--volt)]/20 flex items-center justify-center">
+                                                <Lightning size={16} className="text-[var(--volt)]" weight="fill" />
+                                            </div>
+                                            <h4 className="text-sm font-bold text-white uppercase tracking-wide">Covered Call Strategy</h4>
+                                        </div>
+                                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                            {[
+                                                { step: 1, title: "You Deposit", desc: "ETH goes into vault", color: "info" },
+                                                { step: 2, title: "Vault Sells Calls", desc: `Strike: $${strikePrice.toLocaleString()}`, color: "volt" },
+                                                { step: 3, title: "Collect Premium", desc: "Weekly earnings", color: "success" },
+                                                { step: 4, title: "Auto-Compound", desc: "Reinvest gains", color: "warning" },
+                                            ].map((item) => (
+                                                <div key={item.step} className="relative p-4 rounded-xl bg-white/[0.03] border border-[var(--border-subtle)] text-center hover:bg-white/[0.05] transition-colors">
+                                                    <div className={`w-8 h-8 rounded-lg mx-auto mb-3 flex items-center justify-center text-sm font-bold ${item.color === 'info' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' :
+                                                        item.color === 'volt' ? 'bg-[var(--volt)]/10 text-[var(--volt)] border border-[var(--volt)]/20' :
+                                                            item.color === 'success' ? 'bg-[var(--success)]/10 text-[var(--success)] border border-[var(--success)]/20' :
+                                                                'bg-[var(--warning)]/10 text-[var(--warning)] border border-[var(--warning)]/20'
+                                                        }`}>
+                                                        {item.step}
+                                                    </div>
+                                                    <p className="text-xs font-bold text-white mb-1">{item.title}</p>
+                                                    <p className="text-[10px] text-[var(--text-tertiary)]">{item.desc}</p>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
+
+                                    {/* What is a Covered Call? */}
+                                    <div className="p-4 sm:p-5 rounded-xl bg-[var(--volt)]/5 border border-[var(--volt)]/20">
+                                        <h5 className="label text-[var(--volt)] mb-2">What is a Covered Call?</h5>
+                                        <p className="text-body-sm text-[var(--text-secondary)] leading-relaxed">
+                                            A <span className="text-white font-medium">covered call</span> is when you own an asset (ETH) and sell someone the <em>right</em> to buy it at a higher price (strike price).
+                                            You collect a <span className="text-[var(--volt)] font-medium">premium</span> upfront. If ETH stays below the strike, you keep both your ETH and the premium.
+                                            If ETH goes above the strike, your gains are capped but you still profit.
+                                        </p>
+                                    </div>
+
+                                    {/* Epoch Cycle */}
                                     <div>
-                                        <h4 className="text-sm font-bold text-white mb-3">Risks</h4>
-                                        <ul className="space-y-2 text-sm text-[var(--text-secondary)]">
+                                        <div className="flex items-center gap-2 mb-3">
+                                            <Clock size={16} className="text-[var(--warning)]" />
+                                            <h4 className="text-sm font-bold text-white">Weekly Epoch Cycle</h4>
+                                        </div>
+                                        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                                            {["Friday 8AM UTC", "Options Sold", "Week Passes", "Options Expire", "Premium Collected"].map((step, i) => (
+                                                <div key={i} className="flex items-center gap-2 shrink-0">
+                                                    <div className="px-3 py-2 rounded-lg bg-white/[0.03] border border-[var(--border-subtle)] text-[10px] text-[var(--text-secondary)] whitespace-nowrap font-medium">
+                                                        {step}
+                                                    </div>
+                                                    {i < 4 && <ArrowRight size={10} className="text-[var(--text-tertiary)]" />}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Outcomes Grid */}
+                                    <div>
+                                        <h4 className="text-sm font-bold text-white mb-3">Possible Outcomes</h4>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                            <div className="p-4 rounded-xl bg-[var(--success)]/5 border border-[var(--success)]/20">
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <TrendUp size={16} className="text-[var(--success)]" weight="fill" />
+                                                    <span className="label text-[var(--success)]">Best Case</span>
+                                                </div>
+                                                <p className="text-body-sm text-[var(--text-secondary)]">
+                                                    ETH stays below strike → Keep 100% of ETH + Premium earned.
+                                                </p>
+                                            </div>
+                                            <div className="p-4 rounded-xl bg-[var(--warning)]/5 border border-[var(--warning)]/20">
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <ChartLineUp size={16} className="text-[var(--warning)]" weight="fill" />
+                                                    <span className="label text-[var(--warning)]">ETH Moons</span>
+                                                </div>
+                                                <p className="text-body-sm text-[var(--text-secondary)]">
+                                                    ETH goes above strike → Gains capped, but still profitable.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Risks */}
+                                    <div className="p-4 sm:p-5 rounded-xl bg-white/[0.02] border border-[var(--border-subtle)]">
+                                        <div className="flex items-center gap-2 mb-3">
+                                            <ShieldCheck size={14} className="text-[var(--text-tertiary)]" weight="fill" />
+                                            <span className="label text-[var(--text-secondary)]">Risks to Understand</span>
+                                        </div>
+                                        <ul className="space-y-2 text-body-sm text-[var(--text-secondary)]">
                                             <li className="flex items-start gap-2">
                                                 <span className="w-1 h-1 rounded-full bg-[var(--warning)] mt-2 shrink-0" />
-                                                APY varies based on market volatility
+                                                <span><strong className="text-white">APY is Variable</strong> — Depends on market volatility.</span>
                                             </li>
                                             <li className="flex items-start gap-2">
                                                 <span className="w-1 h-1 rounded-full bg-[var(--warning)] mt-2 shrink-0" />
-                                                Smart contract risk (mitigated by audit)
+                                                <span><strong className="text-white">Capped Upside</strong> — Gains limited to strike price.</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="w-1 h-1 rounded-full bg-[var(--warning)] mt-2 shrink-0" />
+                                                <span><strong className="text-white">Smart Contract Risk</strong> — Mitigated by audits.</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -236,6 +313,15 @@ export default function VaultPage() {
                             </motion.div>
                         )}
                     </AnimatePresence>
+                </motion.div>
+
+                {/* Transaction History */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                >
+                    <TransactionHistory limit={5} />
                 </motion.div>
 
             </div>
