@@ -18,7 +18,10 @@ export function SkeletonBalance() {
     return (
         <div className="animate-pulse">
             <div className="h-4 w-20 bg-white/[0.05] rounded mb-2" />
-            <div className="h-12 w-40 bg-white/[0.08] rounded mb-2" />
+
+            {/* Matching hero text size to prevent layout shift */}
+            <div className="h-12 sm:h-20 lg:h-24 w-48 sm:w-64 lg:w-96 bg-white/[0.08] rounded mb-3" />
+
             <div className="h-5 w-32 bg-white/[0.05] rounded" />
         </div>
     );

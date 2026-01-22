@@ -10,3 +10,4 @@ export * from './SuccessAnimation';
 export { IconBox } from './IconBox';
 export { FadeIn, StaggerContainer, StaggerItem } from './FadeIn';
 export { ProcessingState } from './ProcessingState';
+export { AnimatedNumber } from './AnimatedNumber';

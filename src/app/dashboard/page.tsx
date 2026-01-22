@@ -6,7 +6,7 @@ import { useState } from "react";
 import { ArrowUpRight, Vault, Lightning, TrendUp, Crown } from "@phosphor-icons/react";
 import { ACCESS_LEVELS } from "@/constants";
 import { TierDetailsModal } from "@/components/dashboard/TierDetailsModal";
-import { VaultEmptyState, SkeletonBalance, IconBox, StaggerContainer } from "@/components/ui";
+import { VaultEmptyState, SkeletonBalance, IconBox, StaggerContainer, AnimatedNumber } from "@/components/ui";
 import { useDashboardData } from "@/hooks";
 
 export default function DashboardPage() {
@@ -79,7 +79,7 @@ export default function DashboardPage() {
                     animate={{ opacity: 1, y: 0 }}
                     className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden bg-[var(--obsidian-surface)] border border-[var(--border-medium)] p-6 sm:p-10 lg:p-12 mb-6 sm:mb-8 group"
                 >
-                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--volt)]/5 blur-[120px] rounded-full pointer-events-none group-hover:bg-[var(--volt)]/10 transition-colors duration-700" />
+                    <div className="absolute top-0 right-0 w-[800px] h-[800px] -mt-32 -mr-32 bg-aurora rounded-full pointer-events-none transition-opacity duration-1000" />
 
                     <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8 items-end">
                         <div className="lg:col-span-2">
@@ -91,12 +91,14 @@ export default function DashboardPage() {
                                 <SkeletonBalance />
                             ) : (
                                 <>
-                                    <h2 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-2 leading-none">
-                                        {vaultBalance.toFixed(4)}
-                                        <span className="text-2xl sm:text-3xl lg:text-4xl text-[var(--text-tertiary)] ml-2">ETH</span>
+                                    <h2 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-2 leading-none flex items-baseline">
+                                        <AnimatedNumber value={vaultBalance} decimals={4} />
+                                        <span className="text-2xl sm:text-3xl lg:text-4xl text-[var(--text-tertiary)] ml-2 font-sans tracking-normal">ETH</span>
                                     </h2>
                                     <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-                                        <span className="text-lg sm:text-xl text-[var(--text-secondary)] font-medium">≈ ${totalBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>
+                                        <span className="text-lg sm:text-xl text-[var(--text-secondary)] font-medium">
+                                            <AnimatedNumber value={totalBalance} decimals={2} prefix="≈ $" />
+                                        </span>
                                         <div className="flex items-center gap-2">
                                             <div className="px-2 sm:px-3 py-1 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/20 flex items-center gap-1.5 w-fit">
                                                 <TrendUp size={12} className="text-[var(--success)]" weight="bold" />
