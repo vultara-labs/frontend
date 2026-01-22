@@ -140,13 +140,30 @@ async function fetchLiveMarketData(): Promise<string> {
         const strikes = ethOrders.map((o: ThetanutsOrder) => o.order.strikes[0] / 100000000);
         const avgStrike = strikes.reduce((a: number, b: number) => a + b, 0) / strikes.length;
 
+        // Format timestamp to be readable
+        let formattedTime = data.data.timestamp;
+        try {
+            const date = new Date(data.data.timestamp);
+            formattedTime = date.toLocaleString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                timeZone: "UTC",
+                timeZoneName: "short"
+            });
+        } catch (e) {
+            // Keep original if parsing fails
+        }
+
         return `
 LIVE MARKET DATA (from Thetanuts V4 API):
 - Active ETH Options: ${ethOrders.length} orders (${callCount} calls, ${putCount} puts)
 - Average IV: ${avgIV.toFixed(1)}% (${avgIV > 50 ? "HIGH - good for premium sellers" : avgIV > 30 ? "NORMAL" : "LOW - lower premiums"})
 - Average Strike Price: $${avgStrike.toLocaleString(undefined, { maximumFractionDigits: 0 })}
 - Market Sentiment: ${callCount > putCount ? "Bullish (more calls)" : putCount > callCount ? "Bearish (more puts)" : "Neutral"}
-- Data Timestamp: ${data.data.timestamp}
+- Data Timestamp: ${formattedTime}
 `;
     } catch (e) {
         console.warn("Failed to fetch Thetanuts data for Nova:", e);
