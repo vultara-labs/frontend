@@ -58,30 +58,62 @@ export function TierDetailsModal({ isOpen, onClose, currentTierName, totalBalanc
                                         const isCurrent = tier.name.toLowerCase() === currentTierName.toLowerCase();
                                         const Icon = tier.icon;
 
+                                        // Define base color for this tier
+                                        const tierColors: Record<string, string> = {
+                                            INITIATE: "var(--text-secondary)",
+                                            ASSOCIATE: "var(--info)",
+                                            PARTNER: "var(--volt)",
+                                            SOVEREIGN: "var(--warning)"
+                                        };
+                                        const baseColor = tierColors[tier.name] || "var(--text-secondary)";
+
                                         return (
                                             <div
                                                 key={tier.name}
                                                 className={`relative p-6 rounded-2xl border transition-all duration-300 flex flex-col h-full ${isCurrent
-                                                        ? "bg-[var(--volt)]/5 border-[var(--volt)] ring-1 ring-[var(--volt)]/50"
+                                                        ? "ring-1"
                                                         : isUnlocked
                                                             ? "bg-[var(--obsidian-base)] border-[var(--border-medium)]"
                                                             : "bg-[var(--obsidian-base)] border-[var(--border-subtle)] opacity-60 grayscale-[0.5]"
                                                     }`}
+                                                style={isCurrent ? {
+                                                    backgroundColor: `color-mix(in srgb, ${baseColor} 5%, transparent)`,
+                                                    borderColor: baseColor,
+                                                    color: baseColor // This sets the text color context
+                                                } : {}}
                                             >
                                                 {isCurrent && (
-                                                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-[var(--volt)] text-black text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-[var(--volt)]/20 whitespace-nowrap">
+                                                    <div
+                                                        className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-black text-[10px] font-bold uppercase tracking-widest shadow-lg whitespace-nowrap"
+                                                        style={{
+                                                            backgroundColor: baseColor,
+                                                            boxShadow: `0 4px 20px -5px color-mix(in srgb, ${baseColor} 40%, transparent)`
+                                                        }}
+                                                    >
                                                         Current Tier
                                                     </div>
                                                 )}
 
                                                 <div className="flex flex-col items-center text-center mb-6">
-                                                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${isCurrent ? "bg-[var(--volt)]/10 text-[var(--volt)]" : "bg-white/5 text-[var(--text-secondary)]"
-                                                        }`}>
+                                                    <div
+                                                        className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors`}
+                                                        style={isCurrent ? {
+                                                            backgroundColor: `color-mix(in srgb, ${baseColor} 10%, transparent)`,
+                                                            color: baseColor
+                                                        } : {
+                                                            backgroundColor: "rgba(255,255,255,0.05)",
+                                                            color: "var(--text-secondary)"
+                                                        }}
+                                                    >
                                                         <Icon size={24} weight="duotone" />
                                                     </div>
-                                                    <h3 className={`text-lg font-black uppercase tracking-tight mb-1 ${isCurrent ? "text-white" : "text-[var(--text-primary)]"}`}>
+
+                                                    <h3 className={`text-lg font-black uppercase tracking-tight mb-1 ${isCurrent ? "" : "text-[var(--text-primary)]"}`}
+                                                        style={isCurrent ? { color: baseColor } : {}}
+                                                    >
                                                         {tier.name}
                                                     </h3>
+
                                                     <p className="text-xs font-bold uppercase tracking-widest text-[var(--text-tertiary)] bg-white/5 px-2 py-0.5 rounded">
                                                         {tier.min === 0 ? "Anyone" : `$${tier.min.toLocaleString()}+`}
                                                     </p>
@@ -90,7 +122,12 @@ export function TierDetailsModal({ isOpen, onClose, currentTierName, totalBalanc
                                                 <div className="space-y-3 mb-6 flex-grow">
                                                     {tier.benefits?.map((benefit, idx) => (
                                                         <div key={idx} className="flex items-start gap-2 text-left">
-                                                            <Check size={14} weight="bold" className={`mt-0.5 flex-shrink-0 ${isUnlocked ? "text-[var(--success)]" : "text-[var(--text-tertiary)]"}`} />
+                                                            <Check
+                                                                size={14}
+                                                                weight="bold"
+                                                                className="mt-0.5 flex-shrink-0"
+                                                                style={{ color: isCurrent || isUnlocked ? "var(--success)" : "var(--text-tertiary)" }}
+                                                            />
                                                             <span className="text-xs text-[var(--text-secondary)] font-medium leading-relaxed">
                                                                 {benefit}
                                                             </span>
@@ -100,7 +137,7 @@ export function TierDetailsModal({ isOpen, onClose, currentTierName, totalBalanc
 
                                                 <div className="mt-auto pt-4 border-t border-white/5 w-full flex justify-center">
                                                     {isUnlocked ? (
-                                                        <div className="flex items-center gap-2 text-[var(--success)] text-xs font-bold uppercase tracking-widest">
+                                                        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest" style={{ color: "var(--success)" }}>
                                                             <LockKeyOpen weight="bold" /> Unlocked
                                                         </div>
                                                     ) : (
