@@ -40,7 +40,7 @@ export default function YieldMechanicsPage() {
                     <div className="space-y-4">
                         <DocsStep step={1} title="Deposit Collateral" description="Your ETH is locked in the vault as collateral." />
                         <DocsStep step={2} title="Sell Options" description='The vault sells "Put Options" to Market Makers. They pay us an upfront cash fee (Premium).' />
-                        <DocsStep step={3} title="Collect Premium" description="This Premium is immediately added to the vault. This is your yield." />
+                        <DocsStep step={3} title="Collect Premium" description="Premium increases Vault assets. This pumps the Share Price (You own more ETH)." />
                         <DocsStep step={4} title="Expiry Check" description='If the market price stays above the Strike Price (which is set very low/safe), the options expire worthless. We keep the collateral + premium.' />
                     </div>
                 </DocsSection>

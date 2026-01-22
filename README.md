@@ -16,8 +16,9 @@ Vultara is a simple DeFi yield platform built on Base. Deposit ETH into our vaul
 ### Key Features
 
 - **ETH Vault** — Deposit ETH and earn competitive APY powered by Thetanuts Finance
-- **Nova AI** — AI-powered assistant for risk analysis & strategy insights
-- **Real-time Dashboard** — Live balance tracking with yield visualization
+- **Withdrawal Queue Management** — Seamless UI for scheduling and claiming withdrawals
+- **Enhanced Nova AI** — Context-aware assistant that understands current liquidity and queue status
+- **Real-time Dashboard** — Live balance tracking (Principal + Yield) with dynamic share price calculation
 - **Protocol Status** — Gamified progress tracking for user engagement
 
 ---
@@ -62,6 +63,7 @@ vultara/
     │   │   │   ├── deposit/        # Deposit flow
     │   │   │   ├── vault/          # Vault management
     │   │   │   └── withdraw/       # Withdrawal flow
+    │   │   ├── docs/               # Documentation pages
     │   │   ├── privacy/            # Privacy policy
     │   │   ├── terms/              # Terms of service
     │   │   ├── globals.css         # Global styles & design tokens
@@ -162,7 +164,6 @@ Contributions are welcome. Please submit a Pull Request.
 ## Contact
 
 - Website: [vultara.xyz](https://vultara.xyz)
-- Twitter: [@VultaraLabs](https://twitter.com/VultaraLabs)
 
 ---
 

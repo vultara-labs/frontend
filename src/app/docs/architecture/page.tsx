@@ -19,19 +19,21 @@ export default function ArchitecturePage() {
                         { label: "Contract", value: "VultaraETHVault" },
                         { label: "Network", value: "Base (Testnet: Base Sepolia)" },
                         { label: "Token Symbol", value: "vETH", highlight: true },
-                        { label: "Share Ratio", value: "1:1 (ETH : vETH)" },
+                        { label: "Share Ratio", value: "Dynamic (ERC-4626 Style)" },
+                        { label: "Share Price", value: "Total Assets / Total Supply" },
                         { label: "Min Deposit", value: "0.001 ETH" },
                     ]} />
                 </DocsSection>
 
                 {/* Architecture Flow */}
-                <DocsSection icon={CurrencyCircleDollar} iconColor="#22c55e" title="Architecture Flow">
+                <DocsSection icon={CurrencyCircleDollar} iconColor="#22c55e" title="Architecture Flow (Lifecycle)">
                     <div className="space-y-4">
-                        <DocsStep step={1} title="User Deposits ETH" description="Native ETH sent to VultaraETHVault.deposit()" />
-                        <DocsStep step={2} title="Vault Mints vETH Shares" description="ERC20 shares minted 1:1 with ETH deposited" />
-                        <DocsStep step={3} title="Strategy Execution (Automated)" description="Owner triggers Thetanuts v4 OptionBook.fillOrder()" />
-                        <DocsStep step={4} title="Premiums Accrue to Vault" description="Options premiums increase vault TVL" />
-                        <DocsStep step={5} title="User Withdraws ETH + Yield" description="Burns vETH, receives proportional ETH" color="#22c55e" />
+                        <DocsStep step={1} title="User Deposits ETH" description="Native ETH sent to VultaraETHVault.deposit(). Mints vETH based on current Share Price." />
+                        <DocsStep step={2} title="Strategy Execution" description="Owner triggers Thetanuts v4 fillOrder(). Funds locked for 1 Epoch." />
+                        <DocsStep step={3} title="Yield Accrual" description="Premiums added to Vault. Share Price increases (Real Yield)." />
+                        <DocsStep step={4} title="User Schedules Withdrawal" description="User calls scheduleWithdraw(). Shares moved to escrow." />
+                        <DocsStep step={5} title="Epoch End (Friday)" description="Liquidity unlocked. Pending withdrawals processed." />
+                        <DocsStep step={6} title="User Claims Funds" description="User calls claimWithdraw(). Receives ETH (Principal + Yield)." color="#22c55e" />
                     </div>
                 </DocsSection>
 
@@ -39,16 +41,19 @@ export default function ArchitecturePage() {
                 <DocsSection icon={Code} iconColor="#a855f7" title="Key Functions">
                     <div className="space-y-4">
                         <DocsCard title="deposit() payable">
-                            Accepts native ETH. Mints vETH shares 1:1. Minimum 0.001 ETH.
+                            Accepts native ETH. Mints vETH shares based on current price. Minimum 0.001 ETH.
                         </DocsCard>
-                        <DocsCard title="withdraw(uint256 shares)">
-                            Burns vETH shares and returns proportional ETH. Requires sufficient liquidity.
+                        <DocsCard title="scheduleWithdraw(uint256 shares)">
+                            Queues withdrawal request. Shares are escrowed but still earn yield until Epoch end.
                         </DocsCard>
-                        <DocsCard title="executeStrategy(Order, signature) onlyOwner">
-                            Triggers Thetanuts v4 OptionBook to fill cash-secured put orders. Owner-only.
+                        <DocsCard title="claimWithdraw()">
+                            Claims pending ETH after Epoch ends and liquidity is available.
                         </DocsCard>
-                        <DocsCard title="getTVL() → uint256">
-                            Returns total ETH held by the vault contract.
+                        <DocsCard title="cancelWithdraw()">
+                            Cancels a pending request and returns shares to user wallet.
+                        </DocsCard>
+                        <DocsCard title="convertToAssets(uint256 shares) view">
+                            Returns the real ETH value of shares (Principal + Yield).
                         </DocsCard>
                     </div>
                 </DocsSection>
@@ -57,16 +62,16 @@ export default function ArchitecturePage() {
                 <DocsSection icon={ShieldCheck} iconColor="#22c55e" title="Security Considerations">
                     <div className="space-y-3">
                         <DocsCard title="ReentrancyGuard" variant="success">
-                            Protects deposit/withdraw from reentrancy attacks
+                            Protects all state-changing functions from reentrancy attacks.
                         </DocsCard>
-                        <DocsCard title="Ownable" variant="success">
-                            Strategy execution restricted to owner (prevents malicious draining)
+                        <DocsCard title="Withdrawal Queue" variant="success">
+                            Prevents "Bank Run" scenarios and ensures liquidity is managed for strategy execution.
                         </DocsCard>
                         <DocsCard title="Non-Custodial" variant="success">
-                            Users can withdraw anytime (if liquidity available)
+                            Protocol never holds user keys. Funds accessible via smart contract logic.
                         </DocsCard>
-                        <DocsCard title="Liquidity Lock Risk" variant="warning">
-                            If strategy is active, withdrawal may fail temporarily
+                        <DocsCard title="Strategy Lock" variant="warning">
+                            Funds are illiquid during active Epochs (Friday to Friday). Withdrawals must be scheduled.
                         </DocsCard>
                     </div>
                 </DocsSection>

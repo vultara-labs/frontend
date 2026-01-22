@@ -51,7 +51,7 @@ export default function CoreConceptsPage() {
                                 </div>
                             </div>
                             <div className="text-xs text-[var(--warning)] bg-[var(--warning)]/10 p-3 rounded-lg inline-block font-bold tracking-wide mt-2">
-                                NOTE: Withdrawals requested during an active Epoch are processed at the end of the cycle.
+                                NOTE: Funds are locked during an Epoch. You must "Schedule Withdrawal" to exit. Funds become claimable on the next Friday.
                             </div>
                         </div>
                     </div>
