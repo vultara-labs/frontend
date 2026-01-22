@@ -81,13 +81,77 @@ RECENT UPDATES (v1.1):
 
 THETANUTS V4 INTEGRATION:
 - OptionBook contract: 0xd58b814C7Ce700f251722b5555e25aE0fa8169A1 (Base)
-- Strategy: fillOrder() for cash-secured puts
-- Epochs: Weekly (Friday to Friday)
+- ETH Price Feed: 0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70
+- Strategy: fillOrder() for cash-secured puts / covered calls
+- Epochs: Weekly (Friday 8AM UTC to Friday 8AM UTC)
+- Available Strategies: Covered Call (bullish-neutral), Protective Put (bearish protection), Collar (balanced)
+- Pricing API: https://round-snowflake-9c31.devops-118.workers.dev/
+
+MARKET INSIGHTS (How to interpret):
+- Higher IV (Implied Volatility) = Higher premiums = Better APY for sellers
+- More active options = More liquid market = Better execution
+- Call options gain value when ETH goes up
+- Put options gain value when ETH goes down
 
 AUDIT STATUS:
 - Thetanuts Finance (underlying protocol): Audited by Peckshield, Sherlock
 - Vultara Vault: Currently in Testnet Beta, audits planned for mainnet
 `;
+
+// Thetanuts API for live market data
+const THETANUTS_API = "https://round-snowflake-9c31.devops-118.workers.dev/";
+const ETH_PRICE_FEED = "0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70";
+
+interface ThetanutsOrder {
+    order: {
+        strikes: number[];
+        expiry: number;
+        isCall: boolean;
+        priceFeed: string;
+    };
+    greeks?: {
+        delta: number;
+        iv: number;
+        gamma: number;
+        theta: number;
+        vega: number;
+    };
+}
+
+async function fetchLiveMarketData(): Promise<string> {
+    try {
+        const res = await fetch(THETANUTS_API, { next: { revalidate: 60 } });
+        if (!res.ok) return "";
+
+        const data = await res.json();
+        const ethOrders = data.data.orders.filter(
+            (o: ThetanutsOrder) => o.order.priceFeed === ETH_PRICE_FEED && o.greeks
+        );
+
+        if (ethOrders.length === 0) return "";
+
+        const ivValues = ethOrders.map((o: ThetanutsOrder) => o.greeks!.iv * 100);
+        const avgIV = ivValues.reduce((a: number, b: number) => a + b, 0) / ivValues.length;
+
+        const callCount = ethOrders.filter((o: ThetanutsOrder) => o.order.isCall).length;
+        const putCount = ethOrders.length - callCount;
+
+        const strikes = ethOrders.map((o: ThetanutsOrder) => o.order.strikes[0] / 100000000);
+        const avgStrike = strikes.reduce((a: number, b: number) => a + b, 0) / strikes.length;
+
+        return `
+LIVE MARKET DATA (from Thetanuts V4 API):
+- Active ETH Options: ${ethOrders.length} orders (${callCount} calls, ${putCount} puts)
+- Average IV: ${avgIV.toFixed(1)}% (${avgIV > 50 ? "HIGH - good for premium sellers" : avgIV > 30 ? "NORMAL" : "LOW - lower premiums"})
+- Average Strike Price: $${avgStrike.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+- Market Sentiment: ${callCount > putCount ? "Bullish (more calls)" : putCount > callCount ? "Bearish (more puts)" : "Neutral"}
+- Data Timestamp: ${data.data.timestamp}
+`;
+    } catch (e) {
+        console.warn("Failed to fetch Thetanuts data for Nova:", e);
+        return "";
+    }
+}
 
 
 interface DetectedAction {
@@ -125,6 +189,9 @@ export async function POST(req: Request) {
 
     const { message, history, userData } = body;
 
+    // Fetch live market data from Thetanuts API
+    const liveMarketData = await fetchLiveMarketData();
+
     let userContext = "";
     if (userData) {
         const isPreview = userData.isPreviewMode;
@@ -146,7 +213,8 @@ NOTE: User is CONNECTED with their real wallet. All data shown is their actual o
 `;
     }
 
-    const FINAL_SYSTEM_PROMPT = BASE_SYSTEM_PROMPT + userContext;
+    // Combine base prompt with user context and live market data
+    const FINAL_SYSTEM_PROMPT = BASE_SYSTEM_PROMPT + userContext + liveMarketData;
     const detectedAction = detectAction(message);
 
     try {
