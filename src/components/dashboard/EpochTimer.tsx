@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Clock } from "@phosphor-icons/react";
+import { getTimeUntilEpochEnd, padZero, formatEpochTimeRemaining } from "@/lib/dates";
 
 interface EpochTimerProps {
     className?: string;
@@ -14,44 +15,15 @@ interface EpochTimerProps {
  * This is when Thetanuts V4 options expire and new epoch begins
  */
 export function EpochTimer({ className = "", showLabel = true, size = "md" }: EpochTimerProps) {
-    const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+    const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0, totalMs: 0 });
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
         setMounted(true);
-
-        const calculateTimeLeft = () => {
-            const now = new Date();
-            const nextFriday = new Date();
-
-            // Calculate next Friday 8AM UTC
-            const daysUntilFriday = (5 - now.getUTCDay() + 7) % 7;
-            nextFriday.setUTCDate(now.getUTCDate() + (daysUntilFriday === 0 ? 7 : daysUntilFriday));
-            nextFriday.setUTCHours(8, 0, 0, 0);
-
-            // If we're past this Friday 8AM, go to next Friday
-            if (now.getUTCDay() === 5 && now.getUTCHours() >= 8) {
-                nextFriday.setUTCDate(nextFriday.getUTCDate() + 7);
-            }
-
-            const diff = nextFriday.getTime() - now.getTime();
-
-            if (diff <= 0) {
-                return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-            }
-
-            return {
-                days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-                hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-                minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
-                seconds: Math.floor((diff % (1000 * 60)) / 1000),
-            };
-        };
-
-        setTimeLeft(calculateTimeLeft());
+        setTimeLeft(getTimeUntilEpochEnd());
 
         const timer = setInterval(() => {
-            setTimeLeft(calculateTimeLeft());
+            setTimeLeft(getTimeUntilEpochEnd());
         }, 1000);
 
         return () => clearInterval(timer);
@@ -71,8 +43,6 @@ export function EpochTimer({ className = "", showLabel = true, size = "md" }: Ep
         md: "text-sm",
         lg: "text-base",
     };
-
-    const padZero = (num: number) => num.toString().padStart(2, "0");
 
     return (
         <div className={`flex items-center gap-2 ${className}`}>
@@ -98,18 +68,8 @@ export function EpochTimerCompact() {
 
     useEffect(() => {
         const update = () => {
-            const now = new Date();
-            const nextFriday = new Date();
-            const daysUntilFriday = (5 - now.getUTCDay() + 7) % 7;
-            nextFriday.setUTCDate(now.getUTCDate() + (daysUntilFriday === 0 ? 7 : daysUntilFriday));
-            nextFriday.setUTCHours(8, 0, 0, 0);
-            if (now.getUTCDay() === 5 && now.getUTCHours() >= 8) {
-                nextFriday.setUTCDate(nextFriday.getUTCDate() + 7);
-            }
-            const diff = nextFriday.getTime() - now.getTime();
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            setTimeStr(`${days}d ${hours}h`);
+            const time = getTimeUntilEpochEnd();
+            setTimeStr(formatEpochTimeRemaining(time));
         };
 
         update();

@@ -7,3 +7,6 @@ export { YieldCalculator } from "./YieldCalculator";
 export { ErrorBoundary, withErrorBoundary } from "./ErrorBoundary";
 export { AmountInput, useAmountValidation } from "./AmountInput";
 export * from './SuccessAnimation';
+export { IconBox } from './IconBox';
+export { FadeIn, StaggerContainer, StaggerItem } from './FadeIn';
+export { ProcessingState } from './ProcessingState';

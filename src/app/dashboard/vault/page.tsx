@@ -17,21 +17,7 @@ export default function VaultPage() {
     const loading = marketLoading;
     const dynamicAPY = currentAPY.toFixed(1);
 
-    // Calculate next epoch end
-    function getNextFridayExpiry() {
-        const now = new Date();
-        const nextFriday = new Date();
-        const daysUntilFriday = (5 - now.getUTCDay() + 7) % 7;
-        nextFriday.setUTCDate(now.getUTCDate() + daysUntilFriday);
-        nextFriday.setUTCHours(8, 0, 0, 0);
-        if (now > nextFriday) nextFriday.setUTCDate(nextFriday.getUTCDate() + 7);
-        const diff = nextFriday.getTime() - now.getTime();
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        return `${days}d ${hours}h`;
-    }
-
-    const epochEnd = getNextFridayExpiry();
+    // Strike price calculation (epoch timer now uses centralized utility)
     const strikePrice = ethPrice ? Math.floor(ethPrice * PROTOCOL.VAULT.STRIKE_PERCENTAGE / 50) * 50 : 0;
 
     return (

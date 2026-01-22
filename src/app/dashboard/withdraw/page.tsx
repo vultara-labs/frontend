@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import Link from "next/link";
 import { useWalletConnection, useDashboardData, useVaultContract } from "@/hooks";
-import { AmountInput, useAmountValidation, SuccessAnimation } from "@/components/ui";
+import { AmountInput, useAmountValidation, SuccessAnimation, ProcessingState } from "@/components/ui";
 
 function WithdrawLoading() {
     return (
@@ -204,14 +204,10 @@ function WithdrawContent() {
                         )}
 
                         {step === "processing" && (
-                            <motion.div key="processing" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center py-12">
-                                <div className="relative mb-8">
-                                    <div className="absolute inset-0 bg-blue-500/20 blur-xl rounded-full" />
-                                    <CircleNotch size={64} className="text-blue-400 animate-spin relative z-10" />
-                                </div>
-                                <h3 className="text-xl font-black uppercase tracking-tight text-white mb-2">Processing</h3>
-                                <p className="text-sm text-[var(--text-secondary)]">Interacting with Vultara Vault...</p>
-                            </motion.div>
+                            <ProcessingState
+                                color="blue"
+                                description="Interacting with Vultara Vault..."
+                            />
                         )}
 
                         {step === "success" && (

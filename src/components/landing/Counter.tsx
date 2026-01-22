@@ -16,8 +16,6 @@ export function Counter({ from, to }: CounterProps) {
         if (!isInView) return;
 
         const node = nodeRef.current;
-        let intervalId: NodeJS.Timeout | null = null;
-
         const controls = animate(from, to, {
             duration: 2.5,
             ease: [0.19, 1, 0.22, 1],
@@ -33,7 +31,6 @@ export function Counter({ from, to }: CounterProps) {
 
         return () => {
             controls.stop();
-            if (intervalId) clearInterval(intervalId);
         };
     }, [from, to, isInView]);
 

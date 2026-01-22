@@ -9,7 +9,7 @@ import Link from "next/link";
 import { PROTOCOL, YIELD, RISK } from "@/constants";
 import { useWalletConnection, useDashboardData, useVaultContract } from "@/hooks";
 import { formatUnits } from "viem";
-import { AmountInput, useAmountValidation, SuccessAnimation } from "@/components/ui";
+import { AmountInput, useAmountValidation, SuccessAnimation, ProcessingState } from "@/components/ui";
 
 function DepositLoading() {
     return (
@@ -307,14 +307,7 @@ function DepositContent() {
                         )}
 
                         {step === "processing" && (
-                            <motion.div key="processing" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center py-12">
-                                <div className="relative mb-8">
-                                    <div className="absolute inset-0 bg-[var(--volt)]/20 blur-xl rounded-full" />
-                                    <CircleNotch size={64} className="text-[var(--volt)] animate-spin relative z-10" />
-                                </div>
-                                <h3 className="text-xl font-black uppercase tracking-tight text-white mb-2">Processing</h3>
-                                <p className="text-sm text-[var(--text-secondary)]">Please confirm in your wallet...</p>
-                            </motion.div>
+                            <ProcessingState color="volt" />
                         )}
 
                         {step === "success" && (
