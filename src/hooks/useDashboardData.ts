@@ -20,8 +20,8 @@ export function useDashboardData() {
     // Get contract addresses for current chain
     const contracts = PROTOCOL.CONTRACTS[chainId as keyof typeof PROTOCOL.CONTRACTS] || PROTOCOL.CONTRACTS[84532];
 
-    // Read user's vault balance from smart contract (only when connected)
-    const { data: vaultBalanceRaw } = useReadContract({
+    // Read user's vault balance (SHARES) from smart contract
+    const { data: vaultSharesRaw } = useReadContract({
         address: contracts.ETH_VAULT,
         abi: VULTARA_ETH_VAULT_ABI,
         functionName: "getUserBalance",
@@ -31,8 +31,24 @@ export function useDashboardData() {
         }
     });
 
+    // Convert SHARES to ASSETS (ETH) to get real value (Principal + Yield)
+    const { data: vaultAssetsRaw } = useReadContract({
+        address: contracts.ETH_VAULT,
+        abi: VULTARA_ETH_VAULT_ABI,
+        functionName: "convertToAssets",
+        args: vaultSharesRaw ? [vaultSharesRaw] : undefined,
+        query: {
+            enabled: !!vaultSharesRaw && isConnected,
+        }
+    });
+
     // Calculate real values from contract
-    const realVaultBalanceETH = vaultBalanceRaw ? parseFloat(formatUnits(vaultBalanceRaw as bigint, 18)) : 0;
+    const realVaultShares = vaultSharesRaw ? parseFloat(formatUnits(vaultSharesRaw as bigint, 18)) : 0;
+    // Default to shares if assets fetch fails/loading (1:1 fallback), but prefer assets
+    const realVaultBalanceETH = vaultAssetsRaw
+        ? parseFloat(formatUnits(vaultAssetsRaw as bigint, 18))
+        : realVaultShares;
+
     const realWalletBalanceETH = ethBalance ? parseFloat(formatUnits(ethBalance.value, ethBalance.decimals)) : 0;
 
     // Live ETH Price
