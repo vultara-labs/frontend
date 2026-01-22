@@ -8,6 +8,8 @@ import { QUICK_PROMPTS, DEMO_DATA } from "@/constants";
 import { formatTime } from "@/lib/formatters";
 import { useDashboardData } from "@/hooks";
 import type { Message, ActionData } from "@/types";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const initialMessages: Message[] = [
     {
@@ -158,8 +160,29 @@ export default function AIAdvisorPage() {
                             )}
 
                             <div className={`flex flex-col gap-1 max-w-[85%] lg:max-w-[80%] ${msg.role === "user" ? "items-end" : ""}`}>
-                                <div className={`p-4 rounded-2xl shadow-sm backdrop-blur-md ${msg.role === "user" ? "bg-[var(--volt)] text-black rounded-tr-sm" : "bg-white/[0.08] border border-white/10 text-gray-100 rounded-tl-sm"}`}>
-                                    <p className={`text-base leading-relaxed whitespace-pre-line tracking-tight ${msg.role === "user" ? "font-medium" : ""}`}>{msg.content}</p>
+                                <div className={`p-4 rounded-2xl shadow-sm backdrop-blur-md ${msg.role === "user" ? "bg-[var(--volt)] text-black rounded-tr-sm" : "bg-white/[0.08] border border-white/10 text-gray-100 rounded-tl-sm"} overflow-hidden`}>
+                                    {msg.role === "user" ? (
+                                        <p className="text-base leading-relaxed whitespace-pre-line tracking-tight font-medium">{msg.content}</p>
+                                    ) : (
+                                        <div className="markdown-content text-base leading-relaxed tracking-tight">
+                                            <ReactMarkdown
+                                                remarkPlugins={[remarkGfm]}
+                                                components={{
+                                                    strong: ({ children }) => <span className="font-bold text-[var(--volt)]">{children}</span>,
+                                                    table: ({ children }) => <div className="overflow-x-auto my-3 rounded-lg border border-white/10"><table className="w-full text-sm">{children}</table></div>,
+                                                    thead: ({ children }) => <thead className="bg-white/5 text-xs uppercase tracking-wider font-bold text-[var(--text-secondary)]">{children}</thead>,
+                                                    th: ({ children }) => <th className="px-3 py-2 text-left border-b border-white/10">{children}</th>,
+                                                    td: ({ children }) => <td className="px-3 py-2 border-b border-white/5 text-gray-300">{children}</td>,
+                                                    ul: ({ children }) => <ul className="list-disc pl-4 space-y-1 my-2 marker:text-[var(--volt)]">{children}</ul>,
+                                                    ol: ({ children }) => <ol className="list-decimal pl-4 space-y-1 my-2 marker:text-[var(--volt)]">{children}</ol>,
+                                                    blockquote: ({ children }) => <blockquote className="border-l-2 border-[var(--volt)] pl-3 my-2 italic text-[var(--text-secondary)] bg-white/[0.02] py-1 rounded-r">{children}</blockquote>,
+                                                    code: ({ children }) => <code className="bg-black/30 px-1 py-0.5 rounded text-xs font-mono text-amber-500 border border-white/10">{children}</code>
+                                                }}
+                                            >
+                                                {msg.content}
+                                            </ReactMarkdown>
+                                        </div>
+                                    )}
                                 </div>
 
                                 {msg.card && (
