@@ -140,10 +140,17 @@ async function fetchLiveMarketData(): Promise<string> {
         const strikes = ethOrders.map((o: ThetanutsOrder) => o.order.strikes[0] / 100000000);
         const avgStrike = strikes.reduce((a: number, b: number) => a + b, 0) / strikes.length;
 
-        // Format timestamp to be readable
+        // Format timestamp to be readable and relative
         let formattedTime = data.data.timestamp;
+        let relativeTime = "";
         try {
             const date = new Date(data.data.timestamp);
+            const now = new Date();
+            const diffMs = now.getTime() - date.getTime();
+            const diffMins = Math.floor(diffMs / 60000);
+
+            relativeTime = diffMins < 1 ? " (Just now)" : ` (${diffMins} mins ago)`;
+
             formattedTime = date.toLocaleString("en-US", {
                 month: "short",
                 day: "numeric",
@@ -152,7 +159,7 @@ async function fetchLiveMarketData(): Promise<string> {
                 minute: "2-digit",
                 timeZone: "UTC",
                 timeZoneName: "short"
-            });
+            }) + relativeTime;
         } catch (e) {
             // Keep original if parsing fails
         }
