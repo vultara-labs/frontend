@@ -55,12 +55,7 @@ export function useDashboardData() {
 
     const pendingWithdrawalShares = pendingSharesRaw ? parseFloat(formatUnits(pendingSharesRaw as bigint, 18)) : 0;
 
-    // Calculate ETH value of pending shares (Approximate for display)
-    // We reuse useReadContract for convertToAssets above but technically we want the value of pending shares
-    // For simplicity, we can estimate it using the same ratio as valid shares
-    // Ratio = vaultAssetsRaw / vaultSharesRaw. 
-    // If vaultSharesRaw is 0 (User withdrew everything to queue), we can't calculate easily without another call.
-    // Let's just do a specific convert call for pending shares if > 0.
+    // Convert pending shares to ETH value
     const { data: pendingAssetsRaw } = useReadContract({
         address: contracts.ETH_VAULT,
         abi: VULTARA_ETH_VAULT_ABI,
@@ -99,58 +94,38 @@ export function useDashboardData() {
     // Estimated monthly earnings based on APY
     const realMonthlyEarningsUSD = (realVaultBalanceUSD * (currentAPY / 100)) / 12;
 
-    // ============================================
-    // FINAL DATA - Switches between Demo vs Real
-    // ============================================
+
     const isPreviewMode = !isConnected;
 
-    // Vault balance - use demo store state for preview
     const vaultBalanceETH = isPreviewMode ? demoState.vaultBalanceETH : realVaultBalanceETH;
     const vaultBalanceUSD = isPreviewMode ? demoState.vaultBalanceETH * ethPrice : realVaultBalanceUSD;
 
-    // Wallet balance - use demo store state for preview
     const walletBalanceETH = isPreviewMode ? demoState.walletBalanceETH : realWalletBalanceETH;
     const walletBalanceUSD = isPreviewMode ? demoState.walletBalanceETH * ethPrice : realWalletBalanceUSD;
 
-    // Earnings - calculate based on demo vault balance
     const demoMonthlyEarningsUSD = (vaultBalanceUSD * (currentAPY / 100)) / 12;
     const monthlyEarningsUSD = isPreviewMode ? demoMonthlyEarningsUSD : realMonthlyEarningsUSD;
     const totalEarningsUSD = isPreviewMode ? DEMO_DATA.TOTAL_EARNINGS + (demoState.totalDeposited * 0.01) : (realMonthlyEarningsUSD * 3);
 
     return {
-        // Mode indicator
         isPreviewMode,
         isConnected,
         address,
-
-        // Market data
         ethPrice,
         priceChange,
         currentAPY,
         marketLoading,
-
-        // Vault data
         vaultBalanceETH,
         vaultBalanceUSD,
-
-        // Pending Withdrawal data
         pendingWithdrawalShares,
         pendingWithdrawalETH,
-
-        // Wallet data
         walletBalanceETH,
         walletBalanceUSD,
-
-        // Earnings
         monthlyEarningsUSD,
         totalEarningsUSD,
-
-        // Demo actions (for deposit/withdraw pages)
         demoDeposit,
         demoWithdraw,
         demoReset,
-
-        // Raw data for advanced usage
         contracts,
         chainId,
     };

@@ -11,7 +11,6 @@ export function useWalletConnection() {
     const { connect, isPending: isConnecting } = useConnect();
     const { disconnect } = useDisconnect();
 
-    // Native ETH Balance - Force Base Sepolia for hackathon demo
     const { data: ethBalance } = useBalance({
         address,
         chainId: 84532
@@ -38,7 +37,6 @@ export function useWalletConnection() {
 
     const formattedAddress = address ? formatAddress(address) : "";
 
-    // ETH balance display
     const formattedBalance = ethBalance
         ? `${parseFloat(formatUnits(ethBalance.value, ethBalance.decimals)).toFixed(4)} ETH`
         : "0.00 ETH";

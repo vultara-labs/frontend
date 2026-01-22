@@ -8,8 +8,6 @@ import { PROTOCOL } from "@/constants";
 import { useDashboardData } from "@/hooks";
 import { EpochTimerCompact } from "@/components/dashboard/EpochTimer";
 import { TransactionHistory } from "@/components/dashboard/TransactionHistory";
-// StrategySelector and StrategySimulator removed - vault operates as automated asset manager
-// Components kept in codebase for potential future "advanced mode" feature
 
 export default function VaultPage() {
     const { ethPrice, currentAPY, marketLoading, vaultBalanceETH, vaultBalanceUSD } = useDashboardData();

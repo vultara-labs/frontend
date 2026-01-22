@@ -3,7 +3,6 @@
 import { ReactNode } from "react";
 import { Icon } from "@phosphor-icons/react";
 
-// ============ Docs Header ============
 interface DocsHeaderProps {
     category: string;
     title: string;
@@ -26,7 +25,6 @@ export function DocsHeader({ category, title, subtitle }: DocsHeaderProps) {
     );
 }
 
-// ============ Docs Section ============
 interface DocsSectionProps {
     icon: Icon;
     iconColor?: string;
@@ -51,7 +49,6 @@ export function DocsSection({ icon: IconComponent, iconColor = "var(--volt)", ti
     );
 }
 
-// ============ Docs Card ============
 interface DocsCardProps {
     title: string;
     children: ReactNode;
@@ -74,7 +71,6 @@ export function DocsCard({ title, children, variant = "default" }: DocsCardProps
     );
 }
 
-// ============ Docs Info Box ============
 interface DocsInfoBoxProps {
     icon: Icon;
     title: string;
@@ -97,7 +93,6 @@ export function DocsInfoBox({ icon: IconComponent, title, children }: DocsInfoBo
     );
 }
 
-// ============ Docs Step List ============
 interface DocsStepProps {
     step: number | string;
     title: string;
@@ -126,7 +121,6 @@ export function DocsStep({ step, title, description, color = "var(--volt)" }: Do
     );
 }
 
-// ============ Docs Table ============
 interface DocsTableRow {
     label: string;
     value: string | ReactNode;
@@ -156,7 +150,6 @@ export function DocsTable({ rows }: DocsTableProps) {
     );
 }
 
-// ============ Docs Page Wrapper ============
 interface DocsPageWrapperProps {
     children: ReactNode;
 }
@@ -169,7 +162,6 @@ export function DocsPageWrapper({ children }: DocsPageWrapperProps) {
     );
 }
 
-// ============ Docs Content Body ============
 interface DocsContentProps {
     children: ReactNode;
 }

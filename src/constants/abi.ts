@@ -1,6 +1,4 @@
-// VultaraETHVault ABI - For native ETH deposits
 export const VULTARA_ETH_VAULT_ABI = [
-    // Read Functions
     {
         inputs: [{ name: "user", type: "address" }],
         name: "getUserBalance",
@@ -36,7 +34,6 @@ export const VULTARA_ETH_VAULT_ABI = [
         stateMutability: "view",
         type: "function",
     },
-    // Write Functions
     {
         inputs: [],
         name: "deposit",
@@ -65,7 +62,6 @@ export const VULTARA_ETH_VAULT_ABI = [
         stateMutability: "nonpayable",
         type: "function",
     },
-    // Events
     {
         anonymous: false,
         inputs: [

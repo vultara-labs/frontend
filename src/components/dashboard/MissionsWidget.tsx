@@ -12,13 +12,11 @@ interface MissionsWidgetProps {
 }
 
 export function MissionsWidget({ balance, isPreviewMode = false }: MissionsWidgetProps) {
-    // Mock state - in real app would come from backend/context
     const [claimedIds, setClaimedIds] = useState<string[]>([]);
 
     const getStatus = (id: string) => {
         if (claimedIds.includes(id)) return "claimed";
 
-        // In preview mode, show first 2 missions as completed for demo wow-factor
         if (isPreviewMode) {
             if (id === "connect" || id === "deposit") return "completed";
         }

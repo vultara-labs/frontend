@@ -8,7 +8,6 @@ interface MarketData {
     lastUpdated: Date;
 }
 
-// Default fallback data when external APIs fail (CORS, network issues, etc.)
 const DEFAULT_MARKET_DATA: MarketData = {
     price: 3200, // Reasonable ETH price
     change24h: 1.25, // Slight positive change
@@ -25,7 +24,6 @@ export function useMarketData(asset: string = "ETH") {
 
         const fetchPrice = async () => {
             try {
-                // Primary: Use our own API route (bypasses CORS)
                 const res = await fetch("/api/price");
                 if (!res.ok) throw new Error("Local API failed");
 
@@ -41,7 +39,6 @@ export function useMarketData(asset: string = "ETH") {
                     setError(null);
                 }
             } catch (err) {
-                // Fallback: Direct API calls (may have CORS issues on localhost)
                 console.warn("Local API failed, trying external fallback...");
                 try {
                     const res = await fetch(`https://api.coinbase.com/v2/prices/${asset}-USD/spot`);
@@ -61,7 +58,6 @@ export function useMarketData(asset: string = "ETH") {
                         setError(null);
                     }
                 } catch (fallbackErr) {
-                    // Ultimate fallback: Use default data
                     console.warn("All APIs failed, using default data");
                     if (mounted) {
                         const priceVariation = (Math.random() * 100) - 50;
