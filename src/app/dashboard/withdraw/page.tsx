@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import Link from "next/link";
 import { useWalletConnection, useDashboardData, useVaultContract } from "@/hooks";
-import { AmountInput, useAmountValidation } from "@/components/ui";
+import { AmountInput, useAmountValidation, SuccessAnimation } from "@/components/ui";
 
 function WithdrawLoading() {
     return (
@@ -38,7 +38,6 @@ function WithdrawContent() {
         onSuccess: () => {
             toast.dismiss();
             setStep("success");
-            vault.celebrate();
             toast.success("Transaction Confirmed!");
             vault.refetchBalance();
         }
@@ -64,7 +63,6 @@ function WithdrawContent() {
         if (vault.isConfirmed && step === "processing") {
             toast.dismiss();
             setStep("success");
-            vault.celebrate();
             toast.success("Transaction Confirmed!");
             vault.refetchBalance();
         }
@@ -106,7 +104,6 @@ function WithdrawContent() {
             demoWithdraw(numAmount);
             toast.dismiss();
             setStep("success");
-            vault.celebrate();
             toast.success("Demo Withdrawal Complete!");
         }, 2000);
     };
@@ -219,16 +216,14 @@ function WithdrawContent() {
 
                         {step === "success" && (
                             <motion.div key="success" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center py-8">
-                                <div className="w-20 h-20 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/20 flex items-center justify-center mb-6">
-                                    <CheckCircle size={40} weight="fill" className="text-[var(--success)]" />
-                                </div>
+                                <SuccessAnimation />
                                 <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-2">Request Confirmed</h3>
                                 <p className="text-[var(--text-secondary)] text-center mb-8 max-w-xs mx-auto">
                                     Your request has been processed successfully. Check stats for updates.
                                 </p>
                                 <Link
                                     href="/dashboard"
-                                    className="h-14 px-8 rounded-2xl border border-[var(--border-medium)] text-white font-bold uppercase tracking-widest hover:bg-white/5 transition-all flex items-center justify-center text-xs"
+                                    className="btn-primary w-full h-14 px-8 flex items-center justify-center text-xs tracking-widest font-bold uppercase shadow-[0_0_20px_rgba(204,255,0,0.15)] hover:shadow-[0_0_30px_rgba(204,255,0,0.3)] transition-all"
                                 >
                                     Return to Dashboard
                                 </Link>

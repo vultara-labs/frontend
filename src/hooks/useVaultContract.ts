@@ -3,7 +3,6 @@
 import { useChainId, useWriteContract, useWaitForTransactionReceipt, useReadContract } from "wagmi";
 import { parseEther, formatUnits } from "viem";
 import { toast } from "sonner";
-import confetti from "canvas-confetti";
 import { PROTOCOL, VULTARA_ETH_VAULT_ABI } from "@/constants";
 
 interface UseVaultContractOptions {
@@ -59,16 +58,6 @@ export function useVaultContract({ address, onSuccess }: UseVaultContractOptions
         args: address ? [address] : undefined,
         query: { enabled: !!address }
     });
-
-    // Celebration effect
-    const celebrate = () => {
-        confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: ["#CCFF00", "#ffffff", "#22c55e"],
-        });
-    };
 
     // === ACTIONS ===
 
@@ -196,7 +185,6 @@ export function useVaultContract({ address, onSuccess }: UseVaultContractOptions
         cancelWithdraw,
 
         // Utilities
-        celebrate,
         refetchBalance,
         refetchPending,
         resetWrite,

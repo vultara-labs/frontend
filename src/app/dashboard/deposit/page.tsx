@@ -9,7 +9,7 @@ import Link from "next/link";
 import { PROTOCOL, YIELD, RISK } from "@/constants";
 import { useWalletConnection, useDashboardData, useVaultContract } from "@/hooks";
 import { formatUnits } from "viem";
-import { AmountInput, useAmountValidation } from "@/components/ui";
+import { AmountInput, useAmountValidation, SuccessAnimation } from "@/components/ui";
 
 function DepositLoading() {
     return (
@@ -51,7 +51,6 @@ function DepositContent() {
         if (vault.isConfirmed && step === "processing") {
             toast.dismiss();
             setStep("success");
-            vault.celebrate();
             toast.success("Deposit Successful!");
         }
     }, [vault.isConfirmed, step]);
@@ -82,7 +81,6 @@ function DepositContent() {
             demoDeposit(numAmount);
             toast.dismiss();
             setStep("success");
-            vault.celebrate();
             toast.success("Demo Deposit Successful!");
         }, 2000);
     };
@@ -321,14 +319,12 @@ function DepositContent() {
 
                         {step === "success" && (
                             <motion.div key="success" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center py-8">
-                                <div className="w-20 h-20 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/20 flex items-center justify-center mb-6">
-                                    <CheckCircle size={40} weight="fill" className="text-[var(--success)]" />
-                                </div>
+                                <SuccessAnimation />
                                 <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-2">Complete</h3>
                                 <p className="text-[var(--text-secondary)] text-center mb-8 max-w-xs mx-auto">
                                     Your funds have been deposited successfully into the Vault.
                                 </p>
-                                <Link href="/dashboard" className="btn-secondary h-14 px-8 w-full flex items-center justify-center text-xs">
+                                <Link href="/dashboard" className="btn-primary w-full h-14 px-8 flex items-center justify-center text-xs tracking-widest font-bold uppercase shadow-[0_0_20px_rgba(204,255,0,0.15)] hover:shadow-[0_0_30px_rgba(204,255,0,0.3)] transition-all">
                                     Return to Dashboard
                                 </Link>
                             </motion.div>
