@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Users, Copy, Check, Gift, Trophy, Share } from "@phosphor-icons/react";
 import { useAccount } from "wagmi";
 import { toast } from "sonner";
+import { IconBox } from "@/components/ui/IconBox";
 
 interface ReferralData {
     referralCode: string;
@@ -100,9 +101,7 @@ export function ReferralWidget({ className = "" }: { className?: string }) {
     return (
         <div className={`p-6 rounded-2xl bg-[var(--obsidian-surface)] border border-[var(--border-medium)] ${className}`}>
             <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-[var(--info)]/10 border border-[var(--info)]/20 flex items-center justify-center">
-                    <Users size={20} className="text-[var(--info)]" weight="fill" />
-                </div>
+                <IconBox icon={Users} color="var(--info)" size="md" iconWeight="fill" />
                 <div>
                     <h3 className="text-sm font-bold text-white uppercase tracking-wide">Referral Program</h3>
                     <p className="text-[10px] text-[var(--text-tertiary)]">Invite friends, earn rewards</p>

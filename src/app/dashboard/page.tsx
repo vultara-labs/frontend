@@ -5,9 +5,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { ArrowUpRight, Vault, Lightning, TrendUp, Crown } from "@phosphor-icons/react";
 import { ACCESS_LEVELS } from "@/constants";
-import { MissionsWidget } from "@/components/dashboard/MissionsWidget";
 import { TierDetailsModal } from "@/components/dashboard/TierDetailsModal";
-import { VaultEmptyState, SkeletonBalance } from "@/components/ui";
+import { VaultEmptyState, SkeletonBalance, IconBox, StaggerContainer } from "@/components/ui";
 import { useDashboardData } from "@/hooks";
 
 export default function DashboardPage() {
@@ -125,19 +124,19 @@ export default function DashboardPage() {
 
 
             {/* Feature Grid - Vault, AI, Tier */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {/* Vault Module */}
                 <Link href="/dashboard/vault" className="block h-full">
                     <motion.div
+                        variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
                         whileHover={{ y: -4 }}
                         className="group relative h-full min-h-[260px] p-6 sm:p-8 rounded-[2rem] bg-[var(--obsidian-surface)] border border-[var(--border-subtle)] overflow-hidden hover:border-[var(--volt)]/50 transition-all duration-500 flex flex-col justify-between"
                     >
                         <div className="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500">
                             <Vault size={120} weight="duotone" className="text-[var(--volt)]" />
                         </div>
-                        <div className="w-12 h-12 rounded-xl bg-[var(--volt)]/10 border border-[var(--volt)]/20 flex items-center justify-center text-[var(--volt)] mb-6 relative z-10">
-                            <Vault size={24} weight="duotone" />
-                        </div>
+                        <IconBox icon={Vault} color="var(--volt)" size="lg" className="mb-6 relative z-10" />
+
                         <div className="relative z-10">
                             <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white mb-2">Vault Strategy</h3>
                             <p className="text-body-sm text-[var(--text-secondary)] mb-4">
@@ -153,15 +152,15 @@ export default function DashboardPage() {
                 {/* AI Module */}
                 <Link href="/dashboard/ai" className="block h-full">
                     <motion.div
+                        variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
                         whileHover={{ y: -4 }}
                         className="group relative h-full min-h-[260px] p-6 sm:p-8 rounded-[2rem] bg-[var(--obsidian-surface)] border border-[var(--border-subtle)] overflow-hidden hover:border-amber-400/50 transition-all duration-500 flex flex-col justify-between"
                     >
                         <div className="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500">
                             <Lightning size={120} weight="duotone" className="text-amber-400" />
                         </div>
-                        <div className="w-12 h-12 rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-400 mb-6 relative z-10">
-                            <Lightning size={24} weight="duotone" />
-                        </div>
+                        <IconBox icon={Lightning} color="#fbbf24" size="lg" className="mb-6 relative z-10" />
+
                         <div className="relative z-10">
                             <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white mb-2">Nova AI</h3>
                             <p className="text-body-sm text-[var(--text-secondary)] mb-4">
@@ -176,6 +175,7 @@ export default function DashboardPage() {
 
                 {/* Access Tier Module */}
                 <motion.div
+                    variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
                     whileHover={{ y: -4 }}
                     onClick={() => setIsTierModalOpen(true)}
                     className="group relative h-full min-h-[260px] p-6 sm:p-8 rounded-[2rem] bg-gradient-to-b from-[var(--obsidian-surface)] to-black border border-[var(--border-subtle)] overflow-hidden transition-all duration-500 flex flex-col justify-between cursor-pointer md:col-span-2 lg:col-span-1"
@@ -187,16 +187,8 @@ export default function DashboardPage() {
 
                     <div className="relative z-10">
                         <div className="flex justify-between items-start mb-6">
-                            <div
-                                className="w-12 h-12 rounded-xl flex items-center justify-center border"
-                                style={{
-                                    backgroundColor: `color-mix(in srgb, ${tierColor} 10%, transparent)`,
-                                    borderColor: `color-mix(in srgb, ${tierColor} 20%, transparent)`,
-                                    color: tierColor
-                                }}
-                            >
-                                <CurrentTierIcon size={24} weight="duotone" />
-                            </div>
+                            <IconBox icon={CurrentTierIcon} color={tierColor} size="lg" />
+
                             <span
                                 className="px-3 py-1 rounded-lg border label"
                                 style={{
@@ -242,12 +234,7 @@ export default function DashboardPage() {
                         </div>
                     </div>
                 </motion.div>
-            </div>
-
-            {/* Gamification / Missions */}
-            <div className="pt-4">
-                <MissionsWidget balance={totalBalance} isPreviewMode={isPreviewMode} />
-            </div>
+            </StaggerContainer>
 
             <TierDetailsModal
                 isOpen={isTierModalOpen}

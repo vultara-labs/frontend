@@ -1,49 +1,59 @@
 "use client";
 
-import { ReactNode } from "react";
-
-type IconBoxColor = "volt" | "blue" | "warning" | "success" | "error" | "amber" | "purple";
-type IconBoxSize = "sm" | "md" | "lg" | "xl";
+import { ElementType, ComponentType, ReactNode } from "react";
 
 interface IconBoxProps {
-    icon: ReactNode;
-    color?: IconBoxColor;
-    size?: IconBoxSize;
+    /** Phosphor Icon Component or generic React Icon */
+    icon: ElementType | ComponentType<any>;
+    /** Dynamic color string (hex, rgb, or var) */
+    color?: string;
     className?: string;
+    size?: "sm" | "md" | "lg" | "xl";
+    variant?: "glass" | "solid";
+    iconWeight?: "bold" | "duotone" | "fill" | "regular";
 }
 
-const sizeClasses: Record<IconBoxSize, string> = {
-    sm: "w-8 h-8 rounded-lg",
-    md: "w-12 h-12 rounded-xl",
-    lg: "w-16 h-16 rounded-2xl",
-    xl: "w-20 h-20 rounded-2xl",
-};
+export function IconBox({
+    icon: Icon,
+    color = "var(--volt)",
+    className = "",
+    size = "md",
+    variant = "glass",
+    iconWeight = "duotone"
+}: IconBoxProps) {
+    const sizeClasses = {
+        sm: "w-8 h-8 rounded-lg",     // Widget small
+        md: "w-10 h-10 rounded-xl",   // Widget default
+        lg: "w-12 h-12 rounded-xl",   // Dashboard Cards
+        xl: "w-16 h-16 rounded-2xl"   // Hero / Modal Header
+    };
 
-const colorClasses: Record<IconBoxColor, string> = {
-    volt: "bg-[var(--volt)]/10 border-[var(--volt)]/20 text-[var(--volt)]",
-    blue: "bg-blue-500/10 border-blue-500/20 text-blue-400",
-    warning: "bg-[var(--warning)]/10 border-[var(--warning)]/20 text-[var(--warning)]",
-    success: "bg-[var(--success)]/10 border-[var(--success)]/20 text-[var(--success)]",
-    error: "bg-[var(--error)]/10 border-[var(--error)]/20 text-[var(--error)]",
-    amber: "bg-amber-400/10 border-amber-400/20 text-amber-400",
-    purple: "bg-purple-500/10 border-purple-500/20 text-purple-400",
-};
+    const iconSizes = {
+        sm: 16,
+        md: 20,
+        lg: 24,
+        xl: 32
+    };
 
-/**
- * Reusable icon container with consistent styling across the app
- * Used for feature cards, headers, and action indicators
- */
-export function IconBox({ icon, color = "volt", size = "md", className = "" }: IconBoxProps) {
+    // Style Calculation:
+    // Using color-mix for automatic opacity variants based on the input color
+    // This allows us to pass 'var(--text-secondary)' or '#ff0000' and get standard glassmorphism
+    const style = variant === "glass" ? {
+        backgroundColor: `color-mix(in srgb, ${color} 10%, transparent)`,
+        borderColor: `color-mix(in srgb, ${color} 20%, transparent)`,
+        color: color
+    } : {
+        backgroundColor: color,
+        borderColor: color,
+        color: "#000" // Solid variant usually fits best with black icon
+    };
+
     return (
         <div
-            className={`
-                ${sizeClasses[size]}
-                ${colorClasses[color]}
-                border flex items-center justify-center shrink-0
-                ${className}
-            `}
+            className={`${sizeClasses[size]} border flex items-center justify-center flex-shrink-0 ${className}`}
+            style={style}
         >
-            {icon}
+            <Icon size={iconSizes[size]} weight={iconWeight} />
         </div>
     );
 }
