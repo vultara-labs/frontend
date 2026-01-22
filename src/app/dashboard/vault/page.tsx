@@ -96,7 +96,7 @@ export default function VaultPage() {
                                         {vaultBalanceETH.toFixed(4)} <span className="text-lg text-[var(--text-tertiary)]">ETH</span>
                                     </p>
                                     <p className="text-sm text-[var(--text-secondary)] mt-1">
-                                        ≈ ${vaultBalanceUSD.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                                        ≈ ${vaultBalanceUSD.toLocaleString("en-US", { maximumFractionDigits: 0 })}
                                     </p>
                                 </>
                             ) : (
@@ -116,7 +116,7 @@ export default function VaultPage() {
                     <div className="relative z-10 grid grid-cols-3 gap-4 mt-8 pt-6 border-t border-[var(--border-subtle)]">
                         <div className="text-center sm:text-left">
                             <p className="text-[10px] uppercase tracking-wider text-[var(--text-tertiary)] mb-1">Strike</p>
-                            <p className="text-sm font-bold text-white font-mono">${loading ? "..." : strikePrice.toLocaleString()}</p>
+                            <p className="text-sm font-bold text-white font-mono">${loading ? "..." : strikePrice.toLocaleString("en-US")}</p>
                         </div>
                         <div className="text-center">
                             <p className="text-[10px] uppercase tracking-wider text-[var(--text-tertiary)] mb-1">Epoch Ends</p>
@@ -218,7 +218,7 @@ export default function VaultPage() {
                                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                                             {[
                                                 { step: 1, title: "You Deposit", desc: "ETH goes into vault", color: "info" },
-                                                { step: 2, title: "Vault Sells Calls", desc: `Strike: $${strikePrice.toLocaleString()}`, color: "volt" },
+                                                { step: 2, title: "Vault Sells Calls", desc: `Strike: $${strikePrice.toLocaleString("en-US")}`, color: "volt" },
                                                 { step: 3, title: "Collect Premium", desc: "Weekly earnings", color: "success" },
                                                 { step: 4, title: "Auto-Compound", desc: "Reinvest gains", color: "warning" },
                                             ].map((item) => (

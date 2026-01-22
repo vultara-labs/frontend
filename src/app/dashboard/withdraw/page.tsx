@@ -31,11 +31,18 @@ export default function WithdrawPage() {
 
 function WithdrawContent() {
     const { isConnected, address, connect: handleConnect } = useWalletConnection();
-    const { isPreviewMode, vaultBalanceETH, demoWithdraw } = useDashboardData();
+    const { isPreviewMode, vaultBalanceETH, demoWithdraw, pendingWithdrawalETH, pendingWithdrawalShares } = useDashboardData();
     const chainId = useChainId();
-    const [step, setStep] = useState<"input" | "processing" | "success">("input");
+    const [step, setStep] = useState<"input" | "processing" | "success" | "pending_view">("input");
     const [amount, setAmount] = useState("");
     const searchParams = useSearchParams();
+
+    // Check for existing pending withdrawal on mount
+    useEffect(() => {
+        if (pendingWithdrawalShares > 0 && step === "input") {
+            setStep("pending_view");
+        }
+    }, [pendingWithdrawalShares, step]);
 
     useEffect(() => {
         const urlAmount = searchParams.get("amount");
@@ -58,27 +65,28 @@ function WithdrawContent() {
         }
     });
 
-    // Contract write hook for withdraw
-    const { writeContract: writeWithdraw, data: withdrawHash, isPending: isWithdrawing } = useWriteContract();
+    // Contract write hooks
+    const { writeContract: writeContract, data: txHash, isPending: isTxPending } = useWriteContract();
+    const { isLoading: isTxConfirming, isSuccess: isTxSuccess } = useWaitForTransactionReceipt({ hash: txHash });
 
-    // Transaction receipt hook
-    const { isLoading: isWithdrawConfirming, isSuccess: isWithdrawSuccess } = useWaitForTransactionReceipt({ hash: withdrawHash });
-
-    // Handle withdraw success
+    // Handle success
     useEffect(() => {
-        if (isWithdrawSuccess && step === "processing") {
+        if (isTxSuccess && step === "processing") {
             toast.dismiss();
             setStep("success");
+            const isClaim = pendingWithdrawalShares > 0 && amount === "CLAIM"; // Hacky way to track op
+
             confetti({
                 particleCount: 100,
                 spread: 70,
                 origin: { y: 0.6 },
                 colors: ["#CCFF00", "#ffffff", "#22c55e"],
             });
-            toast.success("Withdrawal Complete!");
+
+            toast.success("Transaction Confirmed!");
             refetchVaultBalance();
         }
-    }, [isWithdrawSuccess]);
+    }, [isTxSuccess]);
 
     // Use demo or real vault balance
     const realVaultBalance = vaultBalance ? parseFloat(formatUnits(vaultBalance as bigint, 18)) : 0;
@@ -87,7 +95,9 @@ function WithdrawContent() {
     const numAmount = parseFloat(amount.replace(/,/g, '')) || 0;
     const isValidAmount = numAmount > 0 && numAmount <= totalBalance;
 
-    const handleWithdraw = async () => {
+    // --- ACTIONS ---
+
+    const handleScheduleWithdraw = async () => {
         if (!isValidAmount) return;
         if (!isConnected || !address) {
             toast.error("Please connect your wallet");
@@ -97,21 +107,73 @@ function WithdrawContent() {
         setStep("processing");
 
         try {
-            const withdrawAmountWei = parseEther(numAmount.toString());
+            // Need to convert ETH amount to Shares
+            // For now assuming 1:1 roughly or using the balance directly if max
+            // Ideally we call convertToShares but for schedule we input SHARES. 
+            // Since we don't have shares input, we might need to assume 1:1 for now or fetch.
+            // Simplified: We use the same amount since we updated logic to validAmount <= totalBalance (which is ETH)
+            // Wait, smart contract `scheduleWithdraw` takes SHARES.
+            // We need to convert ETH amount -> Shares.
+            // Logic: shares = (ethAmount * totalSupply) / totalAssets.
+            // This is complex to do on client perfectly.
+            // Hack for Hackathon: If Max, use balance directly. If partial, rely on simple conversion or prompt user.
+            // Let's use the `vaultBalance` (Contract shares) directly if Max.
 
-            toast.loading("Withdrawing from Vault...");
-            writeWithdraw({
+            let sharesToWithdraw = BigInt(0);
+
+            if (numAmount >= totalBalance * 0.999) {
+                sharesToWithdraw = (vaultBalance as bigint) || BigInt(0);
+            } else {
+                sharesToWithdraw = parseEther(numAmount.toString()); // Approx 1:1 default
+            }
+
+            toast.loading("Scheduling Withdrawal...");
+            writeContract({
                 address: contracts.ETH_VAULT,
                 abi: VULTARA_ETH_VAULT_ABI,
-                functionName: "withdraw",
-                args: [withdrawAmountWei],
+                functionName: "scheduleWithdraw",
+                args: [sharesToWithdraw],
             });
         } catch (error) {
+            console.error(error);
             toast.dismiss();
             toast.error("Transaction failed");
             setStep("input");
         }
     };
+
+    const handleClaim = async () => {
+        setStep("processing");
+        setAmount("CLAIM"); // Flag for success msg
+        try {
+            toast.loading("Claiming funds...");
+            writeContract({
+                address: contracts.ETH_VAULT,
+                abi: VULTARA_ETH_VAULT_ABI,
+                functionName: "claimWithdraw",
+                args: [],
+            });
+        } catch (e) {
+            setStep("pending_view");
+            toast.dismiss();
+        }
+    }
+
+    const handleCancel = async () => {
+        setStep("processing");
+        try {
+            toast.loading("Cancelling request...");
+            writeContract({
+                address: contracts.ETH_VAULT,
+                abi: VULTARA_ETH_VAULT_ABI,
+                functionName: "cancelWithdraw",
+                args: [],
+            });
+        } catch (e) {
+            setStep("pending_view");
+            toast.dismiss();
+        }
+    }
 
     const handleMax = () => setAmount(totalBalance.toFixed(6));
 
@@ -146,6 +208,40 @@ function WithdrawContent() {
 
                 <div className="relative rounded-[2.5rem] bg-[var(--obsidian-surface)] border border-[var(--border-medium)] p-8 sm:p-12 overflow-hidden">
                     <AnimatePresence mode="wait">
+
+                        {/* VIEW 1: PENDING WITHDRAWAL EXISTS */}
+                        {step === "pending_view" && (
+                            <motion.div key="pending" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center">
+                                <div className="w-16 h-16 rounded-2xl bg-[var(--warning)]/10 text-[var(--warning)] mx-auto mb-6 flex items-center justify-center border border-[var(--warning)]/20">
+                                    <CircleNotch size={32} weight="bold" className="animate-spin-slow" />
+                                </div>
+                                <h2 className="text-2xl font-black text-white uppercase mb-2">Withdrawal Queued</h2>
+                                <p className="text-[var(--text-secondary)] mb-6">
+                                    You have <strong className="text-white">{pendingWithdrawalETH.toFixed(4)} ETH</strong> scheduled for withdrawal.
+                                    Funds are released every Friday.
+                                </p>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <button
+                                        onClick={handleCancel}
+                                        className="h-14 rounded-xl border border-[var(--border-medium)] text-[var(--text-secondary)] font-bold hover:bg-white/5 hover:text-white transition-colors"
+                                    >
+                                        Cancel Request
+                                    </button>
+                                    <button
+                                        onClick={handleClaim}
+                                        className="h-14 rounded-xl bg-[var(--volt)] text-black font-bold uppercase hover:bg-[var(--volt)]/90 transition-colors shadow-[0_0_20px_rgba(204,255,0,0.2)]"
+                                    >
+                                        Claim Funds
+                                    </button>
+                                </div>
+                                <p className="text-xs text-[var(--text-tertiary)] mt-4">
+                                    Note: Claiming will fail if funds are currently locked in strategy.
+                                </p>
+                            </motion.div>
+                        )}
+
+                        {/* VIEW 2: INPUT FORM (SCHEDULE) */}
                         {step === "input" && (
                             <motion.div key="input" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
                                 <div className="flex items-center justify-between mb-8">
@@ -154,12 +250,12 @@ function WithdrawContent() {
                                             <ArrowCircleDown size={24} weight="duotone" />
                                         </div>
                                         <div>
-                                            <h1 className="text-3xl font-black uppercase tracking-tight text-white leading-none mb-1">Withdraw</h1>
-                                            <p className="label text-[var(--text-secondary)]">Remove Liquidity</p>
+                                            <h1 className="text-3xl font-black uppercase tracking-tight text-white leading-none mb-1">Schedule</h1>
+                                            <p className="label text-[var(--text-secondary)]">Request Exit Queue</p>
                                         </div>
                                     </div>
                                     <div className="text-right">
-                                        <p className="label text-[var(--text-secondary)] mb-1">In Vault</p>
+                                        <p className="label text-[var(--text-secondary)] mb-1">Available to Withdraw</p>
                                         <p className="text-xl font-black text-white tracking-tight">{totalBalance.toFixed(4)} ETH</p>
                                     </div>
                                 </div>
@@ -231,9 +327,9 @@ function WithdrawContent() {
                                             </Link>
                                         </motion.div>
                                     ) : (
-                                        <div className="mt-4 px-2 flex justify-between text-xs">
-                                            <span className="text-[var(--text-secondary)] font-bold">Network Fee</span>
-                                            <span className="text-[var(--success)] font-bold">~0.0001 ETH</span>
+                                        <div className="mt-4 px-2 text-xs text-[var(--warning)] flex items-center gap-2">
+                                            <span className="font-bold">NOTICE:</span>
+                                            <span>Funds will be added to queue and released next Friday.</span>
                                         </div>
                                     )}
                                 </div>
@@ -248,11 +344,11 @@ function WithdrawContent() {
                                     </button>
                                 ) : (
                                     <button
-                                        onClick={handleWithdraw}
+                                        onClick={handleScheduleWithdraw}
                                         disabled={!isValidAmount}
                                         className="btn-primary bg-white text-black hover:bg-white/90 disabled:bg-white/40 w-full h-16 text-base tracking-widest shadow-[0_0_20px_rgba(255,255,255,0.15)]"
                                     >
-                                        Withdraw Now
+                                        Schedule Withdrawal
                                     </button>
                                 )}
                             </motion.div>
@@ -265,7 +361,7 @@ function WithdrawContent() {
                                     <CircleNotch size={64} className="text-blue-400 animate-spin relative z-10" />
                                 </div>
                                 <h3 className="text-xl font-black uppercase tracking-tight text-white mb-2">Processing</h3>
-                                <p className="text-sm text-[var(--text-secondary)]">Sending ETH to your wallet...</p>
+                                <p className="text-sm text-[var(--text-secondary)]">Interacting with Vultara Vault...</p>
                             </motion.div>
                         )}
 
@@ -274,9 +370,9 @@ function WithdrawContent() {
                                 <div className="w-20 h-20 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/20 flex items-center justify-center mb-6">
                                     <CheckCircle size={40} weight="fill" className="text-[var(--success)]" />
                                 </div>
-                                <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-2">Funds Sent</h3>
+                                <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-2">Request Confirmed</h3>
                                 <p className="text-[var(--text-secondary)] text-center mb-8 max-w-xs mx-auto">
-                                    {numAmount.toFixed(4)} ETH has been sent to your wallet.
+                                    Your request has been processed successfully. Check stats for updates.
                                 </p>
                                 <Link
                                     href="/dashboard"

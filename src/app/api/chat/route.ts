@@ -31,25 +31,36 @@ CRITICAL RULES:
 
 === VULTARA PROTOCOL KNOWLEDGE ===
 
+
 WHAT IS VULTARA:
 - Simple DeFi yield platform on Base L2
 - Users deposit ETH, vault executes options strategies via Thetanuts V4
-- Yield comes from options premiums, NOT token emissions (Real Yield)
+- Yield comes from options premiums (Real Yield), distributed via Share Price appreciation.
 - Target audience: Retail users who want options yield without complexity
 
 VAULT ARCHITECTURE:
 - Contract: VultaraETHVault (ERC20 token: vETH)
-- Share Ratio: 1:1 (deposit 1 ETH = get 1 vETH)
+- Share Ratio: DYNAMIC (ERC-4626 style). 1 vETH != 1 ETH.
+- Share Price Formula: (Total Assets / Total Supply). Grows as yield is earned.
 - Min Deposit: 0.001 ETH
 - Network: Base (Testnet: Base Sepolia)
 - Security: ReentrancyGuard, Ownable
 - Strategy: Cash-Secured Puts via Thetanuts OptionBook
 
 HOW IT WORKS:
-1. User deposits ETH -> Vault mints vETH shares
-2. Vault executes strategy (weekly epochs)
-3. Premiums accrue to vault
-4. User withdraws ETH + yield
+1. User deposits ETH -> Mints vETH shares (based on current share price)
+2. Vault locks ~90% funds in strategy (weekly epochs)
+3. Premiums accrue to vault -> Total Assets increase -> Share Price goes UP
+4. User withdraws -> Burns vETH -> Gets more ETH than deposited (Principal + Yield)
+
+WITHDRAWAL SYSTEM (IMPORTANT):
+- NO Instant Withdrawals (to prevent liquidity crunch).
+- System uses a "Withdrawal Queue":
+  1. User clicks "Schedule Withdrawal" (Shares are escrowed)
+  2. Request enters queue for next Epoch end (Friday 8AM UTC)
+  3. On Friday, liquidity is freed up.
+  4. User clicks "Claim" to get ETH back.
+- Users can "Cancel Request" anytime before Friday.
 
 YIELD & RISK INFO:
 - APY: ~3-8% variable (depends on market volatility)
@@ -74,11 +85,10 @@ Available at /docs with pages:
 - Security & Risks: Audit status, risk disclosure
 - Vault Architecture: Technical docs for auditors
 
-RECENT UPDATES (v1.1):
-- Added Risk Profile card in deposit flow showing downside scenarios
-- All APY displays now show "~" prefix and "*Variable" indicator
-- Explicit disclaimers: "Yields are strategy-dependent and not guaranteed"
-- Vault Architecture documentation for auditors
+RECENT UPDATES (v1.2):
+- Implemented "Withdrawal Queue" mechanism for mainnet safety.
+- Switched to Dynamic Share Price (Real Yield) model.
+- Added live "Schedule -> Claim" flow in UI.
 
 THETANUTS V4 INTEGRATION:
 - OptionBook contract: 0xd58b814C7Ce700f251722b5555e25aE0fa8169A1 (Base)

@@ -42,6 +42,39 @@ export function useDashboardData() {
         }
     });
 
+    // Check for pending withdrawals
+    const { data: pendingSharesRaw } = useReadContract({
+        address: contracts.ETH_VAULT,
+        abi: VULTARA_ETH_VAULT_ABI,
+        functionName: "pendingWithdrawals",
+        args: address ? [address] : undefined,
+        query: {
+            enabled: !!address && isConnected,
+        }
+    });
+
+    const pendingWithdrawalShares = pendingSharesRaw ? parseFloat(formatUnits(pendingSharesRaw as bigint, 18)) : 0;
+
+    // Calculate ETH value of pending shares (Approximate for display)
+    // We reuse useReadContract for convertToAssets above but technically we want the value of pending shares
+    // For simplicity, we can estimate it using the same ratio as valid shares
+    // Ratio = vaultAssetsRaw / vaultSharesRaw. 
+    // If vaultSharesRaw is 0 (User withdrew everything to queue), we can't calculate easily without another call.
+    // Let's just do a specific convert call for pending shares if > 0.
+    const { data: pendingAssetsRaw } = useReadContract({
+        address: contracts.ETH_VAULT,
+        abi: VULTARA_ETH_VAULT_ABI,
+        functionName: "convertToAssets",
+        args: pendingSharesRaw ? [pendingSharesRaw] : undefined,
+        query: {
+            enabled: !!pendingSharesRaw && pendingWithdrawalShares > 0,
+        }
+    });
+
+    const pendingWithdrawalETH = pendingAssetsRaw
+        ? parseFloat(formatUnits(pendingAssetsRaw as bigint, 18))
+        : pendingWithdrawalShares; // Fallback 1:1
+
     // Calculate real values from contract
     const realVaultShares = vaultSharesRaw ? parseFloat(formatUnits(vaultSharesRaw as bigint, 18)) : 0;
     // Default to shares if assets fetch fails/loading (1:1 fallback), but prefer assets
@@ -99,6 +132,10 @@ export function useDashboardData() {
         // Vault data
         vaultBalanceETH,
         vaultBalanceUSD,
+
+        // Pending Withdrawal data
+        pendingWithdrawalShares,
+        pendingWithdrawalETH,
 
         // Wallet data
         walletBalanceETH,

@@ -29,6 +29,13 @@ export const VULTARA_ETH_VAULT_ABI = [
         stateMutability: "view",
         type: "function",
     },
+    {
+        inputs: [{ name: "user", type: "address" }],
+        name: "pendingWithdrawals",
+        outputs: [{ name: "", type: "uint256" }],
+        stateMutability: "view",
+        type: "function",
+    },
     // Write Functions
     {
         inputs: [],
@@ -39,7 +46,21 @@ export const VULTARA_ETH_VAULT_ABI = [
     },
     {
         inputs: [{ name: "shares", type: "uint256" }],
-        name: "withdraw",
+        name: "scheduleWithdraw",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "claimWithdraw",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "cancelWithdraw",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function",
