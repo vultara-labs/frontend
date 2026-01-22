@@ -5,3 +5,4 @@ export { SkeletonCard, SkeletonText, SkeletonBalance, SkeletonChart, DashboardSk
 export { TransactionFeedback, useTransactionStatus } from "./TransactionFeedback";
 export { YieldCalculator } from "./YieldCalculator";
 export { ErrorBoundary, withErrorBoundary } from "./ErrorBoundary";
+export { AmountInput, useAmountValidation } from "./AmountInput";

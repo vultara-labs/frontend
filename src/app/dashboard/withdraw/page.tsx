@@ -1,17 +1,13 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowCircleDown, CheckCircle, CircleNotch, Wallet } from "@phosphor-icons/react";
+import { ArrowCircleDown, CheckCircle, CircleNotch } from "@phosphor-icons/react";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { useChainId, useWriteContract, useWaitForTransactionReceipt, useReadContract } from "wagmi";
 import { toast } from "sonner";
-import confetti from "canvas-confetti";
 import Link from "next/link";
-import { formatUnits, parseEther } from "viem";
-import { useWalletConnection } from "@/hooks";
-import { useDashboardData } from "@/hooks";
-import { PROTOCOL, VULTARA_ETH_VAULT_ABI } from "@/constants";
+import { useWalletConnection, useDashboardData, useVaultContract } from "@/hooks";
+import { AmountInput, useAmountValidation } from "@/components/ui";
 
 function WithdrawLoading() {
     return (
@@ -30,12 +26,23 @@ export default function WithdrawPage() {
 }
 
 function WithdrawContent() {
-    const { isConnected, address, connect: handleConnect } = useWalletConnection();
+    const { isConnected, address } = useWalletConnection();
     const { isPreviewMode, vaultBalanceETH, demoWithdraw, pendingWithdrawalETH, pendingWithdrawalShares } = useDashboardData();
-    const chainId = useChainId();
     const [step, setStep] = useState<"input" | "processing" | "success" | "pending_view">("input");
     const [amount, setAmount] = useState("");
     const searchParams = useSearchParams();
+
+    // Use centralized vault contract hook
+    const vault = useVaultContract({
+        address,
+        onSuccess: () => {
+            toast.dismiss();
+            setStep("success");
+            vault.celebrate();
+            toast.success("Transaction Confirmed!");
+            vault.refetchBalance();
+        }
+    });
 
     // Check for existing pending withdrawal on mount
     useEffect(() => {
@@ -44,6 +51,7 @@ function WithdrawContent() {
         }
     }, [pendingWithdrawalShares, step]);
 
+    // URL amount param
     useEffect(() => {
         const urlAmount = searchParams.get("amount");
         if (urlAmount && !isNaN(parseFloat(urlAmount))) {
@@ -51,131 +59,43 @@ function WithdrawContent() {
         }
     }, [searchParams]);
 
-    // Get contract addresses for current chain
-    const contracts = PROTOCOL.CONTRACTS[chainId as keyof typeof PROTOCOL.CONTRACTS] || PROTOCOL.CONTRACTS[84532];
-
-    // Read user's vault balance (shares = ETH value in vault) - only when connected
-    const { data: vaultBalance, refetch: refetchVaultBalance } = useReadContract({
-        address: contracts.ETH_VAULT,
-        abi: VULTARA_ETH_VAULT_ABI,
-        functionName: "getUserBalance",
-        args: address ? [address] : undefined,
-        query: {
-            enabled: !!address && isConnected,
-        }
-    });
-
-    // Contract write hooks
-    const { writeContract: writeContract, data: txHash, isPending: isTxPending } = useWriteContract();
-    const { isLoading: isTxConfirming, isSuccess: isTxSuccess } = useWaitForTransactionReceipt({ hash: txHash });
-
-    // Handle success
+    // Handle transaction success
     useEffect(() => {
-        if (isTxSuccess && step === "processing") {
+        if (vault.isConfirmed && step === "processing") {
             toast.dismiss();
             setStep("success");
-            const isClaim = pendingWithdrawalShares > 0 && amount === "CLAIM"; // Hacky way to track op
-
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ["#CCFF00", "#ffffff", "#22c55e"],
-            });
-
+            vault.celebrate();
             toast.success("Transaction Confirmed!");
-            refetchVaultBalance();
+            vault.refetchBalance();
         }
-    }, [isTxSuccess]);
+    }, [vault.isConfirmed, step]);
 
-    // Use demo or real vault balance
-    const realVaultBalance = vaultBalance ? parseFloat(formatUnits(vaultBalance as bigint, 18)) : 0;
-    const totalBalance = isPreviewMode ? vaultBalanceETH : realVaultBalance;
+    // Get balance based on mode
+    const totalBalance = isPreviewMode ? vaultBalanceETH : vault.userBalanceETH;
+    const { numAmount, isValidAmount } = useAmountValidation(amount, totalBalance);
 
-    const numAmount = parseFloat(amount.replace(/,/g, '')) || 0;
-    const isValidAmount = numAmount > 0 && numAmount <= totalBalance;
+    const handleMax = () => setAmount(totalBalance.toFixed(6));
 
-    // --- ACTIONS ---
+    // === ACTIONS ===
 
     const handleScheduleWithdraw = async () => {
-        if (!isValidAmount) return;
-        if (!isConnected || !address) {
+        if (!isValidAmount || !isConnected || !address) {
             toast.error("Please connect your wallet");
             return;
         }
-
         setStep("processing");
-
-        try {
-            // Need to convert ETH amount to Shares
-            // For now assuming 1:1 roughly or using the balance directly if max
-            // Ideally we call convertToShares but for schedule we input SHARES. 
-            // Since we don't have shares input, we might need to assume 1:1 for now or fetch.
-            // Simplified: We use the same amount since we updated logic to validAmount <= totalBalance (which is ETH)
-            // Wait, smart contract `scheduleWithdraw` takes SHARES.
-            // We need to convert ETH amount -> Shares.
-            // Logic: shares = (ethAmount * totalSupply) / totalAssets.
-            // This is complex to do on client perfectly.
-            // Hack for Hackathon: If Max, use balance directly. If partial, rely on simple conversion or prompt user.
-            // Let's use the `vaultBalance` (Contract shares) directly if Max.
-
-            let sharesToWithdraw = BigInt(0);
-
-            if (numAmount >= totalBalance * 0.999) {
-                sharesToWithdraw = (vaultBalance as bigint) || BigInt(0);
-            } else {
-                sharesToWithdraw = parseEther(numAmount.toString()); // Approx 1:1 default
-            }
-
-            toast.loading("Scheduling Withdrawal...");
-            writeContract({
-                address: contracts.ETH_VAULT,
-                abi: VULTARA_ETH_VAULT_ABI,
-                functionName: "scheduleWithdraw",
-                args: [sharesToWithdraw],
-            });
-        } catch (error) {
-            console.error(error);
-            toast.dismiss();
-            toast.error("Transaction failed");
-            setStep("input");
-        }
+        await vault.scheduleWithdraw(numAmount, vault.userShares);
     };
 
     const handleClaim = async () => {
         setStep("processing");
-        setAmount("CLAIM"); // Flag for success msg
-        try {
-            toast.loading("Claiming funds...");
-            writeContract({
-                address: contracts.ETH_VAULT,
-                abi: VULTARA_ETH_VAULT_ABI,
-                functionName: "claimWithdraw",
-                args: [],
-            });
-        } catch (e) {
-            setStep("pending_view");
-            toast.dismiss();
-        }
-    }
+        await vault.claimWithdraw();
+    };
 
     const handleCancel = async () => {
         setStep("processing");
-        try {
-            toast.loading("Cancelling request...");
-            writeContract({
-                address: contracts.ETH_VAULT,
-                abi: VULTARA_ETH_VAULT_ABI,
-                functionName: "cancelWithdraw",
-                args: [],
-            });
-        } catch (e) {
-            setStep("pending_view");
-            toast.dismiss();
-        }
-    }
-
-    const handleMax = () => setAmount(totalBalance.toFixed(6));
+        await vault.cancelWithdraw();
+    };
 
     // Simulated withdraw for preview/demo mode
     const handlePreviewWithdraw = () => {
@@ -186,12 +106,7 @@ function WithdrawContent() {
             demoWithdraw(numAmount);
             toast.dismiss();
             setStep("success");
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ["#CCFF00", "#ffffff", "#22c55e"],
-            });
+            vault.celebrate();
             toast.success("Demo Withdrawal Complete!");
         }, 2000);
     };
@@ -203,13 +118,11 @@ function WithdrawContent() {
                 animate={{ opacity: 1, y: 0 }}
                 className="w-full max-w-xl relative group"
             >
-                {/* Glow Effect */}
                 <div className="absolute inset-0 bg-blue-500/5 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
                 <div className="relative rounded-[2.5rem] bg-[var(--obsidian-surface)] border border-[var(--border-medium)] p-8 sm:p-12 overflow-hidden">
                     <AnimatePresence mode="wait">
 
-                        {/* VIEW 1: PENDING WITHDRAWAL EXISTS */}
                         {step === "pending_view" && (
                             <motion.div key="pending" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center">
                                 <div className="w-16 h-16 rounded-2xl bg-[var(--warning)]/10 text-[var(--warning)] mx-auto mb-6 flex items-center justify-center border border-[var(--warning)]/20">
@@ -241,7 +154,6 @@ function WithdrawContent() {
                             </motion.div>
                         )}
 
-                        {/* VIEW 2: INPUT FORM (SCHEDULE) */}
                         {step === "input" && (
                             <motion.div key="input" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
                                 <div className="flex items-center justify-between mb-8">
@@ -260,79 +172,19 @@ function WithdrawContent() {
                                     </div>
                                 </div>
 
-                                <div className="mb-8">
-                                    <div className="flex justify-between items-center mb-3 px-2">
-                                        <span className="label text-[var(--text-secondary)]">Amount (ETH)</span>
-                                        <span className="text-xs font-mono text-[var(--text-tertiary)] hover:text-white cursor-pointer transition-colors" onClick={handleMax}>
-                                            Max: {totalBalance.toFixed(4)} ETH
-                                        </span>
-                                    </div>
-
-                                    <div className="relative group/input">
-                                        <div className="absolute inset-0 bg-blue-500/20 blur-xl rounded-2xl opacity-0 group-focus-within/input:opacity-50 transition-opacity" />
-                                        <motion.div
-                                            animate={numAmount > totalBalance ? { x: [0, -4, 4, -4, 4, 0] } : {}}
-                                            transition={{ duration: 0.4 }}
-                                            className={`relative flex items-center gap-2 p-6 rounded-2xl bg-[var(--obsidian-base)] border transition-colors ${numAmount > totalBalance
-                                                ? "border-[var(--error)] bg-[var(--error)]/5"
-                                                : "border-[var(--border-medium)] group-focus-within/input:border-blue-500"
-                                                }`}
-                                        >
-                                            <span className={`text-3xl ${numAmount > totalBalance ? "text-[var(--error)]" : "text-[var(--text-tertiary)]"}`}>Ξ</span>
-                                            <input
-                                                type="text"
-                                                value={amount}
-                                                onChange={(e) => {
-                                                    const val = e.target.value.replace(/,/g, '');
-                                                    if (!isNaN(Number(val)) || val === '') {
-                                                        setAmount(val);
-                                                    }
-                                                }}
-                                                placeholder="0"
-                                                className={`w-full bg-transparent text-4xl font-black placeholder:text-white/10 outline-none ${numAmount > totalBalance ? "text-[var(--error)]" : "text-white"
-                                                    }`}
-                                                autoFocus
-                                            />
-                                            <button
-                                                onClick={handleMax}
-                                                className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors uppercase tracking-wider ${numAmount > totalBalance
-                                                    ? "bg-[var(--error)]/10 text-[var(--error)] hover:bg-[var(--error)] hover:text-white"
-                                                    : "bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white"
-                                                    }`}
-                                            >
-                                                Max
-                                            </button>
-                                        </motion.div>
-                                    </div>
-
-                                    {numAmount > totalBalance ? (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: -10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            className="mt-4 px-2 flex items-center gap-2 text-[var(--error)]"
-                                        >
-                                            <span className="text-sm font-bold">Insufficient vault balance</span>
-                                        </motion.div>
-                                    ) : totalBalance === 0 ? (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: -10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            className="mt-4 px-2"
-                                        >
-                                            <Link
-                                                href="/dashboard/deposit"
-                                                className="text-sm font-bold text-[var(--volt)] hover:underline"
-                                            >
-                                                No funds in vault. Deposit first →
-                                            </Link>
-                                        </motion.div>
-                                    ) : (
-                                        <div className="mt-4 px-2 text-xs text-[var(--warning)] flex items-center gap-2">
-                                            <span className="font-bold">NOTICE:</span>
-                                            <span>Funds will be added to queue and released next Friday.</span>
-                                        </div>
-                                    )}
-                                </div>
+                                <AmountInput
+                                    value={amount}
+                                    onChange={setAmount}
+                                    maxAmount={totalBalance}
+                                    balance={totalBalance}
+                                    onMax={handleMax}
+                                    label="Amount (ETH)"
+                                    balanceLabel="Max"
+                                    accentColor="blue"
+                                    emptyStateLink="/dashboard/deposit"
+                                    emptyStateText="No funds in vault. Deposit first →"
+                                    noticeText="Funds will be added to queue and released next Friday."
+                                />
 
                                 {isPreviewMode ? (
                                     <button
