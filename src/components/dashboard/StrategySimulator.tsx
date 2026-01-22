@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Calculator, TrendUp, TrendDown, Equals, Sparkle, CaretDown, CaretUp } from "@phosphor-icons/react";
 import { StrategyType, STRATEGIES } from "./StrategySelector";
@@ -32,7 +32,7 @@ export function StrategySimulator({ ethPrice, depositAmount, selectedStrategy, c
     const depositUSD = depositAmount * ethPrice;
 
     // Calculate scenario outcomes based on strategy
-    const calculateOutcome = (priceChangePercent: number): ScenarioResult => {
+    const calculateOutcome = useCallback((priceChangePercent: number): ScenarioResult => {
         const finalPrice = ethPrice * (1 + priceChangePercent / 100);
         let returnPercent = 0;
         let scenarioName = "";
@@ -98,7 +98,7 @@ export function StrategySimulator({ ethPrice, depositAmount, selectedStrategy, c
         const outcome = returnPercent > 0.5 ? "profit" : returnPercent < -0.5 ? "loss" : "neutral";
 
         return { scenarioName, priceChange: priceChangePercent, finalPrice, returnPercent, returnUSD, outcome };
-    };
+    }, [ethPrice, depositUSD, selectedStrategy, strategy]);
 
     // Predefined scenarios
     const scenarios = useMemo(() => [
@@ -107,10 +107,10 @@ export function StrategySimulator({ ethPrice, depositAmount, selectedStrategy, c
         calculateOutcome(0),   // Sideways
         calculateOutcome(10),  // Bullish
         calculateOutcome(30),  // Moon
-    ], [ethPrice, depositAmount, selectedStrategy]);
+    ], [calculateOutcome]);
 
     // Custom scenario
-    const customScenario = useMemo(() => calculateOutcome(customPriceChange), [customPriceChange, ethPrice, depositAmount, selectedStrategy]);
+    const customScenario = useMemo(() => calculateOutcome(customPriceChange), [calculateOutcome, customPriceChange]);
 
     if (!strategy) return null;
 
@@ -141,8 +141,8 @@ export function StrategySimulator({ ethPrice, depositAmount, selectedStrategy, c
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: i * 0.05 }}
                         className={`p-3 rounded-xl text-center ${scenario.outcome === "profit" ? "bg-[var(--success)]/5 border border-[var(--success)]/20" :
-                                scenario.outcome === "loss" ? "bg-[var(--error)]/5 border border-[var(--error)]/20" :
-                                    "bg-white/[0.02] border border-[var(--border-subtle)]"
+                            scenario.outcome === "loss" ? "bg-[var(--error)]/5 border border-[var(--error)]/20" :
+                                "bg-white/[0.02] border border-[var(--border-subtle)]"
                             }`}
                     >
                         <div className="flex items-center justify-center gap-1 mb-1">
@@ -154,15 +154,15 @@ export function StrategySimulator({ ethPrice, depositAmount, selectedStrategy, c
                                 <Equals size={12} className="text-[var(--text-tertiary)]" />
                             )}
                             <span className={`text-[10px] font-bold ${scenario.priceChange > 0 ? "text-[var(--success)]" :
-                                    scenario.priceChange < 0 ? "text-[var(--error)]" :
-                                        "text-[var(--text-tertiary)]"
+                                scenario.priceChange < 0 ? "text-[var(--error)]" :
+                                    "text-[var(--text-tertiary)]"
                                 }`}>
                                 {scenario.priceChange > 0 ? "+" : ""}{scenario.priceChange}%
                             </span>
                         </div>
                         <p className={`text-xs font-bold font-mono ${scenario.outcome === "profit" ? "text-[var(--success)]" :
-                                scenario.outcome === "loss" ? "text-[var(--error)]" :
-                                    "text-white"
+                            scenario.outcome === "loss" ? "text-[var(--error)]" :
+                                "text-white"
                             }`}>
                             {scenario.returnPercent > 0 ? "+" : ""}{scenario.returnPercent.toFixed(1)}%
                         </p>
@@ -195,8 +195,8 @@ export function StrategySimulator({ ethPrice, depositAmount, selectedStrategy, c
                         <div className="flex items-center justify-between mb-2">
                             <span className="text-xs text-[var(--text-tertiary)]">ETH Price Change</span>
                             <span className={`text-sm font-bold font-mono ${customPriceChange > 0 ? "text-[var(--success)]" :
-                                    customPriceChange < 0 ? "text-[var(--error)]" :
-                                        "text-white"
+                                customPriceChange < 0 ? "text-[var(--error)]" :
+                                    "text-white"
                                 }`}>
                                 {customPriceChange > 0 ? "+" : ""}{customPriceChange}%
                             </span>
@@ -230,8 +230,8 @@ export function StrategySimulator({ ethPrice, depositAmount, selectedStrategy, c
                             <div>
                                 <p className="text-[10px] text-[var(--text-tertiary)] mb-1">Your Return</p>
                                 <p className={`text-sm font-bold font-mono ${customScenario.outcome === "profit" ? "text-[var(--success)]" :
-                                        customScenario.outcome === "loss" ? "text-[var(--error)]" :
-                                            "text-white"
+                                    customScenario.outcome === "loss" ? "text-[var(--error)]" :
+                                        "text-white"
                                     }`}>
                                     {customScenario.returnPercent > 0 ? "+" : ""}{customScenario.returnPercent.toFixed(2)}%
                                 </p>
@@ -239,8 +239,8 @@ export function StrategySimulator({ ethPrice, depositAmount, selectedStrategy, c
                             <div>
                                 <p className="text-[10px] text-[var(--text-tertiary)] mb-1">P/L USD</p>
                                 <p className={`text-sm font-bold font-mono ${customScenario.outcome === "profit" ? "text-[var(--success)]" :
-                                        customScenario.outcome === "loss" ? "text-[var(--error)]" :
-                                            "text-white"
+                                    customScenario.outcome === "loss" ? "text-[var(--error)]" :
+                                        "text-white"
                                     }`}>
                                     {customScenario.returnUSD > 0 ? "+" : ""}${Math.abs(customScenario.returnUSD).toFixed(2)}
                                 </p>

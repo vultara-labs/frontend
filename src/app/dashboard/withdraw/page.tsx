@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowCircleDown, CheckCircle, CircleNotch } from "@phosphor-icons/react";
+import { ArrowCircleDown, CircleNotch } from "@phosphor-icons/react";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
@@ -46,7 +46,7 @@ function WithdrawContent() {
     // Check for existing pending withdrawal on mount
     useEffect(() => {
         if (pendingWithdrawalShares > 0 && step === "input") {
-            setStep("pending_view");
+            setTimeout(() => setStep("pending_view"), 0);
         }
     }, [pendingWithdrawalShares, step]);
 
@@ -54,17 +54,19 @@ function WithdrawContent() {
     useEffect(() => {
         const urlAmount = searchParams.get("amount");
         if (urlAmount && !isNaN(parseFloat(urlAmount))) {
-            setAmount(urlAmount);
+            setTimeout(() => setAmount(urlAmount), 0);
         }
     }, [searchParams]);
 
     // Handle transaction success
     useEffect(() => {
         if (vault.isConfirmed && step === "processing") {
-            toast.dismiss();
-            setStep("success");
-            toast.success("Transaction Confirmed!");
-            vault.refetchBalance();
+            setTimeout(() => {
+                toast.dismiss();
+                setStep("success");
+                toast.success("Transaction Confirmed!");
+                vault.refetchBalance();
+            }, 0);
         }
     }, [vault.isConfirmed, step]);
 

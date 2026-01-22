@@ -50,27 +50,36 @@ export function SuccessAnimation() {
 
             {/* Floating Particles */}
             {[...Array(6)].map((_, i) => (
-                <motion.div
-                    key={`p-${i}`}
-                    className="absolute w-1 h-1 bg-[var(--volt)] rounded-sm"
-                    initial={{
-                        opacity: 0,
-                        y: 20,
-                        x: (Math.random() - 0.5) * 40
-                    }}
-                    animate={{
-                        opacity: [0, 1, 0],
-                        y: -60 - Math.random() * 40,
-                    }}
-                    transition={{
-                        duration: 2 + Math.random(),
-                        delay: Math.random() * 0.5,
-                        repeat: Infinity,
-                        repeatDelay: Math.random(),
-                        ease: "easeOut"
-                    }}
-                />
+                <Particle key={`p-${i}`} index={i} />
             ))}
         </div>
+    );
+}
+
+function Particle({ index }: { index: number }) {
+    // Generate deterministic values based on index to avoid hydration mismatch and impurity
+    const xOffset = ((index % 2 === 0 ? 1 : -1) * (10 + index * 5));
+    const delay = index * 0.5;
+
+    return (
+        <motion.div
+            className="absolute w-1 h-1 bg-[var(--volt)] rounded-sm"
+            initial={{
+                opacity: 0,
+                y: 20,
+                x: xOffset
+            }}
+            animate={{
+                opacity: [0, 1, 0],
+                y: -60 - (index * 10),
+            }}
+            transition={{
+                duration: 2 + (index % 3) * 0.5,
+                delay: delay,
+                repeat: Infinity,
+                repeatDelay: (index % 2) * 0.5,
+                ease: "easeOut"
+            }}
+        />
     );
 }

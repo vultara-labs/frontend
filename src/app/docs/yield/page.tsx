@@ -1,7 +1,7 @@
 "use client";
 
 import { TrendUp, Coins, Lightning } from "@phosphor-icons/react";
-import { DocsPageWrapper, DocsHeader, DocsContent, DocsSection, DocsStep, DocsCard } from "@/components/docs";
+import { DocsPageWrapper, DocsHeader, DocsContent, DocsSection, DocsStep } from "@/components/docs";
 
 export default function YieldMechanicsPage() {
     return (
@@ -51,13 +51,13 @@ export default function YieldMechanicsPage() {
                         <div>
                             <h4 className="text-white font-bold mb-2">Example Scenario</h4>
                             <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-                                ETH is at $4,000. We sell a "Put Option" with a Strike Price of $3,500 expiring in 7 days.
+                                ETH is at $4,000. We sell a &quot;Put Option&quot; with a Strike Price of $3,500 expiring in 7 days.
                                 <br /><br />
                                 Someone pays us $10 today for this contract.
                                 <br /><br />
                                 <strong>Scenario A (Most Likely):</strong> ETH price stays above $3,500. We keep our collateral + the $10 profit.
                                 <br />
-                                <strong>Scenario B (Crash):</strong> ETH crashes below $3,500. We may have to buy ETH at $3,500 (using the collateral), effectively "buying the dip".
+                                <strong>Scenario B (Crash):</strong> ETH crashes below $3,500. We may have to buy ETH at $3,500 (using the collateral), effectively &quot;buying the dip&quot;.
                             </p>
                         </div>
                     </div>

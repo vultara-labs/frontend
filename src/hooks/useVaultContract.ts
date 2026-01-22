@@ -14,7 +14,7 @@ interface UseVaultContractOptions {
  * Centralized hook for all Vultara Vault contract interactions
  * Handles deposits, withdrawals, and balance queries
  */
-export function useVaultContract({ address, onSuccess }: UseVaultContractOptions = {}) {
+export function useVaultContract({ address }: UseVaultContractOptions = {}) {
     const chainId = useChainId();
     const contracts = PROTOCOL.CONTRACTS[chainId as keyof typeof PROTOCOL.CONTRACTS] || PROTOCOL.CONTRACTS[84532];
 
@@ -78,7 +78,7 @@ export function useVaultContract({ address, onSuccess }: UseVaultContractOptions
                 value: amountWei,
             });
             return true;
-        } catch (error) {
+        } catch (_) {
             toast.dismiss();
             toast.error("Transaction failed");
             return false;
@@ -111,7 +111,7 @@ export function useVaultContract({ address, onSuccess }: UseVaultContractOptions
                 args: [sharesToWithdraw],
             });
             return true;
-        } catch (error) {
+        } catch (_) {
             toast.dismiss();
             toast.error("Transaction failed");
             return false;
@@ -129,7 +129,7 @@ export function useVaultContract({ address, onSuccess }: UseVaultContractOptions
                 args: [],
             });
             return true;
-        } catch (error) {
+        } catch (_) {
             toast.dismiss();
             return false;
         }
@@ -146,7 +146,7 @@ export function useVaultContract({ address, onSuccess }: UseVaultContractOptions
                 args: [],
             });
             return true;
-        } catch (error) {
+        } catch (_) {
             toast.dismiss();
             return false;
         }
@@ -159,9 +159,22 @@ export function useVaultContract({ address, onSuccess }: UseVaultContractOptions
             ? parseFloat(formatUnits(userShares as bigint, 18))
             : 0;
 
+    // Convert pending shares to pending ETH value (assets)
+    const { data: pendingAssets } = useReadContract({
+        address: contracts.ETH_VAULT,
+        abi: VULTARA_ETH_VAULT_ABI,
+        functionName: "convertToAssets",
+        args: pendingShares ? [pendingShares] : undefined,
+        query: { enabled: !!pendingShares }
+    });
+
     const pendingWithdrawalShares = pendingShares
         ? parseFloat(formatUnits(pendingShares as bigint, 18))
         : 0;
+
+    const pendingWithdrawalETH = pendingAssets
+        ? parseFloat(formatUnits(pendingAssets as bigint, 18))
+        : pendingWithdrawalShares; // Fallback 1:1 if conversion fails
 
     return {
         // Contract info
@@ -172,6 +185,7 @@ export function useVaultContract({ address, onSuccess }: UseVaultContractOptions
         userShares: userShares as bigint | undefined,
         userBalanceETH,
         pendingWithdrawalShares,
+        pendingWithdrawalETH,
 
         // Transaction state
         txHash,

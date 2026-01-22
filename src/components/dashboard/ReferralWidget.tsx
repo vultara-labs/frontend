@@ -37,20 +37,24 @@ export function ReferralWidget({ className = "" }: { className?: string }) {
             const code = `VULT-${address.slice(2, 8).toUpperCase()}`;
 
             // Demo data - would be fetched from backend
-            setReferralData({
-                referralCode: code,
-                referralCount: Math.floor(Math.random() * 10),
-                totalEarnings: Math.random() * 50,
-                tier: "bronze",
-            });
+            setTimeout(() => {
+                setReferralData({
+                    referralCode: code,
+                    referralCount: Math.floor(Math.random() * 10),
+                    totalEarnings: Math.random() * 50,
+                    tier: "bronze",
+                });
+            }, 0);
         } else {
             // Demo mode referral
-            setReferralData({
-                referralCode: "VULT-DEMO01",
-                referralCount: 3,
-                totalEarnings: 12.50,
-                tier: "bronze",
-            });
+            setTimeout(() => {
+                setReferralData({
+                    referralCode: "VULT-DEMO01",
+                    referralCount: 3,
+                    totalEarnings: 12.50,
+                    tier: "bronze",
+                });
+            }, 0);
         }
     }, [address, isConnected]);
 

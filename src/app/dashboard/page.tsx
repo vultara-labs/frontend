@@ -3,9 +3,8 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowUpRight, Vault, Lightning, ArrowCircleDown, Wallet, TrendUp, Crown, Lock } from "@phosphor-icons/react";
-import { PROTOCOL, ACCESS_LEVELS } from "@/constants";
-import { Counter } from "@/components/landing/Counter";
+import { ArrowUpRight, Vault, Lightning, TrendUp, Crown } from "@phosphor-icons/react";
+import { ACCESS_LEVELS } from "@/constants";
 import { MissionsWidget } from "@/components/dashboard/MissionsWidget";
 import { TierDetailsModal } from "@/components/dashboard/TierDetailsModal";
 import { VaultEmptyState, SkeletonBalance } from "@/components/ui";

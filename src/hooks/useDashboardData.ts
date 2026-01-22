@@ -1,9 +1,10 @@
 "use client";
 
 import { useWalletConnection, useMarketData } from "@/hooks";
-import { PROTOCOL, DEMO_DATA, VULTARA_ETH_VAULT_ABI } from "@/constants";
+import { PROTOCOL, DEMO_DATA } from "@/constants";
 import { formatUnits } from "viem";
-import { useChainId, useReadContract } from "wagmi";
+import { useChainId } from "wagmi";
+import { useVaultContract } from "./useVaultContract";
 import { useDemoStore } from "./useDemoStore";
 
 /**
@@ -20,62 +21,12 @@ export function useDashboardData() {
     // Get contract addresses for current chain
     const contracts = PROTOCOL.CONTRACTS[chainId as keyof typeof PROTOCOL.CONTRACTS] || PROTOCOL.CONTRACTS[84532];
 
-    // Read user's vault balance (SHARES) from smart contract
-    const { data: vaultSharesRaw } = useReadContract({
-        address: contracts.ETH_VAULT,
-        abi: VULTARA_ETH_VAULT_ABI,
-        functionName: "getUserBalance",
-        args: address ? [address] : undefined,
-        query: {
-            enabled: !!address && isConnected,
-        }
-    });
-
-    // Convert SHARES to ASSETS (ETH) to get real value (Principal + Yield)
-    const { data: vaultAssetsRaw } = useReadContract({
-        address: contracts.ETH_VAULT,
-        abi: VULTARA_ETH_VAULT_ABI,
-        functionName: "convertToAssets",
-        args: vaultSharesRaw ? [vaultSharesRaw] : undefined,
-        query: {
-            enabled: !!vaultSharesRaw && isConnected,
-        }
-    });
-
-    // Check for pending withdrawals
-    const { data: pendingSharesRaw } = useReadContract({
-        address: contracts.ETH_VAULT,
-        abi: VULTARA_ETH_VAULT_ABI,
-        functionName: "pendingWithdrawals",
-        args: address ? [address] : undefined,
-        query: {
-            enabled: !!address && isConnected,
-        }
-    });
-
-    const pendingWithdrawalShares = pendingSharesRaw ? parseFloat(formatUnits(pendingSharesRaw as bigint, 18)) : 0;
-
-    // Convert pending shares to ETH value
-    const { data: pendingAssetsRaw } = useReadContract({
-        address: contracts.ETH_VAULT,
-        abi: VULTARA_ETH_VAULT_ABI,
-        functionName: "convertToAssets",
-        args: pendingSharesRaw ? [pendingSharesRaw] : undefined,
-        query: {
-            enabled: !!pendingSharesRaw && pendingWithdrawalShares > 0,
-        }
-    });
-
-    const pendingWithdrawalETH = pendingAssetsRaw
-        ? parseFloat(formatUnits(pendingAssetsRaw as bigint, 18))
-        : pendingWithdrawalShares; // Fallback 1:1
-
-    // Calculate real values from contract
-    const realVaultShares = vaultSharesRaw ? parseFloat(formatUnits(vaultSharesRaw as bigint, 18)) : 0;
-    // Default to shares if assets fetch fails/loading (1:1 fallback), but prefer assets
-    const realVaultBalanceETH = vaultAssetsRaw
-        ? parseFloat(formatUnits(vaultAssetsRaw as bigint, 18))
-        : realVaultShares;
+    // Use centralized vault contract hook for data reading
+    const {
+        userBalanceETH: realVaultBalanceETH,
+        pendingWithdrawalShares,
+        pendingWithdrawalETH
+    } = useVaultContract({ address: isConnected ? address : undefined });
 
     const realWalletBalanceETH = ethBalance ? parseFloat(formatUnits(ethBalance.value, ethBalance.decimals)) : 0;
 

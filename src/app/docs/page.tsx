@@ -1,6 +1,6 @@
 "use client";
 
-import { Info, CheckCircle, ArrowRight } from "@phosphor-icons/react";
+import { Info, CheckCircle } from "@phosphor-icons/react";
 import Link from "next/link";
 import { DocsPageWrapper, DocsHeader, DocsContent, DocsInfoBox } from "@/components/docs";
 
@@ -15,12 +15,12 @@ export default function DocsIntroductionPage() {
 
             <DocsContent>
                 <p className="leading-relaxed">
-                    Traditional DeFi yield farming is broken. It's often complicated, risky, and reliant on inflationary token emissions (Ponzi-nomics).
+                    Traditional DeFi yield farming is broken. It&apos;s often complicated, risky, and reliant on inflationary token emissions (Ponzi-nomics).
                     Vultara changes this by identifying a clear, sustainable source of yield: <strong>Options Premiums</strong>.
                 </p>
 
                 <DocsInfoBox icon={Info} title="Why Vultara?">
-                    We abstract away the complexity of managing options vaults. You don't need to understand "Delta", "Theta", or "Strike Prices".
+                    We abstract away the complexity of managing options vaults. You don&apos;t need to understand &quot;Delta&quot;, &quot;Theta&quot;, or &quot;Strike Prices&quot;.
                     You simply deposit ETH, and our protocol (powered by Thetanuts) automates the strategy for you.
                 </DocsInfoBox>
 

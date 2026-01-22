@@ -40,7 +40,7 @@ export default function CoreConceptsPage() {
                             <div className="flex flex-col md:flex-row gap-6">
                                 <div className="flex-1">
                                     <h4 className="text-white font-bold mb-2">Friday: Start</h4>
-                                    <p className="text-sm">Strategists execute the options trade. Funds are "locked" into the strategy.</p>
+                                    <p className="text-sm">Strategists execute the options trade. Funds are &quot;locked&quot; into the strategy.</p>
                                 </div>
                                 <div className="hidden md:flex items-center justify-center text-[var(--text-tertiary)]">
                                     <ArrowRight />
@@ -51,7 +51,7 @@ export default function CoreConceptsPage() {
                                 </div>
                             </div>
                             <div className="text-xs text-[var(--warning)] bg-[var(--warning)]/10 p-3 rounded-lg inline-block font-bold tracking-wide mt-2">
-                                NOTE: Funds are locked during an Epoch. You must "Schedule Withdrawal" to exit. Funds become claimable on the next Friday.
+                                NOTE: Funds are locked during an Epoch. You must &quot;Schedule Withdrawal&quot; to exit. Funds become claimable on the next Friday.
                             </div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@ export default function CoreConceptsPage() {
                 <DocsSection icon={ChartBar} iconColor="#a855f7" title="The Strategy">
                     <p className="leading-relaxed">
                         Vultara primarily utilizes <strong>covered options strategies</strong> (facilitated by Thetanuts Finance) to generate yield.
-                        We sell "volatility" to market makers who pay a premium for it.
+                        We sell &quot;volatility&quot; to market makers who pay a premium for it.
                     </p>
                     <div className="mt-4">
                         <Link href="/docs/yield" className="text-[var(--volt)] hover:text-white font-bold inline-flex items-center gap-2 transition-colors">

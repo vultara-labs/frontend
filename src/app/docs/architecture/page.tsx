@@ -1,6 +1,6 @@
 "use client";
 
-import { Blueprint, Lock, ShieldCheck, Code, Warning, CurrencyCircleDollar } from "@phosphor-icons/react";
+import { Blueprint, Lock, ShieldCheck, Code, CurrencyCircleDollar } from "@phosphor-icons/react";
 import { DocsPageWrapper, DocsHeader, DocsContent, DocsSection, DocsStep, DocsTable, DocsCard } from "@/components/docs";
 
 export default function ArchitecturePage() {
@@ -65,7 +65,7 @@ export default function ArchitecturePage() {
                             Protects all state-changing functions from reentrancy attacks.
                         </DocsCard>
                         <DocsCard title="Withdrawal Queue" variant="success">
-                            Prevents "Bank Run" scenarios and ensures liquidity is managed for strategy execution.
+                            Prevents &quot;Bank Run&quot; scenarios and ensures liquidity is managed for strategy execution.
                         </DocsCard>
                         <DocsCard title="Non-Custodial" variant="success">
                             Protocol never holds user keys. Funds accessible via smart contract logic.
