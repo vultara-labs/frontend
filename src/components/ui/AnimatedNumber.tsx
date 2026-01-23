@@ -30,7 +30,10 @@ export function AnimatedNumber({ value, decimals = 2, prefix = "", suffix = "", 
 
     useEffect(() => {
         const unsubscribe = springValue.on("change", (latest) => {
-            setDisplayValue(latest.toFixed(decimals));
+            setDisplayValue(Number(latest).toLocaleString("en-US", {
+                minimumFractionDigits: decimals,
+                maximumFractionDigits: decimals,
+            }));
         });
         return unsubscribe;
     }, [springValue, decimals]);
