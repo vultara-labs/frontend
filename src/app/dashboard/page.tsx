@@ -102,12 +102,12 @@ export default function DashboardPage() {
                                         <div className="flex items-center gap-2">
                                             <div className="px-2 sm:px-3 py-1 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/20 flex items-center gap-1.5 w-fit">
                                                 <TrendUp size={12} className="text-[var(--success)]" weight="bold" />
-                                                <span className="text-[10px] sm:text-xs font-bold text-[var(--success)]">~{currentAPY}% APY</span>
+                                                <span className="text-xs sm:text-sm font-bold text-[var(--success)]">~{currentAPY}% APY</span>
                                             </div>
-                                            <span className="text-[10px] text-[var(--text-tertiary)] italic label lowercase">*Variable</span>
+                                            <span className="text-xs text-[var(--text-tertiary)] italic label lowercase">*Variable</span>
                                         </div>
                                     </div>
-                                    <p className="text-[9px] text-[var(--text-tertiary)] mt-1 italic">Yields are strategy-dependent and not guaranteed.</p>
+                                    <p className="text-xs text-[var(--text-secondary)] mt-1">Yields are strategy-dependent and not guaranteed.</p>
                                 </>
                             )}
                         </div>

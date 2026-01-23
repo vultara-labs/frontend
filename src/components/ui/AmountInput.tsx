@@ -177,7 +177,7 @@ export function AmountInput({
                         </span>
                     </div>
                     {numAmount >= maxDepositable - 0.001 && gasReserve > 0 && (
-                        <p className="text-[10px] text-[var(--text-tertiary)] italic pl-6">
+                        <p className="text-xs text-[var(--text-tertiary)] italic pl-6">
                             * {gasReserve} ETH reserved for gas fees
                         </p>
                     )}

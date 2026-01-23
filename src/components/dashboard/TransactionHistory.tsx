@@ -100,7 +100,7 @@ export function TransactionHistory({ className = "", limit = 5 }: TransactionHis
                 <Clock size={16} className="text-[var(--text-tertiary)]" />
                 <h3 className="text-sm font-bold text-white uppercase tracking-wide">Recent Activity</h3>
                 {!isConnected && (
-                    <span className="ml-auto px-2 py-0.5 rounded text-[10px] bg-[var(--volt)]/10 text-[var(--volt)] font-medium">Demo</span>
+                    <span className="ml-auto px-2 py-0.5 rounded text-xs bg-[var(--volt)]/10 text-[var(--volt)] font-medium">Demo</span>
                 )}
             </div>
 
@@ -132,7 +132,7 @@ export function TransactionHistory({ className = "", limit = 5 }: TransactionHis
                                 </div>
                                 <div>
                                     <p className="text-sm font-medium text-white capitalize">{tx.type}</p>
-                                    <p className="text-[10px] text-[var(--text-tertiary)]">
+                                    <p className="text-xs text-[var(--text-tertiary)]">
                                         {formatTimeAgo(tx.timestamp)}
                                     </p>
                                 </div>
@@ -142,7 +142,7 @@ export function TransactionHistory({ className = "", limit = 5 }: TransactionHis
                                     }`}>
                                     {tx.type === "deposit" ? "+" : "-"}{tx.amount} ETH
                                 </p>
-                                <p className="text-[10px] text-[var(--text-tertiary)] font-mono">
+                                <p className="text-xs text-[var(--text-tertiary)] font-mono">
                                     {truncateHash(tx.txHash)}
                                 </p>
                             </div>

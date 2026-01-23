@@ -104,16 +104,16 @@ export function ReferralWidget({ className = "" }: { className?: string }) {
                 <IconBox icon={Users} color="var(--info)" size="md" iconWeight="fill" />
                 <div>
                     <h3 className="text-sm font-bold text-white uppercase tracking-wide">Referral Program</h3>
-                    <p className="text-[10px] text-[var(--text-tertiary)]">Invite friends, earn rewards</p>
+                    <p className="text-xs text-[var(--text-tertiary)]">Invite friends, earn rewards</p>
                 </div>
                 {!isConnected && (
-                    <span className="ml-auto px-2 py-0.5 rounded text-[10px] bg-[var(--volt)]/10 text-[var(--volt)] font-medium">Demo</span>
+                    <span className="ml-auto px-2 py-0.5 rounded text-xs bg-[var(--volt)]/10 text-[var(--volt)] font-medium">Demo</span>
                 )}
             </div>
 
             {/* Referral Code */}
             <div className="p-4 rounded-xl bg-white/[0.02] border border-[var(--border-subtle)] mb-4">
-                <p className="text-[10px] text-[var(--text-tertiary)] mb-2">Your Referral Code</p>
+                <p className="text-xs text-[var(--text-tertiary)] mb-2">Your Referral Code</p>
                 <div className="flex items-center justify-between">
                     <span className="text-lg font-bold font-mono text-white tracking-wider">
                         {referralData.referralCode}
@@ -140,11 +140,11 @@ export function ReferralWidget({ className = "" }: { className?: string }) {
             {/* Stats Grid */}
             <div className="grid grid-cols-3 gap-3 mb-4">
                 <div className="p-3 rounded-xl bg-white/[0.02] border border-[var(--border-subtle)] text-center">
-                    <p className="text-[10px] text-[var(--text-tertiary)] mb-1">Referrals</p>
+                    <p className="text-xs text-[var(--text-tertiary)] mb-1">Referrals</p>
                     <p className="text-lg font-bold text-white font-mono">{referralData.referralCount}</p>
                 </div>
                 <div className="p-3 rounded-xl bg-white/[0.02] border border-[var(--border-subtle)] text-center">
-                    <p className="text-[10px] text-[var(--text-tertiary)] mb-1">Earned</p>
+                    <p className="text-xs text-[var(--text-tertiary)] mb-1">Earned</p>
                     <p className="text-lg font-bold text-[var(--success)] font-mono">
                         ${referralData.totalEarnings.toFixed(2)}
                     </p>
@@ -155,7 +155,7 @@ export function ReferralWidget({ className = "" }: { className?: string }) {
                         borderColor: `color-mix(in srgb, ${currentTier.color} 20%, transparent)`,
                     }}
                 >
-                    <p className="text-[10px] text-[var(--text-tertiary)] mb-1">Tier</p>
+                    <p className="text-xs text-[var(--text-tertiary)] mb-1">Tier</p>
                     <p className="text-sm font-bold capitalize" style={{ color: currentTier.color }}>
                         {currentTier.label}
                     </p>
@@ -168,11 +168,11 @@ export function ReferralWidget({ className = "" }: { className?: string }) {
                     <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
                             <Trophy size={14} className="text-[var(--text-tertiary)]" />
-                            <span className="text-[10px] text-[var(--text-tertiary)]">
+                            <span className="text-xs text-[var(--text-tertiary)]">
                                 Next: {nextTier[1].label} ({nextTier[1].bonus}% bonus)
                             </span>
                         </div>
-                        <span className="text-[10px] font-mono text-[var(--text-secondary)]">
+                        <span className="text-xs font-mono text-[var(--text-secondary)]">
                             {referralData.referralCount}/{nextTier[1].min}
                         </span>
                     </div>
@@ -194,7 +194,7 @@ export function ReferralWidget({ className = "" }: { className?: string }) {
                     <Gift size={14} className="text-[var(--volt)]" />
                     <span className="text-xs font-bold text-[var(--volt)]">Referral Rewards</span>
                 </div>
-                <p className="text-[10px] text-[var(--text-secondary)]">
+                <p className="text-xs text-[var(--text-secondary)]">
                     Earn {currentTier.bonus}% of your referrals&apos; deposit fees. Both you and your friend get a bonus!
                 </p>
             </div>

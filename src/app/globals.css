@@ -75,6 +75,8 @@
   /* 32px - larger gaps */
 
   /* TYPOGRAPHY SCALE */
+  --text-2xs: 0.6875rem;
+  /* 11px */
   --text-xs: 0.75rem;
   /* 12px */
   --text-sm: 0.875rem;
@@ -105,11 +107,12 @@
   /* 32px */
 
   /* LABEL TYPOGRAPHY - Standardized */
-  --label-size: 0.625rem;
-  /* 10px */
-  --label-tracking: 0.1em;
-  /* Wide tracking for labels */
-  --label-weight: 700;
+  --label-size: 0.75rem;
+  /* 12px - Bumped up from 10px */
+  --label-tracking: 0.05em;
+  /* Slightly reduced tracking for better readability */
+  --label-weight: 600;
+  /* Slightly lighter than 700 */
   --label-transform: uppercase;
 }
 
@@ -143,8 +146,9 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  /* Improved line height default */
   letter-spacing: -0.01em;
-  /* Tighten up sans-serif by default */
 }
 
 ::selection {
@@ -383,12 +387,13 @@ html {
 /* 5. TYPOGRAPHY UTILITIES - STANDARDIZED SYSTEM */
 
 /* Labels: Small uppercase text for categories, badges, statuses */
+/* Labels: Small uppercase text for categories, badges, statuses */
 .label {
-  font-size: 0.625rem;
-  /* 10px */
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: var(--label-size);
+  /* Now 12px */
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-tracking);
+  text-transform: var(--label-transform);
   line-height: 1.4;
 }
 

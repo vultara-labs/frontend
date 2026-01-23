@@ -129,7 +129,7 @@ function DepositContent() {
                                     <div className="text-right">
                                         <p className="label text-[var(--text-secondary)] mb-0.5">Est. APY</p>
                                         <p className="text-xl font-black text-[var(--volt)] tracking-tight">~{PROTOCOL.APY}%</p>
-                                        <p className="text-[8px] text-[var(--text-tertiary)] italic">*Variable</p>
+                                        <p className="text-xs text-[var(--text-tertiary)] italic">*Variable</p>
                                     </div>
                                 </div>
 
@@ -162,7 +162,7 @@ function DepositContent() {
                                                 </div>
                                                 <div>
                                                     <p className="text-xs font-bold text-white uppercase tracking-wide">Get Free ETH</p>
-                                                    <p className="text-[10px] text-[var(--text-secondary)]">Base Sepolia Faucet</p>
+                                                    <p className="text-[11px] text-[var(--text-secondary)]">Base Sepolia Faucet</p>
                                                 </div>
                                             </div>
                                             <ArrowUpRight size={14} weight="bold" className="text-[var(--volt)] group-hover/faucet:translate-x-0.5 group-hover/faucet:-translate-y-0.5 transition-transform" />
@@ -186,7 +186,7 @@ function DepositContent() {
                                         </div>
 
                                         <div className="space-y-2">
-                                            <p className="text-[10px] text-[var(--text-tertiary)] uppercase tracking-wide">If ETH Price Drops:</p>
+                                            <p className="text-[11px] text-[var(--text-tertiary)] uppercase tracking-wide">If ETH Price Drops:</p>
                                             {RISK.DOWNSIDE_SCENARIOS.map((scenario) => {
                                                 const potentialLoss = RISK.calculateDownsideLoss(depositValueUSD, scenario.dropPercent);
                                                 const isNoLoss = scenario.lossPercent === 0;
@@ -210,7 +210,7 @@ function DepositContent() {
                                             })}
                                         </div>
 
-                                        <p className="mt-3 text-[9px] text-[var(--text-tertiary)] italic">
+                                        <p className="mt-3 text-xs text-[var(--text-secondary)]">
                                             Yields are variable and not guaranteed. Past performance ≠ future results.
                                         </p>
                                     </motion.div>
@@ -253,7 +253,7 @@ function DepositContent() {
                                     <div className="flex items-center justify-between mb-3">
                                         <div className="flex items-center gap-2">
                                             <Info size={14} weight="bold" className="text-[var(--text-tertiary)]" />
-                                            <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-tertiary)]">Risk Summary</span>
+                                            <span className="text-[11px] font-bold uppercase tracking-widest text-[var(--text-tertiary)]">Risk Summary</span>
                                         </div>
                                     </div>
 
@@ -269,7 +269,7 @@ function DepositContent() {
 
                                     <div className="space-y-1.5">
                                         {RISK.DISCLAIMERS.slice(0, 2).map((disclaimer, idx) => (
-                                            <p key={idx} className="text-[10px] text-[var(--text-tertiary)] flex items-start gap-1.5">
+                                            <p key={idx} className="text-xs text-[var(--text-tertiary)] flex items-start gap-1.5">
                                                 <span className="text-[var(--text-tertiary)]">•</span>
                                                 <span>{disclaimer}</span>
                                             </p>

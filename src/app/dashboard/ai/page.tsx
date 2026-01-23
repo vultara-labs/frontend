@@ -125,11 +125,11 @@ export default function AIAdvisorPage() {
                         <div>
                             <h2 className="text-xs lg:text-sm font-bold text-white flex items-center gap-2">
                                 Nova
-                                <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-amber-400 font-bold">v1.0</span>
+                                <span className="text-xs px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-amber-400 font-bold">v1.0</span>
                             </h2>
                             <div className="flex items-center gap-1.5">
                                 <span className="w-1.5 h-1.5 rounded-full bg-[var(--success)] animate-pulse" />
-                                <span className="text-[10px] text-[var(--success)] font-bold">Online</span>
+                                <span className="text-xs text-[var(--success)] font-bold">Online</span>
                             </div>
                         </div>
                     </div>
@@ -141,7 +141,7 @@ export default function AIAdvisorPage() {
 
                     {/* Message List */}
                     <div className="flex justify-center mb-6">
-                        <span className="text-[10px] font-bold text-[var(--text-secondary)] bg-white/[0.03] px-3 py-1 rounded-full border border-[var(--border-subtle)] uppercase tracking-wider">Session Active</span>
+                        <span className="text-xs font-bold text-[var(--text-secondary)] bg-white/[0.03] px-3 py-1 rounded-full border border-[var(--border-subtle)] uppercase tracking-wider">Session Active</span>
                     </div>
 
                     {messages.map((msg, i) => (
@@ -296,7 +296,7 @@ export default function AIAdvisorPage() {
                             </button>
                         </div>
                     </div>
-                    <p className="mt-3 text-center text-[10px] text-[var(--text-tertiary)] font-mono opacity-50">Nova Intelligence v1.0 • Vultara Labs</p>
+                    <p className="mt-3 text-center text-xs text-[var(--text-tertiary)] font-mono opacity-50">Nova Intelligence v1.0 • Vultara Labs</p>
                 </div>
             </div>
         </div>

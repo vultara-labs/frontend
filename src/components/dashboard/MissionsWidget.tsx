@@ -44,7 +44,7 @@ export function MissionsWidget({ balance, isPreviewMode = false }: MissionsWidge
                     <Gift size={16} className="text-[var(--volt)]" weight="duotone" />
                     Starter Campaign
                 </h3>
-                <span className="text-[10px] bg-[var(--volt)]/10 text-[var(--volt)] px-2 py-0.5 rounded border border-[var(--volt)]/20 font-mono">
+                <span className="text-xs bg-[var(--volt)]/10 text-[var(--volt)] px-2 py-0.5 rounded border border-[var(--volt)]/20 font-mono">
                     SEASON 1
                 </span>
             </div>
@@ -71,18 +71,18 @@ export function MissionsWidget({ balance, isPreviewMode = false }: MissionsWidge
                                     <mission.icon size={18} weight="duotone" />
                                 </div>
                                 {status === "claimed" ? (
-                                    <span className="text-[10px] font-bold uppercase text-[var(--success)] flex items-center gap-1">
+                                    <span className="text-xs font-bold uppercase text-[var(--success)] flex items-center gap-1">
                                         <CheckCircle weight="fill" /> Done
                                     </span>
                                 ) : status === "completed" ? (
                                     <button
                                         onClick={(e) => handleClaim(mission.id, e)}
-                                        className="text-[10px] font-bold uppercase bg-[var(--volt)] text-black px-2 py-1 rounded hover:brightness-110 active:scale-95 transition-all"
+                                        className="text-xs font-bold uppercase bg-[var(--volt)] text-black px-2 py-1 rounded hover:brightness-110 active:scale-95 transition-all"
                                     >
                                         Claim
                                     </button>
                                 ) : (
-                                    <span className="text-[10px] font-bold text-[var(--text-tertiary)] bg-white/5 px-2 py-1 rounded">
+                                    <span className="text-xs font-bold text-[var(--text-tertiary)] bg-white/5 px-2 py-1 rounded">
                                         + {mission.xp} XP
                                     </span>
                                 )}
@@ -91,14 +91,14 @@ export function MissionsWidget({ balance, isPreviewMode = false }: MissionsWidge
                             <h4 className={`text-sm font-bold mb-1 ${isCompleted ? "text-[var(--success)]" : "text-white"}`}>
                                 {mission.title}
                             </h4>
-                            <p className="text-[11px] text-[var(--text-secondary)] leading-relaxed mb-3">
+                            <p className="text-xs text-[var(--text-secondary)] leading-relaxed mb-3">
                                 {mission.desc}
                             </p>
 
                             {!isCompleted && (
                                 <Link
                                     href={mission.id === "nova" ? "/dashboard/ai" : mission.id === "vault" ? "/dashboard/vault" : mission.id === "deposit" ? "/dashboard/deposit" : "#"}
-                                    className="text-[10px] font-bold uppercase tracking-wider text-[var(--volt)] flex items-center gap-1 group-hover:gap-2 transition-all"
+                                    className="text-xs font-bold uppercase tracking-wider text-[var(--volt)] flex items-center gap-1 group-hover:gap-2 transition-all"
                                 >
                                     Start Mission <ArrowRight size={12} />
                                 </Link>

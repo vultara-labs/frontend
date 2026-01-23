@@ -123,11 +123,11 @@ export function StrategySimulator({ ethPrice, depositAmount, selectedStrategy, c
                     </div>
                     <div>
                         <h3 className="text-sm font-bold text-white uppercase tracking-wide">Strategy Simulator</h3>
-                        <p className="text-[10px] text-[var(--text-tertiary)]">See how {strategy.name} performs in different scenarios</p>
+                        <p className="text-xs text-[var(--text-tertiary)]">See how {strategy.name} performs in different scenarios</p>
                     </div>
                 </div>
                 <div className="text-right">
-                    <p className="text-[10px] text-[var(--text-tertiary)]">Simulating</p>
+                    <p className="text-xs text-[var(--text-tertiary)]">Simulating</p>
                     <p className="text-sm font-bold text-white font-mono">{depositAmount.toFixed(2)} ETH</p>
                 </div>
             </div>
@@ -153,7 +153,7 @@ export function StrategySimulator({ ethPrice, depositAmount, selectedStrategy, c
                             ) : (
                                 <Equals size={12} className="text-[var(--text-tertiary)]" />
                             )}
-                            <span className={`text-[10px] font-bold ${scenario.priceChange > 0 ? "text-[var(--success)]" :
+                            <span className={`text-xs font-bold ${scenario.priceChange > 0 ? "text-[var(--success)]" :
                                 scenario.priceChange < 0 ? "text-[var(--error)]" :
                                     "text-[var(--text-tertiary)]"
                                 }`}>
@@ -166,7 +166,7 @@ export function StrategySimulator({ ethPrice, depositAmount, selectedStrategy, c
                             }`}>
                             {scenario.returnPercent > 0 ? "+" : ""}{scenario.returnPercent.toFixed(1)}%
                         </p>
-                        <p className="text-[9px] text-[var(--text-tertiary)] mt-1 truncate">
+                        <p className="text-xs text-[var(--text-tertiary)] mt-1 truncate">
                             {scenario.scenarioName}
                         </p>
                     </motion.div>
@@ -212,7 +212,7 @@ export function StrategySimulator({ ethPrice, depositAmount, selectedStrategy, c
                                 background: `linear-gradient(to right, var(--error) 0%, var(--text-tertiary) 50%, var(--success) 100%)`
                             }}
                         />
-                        <div className="flex justify-between text-[10px] text-[var(--text-tertiary)] mt-1">
+                        <div className="flex justify-between text-xs text-[var(--text-tertiary)] mt-1">
                             <span>-50%</span>
                             <span>0%</span>
                             <span>+50%</span>
@@ -222,13 +222,13 @@ export function StrategySimulator({ ethPrice, depositAmount, selectedStrategy, c
                     <div className="p-4 rounded-xl bg-white/[0.02] border border-[var(--border-subtle)]">
                         <div className="grid grid-cols-3 gap-4 text-center">
                             <div>
-                                <p className="text-[10px] text-[var(--text-tertiary)] mb-1">ETH Price</p>
+                                <p className="text-xs text-[var(--text-tertiary)] mb-1">ETH Price</p>
                                 <p className="text-sm font-bold font-mono text-white">
                                     ${customScenario.finalPrice.toLocaleString(undefined, { maximumFractionDigits: 0 })}
                                 </p>
                             </div>
                             <div>
-                                <p className="text-[10px] text-[var(--text-tertiary)] mb-1">Your Return</p>
+                                <p className="text-xs text-[var(--text-tertiary)] mb-1">Your Return</p>
                                 <p className={`text-sm font-bold font-mono ${customScenario.outcome === "profit" ? "text-[var(--success)]" :
                                     customScenario.outcome === "loss" ? "text-[var(--error)]" :
                                         "text-white"
@@ -237,7 +237,7 @@ export function StrategySimulator({ ethPrice, depositAmount, selectedStrategy, c
                                 </p>
                             </div>
                             <div>
-                                <p className="text-[10px] text-[var(--text-tertiary)] mb-1">P/L USD</p>
+                                <p className="text-xs text-[var(--text-tertiary)] mb-1">P/L USD</p>
                                 <p className={`text-sm font-bold font-mono ${customScenario.outcome === "profit" ? "text-[var(--success)]" :
                                     customScenario.outcome === "loss" ? "text-[var(--error)]" :
                                         "text-white"

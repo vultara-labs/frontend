@@ -99,15 +99,15 @@ export default function VaultPage() {
                     {/* Quick Stats Row */}
                     <div className="relative z-10 grid grid-cols-3 gap-4 mt-8 pt-6 border-t border-[var(--border-subtle)]">
                         <div className="text-center sm:text-left">
-                            <p className="text-[10px] uppercase tracking-wider text-[var(--text-tertiary)] mb-1">Strike</p>
+                            <p className="text-xs uppercase tracking-wider text-[var(--text-tertiary)] mb-1">Strike</p>
                             <p className="text-sm font-bold text-white font-mono">${loading ? "..." : strikePrice.toLocaleString("en-US")}</p>
                         </div>
                         <div className="text-center">
-                            <p className="text-[10px] uppercase tracking-wider text-[var(--text-tertiary)] mb-1">Epoch Ends</p>
+                            <p className="text-xs uppercase tracking-wider text-[var(--text-tertiary)] mb-1">Epoch Ends</p>
                             <EpochTimerCompact />
                         </div>
                         <div className="text-center sm:text-right">
-                            <p className="text-[10px] uppercase tracking-wider text-[var(--text-tertiary)] mb-1">Security</p>
+                            <p className="text-xs uppercase tracking-wider text-[var(--text-tertiary)] mb-1">Security</p>
                             <p className="text-sm font-bold text-[var(--success)] flex items-center gap-1 justify-center sm:justify-end">
                                 <ShieldCheck size={14} weight="fill" /> Audited
                             </p>
@@ -123,17 +123,17 @@ export default function VaultPage() {
                     className="flex items-center justify-between gap-2 px-4 py-3 rounded-xl bg-white/[0.02] border border-[var(--border-subtle)]"
                 >
                     <div className="flex items-center gap-2 text-xs">
-                        <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-[10px] font-bold">1</span>
+                        <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold">1</span>
                         <span className="text-[var(--text-secondary)] hidden sm:inline">Deposit ETH</span>
                     </div>
                     <ArrowRight size={14} className="text-[var(--text-tertiary)]" />
                     <div className="flex items-center gap-2 text-xs">
-                        <span className="w-6 h-6 rounded-full bg-[var(--volt)]/20 text-[var(--volt)] flex items-center justify-center text-[10px] font-bold">2</span>
+                        <span className="w-6 h-6 rounded-full bg-[var(--volt)]/20 text-[var(--volt)] flex items-center justify-center text-xs font-bold">2</span>
                         <span className="text-[var(--text-secondary)] hidden sm:inline">Sell Covered Calls</span>
                     </div>
                     <ArrowRight size={14} className="text-[var(--text-tertiary)]" />
                     <div className="flex items-center gap-2 text-xs">
-                        <span className="w-6 h-6 rounded-full bg-[var(--success)]/20 text-[var(--success)] flex items-center justify-center text-[10px] font-bold">3</span>
+                        <span className="w-6 h-6 rounded-full bg-[var(--success)]/20 text-[var(--success)] flex items-center justify-center text-xs font-bold">3</span>
                         <span className="text-[var(--text-secondary)] hidden sm:inline">Earn Premium</span>
                     </div>
                 </motion.div>
@@ -215,7 +215,7 @@ export default function VaultPage() {
                                                         {item.step}
                                                     </div>
                                                     <p className="text-xs font-bold text-white mb-1">{item.title}</p>
-                                                    <p className="text-[10px] text-[var(--text-tertiary)]">{item.desc}</p>
+                                                    <p className="text-xs text-[var(--text-tertiary)]">{item.desc}</p>
                                                 </div>
                                             ))}
                                         </div>
@@ -240,7 +240,7 @@ export default function VaultPage() {
                                         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
                                             {["Friday 8AM UTC", "Options Sold", "Week Passes", "Options Expire", "Premium Collected"].map((step, i) => (
                                                 <div key={i} className="flex items-center gap-2 shrink-0">
-                                                    <div className="px-3 py-2 rounded-lg bg-white/[0.03] border border-[var(--border-subtle)] text-[10px] text-[var(--text-secondary)] whitespace-nowrap font-medium">
+                                                    <div className="px-3 py-2 rounded-lg bg-white/[0.03] border border-[var(--border-subtle)] text-xs text-[var(--text-secondary)] whitespace-nowrap font-medium">
                                                         {step}
                                                     </div>
                                                     {i < 4 && <ArrowRight size={10} className="text-[var(--text-tertiary)]" />}
