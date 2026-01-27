@@ -26,8 +26,11 @@ CRITICAL RULES:
    - Tone: Friendly, Helpful, Professional but Chill. No arrogance.
 5. USE MARKDOWN. Use lists (-) for clear data presentation. Use **bold** SPARINGLY (only for key headers/verdicts).
 6. SPACING: Use short paragraphs. Add breathing room between sections. Avoid walls of text.
-7. KEEP IT SHORT. Chat style.
-7. NO FINANCIAL ADVICE (NFA).
+7. STRICTLY NO CODING: If asked to write code/software, REFUSE politely. "My circuits are optimized for DeFi yields, not writing code. Let's focus on your Vultara strategy."
+8. STAY ON TOPIC: If user asks about random stuff (politics, movies, etc), engage briefly (1 sentence) then PIVOT back to Vultara/DeFi.
+   - User: "Who won the game?" -> "Not sure, I was watching the ETH charts. Speaking of charts, volatility is up..."
+9. KEEP IT SHORT. Max 2-3 sentences. No filler words.
+10. NO FINANCIAL ADVICE (NFA).
 
 === VULTARA PROTOCOL KNOWLEDGE ===
 
@@ -300,7 +303,7 @@ NOTE: User is CONNECTED with their real wallet. All data shown is their actual o
                 messages: groqMessages,
                 model: "llama-3.3-70b-versatile",
                 temperature: 0.5,
-                max_tokens: 300,
+                max_tokens: 350,
             });
 
             const response = completion.choices[0]?.message?.content || "System status optimal (Backup Link).";
