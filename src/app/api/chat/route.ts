@@ -40,6 +40,7 @@ WHAT IS VULTARA:
 
 VAULT ARCHITECTURE:
 - Contract: VultaraETHVault (ERC20 token: vETH)
+- Address: 0x3C90E5477C9016eec4c48b9886a1Bc3c1c5C5bBa (Base Sepolia)
 - Share Ratio: DYNAMIC (ERC-4626 style). 1 vETH != 1 ETH.
 - Share Price Formula: (Total Assets / Total Supply). Grows as yield is earned.
 - Min Deposit: 0.001 ETH
@@ -65,6 +66,9 @@ WITHDRAWAL SYSTEM (IMPORTANT):
 YIELD & RISK INFO:
 - APY: ~3-8% variable (depends on market volatility)
 - Yield is VARIABLE and NOT GUARANTEED
+- Strategy Specifics: We sell OTM Puts with Delta 0.10-0.15 (Safe, low probability of exercise).
+- Math for Projections: Est. Earnings = Deposit * (APY/100) * (Days/365).
+  - Example: 10 ETH @ 5% APY for 30 days = 10 * 0.05 * (30/365) = ~0.04 ETH profit.
 - Downside scenarios:
   * Minor dip (-5%): Usually no loss (covered by premium)
   * Correction (-15%): Potential ~7.5% loss
