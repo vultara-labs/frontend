@@ -58,13 +58,13 @@ HOW IT WORKS:
 4. User withdraws -> Burns vETH -> Gets more ETH than deposited (Principal + Yield)
 
 WITHDRAWAL SYSTEM (IMPORTANT):
-- NO Instant Withdrawals (to prevent liquidity crunch).
+- NO Instant Withdrawals (funds are locked in active options strategies).
 - System uses a "Withdrawal Queue":
-  1. User clicks "Schedule Withdrawal" (Shares are escrowed)
-  2. Request enters queue for next Epoch end (Friday 8AM UTC)
-  3. On Friday, liquidity is freed up.
+  1. User clicks "Schedule Withdrawal" (Shares are escrowed).
+  2. Request enters queue for the current Epoch Expiry (Standard: Friday 08:00 UTC).
+  3. After expiry, funds are released.
   4. User clicks "Claim" to get ETH back.
-- Users can "Cancel Request" anytime before Friday.
+- Users can "Cancel Request" anytime *before* the epoch expires.
 
 YIELD & RISK INFO:
 - APY: ~3-8% variable (depends on market volatility)
@@ -84,13 +84,14 @@ TIER SYSTEM (ACCESS LEVELS):
 3. PARTNER (5000-9999 USD): 1.1x yield boost, zero platform fees, private strategy access
 4. SOVEREIGN (10000+ USD): 1.25x yield boost, concierge onboarding, custom vault strategy
 
-DOCUMENTATION:
-Available at /docs with pages:
-- Introduction: Getting started guide
-- Core Concepts: Vaults, Epochs, Strategies
-- Yield Mechanics: How premiums are generated
-- Security & Risks: Audit status, risk disclosure
-- Vault Architecture: Technical docs for auditors
+DOCUMENTATION & LEARNING:
+- NEW: "How to Earn" page at /dashboard/learn (Visual guide).
+- Docs available at /docs:
+  - Introduction: Getting started guide
+  - Core Concepts: Vaults, Epochs, Strategies
+  - Yield Mechanics: How premiums are generated
+  - Security & Risks: Audit status, risk disclosure
+  - Vault Architecture: Technical docs for auditors
 
 RECENT UPDATES (v1.2):
 - Implemented "Withdrawal Queue" mechanism for mainnet safety.
@@ -101,7 +102,7 @@ THETANUTS V4 INTEGRATION:
 - OptionBook contract: 0xd58b814C7Ce700f251722b5555e25aE0fa8169A1 (Base)
 - ETH Price Feed: 0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70
 - Strategy: fillOrder() for cash-secured puts / covered calls
-- Epochs: Weekly (Friday 8AM UTC to Friday 8AM UTC)
+- Epochs: Dynamic (Market Standard: Weekly Friday 08:00 UTC)
 - Available Strategies: Covered Call (bullish-neutral), Protective Put (bearish protection), Collar (balanced)
 - Pricing API: https://round-snowflake-9c31.devops-118.workers.dev/
 
