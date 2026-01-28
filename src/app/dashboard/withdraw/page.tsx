@@ -69,7 +69,9 @@ function WithdrawContent() {
     const totalBalance = isPreviewMode ? vaultBalanceETH : vault.userBalanceETH;
     const { numAmount, isValidAmount } = useAmountValidation(amount, totalBalance);
 
-    const handleMax = () => setAmount(totalBalance.toFixed(6));
+    const handleMax = () => {
+        return parseFloat(totalBalance.toFixed(6)).toString();
+    };
 
     const handleScheduleWithdraw = async () => {
         if (!isValidAmount || !isConnected || !address) {
@@ -90,7 +92,6 @@ function WithdrawContent() {
         await vault.cancelWithdraw();
     };
 
-    // Simulated withdraw for preview/demo mode
     const handlePreviewWithdraw = () => {
         if (!isValidAmount) return;
         setStep("processing");
@@ -166,7 +167,10 @@ function WithdrawContent() {
                                     </div>
                                     <div className="text-right">
                                         <p className="label text-[var(--text-secondary)] mb-1">Available to Withdraw</p>
-                                        <p className="text-xl font-black text-white tracking-tight">{totalBalance.toFixed(4)} ETH</p>
+                                        <p className="text-xl font-black text-white tracking-tight">
+                                            {totalBalance.toLocaleString('en-US', { maximumFractionDigits: 6 })}
+                                            <span className="text-lg text-[var(--text-tertiary)] ml-1">ETH</span>
+                                        </p>
                                     </div>
                                 </div>
 

@@ -6,6 +6,8 @@ import type { ActionType } from "@/types";
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY || "" });
 
+import { PROTOCOL } from "@/constants/protocol";
+
 const BASE_SYSTEM_PROMPT = `You are Nova, the proprietary AI advisor for Vultara.
 CONTEXT: You are a specialized neural interface built by VULTARA LABS (a collective of elite, pseudonymous crypto-natives). 
 YOU ARE NOT A GENERIC LLM. You are NOT "Gemini", "ChatGPT", "Claude", or "Groq".
@@ -43,7 +45,7 @@ WHAT IS VULTARA:
 
 VAULT ARCHITECTURE:
 - Contract: VultaraETHVault (ERC20 token: vETH)
-- Address: 0x3C90E5477C9016eec4c48b9886a1Bc3c1c5C5bBa (Base Sepolia)
+- Address: ${PROTOCOL.CONTRACTS[84532].ETH_VAULT} (Base Sepolia)
 - Share Ratio: DYNAMIC (ERC-4626 style). 1 vETH != 1 ETH.
 - Share Price Formula: (Total Assets / Total Supply). Grows as yield is earned.
 - Min Deposit: 0.001 ETH

@@ -101,11 +101,16 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
         try {
             let sharesToWithdraw: bigint;
 
-            const balance = userShares ? parseFloat(formatUnits(userShares as bigint, 18)) : 0;
-            if (amountEth >= balance * 0.999 && maxShares) {
+            const sharesBalance = userShares ? (userShares as bigint) : BigInt(0);
+            const withdrawAmountWei = parseEther(amountEth.toString());
+
+            const balanceWei = parseEther(userBalanceETH.toString());
+            const dust = parseEther("0.000000000000001"); // 1000 wei
+
+            if (withdrawAmountWei >= balanceWei - dust && maxShares) {
                 sharesToWithdraw = maxShares;
             } else {
-                sharesToWithdraw = parseEther(amountEth.toString());
+                sharesToWithdraw = withdrawAmountWei;
             }
 
             toast.loading("Scheduling Withdrawal...");

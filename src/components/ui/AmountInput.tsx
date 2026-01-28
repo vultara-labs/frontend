@@ -9,7 +9,7 @@ interface AmountInputProps {
     onChange: (value: string) => void;
     maxAmount: number;
     balance: number;
-    onMax: () => void;
+    onMax: () => string;
 
     // Optional customization
     label?: string;
@@ -92,9 +92,12 @@ export function AmountInput({
                 <span className="label text-[var(--text-secondary)]">{label}</span>
                 <span
                     className="text-xs font-mono text-[var(--text-tertiary)] hover:text-white cursor-pointer transition-colors"
-                    onClick={onMax}
+                    onClick={() => {
+                        const maxVal = onMax();
+                        onChange(maxVal);
+                    }}
                 >
-                    {balanceLabel}: {balance.toFixed(4)} ETH
+                    {balanceLabel}: {balance.toLocaleString('en-US', { maximumFractionDigits: 6 })} <span className="text-[var(--text-tertiary)]">ETH</span>
                 </span>
             </div>
 
@@ -105,8 +108,8 @@ export function AmountInput({
                     animate={isOverBalance ? { x: [0, -4, 4, -4, 4, 0] } : {}}
                     transition={{ duration: 0.4 }}
                     className={`relative flex items-center gap-3 p-5 sm:p-6 rounded-2xl bg-[var(--obsidian-base)] border transition-colors ${isOverBalance
-                            ? "border-[var(--error)] bg-[var(--error)]/5"
-                            : `border-[var(--border-medium)] group-focus-within/input:${c.border}`
+                        ? "border-[var(--error)] bg-[var(--error)]/5"
+                        : `border-[var(--border-medium)] group-focus-within/input:${c.border}`
                         }`}
                 >
                     <span className={`text-2xl sm:text-3xl ${isOverBalance ? "text-[var(--error)]" : "text-[var(--text-tertiary)]"}`}>
@@ -123,10 +126,13 @@ export function AmountInput({
                         autoFocus
                     />
                     <button
-                        onClick={onMax}
+                        onClick={() => {
+                            const maxVal = onMax();
+                            onChange(maxVal);
+                        }}
                         className={`min-h-[44px] min-w-[60px] px-4 py-2.5 rounded-xl text-xs font-bold transition-colors uppercase tracking-wider active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${isOverBalance
-                                ? "bg-[var(--error)]/10 text-[var(--error)] hover:bg-[var(--error)] hover:text-white focus-visible:outline-[var(--error)]"
-                                : `${c.bg} ${c.text} ${c.hover} focus-visible:outline-${accentColor === 'volt' ? '[var(--volt)]' : 'blue-500'}`
+                            ? "bg-[var(--error)]/10 text-[var(--error)] hover:bg-[var(--error)] hover:text-white focus-visible:outline-[var(--error)]"
+                            : `${c.bg} ${c.text} ${c.hover} focus-visible:outline-${accentColor === 'volt' ? '[var(--volt)]' : 'blue-500'}`
                             }`}
                     >
                         Max

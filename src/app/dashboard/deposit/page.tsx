@@ -97,7 +97,9 @@ function DepositContent() {
         }
     };
 
-    const handleMax = () => setAmount(maxDepositable.toFixed(4));
+    const handleMax = () => {
+        return parseFloat(maxDepositable.toFixed(6)).toString();
+    };
 
     return (
         <div className="min-h-[80vh] flex items-center justify-center p-4">
@@ -138,12 +140,10 @@ function DepositContent() {
                                     label="Amount (ETH)"
                                     balanceLabel="Bal"
                                     accentColor="volt"
-                                    gasReserve={gasReserve}
                                     showYieldPreview={true}
                                     monthlyYield={monthlyYield}
                                 />
 
-                                {/* Low Balance Helper - ETH Faucet */}
                                 {walletBalance < 0.01 && (
                                     <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="mb-6">
                                         <a
@@ -166,7 +166,6 @@ function DepositContent() {
                                     </motion.div>
                                 )}
 
-                                {/* Risk Indicator Card */}
                                 {numAmount >= 0.001 && (
                                     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-6 p-5 rounded-2xl bg-white/[0.03] backdrop-blur-sm border border-white/[0.1]">
                                         <div className="flex items-center justify-between mb-4">
