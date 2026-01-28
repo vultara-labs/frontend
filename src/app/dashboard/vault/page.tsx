@@ -41,7 +41,6 @@ export default function VaultPage() {
                     </p>
                 </motion.header>
 
-                {/* Main Hero Card - APY + Position */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -51,7 +50,6 @@ export default function VaultPage() {
                     <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-[var(--volt)]/5 blur-[100px] rounded-full pointer-events-none" />
 
                     <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
-                        {/* APY Display */}
                         <div>
                             <div className="flex items-center gap-2 mb-2">
                                 <ChartLineUp size={16} className="text-[var(--success)]" weight="bold" />
@@ -65,7 +63,6 @@ export default function VaultPage() {
                             </p>
                         </div>
 
-                        {/* Your Position */}
                         <div className="sm:text-right">
                             <div className="flex items-center gap-2 mb-2 sm:justify-end">
                                 <Vault size={16} className="text-[var(--text-secondary)]" weight="duotone" />
@@ -93,7 +90,6 @@ export default function VaultPage() {
                         </div>
                     </div>
 
-                    {/* Quick Stats Row */}
                     <div className="relative z-10 grid grid-cols-3 gap-4 mt-8 pt-6 border-t border-[var(--border-subtle)]">
                         <div className="text-center sm:text-left">
                             <p className="text-xs uppercase tracking-wider text-[var(--text-tertiary)] mb-1">Strike</p>
@@ -112,7 +108,6 @@ export default function VaultPage() {
                     </div>
                 </motion.div>
 
-                {/* Simple Strategy Flow - Horizontal */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -135,7 +130,6 @@ export default function VaultPage() {
                     </div>
                 </motion.div>
 
-                {/* CTA Buttons */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}

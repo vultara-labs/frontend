@@ -10,15 +10,10 @@ interface UseVaultContractOptions {
     onSuccess?: () => void;
 }
 
-/**
- * Centralized hook for all Vultara Vault contract interactions
- * Handles deposits, withdrawals, and balance queries
- */
 export function useVaultContract({ address }: UseVaultContractOptions = {}) {
     const chainId = useChainId();
     const contracts = PROTOCOL.CONTRACTS[chainId as keyof typeof PROTOCOL.CONTRACTS] || PROTOCOL.CONTRACTS[84532];
 
-    // Contract write hook
     const {
         writeContract,
         data: txHash,
@@ -26,13 +21,11 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
         reset: resetWrite
     } = useWriteContract();
 
-    // Transaction receipt
     const {
         isLoading: isConfirming,
         isSuccess: isConfirmed
     } = useWaitForTransactionReceipt({ hash: txHash });
 
-    // Read user's vault balance (shares)
     const { data: userShares, refetch: refetchBalance } = useReadContract({
         address: contracts.ETH_VAULT,
         abi: VULTARA_ETH_VAULT_ABI,
@@ -41,7 +34,6 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
         query: { enabled: !!address }
     });
 
-    // Convert shares to assets (ETH value)
     const { data: userAssets } = useReadContract({
         address: contracts.ETH_VAULT,
         abi: VULTARA_ETH_VAULT_ABI,
@@ -50,7 +42,6 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
         query: { enabled: !!userShares }
     });
 
-    // Check pending withdrawals
     const { data: pendingShares, refetch: refetchPending } = useReadContract({
         address: contracts.ETH_VAULT,
         abi: VULTARA_ETH_VAULT_ABI,
@@ -59,7 +50,6 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
         query: { enabled: !!address }
     });
 
-    // Contract Strategy State
     const { data: activeStrikePrice } = useReadContract({
         address: contracts.ETH_VAULT,
         abi: VULTARA_ETH_VAULT_ABI,
@@ -77,8 +67,6 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
         abi: VULTARA_ETH_VAULT_ABI,
         functionName: "lastEpochYield",
     });
-
-    // === ACTIONS ===
 
     const deposit = async (amountEth: number) => {
         if (!address) {
@@ -113,7 +101,6 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
         try {
             let sharesToWithdraw: bigint;
 
-            // If near max (99.9%), use actual shares to avoid rounding issues
             const balance = userShares ? parseFloat(formatUnits(userShares as bigint, 18)) : 0;
             if (amountEth >= balance * 0.999 && maxShares) {
                 sharesToWithdraw = maxShares;
@@ -171,14 +158,12 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
         }
     };
 
-    // Computed values
     const userBalanceETH = userAssets
         ? parseFloat(formatUnits(userAssets as bigint, 18))
         : userShares
             ? parseFloat(formatUnits(userShares as bigint, 18))
             : 0;
 
-    // Convert pending shares to pending ETH value (assets)
     const { data: pendingAssets } = useReadContract({
         address: contracts.ETH_VAULT,
         abi: VULTARA_ETH_VAULT_ABI,
@@ -193,36 +178,30 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
 
     const pendingWithdrawalETH = pendingAssets
         ? parseFloat(formatUnits(pendingAssets as bigint, 18))
-        : pendingWithdrawalShares; // Fallback 1:1 if conversion fails
+        : pendingWithdrawalShares;
 
     return {
-        // Contract info
         vaultAddress: contracts.ETH_VAULT,
         chainId,
 
-        // Strategy Data
         activeStrikePrice: activeStrikePrice as bigint | undefined,
         activeExpiry: activeExpiry as bigint | undefined,
         lastEpochYield: lastEpochYield as bigint | undefined,
 
-        // User balances
         userShares: userShares as bigint | undefined,
         userBalanceETH,
         pendingWithdrawalShares,
         pendingWithdrawalETH,
 
-        // Transaction state
         txHash,
         isPending: isWritePending || isConfirming,
         isConfirmed,
 
-        // Actions
         deposit,
         scheduleWithdraw,
         claimWithdraw,
         cancelWithdraw,
 
-        // Utilities
         refetchBalance,
         refetchPending,
         resetWrite,

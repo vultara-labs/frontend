@@ -33,33 +33,20 @@ export function useDashboardData() {
 
     const realWalletBalanceETH = ethBalance ? parseFloat(formatUnits(ethBalance.value, ethBalance.decimals)) : 0;
 
-    // Live ETH Price & Change
     const ethPrice = marketData?.price || DEMO_DATA.ETH_PRICE;
     const priceChange = marketData?.change24h || 0;
 
-    // --- REAL ON-CHAIN DATA PROCESSING ---
-
-    // 1. Real APY from Last Epoch Yield (BPS)
-    // Formula: (YieldBPS / 10000) * 52 weeks * 100 = APY%
     const realAPY = lastEpochYield
         ? (Number(lastEpochYield) / 10000) * 52 * 100
-        : (PROTOCOL.APY + (Math.abs(marketData?.change24h || 0) * 0.3)); // Fallback if no history yet
+        : (PROTOCOL.APY + (Math.abs(marketData?.change24h || 0) * 0.3));
 
     const currentAPY = parseFloat(realAPY.toFixed(2));
 
-    // 2. Real Active Strike Price
-    // Assuming Thetanuts V4 uses 1e6 for USDC prices or 0 decimals for integer strikes. 
-    // We will assume 1e6 for safety or raw integer. Let's check magnitude.
-    // If activeStrikePrice is huge (> 1e12), it's 18 decimals. If > 1e4, maybe 6 decimals?
-    // For now, treat it as raw integer if < 100,000.
     const rawStrike = activeStrikePrice ? Number(activeStrikePrice) : 0;
     const realStrikePrice = rawStrike > 1000000 ? rawStrike / 1000000 : rawStrike;
 
-    // 3. Real Expiry
     const realExpiryDate = activeExpiry ? new Date(Number(activeExpiry) * 1000) : undefined;
 
-
-    // Calculate USD values
     const realVaultBalanceUSD = realVaultBalanceETH * ethPrice;
     const realWalletBalanceUSD = realWalletBalanceETH * ethPrice;
 

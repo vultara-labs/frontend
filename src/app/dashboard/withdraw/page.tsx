@@ -32,7 +32,6 @@ function WithdrawContent() {
     const [amount, setAmount] = useState("");
     const searchParams = useSearchParams();
 
-    // Use centralized vault contract hook
     const vault = useVaultContract({
         address,
         onSuccess: () => {
@@ -43,14 +42,12 @@ function WithdrawContent() {
         }
     });
 
-    // Check for existing pending withdrawal on mount
     useEffect(() => {
         if (pendingWithdrawalShares > 0 && step === "input") {
             setTimeout(() => setStep("pending_view"), 0);
         }
     }, [pendingWithdrawalShares, step]);
 
-    // URL amount param
     useEffect(() => {
         const urlAmount = searchParams.get("amount");
         if (urlAmount && !isNaN(parseFloat(urlAmount))) {
@@ -58,7 +55,6 @@ function WithdrawContent() {
         }
     }, [searchParams]);
 
-    // Handle transaction success
     useEffect(() => {
         if (vault.isConfirmed && step === "processing") {
             setTimeout(() => {
@@ -70,13 +66,10 @@ function WithdrawContent() {
         }
     }, [vault.isConfirmed, step]);
 
-    // Get balance based on mode
     const totalBalance = isPreviewMode ? vaultBalanceETH : vault.userBalanceETH;
     const { numAmount, isValidAmount } = useAmountValidation(amount, totalBalance);
 
     const handleMax = () => setAmount(totalBalance.toFixed(6));
-
-    // === ACTIONS ===
 
     const handleScheduleWithdraw = async () => {
         if (!isValidAmount || !isConnected || !address) {

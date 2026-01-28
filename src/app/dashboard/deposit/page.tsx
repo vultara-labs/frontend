@@ -35,10 +35,9 @@ function DepositContent() {
     const { isConnected, ethBalance, address } = useWalletConnection();
     const { isPreviewMode, walletBalanceETH, ethPrice, demoDeposit, vaultExpiry } = useDashboardData();
 
-    // Use centralized vault contract hook
     const vault = useVaultContract({ address });
-
     const searchParams = useSearchParams();
+
     useEffect(() => {
         const urlAmount = searchParams.get("amount");
         if (urlAmount && !isNaN(parseFloat(urlAmount))) {
@@ -46,7 +45,6 @@ function DepositContent() {
         }
     }, [searchParams]);
 
-    // Handle deposit success
     useEffect(() => {
         if (vault.isConfirmed && step === "processing") {
             toast.dismiss();
@@ -55,12 +53,10 @@ function DepositContent() {
         }
     }, [vault.isConfirmed, step]);
 
-    // Calculate balances
     const realWalletBalance = ethBalance ? parseFloat(formatUnits(ethBalance.value, ethBalance.decimals)) : 0;
     const walletBalance = isPreviewMode ? walletBalanceETH : realWalletBalance;
     const gasReserve = 0.005;
 
-    // Use shared validation hook
     const { numAmount, isValidAmount, maxDepositable } = useAmountValidation(amount, walletBalance, gasReserve);
     const monthlyYield = YIELD.calculateMonthly(numAmount * ethPrice);
     const depositValueUSD = numAmount * ethPrice;
