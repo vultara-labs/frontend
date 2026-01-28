@@ -5,6 +5,7 @@ import {
     ArrowCircleDown,
     ArrowCircleUp,
     Calculator,
+    BookOpen,
 } from "@phosphor-icons/react";
 
 export const DASHBOARD_NAV_ITEMS = [
@@ -12,6 +13,7 @@ export const DASHBOARD_NAV_ITEMS = [
     { label: "Deposit", href: "/dashboard/deposit", icon: ArrowCircleUp, group: "core" },
     { label: "Vault Strategy", href: "/dashboard/vault", icon: Vault, group: "core" },
     { label: "Withdraw", href: "/dashboard/withdraw", icon: ArrowCircleDown, group: "core" },
+    { label: "How to Earn", href: "/dashboard/learn", icon: BookOpen, group: "core" },
     { label: "Calculator", href: "/dashboard/calculator", icon: Calculator, group: "tools" },
     { label: "Nova AI", href: "/dashboard/ai", icon: Lightning, group: "tools" },
 ] as const;
