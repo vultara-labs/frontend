@@ -33,7 +33,7 @@ function DepositContent() {
     const [riskAcknowledged, setRiskAcknowledged] = useState(false);
 
     const { isConnected, ethBalance, address } = useWalletConnection();
-    const { isPreviewMode, walletBalanceETH, ethPrice, demoDeposit } = useDashboardData();
+    const { isPreviewMode, walletBalanceETH, ethPrice, demoDeposit, vaultExpiry } = useDashboardData();
 
     // Use centralized vault contract hook
     const vault = useVaultContract({ address });
@@ -246,6 +246,26 @@ function DepositContent() {
                                     <div className="flex justify-between items-center">
                                         <span className="text-sm text-[var(--text-secondary)] font-medium">Strategy</span>
                                         <span className="text-sm font-bold text-[var(--volt)]">Thetanuts V4</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <div className="flex items-center gap-1.5">
+                                            <span className="text-sm text-[var(--text-secondary)] font-medium">Withdrawal</span>
+                                            <div className="group/tooltip relative">
+                                                <Info size={12} className="text-[var(--text-tertiary)] cursor-help" />
+                                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 p-2 rounded-lg bg-[var(--obsidian-base)] border border-[var(--border-subtle)] w-48 text-[10px] text-[var(--text-secondary)] leading-relaxed opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none z-50">
+                                                    Funds are locked in active strategies until the epoch expires.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="text-right">
+                                            <span className="text-sm font-bold text-[var(--warning)] block">Epoch Expiry</span>
+                                            <span className="text-[10px] text-[var(--text-tertiary)] font-mono">
+                                                {vaultExpiry
+                                                    ? vaultExpiry.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+                                                    : "Next Friday 08:00 UTC"
+                                                }
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
 

@@ -10,15 +10,12 @@ import { EpochTimerCompact } from "@/components/dashboard/EpochTimer";
 import { TransactionHistory } from "@/components/dashboard/TransactionHistory";
 
 export default function VaultPage() {
-    const { ethPrice, currentAPY, marketLoading, vaultBalanceETH, vaultBalanceUSD } = useDashboardData();
+    const { ethPrice, currentAPY, marketLoading, vaultBalanceETH, vaultBalanceUSD, displayedStrikePrice, vaultExpiry } = useDashboardData();
     const [showDetails, setShowDetails] = useState(false);
 
     const hasPosition = vaultBalanceETH > 0;
     const loading = marketLoading;
     const dynamicAPY = currentAPY.toFixed(1);
-
-    // Strike price calculation (epoch timer now uses centralized utility)
-    const strikePrice = ethPrice ? Math.floor(ethPrice * PROTOCOL.VAULT.STRIKE_PERCENTAGE / 50) * 50 : 0;
 
     return (
         <div className="min-h-screen p-4 sm:p-6 lg:p-8">
@@ -100,11 +97,11 @@ export default function VaultPage() {
                     <div className="relative z-10 grid grid-cols-3 gap-4 mt-8 pt-6 border-t border-[var(--border-subtle)]">
                         <div className="text-center sm:text-left">
                             <p className="text-xs uppercase tracking-wider text-[var(--text-tertiary)] mb-1">Strike</p>
-                            <p className="text-sm font-bold text-white font-mono">${loading ? "..." : strikePrice.toLocaleString("en-US")}</p>
+                            <p className="text-sm font-bold text-white font-mono">${loading ? "..." : displayedStrikePrice.toLocaleString("en-US")}</p>
                         </div>
                         <div className="text-center">
                             <p className="text-xs uppercase tracking-wider text-[var(--text-tertiary)] mb-1">Epoch Ends</p>
-                            <EpochTimerCompact />
+                            <EpochTimerCompact expiryDate={vaultExpiry} />
                         </div>
                         <div className="text-center sm:text-right">
                             <p className="text-xs uppercase tracking-wider text-[var(--text-tertiary)] mb-1">Security</p>
@@ -202,7 +199,7 @@ export default function VaultPage() {
                                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                                             {[
                                                 { step: 1, title: "You Deposit", desc: "ETH goes into vault", color: "info" },
-                                                { step: 2, title: "Vault Sells Calls", desc: `Strike: $${strikePrice.toLocaleString("en-US")}`, color: "volt" },
+                                                { step: 2, title: "Vault Sells Calls", desc: `Strike: $${displayedStrikePrice.toLocaleString("en-US")}`, color: "volt" },
                                                 { step: 3, title: "Collect Premium", desc: "Weekly earnings", color: "success" },
                                                 { step: 4, title: "Auto-Compound", desc: "Reinvest gains", color: "warning" },
                                             ].map((item) => (
@@ -238,7 +235,7 @@ export default function VaultPage() {
                                             <h4 className="text-sm font-bold text-white">Weekly Epoch Cycle</h4>
                                         </div>
                                         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
-                                            {["Friday 8AM UTC", "Options Sold", "Week Passes", "Options Expire", "Premium Collected"].map((step, i) => (
+                                            {["Epoch Starts", "Options Sold", "Holding Period", "Epoch Expiry", "Premium Collected"].map((step, i) => (
                                                 <div key={i} className="flex items-center gap-2 shrink-0">
                                                     <div className="px-3 py-2 rounded-lg bg-white/[0.03] border border-[var(--border-subtle)] text-xs text-[var(--text-secondary)] whitespace-nowrap font-medium">
                                                         {step}

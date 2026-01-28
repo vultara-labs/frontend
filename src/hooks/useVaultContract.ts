@@ -59,6 +59,25 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
         query: { enabled: !!address }
     });
 
+    // Contract Strategy State
+    const { data: activeStrikePrice } = useReadContract({
+        address: contracts.ETH_VAULT,
+        abi: VULTARA_ETH_VAULT_ABI,
+        functionName: "activeStrikePrice",
+    });
+
+    const { data: activeExpiry } = useReadContract({
+        address: contracts.ETH_VAULT,
+        abi: VULTARA_ETH_VAULT_ABI,
+        functionName: "activeExpiry",
+    });
+
+    const { data: lastEpochYield } = useReadContract({
+        address: contracts.ETH_VAULT,
+        abi: VULTARA_ETH_VAULT_ABI,
+        functionName: "lastEpochYield",
+    });
+
     // === ACTIONS ===
 
     const deposit = async (amountEth: number) => {
@@ -180,6 +199,11 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
         // Contract info
         vaultAddress: contracts.ETH_VAULT,
         chainId,
+
+        // Strategy Data
+        activeStrikePrice: activeStrikePrice as bigint | undefined,
+        activeExpiry: activeExpiry as bigint | undefined,
+        lastEpochYield: lastEpochYield as bigint | undefined,
 
         // User balances
         userShares: userShares as bigint | undefined,

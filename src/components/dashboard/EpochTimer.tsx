@@ -8,28 +8,31 @@ interface EpochTimerProps {
     className?: string;
     showLabel?: boolean;
     size?: "sm" | "md" | "lg";
+    expiryDate?: Date;
 }
 
 /**
  * Real-time Epoch Timer that counts down to the next Friday 8AM UTC
  * This is when Thetanuts V4 options expire and new epoch begins
  */
-export function EpochTimer({ className = "", showLabel = true, size = "md" }: EpochTimerProps) {
+export function EpochTimer({ className = "", showLabel = true, size = "md", expiryDate }: EpochTimerProps) {
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0, totalMs: 0 });
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
         setTimeout(() => {
             setMounted(true);
-            setTimeLeft(getTimeUntilEpochEnd());
+            setTimeLeft(getTimeUntilEpochEnd(expiryDate));
         }, 0);
 
         const timer = setInterval(() => {
-            setTimeLeft(getTimeUntilEpochEnd());
+            setTimeLeft(getTimeUntilEpochEnd(expiryDate));
         }, 1000);
 
         return () => clearInterval(timer);
-    }, []);
+    }, [expiryDate]);
+
+    // ... (rest of render logic remains same)
 
     if (!mounted) {
         return (
@@ -65,19 +68,19 @@ export function EpochTimer({ className = "", showLabel = true, size = "md" }: Ep
 /**
  * Compact version for inline use
  */
-export function EpochTimerCompact() {
+export function EpochTimerCompact({ expiryDate }: { expiryDate?: Date }) {
     const [timeStr, setTimeStr] = useState("...");
 
     useEffect(() => {
         const update = () => {
-            const time = getTimeUntilEpochEnd();
+            const time = getTimeUntilEpochEnd(expiryDate);
             setTimeStr(formatEpochTimeRemaining(time));
         };
 
         update();
         const timer = setInterval(update, 60000); // Update every minute for compact version
         return () => clearInterval(timer);
-    }, []);
+    }, [expiryDate]);
 
     return <span className="font-mono font-bold text-[var(--warning)]">{timeStr}</span>;
 }

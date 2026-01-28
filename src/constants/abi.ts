@@ -57,6 +57,27 @@ export const VULTARA_ETH_VAULT_ABI = [
     },
     {
         inputs: [],
+        name: "activeStrikePrice",
+        outputs: [{ name: "", type: "uint256" }],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "activeExpiry",
+        outputs: [{ name: "", type: "uint256" }],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "lastEpochYield",
+        outputs: [{ name: "", type: "uint256" }],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [],
         name: "cancelWithdraw",
         outputs: [],
         stateMutability: "nonpayable",

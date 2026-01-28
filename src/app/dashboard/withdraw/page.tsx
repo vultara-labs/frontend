@@ -27,7 +27,7 @@ export default function WithdrawPage() {
 
 function WithdrawContent() {
     const { isConnected, address } = useWalletConnection();
-    const { isPreviewMode, vaultBalanceETH, demoWithdraw, pendingWithdrawalETH, pendingWithdrawalShares } = useDashboardData();
+    const { isPreviewMode, vaultBalanceETH, demoWithdraw, pendingWithdrawalETH, pendingWithdrawalShares, vaultExpiry } = useDashboardData();
     const [step, setStep] = useState<"input" | "processing" | "success" | "pending_view">("input");
     const [amount, setAmount] = useState("");
     const searchParams = useSearchParams();
@@ -130,7 +130,13 @@ function WithdrawContent() {
                                 <h2 className="text-2xl font-black text-white uppercase mb-2">Withdrawal Queued</h2>
                                 <p className="text-[var(--text-secondary)] mb-6">
                                     You have <strong className="text-white">{pendingWithdrawalETH.toFixed(4)} ETH</strong> scheduled for withdrawal.
-                                    Funds are released every Friday.
+                                    Funds are released after active epoch expires.
+                                    <span className="block text-[11px] text-[var(--text-tertiary)] mt-1 font-mono">
+                                        Expected: {vaultExpiry
+                                            ? vaultExpiry.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+                                            : "Next Friday 08:00 UTC"
+                                        }
+                                    </span>
                                 </p>
 
                                 <div className="grid grid-cols-2 gap-4">
@@ -182,7 +188,10 @@ function WithdrawContent() {
                                     accentColor="blue"
                                     emptyStateLink="/dashboard/deposit"
                                     emptyStateText="No funds in vault. Deposit first →"
-                                    noticeText="Funds will be added to queue and released next Friday."
+                                    noticeText={`Funds will be added to queue and released after Epoch Expiry (${vaultExpiry
+                                        ? vaultExpiry.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })
+                                        : "Next Friday"
+                                        }).`}
                                 />
 
                                 {isPreviewMode ? (

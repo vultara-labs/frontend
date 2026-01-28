@@ -34,8 +34,8 @@ export function getNextFridayExpiry(): Date {
 /**
  * Get time remaining until next epoch end
  */
-export function getTimeUntilEpochEnd(): EpochTimeRemaining {
-    const nextFriday = getNextFridayExpiry();
+export function getTimeUntilEpochEnd(targetDate?: Date): EpochTimeRemaining {
+    const nextFriday = targetDate || getNextFridayExpiry();
     const now = new Date();
     const diff = nextFriday.getTime() - now.getTime();
 
