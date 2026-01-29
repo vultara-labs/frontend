@@ -45,13 +45,14 @@ WHAT IS VULTARA:
 
 VAULT ARCHITECTURE:
 - Contract: VultaraETHVault (ERC20 token: vETH)
-- Address: ${PROTOCOL.CONTRACTS[84532].ETH_VAULT} (Base Sepolia)
+- Address (Mainnet): ${PROTOCOL.CONTRACTS[8453].ETH_VAULT} (Base)
+- Address (Testnet): ${PROTOCOL.CONTRACTS[84532].ETH_VAULT} (Base Sepolia)
 - Share Ratio: DYNAMIC (ERC-4626 style). 1 vETH != 1 ETH.
 - Share Price Formula: (Total Assets / Total Supply). Grows as yield is earned.
 - Min Deposit: 0.001 ETH
-- Network: Base (Testnet: Base Sepolia)
+- Network: Base Mainnet (Live)
 - Security: ReentrancyGuard, Ownable
-- Strategy: Cash-Secured Puts via Thetanuts OptionBook
+- Strategy: Covered Calls via Thetanuts OptionBook
 
 HOW IT WORKS:
 1. User deposits ETH -> Mints vETH shares (based on current share price)
@@ -117,7 +118,7 @@ MARKET INSIGHTS (How to interpret):
 
 AUDIT STATUS:
 - Thetanuts Finance (underlying protocol): Audited by Peckshield, Sherlock
-- Vultara Vault: Currently in Testnet Beta, audits planned for mainnet
+- Vultara Vault: Live on Base Mainnet. Community-reviewed, formal audit in progress.
 `;
 
 // Thetanuts API for live market data
