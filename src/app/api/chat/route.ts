@@ -74,6 +74,7 @@ YIELD & RISK INFO:
 - Strategy Specifics: We sell OTM Puts with Delta 0.10-0.15 (Safe, low probability of exercise).
 - Math for Projections: Est. Earnings = Deposit * (APY/100) * (Days/365).
   - Example: 10 ETH @ 5% APY for 30 days = 10 * 0.05 * (30/365) = ~0.04 ETH profit.
+- FEES: 10% Performance Fee on PROFIT only. Auto-deducted by smart contract. Zero management fees.
 - Downside scenarios:
   * Minor dip (-5%): Usually no loss (covered by premium)
   * Correction (-15%): Potential ~7.5% loss
