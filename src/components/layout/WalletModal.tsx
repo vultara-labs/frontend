@@ -92,14 +92,14 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
                                             onClose();
                                         }}
                                         disabled={isConnecting}
-                                        className="w-full group relative p-4 rounded-xl bg-[var(--obsidian-base)] border border-[var(--border-subtle)] hover:border-[var(--volt)]/50 hover:bg-white/[0.02] transition-all flex items-center justify-between text-left disabled:opacity-50"
+                                        className="w-full group relative p-4 rounded-xl bg-[var(--obsidian-base)] border border-[var(--border-subtle)] hover:border-[var(--volt)] hover:bg-white/[0.02] flex items-center justify-between text-left disabled:opacity-50"
                                     >
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-white/[0.05] flex items-center justify-center overflow-hidden p-2">
                                                 <img src={icon} alt={name} className="w-full h-full object-contain" />
                                             </div>
                                             <div>
-                                                <h3 className="font-bold text-white group-hover:text-[var(--volt)] transition-colors">
+                                                <h3 className="font-bold text-white group-hover:text-[var(--volt)]">
                                                     {name}
                                                 </h3>
                                                 <p className="text-[10px] text-[var(--text-tertiary)] uppercase tracking-wider">
@@ -107,7 +107,7 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
                                                 </p>
                                             </div>
                                         </div>
-                                        <CaretRight size={16} className="text-[var(--text-tertiary)] group-hover:text-[var(--volt)] transition-colors" weight="bold" />
+                                        <CaretRight size={16} className="text-[var(--text-tertiary)] group-hover:text-[var(--volt)]" weight="bold" />
                                     </button>
                                 );
                             })}
