@@ -9,4 +9,4 @@ export const config = createConfig({
     },
 });
 
-export const ACTIVE_CHAIN = baseSepolia;
+export const ACTIVE_CHAIN = base;

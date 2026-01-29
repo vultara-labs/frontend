@@ -5,7 +5,7 @@ export const PROTOCOL = {
     NETWORK: 'Base',
     NETWORK_COLOR: 'blue-500',
     VAULT: {
-        NAME: 'ETH Covered Call', // Strategy Name
+        NAME: 'ETH Cash-Secured Put', // Strategy Name
         ASSET: 'ETH',
         STRIKE_PERCENTAGE: 1.1, // 110% of Current Price (OTM Call)
         EPOCH_DURATION_DAYS: 7, // Weekly Epochs
