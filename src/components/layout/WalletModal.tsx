@@ -30,7 +30,7 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
             return { name: "MetaMask", icon: "/logos/wallet/metamask.svg" };
         }
         if (id.includes("walletconnect")) {
-            return { name: "WalletConnect", icon: "/logos/wallet/metamask.svg" }; // Fallback/Placeholder
+            return { name: "WalletConnect", icon: "/logos/wallet/walletconnect.svg" };
         }
         return { name: connector.name, icon: "/logos/wallet/metamask.svg" }; // Generic fallback
     };
