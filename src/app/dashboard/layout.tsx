@@ -7,10 +7,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { List, X, CaretRight, Wallet, SignOut, Eye } from "@phosphor-icons/react";
 import { useWalletConnection, useDashboardData } from "@/hooks";
 import { DASHBOARD_NAV_ITEMS, DEMO_DATA } from "@/constants";
+import { WalletModal } from "@/components/layout/WalletModal";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
 
     const {
@@ -18,7 +20,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         isConnecting,
         formattedAddress,
         formattedBalance,
-        connect: handleConnect,
+        connect: connectWallet,
         disconnect: handleDisconnect,
     } = useWalletConnection();
 
@@ -34,7 +36,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     }, [pathname]);
 
     useEffect(() => {
-        if (mobileMenuOpen) {
+        if (mobileMenuOpen || isWalletModalOpen) {
             document.body.style.overflow = "hidden";
         } else {
             document.body.style.overflow = "unset";
@@ -42,12 +44,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         return () => {
             document.body.style.overflow = "unset";
         };
-    }, [mobileMenuOpen]);
+    }, [mobileMenuOpen, isWalletModalOpen]);
 
     const isConnectedSafe = mounted && isConnected;
 
+    const openWalletModal = () => setIsWalletModalOpen(true);
+
     return (
         <div className="min-h-screen bg-[var(--obsidian-base)] flex flex-col lg:flex-row font-sans selection:bg-[var(--volt)] selection:text-black">
+            <WalletModal
+                isOpen={isWalletModalOpen}
+                onClose={() => setIsWalletModalOpen(false)}
+            />
+
             <header className="lg:hidden fixed top-0 left-0 right-0 z-50 h-16 border-b border-[var(--border-subtle)] bg-[var(--obsidian-base)]/95 backdrop-blur-xl flex items-center justify-between px-4">
                 <Link href="/" className="flex items-center gap-3">
                     <img src="/logo-dark.png" alt="Vultara" className="h-7 w-auto" />
@@ -139,7 +148,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                     </div>
                                 ) : (
                                     <button
-                                        onClick={handleConnect}
+                                        onClick={openWalletModal}
                                         disabled={isConnecting}
                                         className="w-full py-3.5 rounded-xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm shadow-[0_0_20px_rgba(204,255,0,0.15)] disabled:opacity-70"
                                     >
@@ -187,7 +196,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                             Demo Data
                                         </span>
                                         <button
-                                            onClick={handleConnect}
+                                            onClick={openWalletModal}
                                             className="text-[10px] text-[var(--volt)] font-bold hover:underline"
                                         >
                                             Connect →
@@ -196,7 +205,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                 </div>
                             ) : !isConnectedSafe ? (
                                 <button
-                                    onClick={handleConnect}
+                                    onClick={openWalletModal}
                                     className="w-full py-2.5 rounded-xl bg-[var(--volt)] text-black font-bold text-xs uppercase tracking-widest hover:brightness-110 transition-all shadow-[0_0_15px_rgba(204,255,0,0.15)]"
                                 >
                                     Connect
@@ -329,7 +338,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                     <span className="text-[9px] text-[var(--warning)]/60 hidden sm:inline">• Demo data</span>
                                 </div>
                                 <button
-                                    onClick={handleConnect}
+                                    onClick={openWalletModal}
                                     disabled={isConnecting}
                                     className="text-[9px] sm:text-[10px] font-bold bg-[var(--warning)]/10 hover:bg-[var(--warning)]/20 text-[var(--warning)] px-2 sm:px-3 py-1 rounded-md transition-colors uppercase tracking-wide flex items-center gap-1"
                                 >

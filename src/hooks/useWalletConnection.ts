@@ -8,7 +8,7 @@ import { formatAddress } from "@/lib/formatters";
 
 export function useWalletConnection() {
     const { address, isConnected } = useAccount();
-    const { connect, isPending: isConnecting } = useConnect();
+    const { connect, connectors, isPending: isConnecting } = useConnect();
     const { disconnect } = useDisconnect();
     const chainId = useChainId();
 
@@ -17,14 +17,26 @@ export function useWalletConnection() {
         chainId, // Dynamic: uses connected chain (mainnet or testnet)
     });
 
-    const handleConnect = () => {
+    const handleConnect = (connectorId?: string) => {
+        // Find connector by ID or default to first available (usually injected/metamask)
+        const connector = connectorId
+            ? connectors.find(c => c.id === connectorId)
+            : connectors[0];
+
+        if (!connector) {
+            toast.error("Wallet not found");
+            return;
+        }
+
         connect(
-            { connector: injected() },
+            { connector },
             {
                 onSuccess: () => {
                     toast.success("Wallet Connected", { description: "Welcome back to Vultara." });
                 },
                 onError: (err) => {
+                    // Don't show error if user just rejected the request
+                    if (err.message.includes("User rejected")) return;
                     toast.error("Connection Failed", { description: err.message });
                 },
             }
@@ -49,6 +61,7 @@ export function useWalletConnection() {
         ethBalance,
         formattedAddress,
         formattedBalance,
+        connectors, // Return list of available wallets
         connect: handleConnect,
         disconnect: handleDisconnect,
     };
