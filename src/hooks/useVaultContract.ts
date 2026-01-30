@@ -15,7 +15,7 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
     const contracts = PROTOCOL.CONTRACTS[chainId as keyof typeof PROTOCOL.CONTRACTS] || PROTOCOL.CONTRACTS[8453];
 
     const {
-        writeContract,
+        writeContractAsync,
         data: txHash,
         isPending: isWritePending,
         reset: resetWrite
@@ -78,16 +78,20 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
             const amountWei = parseEther(amountEth.toString());
             toast.loading("Depositing ETH to Vault...");
 
-            writeContract({
+            await writeContractAsync({
                 address: contracts.ETH_VAULT,
                 abi: VULTARA_ETH_VAULT_ABI,
                 functionName: "deposit",
                 value: amountWei,
             });
             return true;
-        } catch (_) {
+        } catch (error: any) {
             toast.dismiss();
-            toast.error("Transaction failed");
+            if (error.message?.includes("User rejected")) {
+                toast.error("Transaction cancelled");
+            } else {
+                toast.error("Transaction failed");
+            }
             return false;
         }
     };
@@ -115,16 +119,20 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
 
             toast.loading("Scheduling Withdrawal...");
 
-            writeContract({
+            await writeContractAsync({
                 address: contracts.ETH_VAULT,
                 abi: VULTARA_ETH_VAULT_ABI,
                 functionName: "scheduleWithdraw",
                 args: [sharesToWithdraw],
             });
             return true;
-        } catch (_) {
+        } catch (error: any) {
             toast.dismiss();
-            toast.error("Transaction failed");
+            if (error.message?.includes("User rejected")) {
+                toast.error("Transaction cancelled");
+            } else {
+                toast.error("Transaction failed");
+            }
             return false;
         }
     };
@@ -133,15 +141,20 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
         try {
             toast.loading("Claiming funds...");
 
-            writeContract({
+            await writeContractAsync({
                 address: contracts.ETH_VAULT,
                 abi: VULTARA_ETH_VAULT_ABI,
                 functionName: "claimWithdraw",
                 args: [],
             });
             return true;
-        } catch (_) {
+        } catch (error: any) {
             toast.dismiss();
+            if (error.message?.includes("User rejected")) {
+                toast.error("Transaction cancelled");
+            } else {
+                toast.error("Transaction failed");
+            }
             return false;
         }
     };
@@ -150,15 +163,20 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
         try {
             toast.loading("Cancelling request...");
 
-            writeContract({
+            await writeContractAsync({
                 address: contracts.ETH_VAULT,
                 abi: VULTARA_ETH_VAULT_ABI,
                 functionName: "cancelWithdraw",
                 args: [],
             });
             return true;
-        } catch (_) {
+        } catch (error: any) {
             toast.dismiss();
+            if (error.message?.includes("User rejected")) {
+                toast.error("Transaction cancelled");
+            } else {
+                toast.error("Transaction failed");
+            }
             return false;
         }
     };

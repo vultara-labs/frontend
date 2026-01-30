@@ -32,7 +32,8 @@ function DepositContent() {
     const [amount, setAmount] = useState("");
     const [riskAcknowledged, setRiskAcknowledged] = useState(false);
 
-    const { isConnected, ethBalance, address } = useWalletConnection();
+    // Wallet connection hook with network enforcement
+    const { isConnected, ethBalance, address, isWrongNetwork, switchNetwork } = useWalletConnection();
     const { isPreviewMode, walletBalanceETH, ethPrice, demoDeposit, vaultExpiry } = useDashboardData();
 
     const vault = useVaultContract({ address });
@@ -140,6 +141,7 @@ function DepositContent() {
                                     label="Amount (ETH)"
                                     balanceLabel="Bal"
                                     accentColor="volt"
+                                    ethPrice={ethPrice}
                                     showYieldPreview={true}
                                     monthlyYield={monthlyYield}
                                 />
@@ -205,13 +207,22 @@ function DepositContent() {
                                     </motion.div>
                                 )}
 
-                                <button
-                                    onClick={handleContinue}
-                                    disabled={!isValidAmount}
-                                    className="btn-primary w-full h-14 sm:h-16 text-sm sm:text-base tracking-widest shadow-[0_0_20px_rgba(204,255,0,0.15)] disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--volt)] focus-visible:outline-offset-2"
-                                >
-                                    Continue
-                                </button>
+                                {isWrongNetwork ? (
+                                    <button
+                                        onClick={switchNetwork}
+                                        className="btn-primary w-full h-14 sm:h-16 text-sm sm:text-base tracking-widest shadow-[0_0_20px_rgba(255,165,0,0.15)] active:scale-[0.98] bg-orange-500 hover:bg-orange-400 text-black border-orange-500"
+                                    >
+                                        Switch to Base
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={handleContinue}
+                                        disabled={!isValidAmount}
+                                        className="btn-primary w-full h-14 sm:h-16 text-sm sm:text-base tracking-widest shadow-[0_0_20px_rgba(204,255,0,0.15)] disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--volt)] focus-visible:outline-offset-2"
+                                    >
+                                        Continue
+                                    </button>
+                                )}
                             </motion.div>
                         )}
 
@@ -225,7 +236,10 @@ function DepositContent() {
                                 <div className="p-6 rounded-2xl bg-[var(--obsidian-base)] border border-[var(--border-medium)] mb-6 space-y-4">
                                     <div className="flex justify-between items-center">
                                         <span className="text-sm text-[var(--text-secondary)] font-medium">Amount</span>
-                                        <span className="text-xl font-black text-white">${numAmount.toLocaleString()}</span>
+                                        <div className="text-right">
+                                            <span className="text-xl font-black text-white">{numAmount.toLocaleString()} ETH</span>
+                                            <div className="text-xs text-[var(--text-tertiary)] font-bold">≈ ${depositValueUSD.toLocaleString('en-US', { maximumFractionDigits: 2 })} USD</div>
+                                        </div>
                                     </div>
                                     <div className="w-full h-px bg-[var(--border-subtle)]" />
                                     <div className="flex justify-between items-center">
@@ -305,6 +319,10 @@ function DepositContent() {
                                     {isPreviewMode ? (
                                         <button onClick={handlePreviewDeposit} disabled={!riskAcknowledged} className="btn-primary h-12 sm:h-14 text-xs disabled:opacity-40 active:scale-[0.98]">
                                             Confirm (Demo)
+                                        </button>
+                                    ) : isWrongNetwork ? (
+                                        <button onClick={switchNetwork} className="btn-primary h-12 sm:h-14 text-xs active:scale-[0.98] bg-orange-500 hover:bg-orange-400 text-black border-orange-500">
+                                            Switch to Base
                                         </button>
                                     ) : (
                                         <button onClick={handleDeposit} disabled={!riskAcknowledged} className="btn-primary h-12 sm:h-14 text-xs disabled:opacity-40 active:scale-[0.98]">

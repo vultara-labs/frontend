@@ -12,9 +12,11 @@ interface AmountInputProps {
     onMax: () => string;
 
     // Optional customization
+    // Optional customization
     label?: string;
     balanceLabel?: string;
     accentColor?: "volt" | "blue";
+    ethPrice?: number; // Added ethPrice
 
     // Validation states
     gasReserve?: number;
@@ -41,6 +43,7 @@ export function AmountInput({
     label = "Amount (ETH)",
     balanceLabel = "Balance",
     accentColor = "volt",
+    ethPrice = 0,
     gasReserve = 0,
     minAmount = 0.001,
     showYieldPreview = false,
@@ -50,6 +53,8 @@ export function AmountInput({
     noticeText,
 }: AmountInputProps) {
     const numAmount = parseFloat(value.replace(/,/g, '')) || 0;
+    const amountUSD = numAmount * ethPrice;
+    const balanceUSD = balance * ethPrice;
 
     // Validation with epsilon for floating point
     const epsilon = 0.0001;
@@ -91,13 +96,14 @@ export function AmountInput({
             <div className="flex justify-between items-center mb-3 px-2">
                 <span className="label text-[var(--text-secondary)]">{label}</span>
                 <span
-                    className="text-xs font-mono text-[var(--text-tertiary)] hover:text-white cursor-pointer transition-colors"
+                    className="text-xs font-mono text-[var(--text-tertiary)] hover:text-white cursor-pointer transition-colors text-right"
                     onClick={() => {
                         const maxVal = onMax();
                         onChange(maxVal);
                     }}
                 >
-                    {balanceLabel}: {balance.toLocaleString('en-US', { maximumFractionDigits: 6 })} <span className="text-[var(--text-tertiary)]">ETH</span>
+                    <div>{balanceLabel}: {balance.toLocaleString('en-US', { maximumFractionDigits: 6 })} <span className="text-[var(--text-tertiary)]">ETH</span></div>
+                    {ethPrice > 0 && <div className="text-[10px] text-[var(--text-tertiary)]">≈ ${balanceUSD.toLocaleString('en-US', { maximumFractionDigits: 2 })}</div>}
                 </span>
             </div>
 
@@ -112,19 +118,29 @@ export function AmountInput({
                         : `border-[var(--border-medium)] group-focus-within/input:${c.border}`
                         }`}
                 >
-                    <span className={`text-2xl sm:text-3xl ${isOverBalance ? "text-[var(--error)]" : "text-[var(--text-tertiary)]"}`}>
-                        Ξ
-                    </span>
-                    <input
-                        type="text"
-                        inputMode="decimal"
-                        value={value}
-                        onChange={handleChange}
-                        placeholder="0"
-                        className={`w-full bg-transparent text-3xl sm:text-4xl font-black placeholder:text-white/10 outline-none focus-visible:ring-0 ${isOverBalance ? "text-[var(--error)]" : "text-white"
-                            }`}
-                        autoFocus
-                    />
+                    <div className="flex-1">
+                        <div className="flex items-center gap-3">
+                            <span className={`text-2xl sm:text-3xl ${isOverBalance ? "text-[var(--error)]" : "text-[var(--text-tertiary)]"}`}>
+                                Ξ
+                            </span>
+                            <input
+                                type="text"
+                                inputMode="decimal"
+                                value={value}
+                                onChange={handleChange}
+                                placeholder="0"
+                                className={`w-full bg-transparent text-3xl sm:text-4xl font-black placeholder:text-white/10 outline-none focus-visible:ring-0 ${isOverBalance ? "text-[var(--error)]" : "text-white"
+                                    }`}
+                                autoFocus
+                            />
+                        </div>
+                        {ethPrice > 0 && numAmount > 0 && (
+                            <div className="pl-8 mt-1 text-sm font-medium text-[var(--text-tertiary)]">
+                                ≈ ${amountUSD.toLocaleString('en-US', { maximumFractionDigits: 2 })}
+                            </div>
+                        )}
+                    </div>
+
                     <button
                         onClick={() => {
                             const maxVal = onMax();
