@@ -2,7 +2,7 @@
 
 **Simple DeFi Yield** — Deposit ETH, earn real yield from institutional-grade strategies.
 
-![Status](https://img.shields.io/badge/Status-Testnet%20Beta-yellow?style=flat-square)
+![Status](https://img.shields.io/badge/Status-Mainnet%20Live-brightgreen?style=flat-square)
 ![Next.js](https://img.shields.io/badge/Next.js-16.1-black?style=flat-square&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
