@@ -46,12 +46,12 @@ export default function Hero() {
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] bg-[var(--volt)]/20 blur-[80px] rounded-full lg:hidden pointer-events-none animate-pulse-slow" />
 
                         <div className="flex-1 flex flex-col justify-center gap-6 lg:gap-8 relative z-10">
-                            <div className="inline-flex items-center gap-2 self-center lg:self-start rounded-full border border-[var(--warning)]/30 bg-[var(--warning)]/10 px-3 py-1.5 text-[10px] font-bold text-[var(--warning)] uppercase tracking-widest backdrop-blur-md shadow-[0_0_15px_rgba(255,170,0,0.1)]">
+                            <div className="inline-flex items-center gap-2 self-center lg:self-start rounded-full border border-[var(--success)]/30 bg-[var(--success)]/10 px-3 py-1.5 text-[10px] font-bold text-[var(--success)] uppercase tracking-widest backdrop-blur-md shadow-[0_0_15px_rgba(34,197,94,0.1)]">
                                 <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--warning)] opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--warning)]"></span>
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--success)] opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--success)]"></span>
                                 </span>
-                                <span>Testnet Beta</span>
+                                <span>Live on Base</span>
                             </div>
 
                             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tighter leading-[0.95] text-white">
