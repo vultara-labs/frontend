@@ -45,8 +45,7 @@ WHAT IS VULTARA:
 
 VAULT ARCHITECTURE:
 - Contract: VultaraETHVault (ERC20 token: vETH)
-- Address (Mainnet): ${PROTOCOL.CONTRACTS[8453].ETH_VAULT} (Base)
-- Address (Testnet): ${PROTOCOL.CONTRACTS[84532].ETH_VAULT} (Base Sepolia)
+- Address: ${PROTOCOL.CONTRACTS[8453].ETH_VAULT} (Base Mainnet)
 - Share Ratio: DYNAMIC (ERC-4626 style). 1 vETH != 1 ETH.
 - Share Price Formula: (Total Assets / Total Supply). Grows as yield is earned.
 - Min Deposit: 0.001 ETH

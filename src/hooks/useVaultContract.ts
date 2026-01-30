@@ -12,7 +12,7 @@ interface UseVaultContractOptions {
 
 export function useVaultContract({ address }: UseVaultContractOptions = {}) {
     const chainId = useChainId();
-    const contracts = PROTOCOL.CONTRACTS[chainId as keyof typeof PROTOCOL.CONTRACTS] || PROTOCOL.CONTRACTS[84532];
+    const contracts = PROTOCOL.CONTRACTS[chainId as keyof typeof PROTOCOL.CONTRACTS] || PROTOCOL.CONTRACTS[8453];
 
     const {
         writeContract,

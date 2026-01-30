@@ -17,7 +17,7 @@ export default function ArchitecturePage() {
                 <DocsSection icon={Blueprint} title="Contract Overview">
                     <DocsTable rows={[
                         { label: "Contract", value: "VultaraETHVault" },
-                        { label: "Network", value: "Base (Testnet: Base Sepolia)" },
+                        { label: "Network", value: "Base Mainnet" },
                         { label: "Token Symbol", value: "vETH", highlight: true },
                         { label: "Share Ratio", value: "Dynamic (ERC-4626 Style)" },
                         { label: "Share Price", value: "Total Assets / Total Supply" },
@@ -90,11 +90,10 @@ export default function ArchitecturePage() {
                     </p>
                 </DocsSection>
 
-                {/* Deployed Contracts */}
-                <DocsSection icon={Blueprint} title="Deployed Contracts">
+                {/* Deployed Contract */}
+                <DocsSection icon={Blueprint} title="Deployed Contract">
                     <DocsTable rows={[
-                        { label: "Base Sepolia", value: <code className="text-[var(--volt)] text-xs">0x3C90E5477C9016eec4c48b9886a1Bc3c1c5C5bBa</code>, highlight: false },
-                        { label: "Base Mainnet", value: <span className="text-[var(--text-tertiary)] text-xs italic">Coming soon</span> },
+                        { label: "Base Mainnet", value: <code className="text-[var(--volt)] text-xs">0xEe0fA979928eb331050EDC0B2b027b97d0144F5a</code>, highlight: true },
                     ]} />
                 </DocsSection>
             </DocsContent>

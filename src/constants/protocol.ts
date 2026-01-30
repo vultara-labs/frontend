@@ -11,13 +11,9 @@ export const PROTOCOL = {
         EPOCH_DURATION_DAYS: 7, // Weekly Epochs
     },
     CONTRACTS: {
-        // Base Sepolia (Testnet)
-        84532: {
-            ETH_VAULT: '0x3C90E5477C9016eec4c48b9886a1Bc3c1c5C5bBa' as `0x${string}`,
-        },
-        // Base Mainnet (Future)
+        // Base Mainnet
         8453: {
-            ETH_VAULT: '0x0000000000000000000000000000000000000000' as `0x${string}`,
+            ETH_VAULT: '0xEe0fA979928eb331050EDC0B2b027b97d0144F5a' as `0x${string}`,
         },
     },
 } as const;

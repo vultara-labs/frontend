@@ -58,15 +58,7 @@ export function TransactionHistory({ className = "", limit = 5 }: TransactionHis
             // In production, use viem's getLogs to fetch DepositReceived and WithdrawProcessed events
 
             try {
-                // Placeholder for real implementation:
-                // const publicClient = createPublicClient({ chain: baseSepolia, transport: http() });
-                // const logs = await publicClient.getLogs({
-                //     address: VAULT_ADDRESS,
-                //     event: parseAbiItem('event DepositReceived(address indexed user, uint256 ethAmount, uint256 shares)'),
-                //     args: { user: address },
-                //     fromBlock: 'earliest'
-                // });
-
+                // TODO: Implement real event fetching using viem getLogs
                 setTransactions([]);
             } catch (error) {
                 console.error("Failed to fetch transactions:", error);

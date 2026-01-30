@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowCircleUp, CheckCircle, CircleNotch, Info, TrendUp, ArrowUpRight, ArrowCircleDown, ChartLineDown, ShieldWarning } from "@phosphor-icons/react";
+import { ArrowCircleUp, CheckCircle, CircleNotch, Info, TrendUp, ChartLineDown, ShieldWarning } from "@phosphor-icons/react";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
@@ -146,23 +146,17 @@ function DepositContent() {
 
                                 {walletBalance < 0.01 && (
                                     <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="mb-6">
-                                        <a
-                                            href="https://www.alchemy.com/faucets/base-sepolia"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="flex items-center justify-between p-3 rounded-xl bg-[var(--volt)]/10 border border-[var(--volt)]/40 hover:bg-[var(--volt)]/20 transition-all group/faucet cursor-pointer"
-                                        >
+                                        <div className="flex items-center justify-between p-3 rounded-xl bg-[var(--warning)]/10 border border-[var(--warning)]/40">
                                             <div className="flex items-center gap-2">
-                                                <div className="w-8 h-8 rounded-lg bg-[var(--volt)]/10 flex items-center justify-center text-[var(--volt)]">
-                                                    <ArrowCircleDown size={18} weight="duotone" />
+                                                <div className="w-8 h-8 rounded-lg bg-[var(--warning)]/10 flex items-center justify-center text-[var(--warning)]">
+                                                    <Info size={18} weight="duotone" />
                                                 </div>
                                                 <div>
-                                                    <p className="text-xs font-bold text-white uppercase tracking-wide">Get Free ETH</p>
-                                                    <p className="text-[11px] text-[var(--text-secondary)]">Base Sepolia Faucet</p>
+                                                    <p className="text-xs font-bold text-white uppercase tracking-wide">Low Balance</p>
+                                                    <p className="text-[11px] text-[var(--text-secondary)]">Bridge ETH to Base via Coinbase or any bridge</p>
                                                 </div>
                                             </div>
-                                            <ArrowUpRight size={14} weight="bold" className="text-[var(--volt)] group-hover/faucet:translate-x-0.5 group-hover/faucet:-translate-y-0.5 transition-transform" />
-                                        </a>
+                                        </div>
                                     </motion.div>
                                 )}
 

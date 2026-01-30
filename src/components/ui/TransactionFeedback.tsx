@@ -52,7 +52,7 @@ export function TransactionFeedback({ status, txHash, message, onClose }: Transa
                         <p className="text-xs text-[var(--text-secondary)] mt-0.5">{config.subtitle}</p>
                         {txHash && (
                             <a
-                                href={`https://sepolia.basescan.org/tx/${txHash}`}
+                                href={`https://basescan.org/tx/${txHash}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-1 text-xs text-[var(--volt)] hover:underline mt-2"
