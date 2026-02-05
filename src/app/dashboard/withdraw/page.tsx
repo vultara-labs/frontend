@@ -79,17 +79,26 @@ function WithdrawContent() {
             return;
         }
         setStep("processing");
-        await vault.scheduleWithdraw(numAmount, vault.userShares);
+        const success = await vault.scheduleWithdraw(numAmount, vault.userShares);
+        if (!success) {
+            setStep("input");
+        }
     };
 
     const handleClaim = async () => {
         setStep("processing");
-        await vault.claimWithdraw();
+        const success = await vault.claimWithdraw();
+        if (!success) {
+            setStep("pending_view");
+        }
     };
 
     const handleCancel = async () => {
         setStep("processing");
-        await vault.cancelWithdraw();
+        const success = await vault.cancelWithdraw();
+        if (!success) {
+            setStep("pending_view");
+        }
     };
 
     const handlePreviewWithdraw = () => {
