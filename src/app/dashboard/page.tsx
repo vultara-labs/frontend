@@ -3,8 +3,8 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowUpRight, Vault, Lightning, TrendUp, Crown } from "@phosphor-icons/react";
-import { ACCESS_LEVELS } from "@/constants";
+import { ArrowUpRight, Vault, Lightning, TrendUp, Crown, ArrowSquareOut } from "@phosphor-icons/react";
+import { ACCESS_LEVELS, PROTOCOL } from "@/constants";
 import { TierDetailsModal } from "@/components/dashboard/TierDetailsModal";
 import { VaultEmptyState, SkeletonBalance, IconBox, StaggerContainer, AnimatedNumber } from "@/components/ui";
 import { useDashboardData } from "@/hooks";
@@ -108,6 +108,15 @@ export default function DashboardPage() {
                                         </div>
                                     </div>
                                     <p className="text-xs text-[var(--text-secondary)] mt-1">Yields are strategy-dependent and not guaranteed.</p>
+                                    <a
+                                        href={`https://basescan.org/address/${PROTOCOL.CONTRACTS[8453].ETH_VAULT}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1 text-xs text-[var(--text-tertiary)] hover:text-[var(--volt)] mt-2 transition-colors"
+                                    >
+                                        <ArrowSquareOut size={12} />
+                                        View Vault Contract
+                                    </a>
                                 </>
                             )}
                         </div>

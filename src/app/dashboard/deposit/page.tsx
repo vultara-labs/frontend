@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowCircleUp, CheckCircle, CircleNotch, Info, TrendUp, ChartLineDown, ShieldWarning } from "@phosphor-icons/react";
+import { ArrowCircleUp, CheckCircle, CircleNotch, Info, TrendUp, ChartLineDown, ShieldWarning, ArrowSquareOut } from "@phosphor-icons/react";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
@@ -31,6 +31,7 @@ function DepositContent() {
     const [step, setStep] = useState<"input" | "confirm" | "processing" | "success">("input");
     const [amount, setAmount] = useState("");
     const [riskAcknowledged, setRiskAcknowledged] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     // Wallet connection hook with network enforcement
     const { isConnected, ethBalance, address, isWrongNetwork, switchNetwork } = useWalletConnection();
@@ -91,8 +92,10 @@ function DepositContent() {
             toast.error("Please connect your wallet");
             return;
         }
+        setIsSubmitting(true);
         setStep("processing");
         const success = await vault.deposit(numAmount);
+        setIsSubmitting(false);
         if (!success) {
             setStep("confirm");
         }
@@ -325,8 +328,19 @@ function DepositContent() {
                                             Switch to Base
                                         </button>
                                     ) : (
-                                        <button onClick={handleDeposit} disabled={!riskAcknowledged} className="btn-primary h-12 sm:h-14 text-xs disabled:opacity-40 active:scale-[0.98]">
-                                            Confirm
+                                        <button
+                                            onClick={handleDeposit}
+                                            disabled={!riskAcknowledged || isSubmitting}
+                                            className="btn-primary h-12 sm:h-14 text-xs disabled:opacity-40 active:scale-[0.98] flex items-center justify-center gap-2"
+                                        >
+                                            {isSubmitting ? (
+                                                <>
+                                                    <CircleNotch size={16} className="animate-spin" />
+                                                    Confirming...
+                                                </>
+                                            ) : (
+                                                'Confirm'
+                                            )}
                                         </button>
                                     )}
                                 </div>
@@ -341,9 +355,20 @@ function DepositContent() {
                             <motion.div key="success" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center py-8">
                                 <SuccessAnimation />
                                 <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-2">Complete</h3>
-                                <p className="text-[var(--text-secondary)] text-center mb-8 max-w-xs mx-auto">
+                                <p className="text-[var(--text-secondary)] text-center mb-4 max-w-xs mx-auto">
                                     Your funds have been deposited successfully into the Vault.
                                 </p>
+                                {vault.txHash && (
+                                    <a
+                                        href={`https://basescan.org/tx/${vault.txHash}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 text-sm text-[var(--volt)] hover:text-[var(--volt)]/80 mb-6 transition-colors"
+                                    >
+                                        <ArrowSquareOut size={16} weight="bold" />
+                                        View on Basescan
+                                    </a>
+                                )}
                                 <Link href="/dashboard" className="btn-primary w-full h-14 px-8 flex items-center justify-center text-xs tracking-widest font-bold uppercase shadow-[0_0_20px_rgba(204,255,0,0.15)] hover:shadow-[0_0_30px_rgba(204,255,0,0.3)] transition-all">
                                     Return to Dashboard
                                 </Link>

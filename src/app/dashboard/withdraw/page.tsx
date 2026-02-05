@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowCircleDown, CircleNotch } from "@phosphor-icons/react";
+import { ArrowCircleDown, CircleNotch, ArrowSquareOut } from "@phosphor-icons/react";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
@@ -30,6 +30,7 @@ function WithdrawContent() {
     const { isPreviewMode, vaultBalanceETH, demoWithdraw, pendingWithdrawalETH, pendingWithdrawalShares, vaultExpiry } = useDashboardData();
     const [step, setStep] = useState<"input" | "processing" | "success" | "pending_view">("input");
     const [amount, setAmount] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const searchParams = useSearchParams();
 
     const vault = useVaultContract({
@@ -78,24 +79,30 @@ function WithdrawContent() {
             toast.error("Please connect your wallet");
             return;
         }
+        setIsSubmitting(true);
         setStep("processing");
         const success = await vault.scheduleWithdraw(numAmount, vault.userShares);
+        setIsSubmitting(false);
         if (!success) {
             setStep("input");
         }
     };
 
     const handleClaim = async () => {
+        setIsSubmitting(true);
         setStep("processing");
         const success = await vault.claimWithdraw();
+        setIsSubmitting(false);
         if (!success) {
             setStep("pending_view");
         }
     };
 
     const handleCancel = async () => {
+        setIsSubmitting(true);
         setStep("processing");
         const success = await vault.cancelWithdraw();
+        setIsSubmitting(false);
         if (!success) {
             setStep("pending_view");
         }
@@ -125,42 +132,88 @@ function WithdrawContent() {
                 <div className="relative rounded-[2.5rem] bg-[var(--obsidian-surface)] border border-[var(--border-medium)] p-8 sm:p-12 overflow-hidden">
                     <AnimatePresence mode="wait">
 
-                        {step === "pending_view" && (
-                            <motion.div key="pending" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center">
-                                <div className="w-16 h-16 rounded-2xl bg-[var(--warning)]/10 text-[var(--warning)] mx-auto mb-6 flex items-center justify-center border border-[var(--warning)]/20">
-                                    <CircleNotch size={32} weight="bold" className="animate-spin-slow" />
-                                </div>
-                                <h2 className="text-2xl font-black text-white uppercase mb-2">Withdrawal Queued</h2>
-                                <p className="text-[var(--text-secondary)] mb-6">
-                                    You have <strong className="text-white">{pendingWithdrawalETH.toFixed(4)} ETH</strong> scheduled for withdrawal.
-                                    Funds are released after active epoch expires.
-                                    <span className="block text-[11px] text-[var(--text-tertiary)] mt-1 font-mono">
-                                        Expected: {vaultExpiry
-                                            ? vaultExpiry.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
-                                            : "Next Friday 08:00 UTC"
-                                        }
-                                    </span>
-                                </p>
+                        {step === "pending_view" && (() => {
+                            const now = new Date();
+                            const canClaim = vaultExpiry ? now >= vaultExpiry : false;
+                            const timeUntilClaim = vaultExpiry ? Math.max(0, vaultExpiry.getTime() - now.getTime()) : 0;
+                            const hoursUntil = Math.floor(timeUntilClaim / (1000 * 60 * 60));
+                            const minsUntil = Math.floor((timeUntilClaim % (1000 * 60 * 60)) / (1000 * 60));
 
-                                <div className="grid grid-cols-2 gap-4">
-                                    <button
-                                        onClick={handleCancel}
-                                        className="h-14 rounded-xl border border-[var(--border-medium)] text-[var(--text-secondary)] font-bold hover:bg-white/5 hover:text-white transition-colors"
-                                    >
-                                        Cancel Request
-                                    </button>
-                                    <button
-                                        onClick={handleClaim}
-                                        className="h-14 rounded-xl bg-[var(--volt)] text-black font-bold uppercase hover:bg-[var(--volt)]/90 transition-colors shadow-[0_0_20px_rgba(204,255,0,0.2)]"
-                                    >
-                                        Claim Funds
-                                    </button>
-                                </div>
-                                <p className="text-xs text-[var(--text-tertiary)] mt-4">
-                                    Note: Claiming will fail if funds are currently locked in strategy.
-                                </p>
-                            </motion.div>
-                        )}
+                            return (
+                                <motion.div key="pending" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center">
+                                    <div className={`w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center border ${canClaim
+                                        ? 'bg-[var(--success)]/10 text-[var(--success)] border-[var(--success)]/20'
+                                        : 'bg-[var(--warning)]/10 text-[var(--warning)] border-[var(--warning)]/20'
+                                        }`}>
+                                        <CircleNotch size={32} weight="bold" className={canClaim ? '' : 'animate-spin-slow'} />
+                                    </div>
+
+                                    <h2 className="text-2xl font-black text-white uppercase mb-2">
+                                        {canClaim ? 'Ready to Claim!' : 'Withdrawal Queued'}
+                                    </h2>
+
+                                    <p className="text-[var(--text-secondary)] mb-4">
+                                        You have <strong className="text-white">{pendingWithdrawalETH.toFixed(4)} ETH</strong> scheduled for withdrawal.
+                                    </p>
+
+                                    {/* Claim Status Card */}
+                                    <div className={`p-4 rounded-xl mb-6 ${canClaim
+                                        ? 'bg-[var(--success)]/10 border border-[var(--success)]/30'
+                                        : 'bg-white/[0.03] border border-[var(--border-subtle)]'
+                                        }`}>
+                                        {canClaim ? (
+                                            <div className="flex items-center justify-center gap-2">
+                                                <div className="w-2 h-2 rounded-full bg-[var(--success)] animate-pulse" />
+                                                <span className="text-sm font-bold text-[var(--success)]">
+                                                    Epoch expired - You can claim now!
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <p className="text-xs text-[var(--text-tertiary)] uppercase tracking-wide mb-1">
+                                                    Claimable After
+                                                </p>
+                                                <p className="text-lg font-bold text-white">
+                                                    {vaultExpiry?.toLocaleDateString('en-GB', {
+                                                        weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+                                                    }) || 'Next Friday 08:00 UTC'}
+                                                </p>
+                                                {timeUntilClaim > 0 && (
+                                                    <p className="text-xs text-[var(--warning)] mt-1 font-mono">
+                                                        ~{hoursUntil}h {minsUntil}m remaining
+                                                    </p>
+                                                )}
+                                            </>
+                                        )}
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <button
+                                            onClick={handleCancel}
+                                            className="h-14 rounded-xl border border-[var(--border-medium)] text-[var(--text-secondary)] font-bold hover:bg-white/5 hover:text-white transition-colors"
+                                        >
+                                            Cancel Request
+                                        </button>
+                                        <button
+                                            onClick={handleClaim}
+                                            disabled={!canClaim}
+                                            className={`h-14 rounded-xl font-bold uppercase transition-colors ${canClaim
+                                                ? 'bg-[var(--volt)] text-black hover:bg-[var(--volt)]/90 shadow-[0_0_20px_rgba(204,255,0,0.2)]'
+                                                : 'bg-white/10 text-[var(--text-tertiary)] cursor-not-allowed'
+                                                }`}
+                                        >
+                                            {canClaim ? 'Claim Funds' : 'Not Yet'}
+                                        </button>
+                                    </div>
+                                    <p className="text-xs text-[var(--text-tertiary)] mt-4">
+                                        {canClaim
+                                            ? 'Click "Claim Funds" to receive your ETH back to your wallet.'
+                                            : 'Your shares continue earning yield while queued. Claim button will activate after epoch expiry.'
+                                        }
+                                    </p>
+                                </motion.div>
+                            );
+                        })()}
 
                         {step === "input" && (
                             <motion.div key="input" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
@@ -211,10 +264,17 @@ function WithdrawContent() {
                                 ) : (
                                     <button
                                         onClick={handleScheduleWithdraw}
-                                        disabled={!isValidAmount}
-                                        className="btn-primary bg-white text-black hover:bg-white/90 disabled:bg-white/40 w-full h-16 text-base tracking-widest shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+                                        disabled={!isValidAmount || isSubmitting}
+                                        className="btn-primary bg-white text-black hover:bg-white/90 disabled:bg-white/40 w-full h-16 text-base tracking-widest shadow-[0_0_20px_rgba(255,255,255,0.15)] flex items-center justify-center gap-2"
                                     >
-                                        Schedule Withdrawal
+                                        {isSubmitting ? (
+                                            <>
+                                                <CircleNotch size={18} className="animate-spin" />
+                                                Scheduling...
+                                            </>
+                                        ) : (
+                                            'Schedule Withdrawal'
+                                        )}
                                     </button>
                                 )}
                             </motion.div>
@@ -231,9 +291,20 @@ function WithdrawContent() {
                             <motion.div key="success" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center py-8">
                                 <SuccessAnimation />
                                 <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-2">Request Confirmed</h3>
-                                <p className="text-[var(--text-secondary)] text-center mb-8 max-w-xs mx-auto">
+                                <p className="text-[var(--text-secondary)] text-center mb-4 max-w-xs mx-auto">
                                     Your request has been processed successfully. Check stats for updates.
                                 </p>
+                                {vault.txHash && (
+                                    <a
+                                        href={`https://basescan.org/tx/${vault.txHash}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 text-sm text-blue-400 hover:text-blue-300 mb-6 transition-colors"
+                                    >
+                                        <ArrowSquareOut size={16} weight="bold" />
+                                        View on Basescan
+                                    </a>
+                                )}
                                 <Link
                                     href="/dashboard"
                                     className="btn-primary w-full h-14 px-8 flex items-center justify-center text-xs tracking-widest font-bold uppercase shadow-[0_0_20px_rgba(204,255,0,0.15)] hover:shadow-[0_0_30px_rgba(204,255,0,0.3)] transition-all"
