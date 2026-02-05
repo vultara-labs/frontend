@@ -172,13 +172,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 {/* Wallet Card - Abstract Style */}
                 <div className="mb-8 relative group">
                     <div className="absolute inset-0 bg-gradient-to-r from-[var(--volt)]/20 to-transparent blur-xl rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className="relative p-5 rounded-3xl bg-[var(--obsidian-surface)] border border-[var(--border-medium)] shadow-xl overflow-hidden">
-                        <div className="absolute top-0 right-0 w-20 h-20 bg-[var(--volt)]/10 rounded-full blur-2xl -mr-10 -mt-10" />
+                    <div className={`relative p-5 rounded-3xl border shadow-xl overflow-hidden transition-all duration-300 ${isPreviewMode
+                        ? "bg-[var(--warning)]/5 border-[var(--warning)]/30 hover:bg-[var(--warning)]/10"
+                        : "bg-[var(--obsidian-surface)] border-[var(--border-medium)]"
+                        }`}>
+                        <div className={`absolute top-0 right-0 w-20 h-20 rounded-full blur-2xl -mr-10 -mt-10 ${isPreviewMode ? "bg-[var(--warning)]/20" : "bg-[var(--volt)]/10"}`} />
 
                         <div className="flex justify-between items-start mb-4">
-                            <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider flex items-center gap-1.5">
-                                <span className={`w-1.5 h-1.5 rounded-full ${isConnectedSafe ? "bg-[var(--success)] shadow-[0_0_8px_var(--success)]" : "bg-[var(--warning)]"}`} />
-                                {isConnectedSafe ? "Connected" : "Preview"}
+                            <span className={`text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 ${isPreviewMode ? "text-[var(--warning)]" : "text-[var(--text-secondary)]"}`}>
+                                <span className={`w-1.5 h-1.5 rounded-full ${isConnectedSafe ? "bg-[var(--success)] shadow-[0_0_8px_var(--success)]" : "bg-[var(--warning)] animate-pulse"}`} />
+                                {isConnectedSafe ? "Connected" : "Preview Mode"}
                             </span>
                             {isPreviewMode ? (
                                 <Eye size={18} className="text-[var(--warning)]" />
@@ -187,19 +190,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                             )}
                         </div>
 
-                        <div className="mb-4">
+                        <div className="mb-1">
                             {isPreviewMode ? (
                                 <div>
-                                    <p className="text-3xl font-black text-white tracking-tight mb-1">{walletBalanceETH.toFixed(2)} ETH</p>
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-[10px] text-[var(--warning)] font-bold bg-[var(--warning)]/10 px-2 py-1 rounded border border-[var(--warning)]/20">
+                                    <p className="text-3xl font-black text-white tracking-tight mb-3">{walletBalanceETH.toFixed(2)} ETH</p>
+                                    <div className="flex items-center justify-between gap-2">
+                                        <span className="text-[10px] text-[var(--warning)] font-bold bg-[var(--warning)]/10 px-2 py-1.5 rounded border border-[var(--warning)]/20">
                                             Demo Data
                                         </span>
                                         <button
                                             onClick={openWalletModal}
-                                            className="text-[10px] text-[var(--volt)] font-bold hover:underline"
+                                            className="text-[10px] font-bold bg-[var(--warning)] text-black px-3 py-1.5 rounded hover:brightness-110 transition-all flex items-center gap-1"
                                         >
-                                            Connect →
+                                            Connect <CaretRight weight="bold" />
                                         </button>
                                     </div>
                                 </div>
