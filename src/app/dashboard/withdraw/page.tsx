@@ -134,7 +134,7 @@ function WithdrawContent() {
 
                         {step === "pending_view" && (() => {
                             const now = new Date();
-                            const canClaim = vaultExpiry ? now >= vaultExpiry : false;
+                            const canClaim = !vaultExpiry || (now >= vaultExpiry);
                             const timeUntilClaim = vaultExpiry ? Math.max(0, vaultExpiry.getTime() - now.getTime()) : 0;
                             const hoursUntil = Math.floor(timeUntilClaim / (1000 * 60 * 60));
                             const minsUntil = Math.floor((timeUntilClaim % (1000 * 60 * 60)) / (1000 * 60));
