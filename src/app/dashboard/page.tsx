@@ -151,7 +151,7 @@ export default function DashboardPage() {
                         <div className="relative z-10">
                             <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white mb-2">Vault Strategy</h3>
                             <p className="text-body-sm text-[var(--text-secondary)] mb-4">
-                                Thetanuts V4 Cash-Secured Puts.
+                                Thetanuts V4 Covered Calls.
                             </p>
                             <div className="flex items-center gap-2 text-[var(--volt)] label group-hover:gap-3 transition-all">
                                 Manage <ArrowUpRight weight="bold" />

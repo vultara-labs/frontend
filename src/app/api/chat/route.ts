@@ -59,18 +59,18 @@ VAULT ARCHITECTURE:
 
 HOW IT WORKS:
 1. User deposits ETH -> Mints vETH shares (based on current share price)
-2. Vault locks ~90% funds in strategy (weekly epochs)
+2. Vault deploys assets into Thetanuts V4 "Covered Call" strategy (Weekly Epochs).
 3. Premiums accrue to vault -> Total Assets increase -> Share Price goes UP
 4. User withdraws -> Burns vETH -> Gets more ETH than deposited (Principal + Yield)
 
-WITHDRAWAL SYSTEM (IMPORTANT):
-- NO Instant Withdrawals (funds are locked in active options strategies).
-- System uses a "Withdrawal Queue":
-  1. User clicks "Schedule Withdrawal" (Shares are escrowed).
-  2. Request enters queue for the current Epoch Expiry (Standard: Friday 08:00 UTC).
-  3. After expiry, funds are released.
-  4. User clicks "Claim" to get ETH back.
-- Users can "Cancel Request" anytime *before* the epoch expires.
+WITHDRAWAL SYSTEM (CRITICAL):
+- NO INSTANT WITHDRAWALS. Funds are actively deployed in options contracts on-chain.
+- Flow: 
+  1. User clicks "Withdraw" -> Enters "Withdrawal Queue" (Shares escrowed via 'scheduleWithdraw').
+  2. Wait for Epoch Expiry (Fridays).
+  3. User returns to "Claim" their ETH + Yield ('claimWithdraw').
+- Why? This ensures the Strategy isn't broken mid-week.
+- Note: Your shares STILL earn yield while waiting in the queue!
 
 YIELD & RISK INFO:
 - APY: ~3-8% variable (depends on market volatility)

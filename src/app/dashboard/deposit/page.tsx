@@ -251,7 +251,7 @@ function DepositContent() {
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <span className="text-sm text-[var(--text-secondary)] font-medium">Strategy</span>
-                                        <span className="text-sm font-bold text-[var(--volt)]">Thetanuts V4</span>
+                                        <span className="text-sm font-bold text-[var(--volt)]">Thetanuts V4 Covered Call</span>
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <div className="flex items-center gap-1.5">
