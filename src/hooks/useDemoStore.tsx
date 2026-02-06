@@ -10,12 +10,17 @@ interface DemoState {
     totalDeposited: number;
     totalWithdrawn: number;
     deposits: Array<{ amount: number; timestamp: number }>;
+    // Pending Queue Simulation
+    pendingWithdrawalETH: number;
+    withdrawalReadyTimestamp: number | null;
 }
 
 interface DemoStoreContextType {
     state: DemoState;
     deposit: (amount: number) => void;
     withdraw: (amount: number) => void;
+    claim: () => void;
+    cancel: () => void;
     reset: () => void;
 }
 
@@ -26,6 +31,8 @@ const defaultState: DemoState = {
     totalDeposited: 0,
     totalWithdrawn: 0,
     deposits: [],
+    pendingWithdrawalETH: 0,
+    withdrawalReadyTimestamp: null,
 };
 
 const STORAGE_KEY = "vultara_demo_state";
@@ -40,7 +47,6 @@ export function DemoProvider({ children }: { children: ReactNode }) {
 
     // Hydrate from localStorage on mount
     useEffect(() => {
-        // Use timeout to push to next tick, avoiding synchronous update warning during mount
         const timer = setTimeout(() => {
             try {
                 const stored = localStorage.getItem(STORAGE_KEY);
@@ -79,14 +85,43 @@ export function DemoProvider({ children }: { children: ReactNode }) {
         }));
     };
 
-    // Withdraw action
+    // Withdraw action (Schedule)
     const withdraw = (amount: number) => {
         setState(prev => ({
             ...prev,
             vaultBalanceETH: Math.max(0, prev.vaultBalanceETH - amount),
-            walletBalanceETH: prev.walletBalanceETH + amount,
-            totalWithdrawn: prev.totalWithdrawn + amount,
+            // Move to pending, NOT wallet yet
+            pendingWithdrawalETH: prev.pendingWithdrawalETH + amount,
+            // Ready in 3 seconds (Fast Demo Queue)
+            withdrawalReadyTimestamp: Date.now() + 3000,
         }));
+    };
+
+    // Claim action (Finalize)
+    const claim = () => {
+        setState(prev => {
+            if (prev.pendingWithdrawalETH <= 0) return prev;
+            return {
+                ...prev,
+                walletBalanceETH: prev.walletBalanceETH + prev.pendingWithdrawalETH,
+                totalWithdrawn: prev.totalWithdrawn + prev.pendingWithdrawalETH,
+                pendingWithdrawalETH: 0,
+                withdrawalReadyTimestamp: null,
+            };
+        });
+    };
+
+    // Cancel action (Return to Vault)
+    const cancel = () => {
+        setState(prev => {
+            if (prev.pendingWithdrawalETH <= 0) return prev;
+            return {
+                ...prev,
+                vaultBalanceETH: prev.vaultBalanceETH + prev.pendingWithdrawalETH, // Return to vault
+                pendingWithdrawalETH: 0,
+                withdrawalReadyTimestamp: null,
+            };
+        });
     };
 
     // Reset to default
@@ -96,7 +131,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
     };
 
     return (
-        <DemoStoreContext.Provider value={{ state, deposit, withdraw, reset }}>
+        <DemoStoreContext.Provider value={{ state, deposit, withdraw, claim, cancel, reset }}>
             {children}
         </DemoStoreContext.Provider>
     );
@@ -106,11 +141,12 @@ export function DemoProvider({ children }: { children: ReactNode }) {
 export function useDemoStore() {
     const context = useContext(DemoStoreContext);
     if (!context) {
-        // Return a fallback for SSR or when provider is not wrapped
         return {
             state: defaultState,
             deposit: () => { },
             withdraw: () => { },
+            claim: () => { },
+            cancel: () => { },
             reset: () => { },
         };
     }

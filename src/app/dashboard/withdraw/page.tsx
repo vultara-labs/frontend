@@ -27,27 +27,44 @@ export default function WithdrawPage() {
 
 function WithdrawContent() {
     const { isConnected, address } = useWalletConnection();
-    const { isPreviewMode, vaultBalanceETH, demoWithdraw, pendingWithdrawalETH, pendingWithdrawalShares, vaultExpiry } = useDashboardData();
-    const [step, setStep] = useState<"input" | "processing" | "success" | "pending_view">("input");
+    const { isPreviewMode, vaultBalanceETH, demoWithdraw, demoClaim, demoCancel, pendingWithdrawalETH, pendingWithdrawalShares, vaultExpiry } = useDashboardData();
+
+    // View state tracks which main screen is valid generally
+    const [view, setView] = useState<"input" | "pending" | "success">("input");
     const [amount, setAmount] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const searchParams = useSearchParams();
+
+    // Force re-render for countdown
+    const [now, setNow] = useState(new Date());
+    useEffect(() => {
+        const timer = setInterval(() => setNow(new Date()), 1000);
+        return () => clearInterval(timer);
+    }, []);
 
     const vault = useVaultContract({
         address,
         onSuccess: () => {
             toast.dismiss();
-            setStep("success");
+            setIsSubmitting(false); // Stop processing overlay
+            setView("success");
             toast.success("Transaction Confirmed!");
             vault.refetchBalance();
         }
     });
 
+    // Auto-detect view based on queue status
     useEffect(() => {
-        if (pendingWithdrawalShares > 0 && step === "input") {
-            setTimeout(() => setStep("pending_view"), 0);
+        // If we have pending shares, force view to pending
+        if (pendingWithdrawalShares > 0 && view !== "success") {
+            setView("pending");
         }
-    }, [pendingWithdrawalShares, step]);
+        // If pending shares cleared (cancelled/claimed) and we were in pending view
+        else if (pendingWithdrawalShares === 0 && view === "pending") {
+            // Only switch back to input if we are NOT currently submitting (processing logic handles explicit transitions)
+            if (!isSubmitting) setView("input");
+        }
+    }, [pendingWithdrawalShares, view, isSubmitting]);
 
     useEffect(() => {
         const urlAmount = searchParams.get("amount");
@@ -56,16 +73,16 @@ function WithdrawContent() {
         }
     }, [searchParams]);
 
+    // Handle contract confirmation closing the overlay
     useEffect(() => {
-        if (vault.isConfirmed && step === "processing") {
-            setTimeout(() => {
-                toast.dismiss();
-                setStep("success");
-                toast.success("Transaction Confirmed!");
-                vault.refetchBalance();
-            }, 0);
+        if (vault.isConfirmed && isSubmitting) {
+            toast.dismiss();
+            setIsSubmitting(false);
+            setView("success");
+            toast.success("Transaction Confirmed!");
+            vault.refetchBalance();
         }
-    }, [vault.isConfirmed, step]);
+    }, [vault.isConfirmed, isSubmitting]);
 
     const totalBalance = isPreviewMode ? vaultBalanceETH : vault.userBalanceETH;
     const { numAmount, isValidAmount } = useAmountValidation(amount, totalBalance);
@@ -80,44 +97,75 @@ function WithdrawContent() {
             return;
         }
         setIsSubmitting(true);
-        setStep("processing");
         const success = await vault.scheduleWithdraw(numAmount, vault.userShares);
-        setIsSubmitting(false);
+        // Overlay creates waiting state. If failed/rejected, turn off overlay.
         if (!success) {
-            setStep("input");
+            setIsSubmitting(false);
         }
     };
 
     const handleClaim = async () => {
         setIsSubmitting(true);
-        setStep("processing");
-        const success = await vault.claimWithdraw();
-        setIsSubmitting(false);
-        if (!success) {
-            setStep("pending_view");
+
+        if (isPreviewMode) {
+            // Simulated Claim
+            setTimeout(() => {
+                demoClaim();
+                // Store update triggers view change via useEffect, but let's be safe
+                // Wait for store update first
+                setTimeout(() => {
+                    setIsSubmitting(false);
+                    setView("success"); // Explicit success
+                    toast.success("Funds Claimed (Demo)!");
+                }, 100);
+            }, 1000);
+        } else {
+            // Real Claim
+            const success = await vault.claimWithdraw();
+            if (!success) {
+                setIsSubmitting(false);
+            }
         }
     };
 
-    const handleCancel = async () => {
+    const handleCancel = async (e?: React.MouseEvent) => {
+        e?.preventDefault();
         setIsSubmitting(true);
-        setStep("processing");
-        const success = await vault.cancelWithdraw();
-        setIsSubmitting(false);
-        if (!success) {
-            setStep("pending_view");
+
+        if (isPreviewMode) {
+            // Simulated Cancel
+            setTimeout(() => {
+                demoCancel();
+                // Store updates pending -> 0. useEffect catches this and switches to 'input'.
+                // We just turn off overlay.
+                setTimeout(() => {
+                    setIsSubmitting(false);
+                    setView("input");
+                    toast.success("Request Cancelled (Demo)");
+                }, 100);
+            }, 1000);
+        } else {
+            // Real Cancel
+            const success = await vault.cancelWithdraw();
+            if (!success) {
+                setIsSubmitting(false);
+            } else {
+                setIsSubmitting(false);
+                setView("input");
+            }
         }
     };
 
     const handlePreviewWithdraw = () => {
         if (!isValidAmount) return;
-        setStep("processing");
-        toast.loading("Simulating withdrawal...");
+        setIsSubmitting(true);
+        // Update store
+        demoWithdraw(numAmount);
+        // Wait briefly then close overlay
         setTimeout(() => {
-            demoWithdraw(numAmount);
-            toast.dismiss();
-            setStep("success");
-            toast.success("Demo Withdrawal Complete!");
-        }, 2000);
+            setIsSubmitting(false);
+            // useEffect will catch pending > 0 and switch view to 'pending' naturally
+        }, 1000);
     };
 
     return (
@@ -129,18 +177,18 @@ function WithdrawContent() {
             >
                 <div className="absolute inset-0 bg-blue-500/5 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
-                <div className="relative rounded-[2.5rem] bg-[var(--obsidian-surface)] border border-[var(--border-medium)] p-8 sm:p-12 overflow-hidden">
+                <div className="relative rounded-[2.5rem] bg-[var(--obsidian-surface)] border border-[var(--border-medium)] p-8 sm:p-12 overflow-hidden min-h-[400px]">
                     <AnimatePresence mode="wait">
 
-                        {step === "pending_view" && (() => {
-                            const now = new Date();
+                        {view === "pending" && (() => {
                             const canClaim = !vaultExpiry || (now >= vaultExpiry);
                             const timeUntilClaim = vaultExpiry ? Math.max(0, vaultExpiry.getTime() - now.getTime()) : 0;
                             const hoursUntil = Math.floor(timeUntilClaim / (1000 * 60 * 60));
                             const minsUntil = Math.floor((timeUntilClaim % (1000 * 60 * 60)) / (1000 * 60));
+                            const secsUntil = Math.floor((timeUntilClaim % (1000 * 60)) / 1000);
 
                             return (
-                                <motion.div key="pending" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center">
+                                <motion.div key="pending" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center">
                                     <div className={`w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center border ${canClaim
                                         ? 'bg-[var(--success)]/10 text-[var(--success)] border-[var(--success)]/20'
                                         : 'bg-[var(--warning)]/10 text-[var(--warning)] border-[var(--warning)]/20'
@@ -156,7 +204,6 @@ function WithdrawContent() {
                                         You have <strong className="text-white">{pendingWithdrawalETH.toFixed(4)} ETH</strong> scheduled for withdrawal.
                                     </p>
 
-                                    {/* Claim Status Card */}
                                     <div className={`p-4 rounded-xl mb-6 ${canClaim
                                         ? 'bg-[var(--success)]/10 border border-[var(--success)]/30'
                                         : 'bg-white/[0.03] border border-[var(--border-subtle)]'
@@ -173,12 +220,19 @@ function WithdrawContent() {
                                                 <p className="text-xs text-[var(--text-tertiary)] uppercase tracking-wide mb-1">
                                                     Claimable After
                                                 </p>
-                                                <p className="text-lg font-bold text-white">
-                                                    {vaultExpiry?.toLocaleDateString('en-GB', {
-                                                        weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
-                                                    }) || 'Next Friday 08:00 UTC'}
-                                                </p>
-                                                {timeUntilClaim > 0 && (
+                                                {isPreviewMode ? (
+                                                    <p className="text-lg font-bold text-white font-mono">
+                                                        {timeUntilClaim > 0 ? `${minsUntil}m ${secsUntil}s` : 'Ready!'}
+                                                    </p>
+                                                ) : (
+                                                    <p className="text-lg font-bold text-white">
+                                                        {vaultExpiry?.toLocaleDateString('en-GB', {
+                                                            weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+                                                        }) || 'Next Friday 08:00 UTC'}
+                                                    </p>
+                                                )}
+
+                                                {!isPreviewMode && timeUntilClaim > 0 && (
                                                     <p className="text-xs text-[var(--warning)] mt-1 font-mono">
                                                         ~{hoursUntil}h {minsUntil}m remaining
                                                     </p>
@@ -190,13 +244,14 @@ function WithdrawContent() {
                                     <div className="grid grid-cols-2 gap-4">
                                         <button
                                             onClick={handleCancel}
-                                            className="h-14 rounded-xl border border-[var(--border-medium)] text-[var(--text-secondary)] font-bold hover:bg-white/5 hover:text-white transition-colors"
+                                            disabled={isSubmitting}
+                                            className="h-14 rounded-xl border border-[var(--border-medium)] text-[var(--text-secondary)] font-bold hover:bg-white/5 hover:text-white transition-colors disabled:opacity-50"
                                         >
                                             Cancel Request
                                         </button>
                                         <button
                                             onClick={handleClaim}
-                                            disabled={!canClaim}
+                                            disabled={!canClaim || isSubmitting}
                                             className={`h-14 rounded-xl font-bold uppercase transition-colors ${canClaim
                                                 ? 'bg-[var(--volt)] text-black hover:bg-[var(--volt)]/90 shadow-[0_0_20px_rgba(204,255,0,0.2)]'
                                                 : 'bg-white/10 text-[var(--text-tertiary)] cursor-not-allowed'
@@ -215,7 +270,7 @@ function WithdrawContent() {
                             );
                         })()}
 
-                        {step === "input" && (
+                        {view === "input" && (
                             <motion.div key="input" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
                                 <div className="flex items-center justify-between mb-8">
                                     <div className="flex items-center gap-3">
@@ -256,7 +311,7 @@ function WithdrawContent() {
                                 {isPreviewMode ? (
                                     <button
                                         onClick={handlePreviewWithdraw}
-                                        disabled={!isValidAmount}
+                                        disabled={!isValidAmount || isSubmitting}
                                         className="btn-primary bg-white text-black hover:bg-white/90 disabled:bg-white/40 w-full h-16 text-base tracking-widest shadow-[0_0_20px_rgba(255,255,255,0.15)]"
                                     >
                                         Withdraw (Demo)
@@ -269,7 +324,7 @@ function WithdrawContent() {
                                     >
                                         {isSubmitting ? (
                                             <>
-                                                <CircleNotch size={18} className="animate-spin" />
+                                                {/* Button spinner only for small feedback if needed, but overlay handles main feedback */}
                                                 Scheduling...
                                             </>
                                         ) : (
@@ -280,14 +335,7 @@ function WithdrawContent() {
                             </motion.div>
                         )}
 
-                        {step === "processing" && (
-                            <ProcessingState
-                                color="blue"
-                                description="Interacting with Vultara Vault..."
-                            />
-                        )}
-
-                        {step === "success" && (
+                        {view === "success" && (
                             <motion.div key="success" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center py-8">
                                 <SuccessAnimation />
                                 <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-2">Request Confirmed</h3>
@@ -311,6 +359,23 @@ function WithdrawContent() {
                                 >
                                     Return to Dashboard
                                 </Link>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    {/* OVERLAY PROCESSING STATE */}
+                    <AnimatePresence>
+                        {isSubmitting && (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="absolute inset-0 bg-[var(--obsidian-surface)]/90 backdrop-blur-sm z-50 flex items-center justify-center rounded-[2.5rem]"
+                            >
+                                <ProcessingState
+                                    color="blue"
+                                    description={isPreviewMode ? "Processing Request..." : "Interacting with Vultara Vault..."}
+                                />
                             </motion.div>
                         )}
                     </AnimatePresence>

@@ -16,7 +16,7 @@ export function useDashboardData() {
     const { isConnected, address, ethBalance } = useWalletConnection();
     const chainId = useChainId();
     const { data: marketData, loading: marketLoading } = useMarketData("ETH");
-    const { state: demoState, deposit: demoDeposit, withdraw: demoWithdraw, reset: demoReset } = useDemoStore();
+    const { state: demoState, deposit: demoDeposit, withdraw: demoWithdraw, claim: demoClaim, cancel: demoCancel, reset: demoReset } = useDemoStore();
 
     // Get contract addresses for current chain
     const contracts = PROTOCOL.CONTRACTS[chainId as keyof typeof PROTOCOL.CONTRACTS] || PROTOCOL.CONTRACTS[8453];
@@ -24,8 +24,8 @@ export function useDashboardData() {
     // Use centralized vault contract hook for data reading
     const {
         userBalanceETH: realVaultBalanceETH,
-        pendingWithdrawalShares,
-        pendingWithdrawalETH,
+        pendingWithdrawalShares: realPendingShares,
+        pendingWithdrawalETH: realPendingETH,
         activeStrikePrice,
         activeExpiry,
         lastEpochYield
@@ -55,21 +55,31 @@ export function useDashboardData() {
 
     const isPreviewMode = !isConnected;
 
+    // ------------------------------------------------------------------
+    // MAPPING LOGIC (Switch between Demo vs Real)
+    // ------------------------------------------------------------------
+
+    // 1. Balances
     const vaultBalanceETH = isPreviewMode ? demoState.vaultBalanceETH : realVaultBalanceETH;
     const vaultBalanceUSD = isPreviewMode ? demoState.vaultBalanceETH * ethPrice : realVaultBalanceUSD;
-
-    // Use Real Strike if Live, else Demo calc
-    const displayedStrikePrice = isPreviewMode
-        ? (ethPrice ? Math.floor(ethPrice * PROTOCOL.VAULT.STRIKE_PERCENTAGE / 50) * 50 : 0)
-        : (realStrikePrice > 0 ? realStrikePrice : 0);
-
-    const vaultExpiry = isPreviewMode ? undefined : realExpiryDate;
-
-    // ...
 
     const walletBalanceETH = isPreviewMode ? demoState.walletBalanceETH : realWalletBalanceETH;
     const walletBalanceUSD = isPreviewMode ? demoState.walletBalanceETH * ethPrice : realWalletBalanceUSD;
 
+    // 2. Withdrawal Queue
+    const pendingWithdrawalShares = isPreviewMode ? (demoState.pendingWithdrawalETH > 0 ? 1 : 0) : realPendingShares;
+    const pendingWithdrawalETH = isPreviewMode ? demoState.pendingWithdrawalETH : realPendingETH;
+
+    // 3. Strategy Data
+    const displayedStrikePrice = isPreviewMode
+        ? (ethPrice ? Math.floor(ethPrice * PROTOCOL.VAULT.STRIKE_PERCENTAGE / 50) * 50 : 0)
+        : (realStrikePrice > 0 ? realStrikePrice : 0);
+
+    const vaultExpiry = isPreviewMode
+        ? (demoState.withdrawalReadyTimestamp ? new Date(demoState.withdrawalReadyTimestamp) : undefined)
+        : realExpiryDate;
+
+    // 4. Earnings
     const demoMonthlyEarningsUSD = (vaultBalanceUSD * (currentAPY / 100)) / 12;
     const monthlyEarningsUSD = isPreviewMode ? demoMonthlyEarningsUSD : realMonthlyEarningsUSD;
     const totalEarningsUSD = isPreviewMode ? DEMO_DATA.TOTAL_EARNINGS + (demoState.totalDeposited * 0.01) : (realMonthlyEarningsUSD * 3);
@@ -94,9 +104,10 @@ export function useDashboardData() {
         totalEarningsUSD,
         demoDeposit,
         demoWithdraw,
+        demoClaim,
+        demoCancel, // Export new cancel function
         demoReset,
         contracts,
         chainId,
     };
 }
-
