@@ -22,6 +22,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         formattedBalance,
         connect: connectWallet,
         disconnect: handleDisconnect,
+        isWrongNetwork,
+        switchNetwork,
     } = useWalletConnection();
 
     // Get preview mode data
@@ -172,18 +174,36 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 {/* Wallet Card - Abstract Style */}
                 <div className="mb-8 relative group">
                     <div className="absolute inset-0 bg-gradient-to-r from-[var(--volt)]/20 to-transparent blur-xl rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className={`relative p-5 rounded-3xl border shadow-xl overflow-hidden transition-all duration-300 ${isPreviewMode
-                        ? "bg-[var(--warning)]/5 border-[var(--warning)]/30 hover:bg-[var(--warning)]/10"
-                        : "bg-[var(--obsidian-surface)] border-[var(--border-medium)]"
+                    <div className={`relative p-5 rounded-3xl border shadow-xl overflow-hidden transition-all duration-300 ${isWrongNetwork
+                        ? "bg-red-500/5 border-red-500/30 hover:bg-red-500/10"
+                        : isPreviewMode
+                            ? "bg-[var(--warning)]/5 border-[var(--warning)]/30 hover:bg-[var(--warning)]/10"
+                            : "bg-[var(--obsidian-surface)] border-[var(--border-medium)]"
                         }`}>
-                        <div className={`absolute top-0 right-0 w-20 h-20 rounded-full blur-2xl -mr-10 -mt-10 ${isPreviewMode ? "bg-[var(--warning)]/20" : "bg-[var(--volt)]/10"}`} />
+                        <div className={`absolute top-0 right-0 w-20 h-20 rounded-full blur-2xl -mr-10 -mt-10 ${isWrongNetwork
+                            ? "bg-red-500/20"
+                            : isPreviewMode
+                                ? "bg-[var(--warning)]/20"
+                                : "bg-[var(--volt)]/10"}`}
+                        />
 
                         <div className="flex justify-between items-start mb-4">
-                            <span className={`text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 ${isPreviewMode ? "text-[var(--warning)]" : "text-[var(--text-secondary)]"}`}>
-                                <span className={`w-1.5 h-1.5 rounded-full ${isConnectedSafe ? "bg-[var(--success)] shadow-[0_0_8px_var(--success)]" : "bg-[var(--warning)] animate-pulse"}`} />
-                                {isConnectedSafe ? "Connected" : "Preview Mode"}
+                            <span className={`text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 ${isWrongNetwork
+                                ? "text-red-500"
+                                : isPreviewMode
+                                    ? "text-[var(--warning)]"
+                                    : "text-[var(--text-secondary)]"}`}>
+                                <span className={`w-1.5 h-1.5 rounded-full ${isWrongNetwork
+                                    ? "bg-red-500 animate-pulse"
+                                    : isConnectedSafe
+                                        ? "bg-[var(--success)] shadow-[0_0_8px_var(--success)]"
+                                        : "bg-[var(--warning)] animate-pulse"}`}
+                                />
+                                {isWrongNetwork ? "Network Error" : isConnectedSafe ? "Connected" : "Preview Mode"}
                             </span>
-                            {isPreviewMode ? (
+                            {isWrongNetwork ? (
+                                <Wallet size={18} className="text-red-500" />
+                            ) : isPreviewMode ? (
                                 <Eye size={18} className="text-[var(--warning)]" />
                             ) : (
                                 <Wallet size={18} className="text-[var(--text-tertiary)]" />
@@ -191,7 +211,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         </div>
 
                         <div className="mb-1">
-                            {isPreviewMode ? (
+                            {isWrongNetwork ? (
+                                <div>
+                                    <p className="text-xs text-[var(--text-secondary)] mb-3 leading-relaxed">
+                                        Wallet connected to wrong network.
+                                    </p>
+                                    <button
+                                        onClick={switchNetwork}
+                                        className="w-full py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 font-bold text-xs uppercase tracking-widest hover:bg-red-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                                    >
+                                        Switch to Base
+                                    </button>
+                                </div>
+                            ) : isPreviewMode ? (
                                 <div>
                                     <p className="text-3xl font-black text-white tracking-tight mb-3">{walletBalanceETH.toFixed(2)} ETH</p>
                                     <div className="flex items-center justify-between gap-2">
@@ -332,7 +364,25 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 </div>
 
                 <div className="flex-1 flex flex-col relative z-10 w-full">
-                    {!isConnectedSafe && (
+                    {/* Wrong Network Banner */}
+                    {isWrongNetwork ? (
+                        <div className="relative z-20 bg-red-900/10 border-b border-red-500/20 flex-shrink-0">
+                            <div className="max-w-[1400px] mx-auto px-3 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2">
+                                <div className="flex items-center gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
+                                    <span className="text-[9px] sm:text-[10px] font-bold text-red-500 uppercase tracking-wider sm:tracking-widest">Wrong Network</span>
+                                    <span className="text-[9px] text-red-500/60 hidden sm:inline">• Please switch to Base</span>
+                                </div>
+                                <button
+                                    onClick={switchNetwork}
+                                    className="text-[9px] sm:text-[10px] font-bold bg-red-500/10 hover:bg-red-500/20 text-red-500 px-2 sm:px-3 py-1 rounded-md transition-colors uppercase tracking-wide flex items-center gap-1 border border-red-500/20 cursor-pointer"
+                                >
+                                    Switch Network
+                                    <CaretRight size={10} weight="bold" />
+                                </button>
+                            </div>
+                        </div>
+                    ) : !isConnectedSafe && (
                         <div className="relative z-20 bg-[var(--warning)]/5 border-b border-[var(--warning)]/20 flex-shrink-0">
                             <div className="max-w-[1400px] mx-auto px-3 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2">
                                 <div className="flex items-center gap-2">
