@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { PaperPlaneTilt, Alien, User, ShieldCheck, ArrowRight, Wallet, ArrowCircleDown, ArrowCircleUp, ArrowCircleUpRight } from "@phosphor-icons/react";
+import { PaperPlaneTilt, Alien, User, ShieldCheck, ArrowRight, Wallet, ArrowCircleDown, ArrowCircleUp, ArrowCircleUpRight, Trash } from "@phosphor-icons/react";
 import { QUICK_PROMPTS, DEMO_DATA } from "@/constants";
 import { formatTime } from "@/lib/formatters";
 import { useDashboardData } from "@/hooks";
@@ -33,6 +33,33 @@ export default function AIAdvisorPage() {
     const [input, setInput] = useState("");
     const [isTyping, setIsTyping] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    // LOAD HISTORY ON MOUNT
+    useEffect(() => {
+        const savedHistory = localStorage.getItem("vultara_nova_history");
+        if (savedHistory) {
+            try {
+                const parsed = JSON.parse(savedHistory);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    setMessages(parsed);
+                }
+            } catch (e) {
+                console.error("Failed to parse chat history", e);
+            }
+        }
+    }, []);
+
+    // SAVE HISTORY ON CHANGE
+    useEffect(() => {
+        if (messages.length > 1) { // Only save if there's actual conversation
+            localStorage.setItem("vultara_nova_history", JSON.stringify(messages));
+        }
+    }, [messages]);
+
+    const clearHistory = () => {
+        localStorage.removeItem("vultara_nova_history");
+        setMessages(initialMessages);
+    };
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -134,6 +161,14 @@ export default function AIAdvisorPage() {
                         </div>
                     </div>
                 </div>
+
+                <button
+                    onClick={clearHistory}
+                    className="p-2 text-[var(--text-tertiary)] hover:text-red-400 hover:bg-white/5 rounded-lg transition-colors"
+                    title="Clear History"
+                >
+                    <Trash size={18} />
+                </button>
             </header>
 
             <div className="flex-1 overflow-y-auto px-4 pt-20 lg:pt-24 pb-4 md:px-0">
