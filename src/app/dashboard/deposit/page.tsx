@@ -57,7 +57,7 @@ function DepositContent() {
 
     const realWalletBalance = ethBalance ? parseFloat(formatUnits(ethBalance.value, ethBalance.decimals)) : 0;
     const walletBalance = isPreviewMode ? walletBalanceETH : realWalletBalance;
-    const gasReserve = 0.005;
+    const gasReserve = 0.001; // Lowered for Base L2 (cheaper gas)
 
     const { numAmount, isValidAmount, maxDepositable } = useAmountValidation(amount, walletBalance, gasReserve);
     const monthlyYield = YIELD.calculateMonthly(numAmount * ethPrice);
@@ -147,6 +147,7 @@ function DepositContent() {
                                     ethPrice={ethPrice}
                                     showYieldPreview={true}
                                     monthlyYield={monthlyYield}
+                                    gasReserve={gasReserve}
                                 />
 
                                 {walletBalance < 0.01 && (
