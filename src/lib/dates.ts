@@ -19,12 +19,15 @@ export function getNextFridayExpiry(): Date {
     const nextFriday = new Date();
 
     // Calculate days until Friday (Friday = 5)
+    // Calculate days until Friday (Friday = 5)
     const daysUntilFriday = (5 - now.getUTCDay() + 7) % 7;
-    nextFriday.setUTCDate(now.getUTCDate() + (daysUntilFriday === 0 ? 7 : daysUntilFriday));
+
+    // Set to 'This Friday' (or today if Friday)
+    nextFriday.setUTCDate(now.getUTCDate() + daysUntilFriday);
     nextFriday.setUTCHours(8, 0, 0, 0);
 
-    // If we're past this Friday 8AM, go to next Friday
-    if (now.getUTCDay() === 5 && now.getUTCHours() >= 8) {
+    // If today is Friday AND we are past 8 AM UTC, jump to NEXT Friday
+    if (daysUntilFriday === 0 && now.getUTCHours() >= 8) {
         nextFriday.setUTCDate(nextFriday.getUTCDate() + 7);
     }
 
