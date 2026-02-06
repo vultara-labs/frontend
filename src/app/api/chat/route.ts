@@ -58,7 +58,7 @@ VAULT ARCHITECTURE:
 - Strategy: Covered Calls via Thetanuts OptionBook
 
 HOW IT WORKS:
-1. User deposits ETH -> Mints vETH shares (based on current share price)
+1. User deposits ETH -> Mints vETH shares (based on current share price
 2. Vault deploys assets into Thetanuts V4 "Covered Call" strategy (Weekly Epochs).
 3. Premiums accrue to vault -> Total Assets increase -> Share Price goes UP
 4. User withdraws -> Burns vETH -> Gets more ETH than deposited (Principal + Yield)

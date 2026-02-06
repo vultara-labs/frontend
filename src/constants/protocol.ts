@@ -1,11 +1,11 @@
 export const PROTOCOL = {
-    APY: 4.5,
+    APY: 8.2, // Updated for Demo Consistency
     STRATEGY_NAME: 'Thetanuts V4',
     STRATEGY_VERSION: 'V4',
     NETWORK: 'Base',
     NETWORK_COLOR: 'blue-500',
     VAULT: {
-        NAME: 'ETH Cash-Secured Put', // Strategy Name
+        NAME: 'ETH Covered Call Strategy', // Updated Narrative
         ASSET: 'ETH',
         STRIKE_PERCENTAGE: 1.1, // 110% of Current Price (OTM Call)
         EPOCH_DURATION_DAYS: 7, // Weekly Epochs
@@ -21,7 +21,7 @@ export const PROTOCOL = {
 export const DEMO = {
     WALLET_BALANCE: 5420.00,
     USER_BALANCE: 2450.00,
-    MONTHLY_EARNINGS: 9.18,
+    MONTHLY_EARNINGS: 16.74, // Updated Calculation
     TOTAL_EARNINGS: 128.50,
     NEXT_PAYOUT: '4h 12m',
     PAYOUT_PROGRESS: 85,
@@ -41,7 +41,7 @@ export const DEMO_DATA = {
     WALLET_BALANCE_USD: 5920, // 1.85 * 3200
 
     // Earnings (simulated yield)
-    MONTHLY_EARNINGS: 30.00, // ~4.5% APY per month
+    MONTHLY_EARNINGS: 54.67, // (8000 * 0.082) / 12
     TOTAL_EARNINGS: 245.50, // Simulated 8 months of earnings
 
     // Epoch Info

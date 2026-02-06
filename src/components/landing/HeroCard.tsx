@@ -13,8 +13,7 @@ export function HeroCard() {
 
     // Dynamic Calculations
     const priceChange = marketData?.change24h || 0;
-    const volatilityPremium = Math.abs(priceChange) * 0.3;
-    const currentAPY = (PROTOCOL.APY + volatilityPremium).toFixed(2);
+    const currentAPY = PROTOCOL.APY.toFixed(2);
 
     // Simulate Portfolio fluctuation based on live price
     // Base Portfolio Value: $124,592.50

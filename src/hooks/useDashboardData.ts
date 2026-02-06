@@ -38,7 +38,7 @@ export function useDashboardData() {
 
     const realAPY = lastEpochYield
         ? (Number(lastEpochYield) / 10000) * 52 * 100
-        : (PROTOCOL.APY + (Math.abs(marketData?.change24h || 0) * 0.3));
+        : PROTOCOL.APY;
 
     const currentAPY = parseFloat(realAPY.toFixed(2));
 
