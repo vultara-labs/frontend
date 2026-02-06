@@ -14,7 +14,7 @@ import remarkGfm from "remark-gfm";
 const initialMessages: Message[] = [
     {
         role: "assistant",
-        content: "Online and monitoring.\n\nI'm Nova. My job is to make sure you're getting the most out of Vultara.\n\nI noticed you have an active 'Risk Analysis' mission. Want me to break down the Vault's strategy so you know exactly where the yield comes from?",
+        content: "Systems online. I'm Nova.\n\nMarket volatility is stable. The Vultara Vault is currently estimating **8.2% APY**.\n\nShould I analyze the current **OptionBook** for you, or explain the safety mechanisms of the strategy?",
         time: "Now",
     },
 ];
@@ -322,7 +322,7 @@ export default function AIAdvisorPage() {
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), handleSend())}
-                                placeholder="Ask Nova strategies..."
+                                placeholder='Ask: "Is it safe to deposit right now?"'
                                 rows={1}
                                 className="w-full bg-transparent border-none text-white placeholder-[var(--text-tertiary)] focus:ring-0 resize-none py-3 px-0 text-base lg:text-sm outline-none leading-relaxed"
                                 style={{ minHeight: "44px", maxHeight: "128px" }}
