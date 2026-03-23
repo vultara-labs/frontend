@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, X, LockKeyOpen, LockKey } from "@phosphor-icons/react";
 import { ACCESS_LEVELS } from "@/constants";
@@ -13,6 +14,17 @@ interface TierDetailsModalProps {
 }
 
 export function TierDetailsModal({ isOpen, onClose, currentTierName, totalBalance }: TierDetailsModalProps) {
+    const handleKeyDown = useCallback((e: KeyboardEvent) => {
+        if (e.key === "Escape") onClose();
+    }, [onClose]);
+
+    useEffect(() => {
+        if (isOpen) {
+            document.addEventListener("keydown", handleKeyDown);
+            return () => document.removeEventListener("keydown", handleKeyDown);
+        }
+    }, [isOpen, handleKeyDown]);
+
     if (!isOpen) return null;
 
     return (
@@ -31,6 +43,9 @@ export function TierDetailsModal({ isOpen, onClose, currentTierName, totalBalanc
                     {/* Modal Content */}
                     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
                         <motion.div
+                            role="dialog"
+                            aria-modal="true"
+                            aria-label="Access Tiers"
                             initial={{ scale: 0.95, opacity: 0, y: 20 }}
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -44,6 +59,7 @@ export function TierDetailsModal({ isOpen, onClose, currentTierName, totalBalanc
                                 </div>
                                 <button
                                     onClick={onClose}
+                                    aria-label="Close"
                                     className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors text-[var(--text-secondary)] hover:text-white"
                                 >
                                     <X size={20} weight="bold" />

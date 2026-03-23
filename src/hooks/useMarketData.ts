@@ -16,39 +16,30 @@ const DEFAULT_MARKET_DATA: MarketData = {
 
 async function fetchETHPrice(): Promise<MarketData> {
     try {
-        // 1. Try Local API
+        // 1. Try Local API (aggregates Thetanuts, CoinGecko, Coinbase)
         const res = await fetch("/api/price");
         if (!res.ok) throw new Error("Local API failed");
         const json = await res.json();
         return {
             price: json.price,
-            change24h: json.change24h,
+            change24h: json.change24h ?? 0,
             lastUpdated: new Date()
         };
     } catch (err) {
-        console.warn("Local API failed, trying external fallback...");
+        console.warn("Local API failed, trying Coinbase direct...");
         try {
-            // 2. Try Coinbase fallback
-            const res = await fetch(`https://api.coinbase.com/v2/prices/ETH-USD/spot`);
+            // 2. Try Coinbase direct fallback
+            const res = await fetch("https://api.coinbase.com/v2/prices/ETH-USD/spot");
             if (!res.ok) throw new Error("Coinbase failed");
             const json = await res.json();
-            const price = parseFloat(json.data.amount);
-            const mockVol = (Math.random() * 4) - 2;
             return {
-                price,
-                change24h: mockVol,
+                price: parseFloat(json.data.amount),
+                change24h: 0,
                 lastUpdated: new Date()
             };
         } catch (fallbackErr) {
-            // 3. Use Mock Data
-            console.warn("All APIs failed, using default data");
-            const priceVariation = (Math.random() * 100) - 50;
-            const volVariation = (Math.random() * 4) - 2;
-            return {
-                price: DEFAULT_MARKET_DATA.price + priceVariation,
-                change24h: DEFAULT_MARKET_DATA.change24h + volVariation,
-                lastUpdated: new Date()
-            };
+            console.warn("All price APIs failed");
+            throw new Error("Unable to fetch ETH price");
         }
     }
 }

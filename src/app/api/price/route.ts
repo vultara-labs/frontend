@@ -109,7 +109,7 @@ export async function GET() {
             const data = await cbRes.json();
             return NextResponse.json({
                 price: parseFloat(data.data.amount),
-                change24h: (Math.random() * 4) - 2,
+                change24h: 0,
                 source: "coinbase",
             });
         }
@@ -117,10 +117,9 @@ export async function GET() {
         console.warn("Coinbase also failed");
     }
 
-    // Ultimate fallback
-    return NextResponse.json({
-        price: 3200 + (Math.random() * 100 - 50),
-        change24h: (Math.random() * 4) - 2,
-        source: "fallback",
-    });
+    // All price sources failed
+    return NextResponse.json(
+        { error: "All price sources unavailable", source: "none" },
+        { status: 503 }
+    );
 }

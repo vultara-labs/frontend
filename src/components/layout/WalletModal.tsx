@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Wallet, CaretRight, ShieldCheck, Lightning } from "@phosphor-icons/react";
 import { useWalletConnection } from "@/hooks";
@@ -11,6 +12,17 @@ interface WalletModalProps {
 
 export function WalletModal({ isOpen, onClose }: WalletModalProps) {
     const { connect, connectors, isConnecting } = useWalletConnection();
+
+    const handleKeyDown = useCallback((e: KeyboardEvent) => {
+        if (e.key === "Escape") onClose();
+    }, [onClose]);
+
+    useEffect(() => {
+        if (isOpen) {
+            document.addEventListener("keydown", handleKeyDown);
+            return () => document.removeEventListener("keydown", handleKeyDown);
+        }
+    }, [isOpen, handleKeyDown]);
 
     // Map connector IDs to properly brand assets
     const getWalletInfo = (connector: { id: string; name: string }) => {
@@ -58,6 +70,9 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
 
                     {/* Modal */}
                     <motion.div
+                        role="dialog"
+                        aria-modal="true"
+                        aria-label="Connect wallet"
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -74,6 +89,7 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
                             </div>
                             <button
                                 onClick={onClose}
+                                aria-label="Close"
                                 className="w-8 h-8 flex items-center justify-center rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-[var(--text-secondary)] hover:text-white transition-colors"
                             >
                                 <X size={16} weight="bold" />
