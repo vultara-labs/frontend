@@ -8,12 +8,6 @@ interface MarketData {
     lastUpdated: Date;
 }
 
-const DEFAULT_MARKET_DATA: MarketData = {
-    price: 3200,
-    change24h: 1.25,
-    lastUpdated: new Date(),
-};
-
 async function fetchETHPrice(): Promise<MarketData> {
     try {
         // 1. Try Local API (aggregates Thetanuts, CoinGecko, Coinbase)

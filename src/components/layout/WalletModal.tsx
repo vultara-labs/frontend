@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Wallet, CaretRight, ShieldCheck, Lightning } from "@phosphor-icons/react";
+import { X, Wallet, CaretRight, ShieldCheck } from "@phosphor-icons/react";
 import { useWalletConnection } from "@/hooks";
 
 interface WalletModalProps {
@@ -12,6 +13,8 @@ interface WalletModalProps {
 
 export function WalletModal({ isOpen, onClose }: WalletModalProps) {
     const { connect, connectors, isConnecting } = useWalletConnection();
+
+    const modalRef = useRef<HTMLDivElement>(null);
 
     const handleKeyDown = useCallback((e: KeyboardEvent) => {
         if (e.key === "Escape") onClose();
@@ -23,6 +26,34 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
             return () => document.removeEventListener("keydown", handleKeyDown);
         }
     }, [isOpen, handleKeyDown]);
+
+    // Focus trap: keep Tab cycling within the modal
+    useEffect(() => {
+        if (!isOpen) return;
+        const modal = modalRef.current;
+        if (!modal) return;
+
+        const focusable = modal.querySelectorAll<HTMLElement>(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        focusable[0]?.focus();
+
+        const handleTab = (e: KeyboardEvent) => {
+            if (e.key !== "Tab") return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last?.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first?.focus();
+            }
+        };
+
+        modal.addEventListener("keydown", handleTab);
+        return () => modal.removeEventListener("keydown", handleTab);
+    }, [isOpen]);
 
     // Map connector IDs to properly brand assets
     const getWalletInfo = (connector: { id: string; name: string }) => {
@@ -70,6 +101,7 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
 
                     {/* Modal */}
                     <motion.div
+                        ref={modalRef}
                         role="dialog"
                         aria-modal="true"
                         aria-label="Connect wallet"
@@ -112,7 +144,7 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
                                     >
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-white/[0.05] flex items-center justify-center overflow-hidden p-2">
-                                                <img src={icon} alt={name} className="w-full h-full object-contain" />
+                                                <Image src={icon} alt={name} width={24} height={24} className="w-full h-full object-contain" unoptimized />
                                             </div>
                                             <div>
                                                 <h3 className="font-bold text-white group-hover:text-[var(--volt)]">
@@ -138,7 +170,7 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
                                 </span>
                                 <span className="w-1 h-1 rounded-full bg-[var(--border-subtle)]" />
                                 <span className="flex items-center gap-1.5">
-                                    <img src="/logos/wallet/base.svg" alt="Base" className="w-3.5 h-3.5" />
+                                    <Image src="/logos/wallet/base.svg" alt="Base" width={14} height={14} className="w-3.5 h-3.5" unoptimized />
                                     Base Network
                                 </span>
                             </div>

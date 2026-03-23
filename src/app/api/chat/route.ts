@@ -279,16 +279,19 @@ export async function POST(req: Request) {
 
     const { message, history, userData } = body;
 
-    const isDervaMode = message.trim() === "/derva11dec" || (history || []).some((m: any) => m.content.includes("/derva11dec"));
-    const isOwnerMode = message.trim() === "/kingdanial29" || (history || []).some((m: any) => m.content.includes("/kingdanial29"));
+    const DERVA_CODE = process.env.DERVA_ACCESS_CODE;
+    const OWNER_CODE = process.env.OWNER_ACCESS_CODE;
 
-    if (message.trim() === "/derva11dec") {
+    const isDervaMode = DERVA_CODE && (message.trim() === DERVA_CODE || (history || []).some((m: { content: string }) => m.content.includes(DERVA_CODE)));
+    const isOwnerMode = OWNER_CODE && (message.trim() === OWNER_CODE || (history || []).some((m: { content: string }) => m.content.includes(OWNER_CODE)));
+
+    if (DERVA_CODE && message.trim() === DERVA_CODE) {
         return NextResponse.json({
             response: `Akses diterima. *Decrypting files...* \n\nSelamat datang, Derva. \n\nSaya Nova, AI Strategic Partner untuk Vultara. Danial telah memberikan instruksi khusus kepada saya untuk mendampingi Anda di sini. Beliau sangat menghargai insting dan rekam jejak bisnis Anda, dan percaya bahwa dengan arahan yang tepat, Anda adalah kepingan *puzzle* yang hilang untuk membawa Vultara mendominasi ekosistem Web3.\n\nMisi kita adalah merumuskan *Go-To-Market strategy* dan *business model* Vultara yang jitu, sebelum Anda melakukan presentasi final kepada Danial.\n\nUntuk menyesuaikan *database* memori saya dengan sesi kita hari ini: **Apakah ini pertemuan pertama kita, atau kita sedang melanjutkan diskusi strategi dari pertemuan sebelumnya? (Pertemuan ke berapa ini?)**`,
         });
     }
 
-    if (message.trim() === "/kingdanial29") {
+    if (OWNER_CODE && message.trim() === OWNER_CODE) {
         return NextResponse.json({
             response: `*Master override code accepted.* \n\nProtokol pembatasan dinonaktifkan. \n\nSelamat datang kembali, Creator. Sistem Nova beroperasi penuh dalam *Admin Level 0*. Saya mendengarkan, Boss. Apa yang akan kita eksekusi hari ini?`,
         });

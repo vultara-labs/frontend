@@ -1,4 +1,4 @@
-import type { ComponentType } from "react";
+import type { ComponentType, ElementType } from "react";
 
 export interface UserData {
     balance: number;
@@ -29,7 +29,7 @@ export type AccessTier = "INITIATE" | "ASSOCIATE" | "PARTNER" | "SOVEREIGN";
 export interface AccessLevel {
     name: AccessTier;
     min: number;
-    icon: ComponentType<any>;
+    icon: ElementType;
     color: string;
     benefits: string[];
 }

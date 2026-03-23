@@ -7,7 +7,6 @@ import { PROTOCOL, VULTARA_ETH_VAULT_ABI } from "@/constants";
 
 interface UseVaultContractOptions {
     address?: `0x${string}`;
-    onSuccess?: () => void;
 }
 
 export function useVaultContract({ address }: UseVaultContractOptions = {}) {
@@ -85,9 +84,9 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
                 value: amountWei,
             });
             return true;
-        } catch (error: any) {
+        } catch (error: unknown) {
             toast.dismiss();
-            if (error.message?.includes("User rejected")) {
+            if (error instanceof Error && error.message?.includes("User rejected")) {
                 toast.error("Transaction cancelled");
             } else {
                 toast.error("Transaction failed");
@@ -126,9 +125,9 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
                 args: [sharesToWithdraw],
             });
             return true;
-        } catch (error: any) {
+        } catch (error: unknown) {
             toast.dismiss();
-            if (error.message?.includes("User rejected")) {
+            if (error instanceof Error && error.message?.includes("User rejected")) {
                 toast.error("Transaction cancelled");
             } else {
                 toast.error("Transaction failed");
@@ -148,9 +147,9 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
                 args: [],
             });
             return true;
-        } catch (error: any) {
+        } catch (error: unknown) {
             toast.dismiss();
-            if (error.message?.includes("User rejected")) {
+            if (error instanceof Error && error.message?.includes("User rejected")) {
                 toast.error("Transaction cancelled");
             } else {
                 toast.error("Transaction failed");
@@ -170,9 +169,9 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
                 args: [],
             });
             return true;
-        } catch (error: any) {
+        } catch (error: unknown) {
             toast.dismiss();
-            if (error.message?.includes("User rejected")) {
+            if (error instanceof Error && error.message?.includes("User rejected")) {
                 toast.error("Transaction cancelled");
             } else {
                 toast.error("Transaction failed");

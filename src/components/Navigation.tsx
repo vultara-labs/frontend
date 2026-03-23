@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { List, X } from "@phosphor-icons/react";
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { LANDING_NAV_ITEMS } from "@/constants";
 
@@ -18,7 +19,7 @@ export default function Navigation() {
         >
             <div className="mx-auto max-w-[1280px] px-4 sm:px-6 h-16 sm:h-[72px] flex items-center justify-between">
                 <Link href="/" className="flex items-center gap-3 group">
-                    <img src="/logo-dark.png" alt="Vultara" className="h-8 w-auto" />
+                    <Image src="/logo-dark.png" alt="Vultara" width={160} height={48} style={{ width: "auto", height: "2rem" }} fetchPriority="high" />
                 </Link>
 
                 <nav className="hidden md:flex items-center gap-8">
@@ -38,6 +39,8 @@ export default function Navigation() {
                     <button
                         className="md:hidden text-white p-2 hover:text-[var(--volt)] transition-colors"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                        aria-expanded={mobileMenuOpen}
                     >
                         {mobileMenuOpen ? <X size={28} weight="bold" /> : <List size={28} weight="bold" />}
                     </button>

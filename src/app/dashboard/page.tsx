@@ -186,10 +186,13 @@ export default function DashboardPage() {
 
                 {/* Access Tier Module */}
                 <motion.div
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setIsTierModalOpen(true); } }}
                     variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
                     whileHover={{ y: -4 }}
                     onClick={() => setIsTierModalOpen(true)}
-                    className="group relative h-full min-h-[260px] p-6 sm:p-8 rounded-[2rem] bg-gradient-to-b from-[var(--obsidian-surface)] to-black border border-[var(--border-subtle)] overflow-hidden transition-all duration-500 flex flex-col justify-between cursor-pointer md:col-span-2 lg:col-span-1"
+                    className="group relative h-full min-h-[260px] p-6 sm:p-8 rounded-[2rem] bg-gradient-to-b from-[var(--obsidian-surface)] to-black border border-[var(--border-subtle)] overflow-hidden transition-all duration-500 flex flex-col justify-between cursor-pointer md:col-span-2 lg:col-span-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--volt)]"
                     style={{ borderColor: `color-mix(in srgb, ${tierColor} 20%, transparent)` }}
                 >
                     <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-30 transition-all duration-500">

@@ -1,13 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { List, X, CaretRight, Wallet, SignOut, Eye } from "@phosphor-icons/react";
 import { useWalletConnection, useDashboardData } from "@/hooks";
-import { DASHBOARD_NAV_ITEMS, DEMO_DATA } from "@/constants";
+import { DASHBOARD_NAV_ITEMS } from "@/constants";
 import { WalletModal } from "@/components/layout/WalletModal";
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
@@ -20,14 +22,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         isConnecting,
         formattedAddress,
         formattedBalance,
-        connect: connectWallet,
         disconnect: handleDisconnect,
         isWrongNetwork,
         switchNetwork,
     } = useWalletConnection();
 
     // Get preview mode data
-    const { isPreviewMode, vaultBalanceETH, walletBalanceETH } = useDashboardData();
+    const { isPreviewMode, walletBalanceETH } = useDashboardData();
 
     useEffect(() => {
         setMounted(true);
@@ -61,7 +62,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
             <header className="lg:hidden fixed top-0 left-0 right-0 z-50 h-16 border-b border-[var(--border-subtle)] bg-[var(--obsidian-base)]/95 backdrop-blur-xl flex items-center justify-between px-4">
                 <Link href="/" className="flex items-center gap-3">
-                    <img src="/logo-dark.png" alt="Vultara" className="h-7 w-auto" />
+                    <Image src="/logo-dark.png" alt="Vultara" width={160} height={48} style={{ width: "auto", height: "1.75rem" }} />
                 </Link>
 
                 <div className="flex items-center gap-3">
@@ -102,7 +103,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         >
                             <div className="p-6 pb-4 border-b border-[var(--border-subtle)]">
                                 <Link href="/" className="flex items-center gap-3">
-                                    <img src="/logo-dark.png" alt="Vultara" className="h-8 w-auto" />
+                                    <Image src="/logo-dark.png" alt="Vultara" width={160} height={48} style={{ width: "auto", height: "2rem" }} />
                                 </Link>
                                 <div className="mt-3 px-3 py-1.5 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/20 inline-flex items-center gap-2">
                                     <span className="w-1.5 h-1.5 rounded-full bg-[var(--success)]" />
@@ -167,7 +168,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <aside className="hidden lg:flex w-72 border-r border-[var(--border-subtle)] bg-[var(--obsidian-base)] flex-col sticky top-0 h-screen z-40 px-4 py-6">
                 <div className="mb-6 px-2">
                     <Link href="/" className="flex items-center gap-3 group">
-                        <img src="/logo-dark.png" alt="Vultara" className="h-8 w-auto opacity-90 group-hover:opacity-100 transition-opacity" />
+                        <Image src="/logo-dark.png" alt="Vultara" width={160} height={48} className="opacity-90 group-hover:opacity-100 transition-opacity" style={{ width: "auto", height: "2rem" }} />
                     </Link>
                 </div>
 
@@ -378,7 +379,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         </div>
                     )}
 
-                    <div className="flex-1 overflow-y-auto">{children}</div>
+                    <div className="flex-1 overflow-y-auto"><ErrorBoundary>{children}</ErrorBoundary></div>
                 </div>
             </main>
         </div>

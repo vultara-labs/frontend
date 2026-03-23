@@ -94,7 +94,7 @@ export function AmountInput({
         <div className="mb-8">
             {/* Header */}
             <div className="flex justify-between items-center mb-3 px-2">
-                <span className="label text-[var(--text-secondary)]">{label}</span>
+                <label htmlFor="amount-input" className="label text-[var(--text-secondary)]">{label}</label>
                 <span
                     className="text-xs font-mono text-[var(--text-tertiary)] hover:text-white cursor-pointer transition-colors text-right"
                     onClick={() => {
@@ -124,14 +124,16 @@ export function AmountInput({
                                 Ξ
                             </span>
                             <input
+                                id="amount-input"
                                 type="text"
                                 inputMode="decimal"
                                 value={value}
                                 onChange={handleChange}
                                 placeholder="0"
+                                aria-invalid={isOverBalance}
+                                aria-describedby={isOverBalance ? "amount-error" : undefined}
                                 className={`w-full bg-transparent text-3xl sm:text-4xl font-black placeholder:text-white/10 outline-none focus-visible:ring-0 ${isOverBalance ? "text-[var(--error)]" : "text-white"
                                     }`}
-                                autoFocus
                             />
                         </div>
                         {ethPrice > 0 && numAmount > 0 && (
@@ -159,6 +161,8 @@ export function AmountInput({
             {/* Validation Messages */}
             {isOverBalance ? (
                 <motion.div
+                    id="amount-error"
+                    role="alert"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="mt-4 flex items-center gap-2 px-2 text-[var(--error)]"
@@ -215,7 +219,7 @@ export function AmountInput({
 }
 
 // Export validation helpers for parent components
-export function useAmountValidation(value: string, balance: number, gasReserve: number = 0, minAmount: number = 0.001) {
+export function getAmountValidation(value: string, balance: number, gasReserve: number = 0, minAmount: number = 0.001) {
     const numAmount = parseFloat(value.replace(/,/g, '')) || 0;
     const epsilon = 0.0001;
     const maxDepositable = Math.max(0, balance - gasReserve);

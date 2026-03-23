@@ -1,10 +1,10 @@
 "use client";
 
-import { ElementType, ComponentType, ReactNode } from "react";
+import { ElementType } from "react";
 
 interface IconBoxProps {
     /** Phosphor Icon Component or generic React Icon */
-    icon: ElementType | ComponentType<any>;
+    icon: ElementType;
     /** Dynamic color string (hex, rgb, or var) */
     color?: string;
     className?: string;

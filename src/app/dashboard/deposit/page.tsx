@@ -9,7 +9,7 @@ import Link from "next/link";
 import { PROTOCOL, YIELD, RISK } from "@/constants";
 import { useWalletConnection, useDashboardData, useVaultContract } from "@/hooks";
 import { formatUnits } from "viem";
-import { AmountInput, useAmountValidation, SuccessAnimation, ProcessingState } from "@/components/ui";
+import { AmountInput, getAmountValidation, SuccessAnimation, ProcessingState } from "@/components/ui";
 
 function DepositLoading() {
     return (
@@ -59,7 +59,7 @@ function DepositContent() {
     const walletBalance = isPreviewMode ? walletBalanceETH : realWalletBalance;
     const gasReserve = 0.001; // Lowered for Base L2 (cheaper gas)
 
-    const { numAmount, isValidAmount, maxDepositable } = useAmountValidation(amount, walletBalance, gasReserve);
+    const { numAmount, isValidAmount, maxDepositable } = getAmountValidation(amount, walletBalance, gasReserve);
     const monthlyYield = YIELD.calculateMonthly(numAmount * ethPrice);
     const depositValueUSD = numAmount * ethPrice;
 

@@ -39,9 +39,9 @@ export const QUICK_PROMPTS = [
 ] as const;
 
 export const AUDIT_PARTNERS = [
-    { name: 'CertiK', logo: '/logos/certik.png', href: 'https://www.certik.com', hoverColor: '[#00D4AA]' },
-    { name: 'Hacken', logo: '/logos/hacken.svg', href: 'https://hacken.io', hoverColor: '[#30E3CA]' },
-    { name: 'OpenZeppelin', logo: '/logos/openzeppelin.svg', href: 'https://www.openzeppelin.com', hoverColor: '[#4E5EE4]' },
+    { name: 'CertiK', logo: '/logos/certik.png', href: 'https://www.certik.com', hoverClasses: 'hover:border-[#00D4AA]/30 hover:bg-[#00D4AA]/5' },
+    { name: 'Hacken', logo: '/logos/hacken.svg', href: 'https://hacken.io', hoverClasses: 'hover:border-[#30E3CA]/30 hover:bg-[#30E3CA]/5' },
+    { name: 'OpenZeppelin', logo: '/logos/openzeppelin.svg', href: 'https://www.openzeppelin.com', hoverClasses: 'hover:border-[#4E5EE4]/30 hover:bg-[#4E5EE4]/5' },
 ] as const;
 
 export const TECH_STATS = [

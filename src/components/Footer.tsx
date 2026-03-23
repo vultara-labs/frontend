@@ -2,6 +2,7 @@
 
 import { GithubLogo, TwitterLogo, ArrowSquareOut } from "@phosphor-icons/react";
 import Link from "next/link";
+import Image from "next/image";
 import { FOOTER_PRODUCT_LINKS, FOOTER_ECOSYSTEM_LINKS } from "@/constants";
 
 export default function Footer() {
@@ -14,7 +15,7 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-10 lg:gap-16 mb-12 lg:mb-20">
                     <div className="md:col-span-2">
                         <Link href="/" className="flex items-center gap-4 mb-8">
-                            <img src="/logo-dark.png" alt="Vultara" className="h-12 w-auto" />
+                            <Image src="/logo-dark.png" alt="Vultara" width={160} height={48} style={{ width: "auto", height: "3rem" }} />
                         </Link>
                         <p className="text-[var(--text-secondary)] text-sm leading-relaxed max-w-md mb-8">
                             Simple DeFi yield for everyone. Deposit ETH, earn real returns from Thetanuts strategies.
@@ -54,7 +55,7 @@ export default function Footer() {
                                         href={link.href}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className={`text-sm text-[var(--text-tertiary)] hover:text-${link.color} transition-colors flex items-center gap-2`}
+                                        className={`text-sm text-[var(--text-tertiary)] ${link.hoverClass} transition-colors flex items-center gap-2`}
                                     >
                                         {link.label} <ArrowSquareOut size={12} />
                                     </a>

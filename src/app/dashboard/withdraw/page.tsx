@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import Link from "next/link";
 import { useWalletConnection, useDashboardData, useVaultContract } from "@/hooks";
-import { AmountInput, useAmountValidation, SuccessAnimation, ProcessingState } from "@/components/ui";
+import { AmountInput, getAmountValidation, SuccessAnimation, ProcessingState } from "@/components/ui";
 
 function WithdrawLoading() {
     return (
@@ -43,16 +43,7 @@ function WithdrawContent() {
         return () => clearInterval(timer);
     }, [view]);
 
-    const vault = useVaultContract({
-        address,
-        onSuccess: () => {
-            toast.dismiss();
-            setIsSubmitting(false); // Stop processing overlay
-            setView("success");
-            toast.success("Transaction Confirmed!");
-            vault.refetchBalance();
-        }
-    });
+    const vault = useVaultContract({ address });
 
     // Auto-detect view based on queue status
     useEffect(() => {
@@ -86,7 +77,7 @@ function WithdrawContent() {
     }, [vault.isConfirmed, isSubmitting]);
 
     const totalBalance = isPreviewMode ? vaultBalanceETH : vault.userBalanceETH;
-    const { numAmount, isValidAmount } = useAmountValidation(amount, totalBalance);
+    const { numAmount, isValidAmount } = getAmountValidation(amount, totalBalance);
 
     const handleMax = () => {
         return parseFloat(totalBalance.toFixed(6)).toString();

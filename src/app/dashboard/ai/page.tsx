@@ -49,11 +49,15 @@ export default function AIAdvisorPage() {
         }
     }, []);
 
-    // SAVE HISTORY ON CHANGE
+    // SAVE HISTORY ON CHANGE (debounced)
     useEffect(() => {
-        if (messages.length > 1) { // Only save if there's actual conversation
-            localStorage.setItem("vultara_nova_history", JSON.stringify(messages));
-        }
+        if (messages.length <= 1) return;
+        const timer = setTimeout(() => {
+            try {
+                localStorage.setItem("vultara_nova_history", JSON.stringify(messages));
+            } catch { /* localStorage full or unavailable */ }
+        }, 500);
+        return () => clearTimeout(timer);
     }, [messages]);
 
     const clearHistory = () => {
@@ -322,6 +326,7 @@ export default function AIAdvisorPage() {
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), handleSend())}
+                                aria-label="Message Nova AI"
                                 placeholder='Ask: "Is it safe to deposit right now?"'
                                 rows={1}
                                 className="w-full bg-transparent border-none text-white placeholder-[var(--text-tertiary)] focus:ring-0 resize-none py-3 px-0 text-base lg:text-sm outline-none leading-relaxed"

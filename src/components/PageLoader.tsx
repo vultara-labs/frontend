@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function PageLoader({ children }: { children: React.ReactNode }) {
     const [isLoading, setIsLoading] = useState(true);
@@ -9,7 +10,7 @@ export default function PageLoader({ children }: { children: React.ReactNode }) 
     useEffect(() => {
         const timer = setTimeout(() => {
             setIsLoading(false);
-        }, 800);
+        }, 300);
 
         return () => clearTimeout(timer);
     }, []);
@@ -31,7 +32,7 @@ export default function PageLoader({ children }: { children: React.ReactNode }) 
                             transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
                             className="relative"
                         >
-                            <img src="/logo-dark.png" alt="Vultara" className="h-16 w-auto" />
+                            <Image src="/logo-dark.png" alt="Vultara" width={160} height={48} style={{ width: "auto", height: "4rem" }} />
                             <div className="absolute inset-0 bg-[var(--volt)] opacity-20 blur-3xl rounded-full" />
                         </motion.div>
 

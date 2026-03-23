@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ArrowDown } from "@phosphor-icons/react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
 import { HeroCard } from "./landing/HeroCard";
 import { AUDIT_PARTNERS } from "@/constants";
@@ -97,13 +98,17 @@ export default function Hero() {
                                             href={partner.href}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className={`h-8 lg:h-10 px-3 lg:px-4 bg-white/[0.02] rounded-lg flex items-center justify-center border border-white/[0.05] hover:border-${partner.hoverColor}/30 hover:bg-${partner.hoverColor}/5 transition-all duration-300 opacity-70 hover:opacity-100 group`}
+                                            className={`h-8 lg:h-10 px-3 lg:px-4 bg-white/[0.02] rounded-lg flex items-center justify-center border border-white/[0.05] ${partner.hoverClasses} transition-all duration-300 opacity-70 hover:opacity-100 group`}
                                         >
-                                            <img
-                                                src={partner.logo}
-                                                alt={partner.name}
-                                                className="h-4 lg:h-6 w-auto brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity"
-                                            />
+                                            <div className="relative h-4 lg:h-6" style={{ aspectRatio: "10/3" }}>
+                                                <Image
+                                                    src={partner.logo}
+                                                    alt={partner.name}
+                                                    fill
+                                                    className="object-contain brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity"
+                                                    unoptimized
+                                                />
+                                            </div>
                                         </a>
                                     ))}
                                 </div>

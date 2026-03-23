@@ -31,6 +31,6 @@ export const FOOTER_PRODUCT_LINKS = [
 ] as const;
 
 export const FOOTER_ECOSYSTEM_LINKS = [
-    { label: 'Base Network', href: 'https://base.org', color: 'blue-400' },
-    { label: 'Thetanuts Finance', href: 'https://thetanuts.finance', color: '[#00D9B5]' },
+    { label: 'Base Network', href: 'https://base.org', hoverClass: 'hover:text-blue-400' },
+    { label: 'Thetanuts Finance', href: 'https://thetanuts.finance', hoverClass: 'hover:text-[#00D9B5]' },
 ] as const;
