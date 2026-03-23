@@ -331,37 +331,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </aside>
 
             <main className="flex-1 flex flex-col relative overflow-hidden bg-[var(--obsidian-base)] pt-16 lg:pt-0">
-                {/* Ambient Living Background */}
-                <div className="fixed inset-0 pointer-events-none z-0">
-                    <motion.div
-                        animate={{
-                            scale: [1, 1.2, 1],
-                            opacity: [0.1, 0.2, 0.1],
-                            x: [0, 50, -50, 0],
-                            y: [0, -50, 50, 0]
-                        }}
-                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                        className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-[var(--volt)]/10 blur-[120px] rounded-full mix-blend-screen"
-                    />
-                    <motion.div
-                        animate={{
-                            scale: [1.2, 1, 1.2],
-                            opacity: [0.1, 0.15, 0.1],
-                            x: [0, -70, 70, 0],
-                            y: [0, 50, -50, 0]
-                        }}
-                        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                        className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-blue-500/10 blur-[100px] rounded-full mix-blend-screen"
-                    />
-                    <motion.div
-                        animate={{
-                            scale: [1, 1.3, 1],
-                            opacity: [0.05, 0.1, 0.05],
-                        }}
-                        transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-                        className="absolute top-[30%] left-[30%] w-[500px] h-[500px] bg-purple-500/5 blur-[120px] rounded-full mix-blend-screen"
-                    />
-                </div>
+                {/* Ambient Background — static CSS gradient (no JS animation, GPU-efficient) */}
+                <div
+                    className="fixed inset-0 pointer-events-none z-0"
+                    style={{
+                        background: "radial-gradient(ellipse 80% 60% at 80% 10%, rgba(204,255,0,0.07), transparent 60%), radial-gradient(ellipse 70% 50% at 10% 90%, rgba(59,130,246,0.06), transparent 60%), radial-gradient(ellipse 50% 50% at 50% 50%, rgba(168,85,247,0.03), transparent 60%)"
+                    }}
+                />
 
                 <div className="flex-1 flex flex-col relative z-10 w-full">
                     {/* Wrong Network Banner */}

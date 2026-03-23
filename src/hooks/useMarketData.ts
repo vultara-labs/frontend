@@ -48,8 +48,9 @@ export function useMarketData(asset: string = "ETH") {
     const { data, isLoading, error } = useQuery({
         queryKey: ['marketData', asset],
         queryFn: fetchETHPrice,
-        refetchInterval: 30000, // 30 seconds
-        staleTime: 10000,       // Consider data fresh for 10 seconds
+        refetchInterval: 30000,
+        refetchIntervalInBackground: false, // Stop polling when tab is hidden
+        staleTime: 10000,
         retry: 1,
     });
 

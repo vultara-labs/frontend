@@ -35,12 +35,13 @@ function WithdrawContent() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const searchParams = useSearchParams();
 
-    // Force re-render for countdown
+    // Force re-render for countdown — only tick when countdown is visible
     const [now, setNow] = useState(new Date());
     useEffect(() => {
+        if (view !== "pending") return;
         const timer = setInterval(() => setNow(new Date()), 1000);
         return () => clearInterval(timer);
-    }, []);
+    }, [view]);
 
     const vault = useVaultContract({
         address,
