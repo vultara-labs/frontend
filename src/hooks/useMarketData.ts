@@ -54,4 +54,3 @@ export function useMarketData(asset: string = "ETH") {
         error: error ? error.message : null
     };
 }
-

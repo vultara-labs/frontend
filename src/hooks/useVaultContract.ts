@@ -13,6 +13,15 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
     const chainId = useChainId();
     const contracts = PROTOCOL.CONTRACTS[chainId as keyof typeof PROTOCOL.CONTRACTS] || PROTOCOL.CONTRACTS[8453];
 
+    const handleTxError = (error: unknown) => {
+        toast.dismiss();
+        if (error instanceof Error && error.message?.includes("User rejected")) {
+            toast.error("Transaction cancelled");
+        } else {
+            toast.error("Transaction failed");
+        }
+    };
+
     const {
         writeContractAsync,
         data: txHash,
@@ -85,12 +94,7 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
             });
             return true;
         } catch (error: unknown) {
-            toast.dismiss();
-            if (error instanceof Error && error.message?.includes("User rejected")) {
-                toast.error("Transaction cancelled");
-            } else {
-                toast.error("Transaction failed");
-            }
+            handleTxError(error);
             return false;
         }
     };
@@ -126,12 +130,7 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
             });
             return true;
         } catch (error: unknown) {
-            toast.dismiss();
-            if (error instanceof Error && error.message?.includes("User rejected")) {
-                toast.error("Transaction cancelled");
-            } else {
-                toast.error("Transaction failed");
-            }
+            handleTxError(error);
             return false;
         }
     };
@@ -148,12 +147,7 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
             });
             return true;
         } catch (error: unknown) {
-            toast.dismiss();
-            if (error instanceof Error && error.message?.includes("User rejected")) {
-                toast.error("Transaction cancelled");
-            } else {
-                toast.error("Transaction failed");
-            }
+            handleTxError(error);
             return false;
         }
     };
@@ -170,12 +164,7 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
             });
             return true;
         } catch (error: unknown) {
-            toast.dismiss();
-            if (error instanceof Error && error.message?.includes("User rejected")) {
-                toast.error("Transaction cancelled");
-            } else {
-                toast.error("Transaction failed");
-            }
+            handleTxError(error);
             return false;
         }
     };

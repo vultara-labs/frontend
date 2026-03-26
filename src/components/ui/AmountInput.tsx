@@ -12,7 +12,6 @@ interface AmountInputProps {
     onMax: () => string;
 
     // Optional customization
-    // Optional customization
     label?: string;
     balanceLabel?: string;
     accentColor?: "volt" | "blue";

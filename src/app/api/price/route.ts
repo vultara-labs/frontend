@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 // Thetanuts V4 Pricing API - Official integration
 const THETANUTS_API = "https://round-snowflake-9c31.devops-118.workers.dev/";
 
+// Shared type - also used in chat API route
 interface ThetanutsOrder {
     order: {
         ticker?: string;

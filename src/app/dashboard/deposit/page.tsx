@@ -1,109 +1,33 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowCircleUp, CheckCircle, CircleNotch, Info, TrendUp, ChartLineDown, ShieldWarning, ArrowSquareOut } from "@phosphor-icons/react";
-import { useState, useEffect, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
-import { toast } from "sonner";
+import { ArrowCircleUp, CircleNotch, Info, ChartLineDown, ShieldWarning, ArrowSquareOut } from "@phosphor-icons/react";
+import { Suspense } from "react";
 import Link from "next/link";
-import { PROTOCOL, YIELD, RISK } from "@/constants";
-import { useWalletConnection, useDashboardData, useVaultContract } from "@/hooks";
-import { formatUnits } from "viem";
-import { AmountInput, getAmountValidation, SuccessAnimation, ProcessingState } from "@/components/ui";
-
-function DepositLoading() {
-    return (
-        <div className="min-h-[60vh] flex flex-col justify-center items-center">
-            <CircleNotch size={32} className="animate-spin text-[var(--volt)]" />
-        </div>
-    );
-}
+import { PROTOCOL, RISK } from "@/constants";
+import { AmountInput, SuccessAnimation, ProcessingState } from "@/components/ui";
+import { useDeposit } from "./use-deposit";
 
 export default function DepositPage() {
     return (
-        <Suspense fallback={<DepositLoading />}>
+        <Suspense fallback={
+            <div className="min-h-[60vh] flex flex-col justify-center items-center">
+                <CircleNotch size={32} className="animate-spin text-[var(--volt)]" />
+            </div>
+        }>
             <DepositContent />
         </Suspense>
     );
 }
 
 function DepositContent() {
-    const [step, setStep] = useState<"input" | "confirm" | "processing" | "success">("input");
-    const [amount, setAmount] = useState("");
-    const [riskAcknowledged, setRiskAcknowledged] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
-    // Wallet connection hook with network enforcement
-    const { isConnected, ethBalance, address, isWrongNetwork, switchNetwork } = useWalletConnection();
-    const { isPreviewMode, walletBalanceETH, ethPrice, demoDeposit, vaultExpiry } = useDashboardData();
-
-    const vault = useVaultContract({ address });
-    const searchParams = useSearchParams();
-
-    useEffect(() => {
-        const urlAmount = searchParams.get("amount");
-        if (urlAmount && !isNaN(parseFloat(urlAmount))) {
-            setAmount(urlAmount);
-        }
-    }, [searchParams]);
-
-    useEffect(() => {
-        if (vault.isConfirmed && step === "processing") {
-            toast.dismiss();
-            setStep("success");
-            toast.success("Deposit Successful!");
-        }
-    }, [vault.isConfirmed, step]);
-
-    const realWalletBalance = ethBalance ? parseFloat(formatUnits(ethBalance.value, ethBalance.decimals)) : 0;
-    const walletBalance = isPreviewMode ? walletBalanceETH : realWalletBalance;
-    const gasReserve = 0.001; // Lowered for Base L2 (cheaper gas)
-
-    const { numAmount, isValidAmount, maxDepositable } = getAmountValidation(amount, walletBalance, gasReserve);
-    const monthlyYield = YIELD.calculateMonthly(numAmount * ethPrice);
-    const depositValueUSD = numAmount * ethPrice;
-
-    const handleContinue = () => {
-        if (!isValidAmount) return;
-        setStep("confirm");
-    };
-
-    const handlePreviewDeposit = () => {
-        if (!riskAcknowledged) {
-            toast.error("Please acknowledge the risks first");
-            return;
-        }
-        setStep("processing");
-        toast.loading("Simulating deposit...");
-        setTimeout(() => {
-            demoDeposit(numAmount);
-            toast.dismiss();
-            setStep("success");
-            toast.success("Demo Deposit Successful!");
-        }, 2000);
-    };
-
-    const handleDeposit = async () => {
-        if (!riskAcknowledged) {
-            toast.error("Please acknowledge the risks first");
-            return;
-        }
-        if (!isConnected || !address) {
-            toast.error("Please connect your wallet");
-            return;
-        }
-        setIsSubmitting(true);
-        setStep("processing");
-        const success = await vault.deposit(numAmount);
-        setIsSubmitting(false);
-        if (!success) {
-            setStep("confirm");
-        }
-    };
-
-    const handleMax = () => {
-        return parseFloat(maxDepositable.toFixed(6)).toString();
-    };
+    const {
+        step, setStep, amount, setAmount, riskAcknowledged, setRiskAcknowledged, isSubmitting,
+        isWrongNetwork, switchNetwork, isPreviewMode, walletBalance, ethPrice, gasReserve,
+        numAmount, isValidAmount, maxDepositable, monthlyYield, depositValueUSD,
+        vaultExpiry, vault,
+        handleContinue, handlePreviewDeposit, handleDeposit, handleMax,
+    } = useDeposit();
 
     return (
         <div className="min-h-[80vh] flex items-center justify-center p-4">
@@ -174,12 +98,10 @@ function DepositContent() {
                                                 <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">Risk Profile</span>
                                             </div>
                                         </div>
-
                                         <div className="flex items-center justify-between p-3 rounded-xl bg-[var(--volt)]/5 border border-[var(--volt)]/20 mb-4">
                                             <span className="text-xs text-[var(--text-secondary)]">Expected Yield</span>
                                             <span className="text-sm font-bold text-[var(--volt)]">+${(depositValueUSD * 0.03 / 12).toFixed(0)} to +${(depositValueUSD * 0.08 / 12).toFixed(0)} / month</span>
                                         </div>
-
                                         <div className="space-y-2">
                                             <p className="text-[11px] text-[var(--text-tertiary)] uppercase tracking-wide">If ETH Price Drops:</p>
                                             {RISK.DOWNSIDE_SCENARIOS.map((scenario) => {
@@ -204,7 +126,6 @@ function DepositContent() {
                                                 );
                                             })}
                                         </div>
-
                                         <p className="mt-3 text-xs text-[var(--text-secondary)]">
                                             Yields are variable and not guaranteed. Past performance ≠ future results.
                                         </p>
@@ -236,7 +157,6 @@ function DepositContent() {
                                     <h2 className="text-2xl font-black uppercase tracking-tight text-white mb-2">Confirm Deposit</h2>
                                     <p className="text-[var(--text-secondary)] text-sm">Review your transaction details</p>
                                 </div>
-
                                 <div className="p-6 rounded-2xl bg-[var(--obsidian-base)] border border-[var(--border-medium)] mb-6 space-y-4">
                                     <div className="flex justify-between items-center">
                                         <span className="text-sm text-[var(--text-secondary)] font-medium">Amount</span>
@@ -275,7 +195,6 @@ function DepositContent() {
                                         </div>
                                     </div>
                                 </div>
-
                                 <div className="p-4 rounded-2xl bg-white/[0.02] backdrop-blur-sm border border-white/[0.08] mb-4">
                                     <div className="flex items-center justify-between mb-3">
                                         <div className="flex items-center gap-2">
@@ -283,7 +202,6 @@ function DepositContent() {
                                             <span className="text-[11px] font-bold uppercase tracking-widest text-[var(--text-tertiary)]">Risk Summary</span>
                                         </div>
                                     </div>
-
                                     <div className="p-3 rounded-xl bg-[var(--error)]/5 border border-[var(--error)]/20 mb-3">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-2">
@@ -293,7 +211,6 @@ function DepositContent() {
                                             <span className="text-sm font-bold text-[var(--error)]">-${RISK.calculateDownsideLoss(depositValueUSD, 30).toFixed(0)}</span>
                                         </div>
                                     </div>
-
                                     <div className="space-y-1.5">
                                         {RISK.DISCLAIMERS.slice(0, 2).map((disclaimer, idx) => (
                                             <p key={idx} className="text-xs text-[var(--text-tertiary)] flex items-start gap-1.5">
@@ -303,7 +220,6 @@ function DepositContent() {
                                         ))}
                                     </div>
                                 </div>
-
                                 <label className="flex items-start gap-3 p-4 rounded-xl border border-[var(--border-subtle)] cursor-pointer mb-6 hover:bg-white/[0.02] transition-colors">
                                     <input
                                         type="checkbox"
@@ -315,7 +231,6 @@ function DepositContent() {
                                         I understand that yields are variable, not guaranteed, and I accept the risks of depositing into this vault.
                                     </span>
                                 </label>
-
                                 <div className="grid grid-cols-2 gap-3 sm:gap-4">
                                     <button onClick={() => setStep("input")} className="btn-secondary h-12 sm:h-14 text-xs active:scale-[0.98]">
                                         Cancel

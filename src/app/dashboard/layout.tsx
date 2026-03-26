@@ -4,12 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { List, X, CaretRight, Wallet, SignOut, Eye } from "@phosphor-icons/react";
+import { List, X, CaretRight, SignOut } from "@phosphor-icons/react";
 import { useWalletConnection, useDashboardData } from "@/hooks";
 import { DASHBOARD_NAV_ITEMS } from "@/constants";
 import { WalletModal } from "@/components/layout/WalletModal";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
+import { SidebarNavLink } from "./sidebar-nav";
+import { WalletCard } from "./wallet-card";
+import { MobileDrawer } from "./mobile-drawer";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
@@ -27,7 +29,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         switchNetwork,
     } = useWalletConnection();
 
-    // Get preview mode data
     const { isPreviewMode, walletBalanceETH } = useDashboardData();
 
     useEffect(() => {
@@ -50,7 +51,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     }, [mobileMenuOpen, isWalletModalOpen]);
 
     const isConnectedSafe = mounted && isConnected;
-
     const openWalletModal = () => setIsWalletModalOpen(true);
 
     return (
@@ -81,90 +81,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     </button>
                 </div>
             </header>
-
-            <AnimatePresence>
-                {mobileMenuOpen && (
-                    <>
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.2 }}
-                            className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
-                            onClick={() => setMobileMenuOpen(false)}
-                        />
-
-                        <motion.div
-                            initial={{ x: "-100%" }}
-                            animate={{ x: 0 }}
-                            exit={{ x: "-100%" }}
-                            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                            className="lg:hidden fixed top-0 left-0 bottom-0 w-72 bg-[var(--obsidian-base)] border-r border-[var(--border-subtle)] z-50 flex flex-col"
-                        >
-                            <div className="p-6 pb-4 border-b border-[var(--border-subtle)]">
-                                <Link href="/" className="flex items-center gap-3">
-                                    <Image src="/logo-dark.png" alt="Vultara" width={160} height={48} style={{ width: "auto", height: "2rem" }} />
-                                </Link>
-                                <div className="mt-3 px-3 py-1.5 rounded-full bg-[var(--success)]/10 border border-[var(--success)]/20 inline-flex items-center gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--success)]" />
-                                    <span className="text-[10px] uppercase font-bold tracking-widest text-[var(--success)]">Mainnet</span>
-                                </div>
-                            </div>
-
-                            <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-                                {DASHBOARD_NAV_ITEMS.map((item) => {
-                                    const isActive = pathname === item.href;
-                                    return (
-                                        <Link
-                                            key={item.href}
-                                            href={item.href}
-                                            className={`group relative flex items-center gap-3 px-4 py-4 rounded-xl transition-all duration-300 border ${isActive
-                                                ? "bg-[var(--volt)]/10 text-[var(--volt)] border-[var(--volt)]/20 shadow-[0_0_15px_var(--volt-glow)]"
-                                                : "border-transparent text-[var(--text-secondary)] hover:bg-white/[0.03] hover:text-white"
-                                                }`}
-                                        >
-                                            <item.icon size={22} className={`transition-colors duration-300 ${isActive ? "text-[var(--volt)]" : "group-hover:text-white"}`} />
-                                            <span className="text-base font-bold tracking-wide">{item.label}</span>
-                                            {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[var(--volt)] shadow-[0_0_8px_var(--volt)]" />}
-                                        </Link>
-                                    );
-                                })}
-                            </nav>
-
-                            <div className="p-4 border-t border-[var(--border-subtle)] bg-[var(--obsidian-surface)]">
-                                {isConnectedSafe ? (
-                                    <div className="space-y-3">
-                                        <div className="flex items-center gap-3 p-3 rounded-lg bg-white/[0.03]">
-                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--volt)] to-[var(--success)]" />
-                                            <div>
-                                                <p className="text-sm font-bold text-white">{formattedAddress}</p>
-                                                {formattedBalance}
-                                            </div>
-                                        </div>
-                                        <button
-                                            onClick={handleDisconnect}
-                                            className="w-full py-3 rounded-xl border border-[var(--border-subtle)] text-[var(--text-secondary)] font-bold uppercase tracking-widest hover:bg-white/[0.05] hover:text-white transition-all flex items-center justify-center gap-2 text-xs"
-                                        >
-                                            <SignOut size={16} weight="bold" />
-                                            Disconnect
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <button
-                                        onClick={openWalletModal}
-                                        disabled={isConnecting}
-                                        className="w-full py-3.5 rounded-xl bg-[var(--volt)] text-black font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm shadow-[0_0_20px_rgba(204,255,0,0.15)] disabled:opacity-70"
-                                    >
-                                        <Wallet size={18} weight="duotone" />
-                                        {isConnecting ? "Connecting..." : "Connect Wallet"}
-                                    </button>
-                                )}
-                            </div>
-                        </motion.div>
-                    </>
-                )}
-            </AnimatePresence>
-
+            <MobileDrawer
+                pathname={pathname}
+                mobileMenuOpen={mobileMenuOpen}
+                isConnectedSafe={isConnectedSafe}
+                isConnecting={isConnecting}
+                formattedAddress={formattedAddress}
+                formattedBalance={formattedBalance}
+                onClose={() => setMobileMenuOpen(false)}
+                onDisconnect={handleDisconnect}
+                openWalletModal={openWalletModal}
+            />
             <aside className="hidden lg:flex w-72 border-r border-[var(--border-subtle)] bg-[var(--obsidian-base)] flex-col sticky top-0 h-screen z-40 px-4 py-6">
                 <div className="mb-6 px-2">
                     <Link href="/" className="flex items-center gap-3 group">
@@ -172,117 +99,22 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     </Link>
                 </div>
 
-                {/* Wallet Card - Abstract Style */}
-                <div className="mb-8 relative group">
-                    <div className="absolute inset-0 bg-gradient-to-r from-[var(--volt)]/20 to-transparent blur-xl rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className={`relative p-5 rounded-3xl border shadow-xl overflow-hidden transition-all duration-300 ${isWrongNetwork
-                        ? "bg-red-500/5 border-red-500/30 hover:bg-red-500/10"
-                        : isPreviewMode
-                            ? "bg-[var(--warning)]/5 border-[var(--warning)]/30 hover:bg-[var(--warning)]/10"
-                            : "bg-[var(--obsidian-surface)] border-[var(--border-medium)]"
-                        }`}>
-                        <div className={`absolute top-0 right-0 w-20 h-20 rounded-full blur-2xl -mr-10 -mt-10 ${isWrongNetwork
-                            ? "bg-red-500/20"
-                            : isPreviewMode
-                                ? "bg-[var(--warning)]/20"
-                                : "bg-[var(--volt)]/10"}`}
-                        />
-
-                        <div className="flex justify-between items-start mb-4">
-                            <span className={`text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 ${isWrongNetwork
-                                ? "text-red-500"
-                                : isPreviewMode
-                                    ? "text-[var(--warning)]"
-                                    : "text-[var(--text-secondary)]"}`}>
-                                <span className={`w-1.5 h-1.5 rounded-full ${isWrongNetwork
-                                    ? "bg-red-500 animate-pulse"
-                                    : isConnectedSafe
-                                        ? "bg-[var(--success)] shadow-[0_0_8px_var(--success)]"
-                                        : "bg-[var(--warning)] animate-pulse"}`}
-                                />
-                                {isWrongNetwork ? "Network Error" : isConnectedSafe ? "Connected" : "Preview Mode"}
-                            </span>
-                            {isWrongNetwork ? (
-                                <Wallet size={18} className="text-red-500" />
-                            ) : isPreviewMode ? (
-                                <Eye size={18} className="text-[var(--warning)]" />
-                            ) : (
-                                <Wallet size={18} className="text-[var(--text-tertiary)]" />
-                            )}
-                        </div>
-
-                        <div className="mb-1">
-                            {isWrongNetwork ? (
-                                <div>
-                                    <p className="text-xs text-[var(--text-secondary)] mb-3 leading-relaxed">
-                                        Wallet connected to wrong network.
-                                    </p>
-                                    <button
-                                        onClick={switchNetwork}
-                                        className="w-full py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 font-bold text-xs uppercase tracking-widest hover:bg-red-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
-                                    >
-                                        Switch to Base
-                                    </button>
-                                </div>
-                            ) : isPreviewMode ? (
-                                <div>
-                                    <p className="text-3xl font-black text-white tracking-tight mb-3">{walletBalanceETH.toFixed(2)} ETH</p>
-                                    <div className="flex items-center justify-between gap-2">
-                                        <span className="text-[10px] text-[var(--warning)] font-bold bg-[var(--warning)]/10 px-2 py-1.5 rounded border border-[var(--warning)]/20">
-                                            Demo Data
-                                        </span>
-                                        <button
-                                            onClick={openWalletModal}
-                                            className="text-[10px] font-bold bg-[var(--warning)] text-black px-3 py-1.5 rounded hover:brightness-110 transition-all flex items-center gap-1"
-                                        >
-                                            Connect <CaretRight weight="bold" />
-                                        </button>
-                                    </div>
-                                </div>
-                            ) : !isConnectedSafe ? (
-                                <button
-                                    onClick={openWalletModal}
-                                    className="w-full py-2.5 rounded-xl bg-[var(--volt)] text-black font-bold text-xs uppercase tracking-widest hover:brightness-110 transition-all shadow-[0_0_15px_rgba(204,255,0,0.15)]"
-                                >
-                                    Connect
-                                </button>
-                            ) : (
-                                <div>
-                                    <p className="text-3xl font-black text-white tracking-tight mb-1">{formattedBalance}</p>
-                                    <p className="text-[10px] text-[var(--text-tertiary)] font-mono truncate px-2 py-1 rounded bg-black/20 inline-block border border-white/5">
-                                        {formattedAddress}
-                                    </p>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
+                <WalletCard
+                    isConnectedSafe={isConnectedSafe}
+                    isWrongNetwork={isWrongNetwork}
+                    isPreviewMode={isPreviewMode}
+                    walletBalanceETH={walletBalanceETH}
+                    formattedBalance={formattedBalance}
+                    formattedAddress={formattedAddress}
+                    switchNetwork={switchNetwork}
+                    openWalletModal={openWalletModal}
+                />
 
                 <nav className="flex-1 space-y-1">
                     {/* Core Section */}
-                    {DASHBOARD_NAV_ITEMS.filter(item => item.group === "core").map((item) => {
-                        const isActive = pathname === item.href;
-                        return (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                className={`group relative flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--volt)] ${isActive ? "scale-[1.02]" : "hover:bg-white/[0.05]"}`}
-                            >
-                                {isActive && (
-                                    <motion.div
-                                        layoutId="sidebar-nav-bg"
-                                        className="absolute inset-0 bg-[var(--volt)] rounded-2xl shadow-[0_0_20px_rgba(204,255,0,0.2)]"
-                                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                    />
-                                )}
-
-                                <span className={`relative z-10 flex items-center gap-3 ${isActive ? "text-black" : "text-[var(--text-secondary)] group-hover:text-white"}`}>
-                                    <item.icon size={20} weight={isActive ? "fill" : "regular"} className={`transition-colors ${isActive ? "text-black" : "group-hover:text-white"}`} />
-                                    <span className={`text-sm tracking-wide ${isActive ? "font-bold" : "font-medium"}`}>{item.label}</span>
-                                </span>
-                            </Link>
-                        );
-                    })}
+                    {DASHBOARD_NAV_ITEMS.filter(item => item.group === "core").map((item) => (
+                        <SidebarNavLink key={item.href} item={item} isActive={pathname === item.href} variant="desktop" />
+                    ))}
 
                     {/* Tools Section Divider */}
                     <div className="pt-4 pb-2 px-4">
@@ -293,29 +125,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     </div>
 
                     {/* Tools Section */}
-                    {DASHBOARD_NAV_ITEMS.filter(item => item.group === "tools").map((item) => {
-                        const isActive = pathname === item.href;
-                        return (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                className={`group relative flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--volt)] ${isActive ? "scale-[1.02]" : "hover:bg-white/[0.05]"}`}
-                            >
-                                {isActive && (
-                                    <motion.div
-                                        layoutId="sidebar-nav-bg"
-                                        className="absolute inset-0 bg-[var(--volt)] rounded-2xl shadow-[0_0_20px_rgba(204,255,0,0.2)]"
-                                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                    />
-                                )}
-
-                                <span className={`relative z-10 flex items-center gap-3 ${isActive ? "text-black" : "text-[var(--text-secondary)] group-hover:text-white"}`}>
-                                    <item.icon size={20} weight={isActive ? "fill" : "regular"} className={`transition-colors ${isActive ? "text-black" : "group-hover:text-white"}`} />
-                                    <span className={`text-sm tracking-wide ${isActive ? "font-bold" : "font-medium"}`}>{item.label}</span>
-                                </span>
-                            </Link>
-                        );
-                    })}
+                    {DASHBOARD_NAV_ITEMS.filter(item => item.group === "tools").map((item) => (
+                        <SidebarNavLink key={item.href} item={item} isActive={pathname === item.href} variant="desktop" />
+                    ))}
                 </nav>
 
                 <div className="mt-auto px-2">
@@ -332,7 +144,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </aside>
 
             <main className="flex-1 flex flex-col relative overflow-hidden bg-[var(--obsidian-base)] pt-16 lg:pt-0">
-                {/* Ambient Background — static CSS gradient (no JS animation, GPU-efficient) */}
+                {/* Ambient Background -- static CSS gradient (no JS animation, GPU-efficient) */}
                 <div
                     className="fixed inset-0 pointer-events-none z-0"
                     style={{
