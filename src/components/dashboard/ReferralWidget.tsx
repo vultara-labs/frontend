@@ -31,31 +31,23 @@ export function ReferralWidget({ className = "" }: { className?: string }) {
     const [copied, setCopied] = useState(false);
 
     useEffect(() => {
-        // Generate or retrieve referral data
         if (isConnected && address) {
-            // In production, this would come from a backend
-            // For demo, generate deterministic code from address
             const code = `VULT-${address.slice(2, 8).toUpperCase()}`;
-
-            // Demo data - would be fetched from backend
-            setTimeout(() => {
-                setReferralData({
-                    referralCode: code,
-                    referralCount: Math.floor(Math.random() * 10),
-                    totalEarnings: Math.random() * 50,
-                    tier: "bronze",
-                });
-            }, 0);
+            // Deterministic demo data derived from address to avoid random re-renders
+            const seed = parseInt(address.slice(2, 10), 16);
+            setReferralData({
+                referralCode: code,
+                referralCount: seed % 10,
+                totalEarnings: parseFloat(((seed % 5000) / 100).toFixed(2)),
+                tier: "bronze",
+            });
         } else {
-            // Demo mode referral
-            setTimeout(() => {
-                setReferralData({
-                    referralCode: "VULT-DEMO01",
-                    referralCount: 3,
-                    totalEarnings: 12.50,
-                    tier: "bronze",
-                });
-            }, 0);
+            setReferralData({
+                referralCode: "VULT-DEMO01",
+                referralCount: 3,
+                totalEarnings: 12.50,
+                tier: "bronze",
+            });
         }
     }, [address, isConnected]);
 
@@ -122,6 +114,7 @@ export function ReferralWidget({ className = "" }: { className?: string }) {
                         <motion.button
                             onClick={handleCopy}
                             whileTap={{ scale: 0.95 }}
+                            aria-label="Copy referral link"
                             className="p-2 rounded-lg bg-[var(--volt)]/10 text-[var(--volt)] hover:bg-[var(--volt)]/20 transition-colors"
                         >
                             {copied ? <Check size={16} weight="bold" /> : <Copy size={16} />}
@@ -129,6 +122,7 @@ export function ReferralWidget({ className = "" }: { className?: string }) {
                         <motion.button
                             onClick={handleShare}
                             whileTap={{ scale: 0.95 }}
+                            aria-label="Share referral link"
                             className="p-2 rounded-lg bg-[var(--info)]/10 text-[var(--info)] hover:bg-[var(--info)]/20 transition-colors"
                         >
                             <Share size={16} />

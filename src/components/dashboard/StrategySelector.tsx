@@ -155,6 +155,8 @@ export function StrategySelector({ selectedStrategy, onSelectStrategy, className
                                     e.stopPropagation();
                                     setShowDetails(showDetails === strategy.id ? null : strategy.id);
                                 }}
+                                aria-label={`${strategy.name} details`}
+                                aria-expanded={showDetails === strategy.id}
                                 className="p-1.5 rounded-lg hover:bg-white/[0.05] text-[var(--text-tertiary)] hover:text-white transition-colors"
                             >
                                 <Info size={14} />

@@ -50,7 +50,7 @@ export function ChatMessage({ msg }: { msg: Message }) {
                             {msg.card.items.map((item, j) => (
                                 <div key={j}>
                                     <div className="flex justify-between text-sm mb-2">
-                                        <span className="text-[#A1A1AA] font-medium">{item.label}</span>
+                                        <span className="text-[var(--text-secondary)] font-medium">{item.label}</span>
                                         <span className="text-white font-bold">{item.value}</span>
                                     </div>
                                     <div className="w-full bg-white/[0.05] h-1.5 rounded-full overflow-hidden">
@@ -83,7 +83,7 @@ export function ChatMessage({ msg }: { msg: Message }) {
                         )}
 
                         {msg.action.type === "balance" && (
-                            <Link href="/dashboard" className="w-full py-2.5 px-4 rounded-lg bg-[var(--obsidian-surface)] border border-[var(--border-light)] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-white/10 active:scale-[0.98] transition-all">
+                            <Link href="/dashboard" className="w-full py-2.5 px-4 rounded-lg bg-[var(--obsidian-surface)] border border-[var(--border-subtle)] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-white/10 active:scale-[0.98] transition-all">
                                 View Portfolio
                                 <Wallet size={14} weight="bold" />
                             </Link>

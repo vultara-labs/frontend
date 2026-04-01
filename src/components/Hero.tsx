@@ -4,20 +4,14 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ArrowDown } from "@phosphor-icons/react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRef, useEffect, useState } from "react";
+import { useRef } from "react";
 import { HeroCard } from "./landing/HeroCard";
 import { AUDIT_PARTNERS } from "@/constants";
+import { useIsDesktop } from "@/hooks/useMediaQuery";
 
 export default function Hero() {
     const targetRef = useRef<HTMLDivElement>(null);
-    const [isDesktop, setIsDesktop] = useState(false);
-
-    useEffect(() => {
-        const checkDesktop = () => setIsDesktop(window.innerWidth >= 1024);
-        checkDesktop();
-        window.addEventListener("resize", checkDesktop);
-        return () => window.removeEventListener("resize", checkDesktop);
-    }, []);
+    const isDesktop = useIsDesktop();
 
     const { scrollYProgress } = useScroll({
         target: targetRef,

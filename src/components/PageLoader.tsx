@@ -8,11 +8,9 @@ export default function PageLoader({ children }: { children: React.ReactNode }) 
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 300);
-
-        return () => clearTimeout(timer);
+        // Removed artificial 300ms delay that blocked LCP.
+        // Content renders immediately; exit animation still plays.
+        setIsLoading(false);
     }, []);
 
     return (

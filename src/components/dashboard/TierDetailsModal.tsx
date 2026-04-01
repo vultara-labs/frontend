@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, X, LockKeyOpen, LockKey } from "@phosphor-icons/react";
 import { ACCESS_LEVELS } from "@/constants";
@@ -14,6 +14,8 @@ interface TierDetailsModalProps {
 }
 
 export function TierDetailsModal({ isOpen, onClose, currentTierName, totalBalance }: TierDetailsModalProps) {
+    const modalRef = useRef<HTMLDivElement>(null);
+
     const handleKeyDown = useCallback((e: KeyboardEvent) => {
         if (e.key === "Escape") onClose();
     }, [onClose]);
@@ -24,6 +26,34 @@ export function TierDetailsModal({ isOpen, onClose, currentTierName, totalBalanc
             return () => document.removeEventListener("keydown", handleKeyDown);
         }
     }, [isOpen, handleKeyDown]);
+
+    // Focus trap
+    useEffect(() => {
+        if (!isOpen) return;
+        const modal = modalRef.current;
+        if (!modal) return;
+
+        const focusable = modal.querySelectorAll<HTMLElement>(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        focusable[0]?.focus();
+
+        const handleTab = (e: KeyboardEvent) => {
+            if (e.key !== "Tab") return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last?.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first?.focus();
+            }
+        };
+
+        modal.addEventListener("keydown", handleTab);
+        return () => modal.removeEventListener("keydown", handleTab);
+    }, [isOpen]);
 
     if (!isOpen) return null;
 
@@ -43,6 +73,7 @@ export function TierDetailsModal({ isOpen, onClose, currentTierName, totalBalanc
                     {/* Modal Content */}
                     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
                         <motion.div
+                            ref={modalRef}
                             role="dialog"
                             aria-modal="true"
                             aria-label="Access Tiers"

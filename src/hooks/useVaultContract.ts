@@ -18,7 +18,7 @@ export function useVaultContract({ address }: UseVaultContractOptions = {}) {
         if (error instanceof Error && error.message?.includes("User rejected")) {
             toast.error("Transaction cancelled");
         } else {
-            toast.error("Transaction failed");
+            toast.error("Transaction failed. Please try again or check your gas balance.");
         }
     };
 

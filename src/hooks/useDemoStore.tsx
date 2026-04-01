@@ -47,20 +47,16 @@ export function DemoProvider({ children }: { children: ReactNode }) {
 
     // Hydrate from localStorage on mount
     useEffect(() => {
-        const timer = setTimeout(() => {
-            try {
-                const stored = localStorage.getItem(STORAGE_KEY);
-                if (stored) {
-                    const parsed = JSON.parse(stored);
-                    setState(parsed);
-                }
-            } catch (e) {
-                console.warn("Failed to hydrate demo state:", e);
+        try {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                const parsed = JSON.parse(stored);
+                setState(parsed);
             }
-            setIsHydrated(true);
-        }, 0);
-
-        return () => clearTimeout(timer);
+        } catch (e) {
+            console.warn("Failed to hydrate demo state:", e);
+        }
+        setIsHydrated(true);
     }, []);
 
     // Persist to localStorage on change

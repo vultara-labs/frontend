@@ -18,7 +18,14 @@ interface Web3ProviderProps {
  * Currently NOT active - will be enabled after smart contract deployment.
  */
 export function Web3Provider({ children }: Web3ProviderProps) {
-    const [queryClient] = useState(() => new QueryClient());
+    const [queryClient] = useState(() => new QueryClient({
+        defaultOptions: {
+            queries: {
+                staleTime: 30_000,
+                refetchOnWindowFocus: false,
+            },
+        },
+    }));
 
     return (
         <WagmiProvider config={config}>

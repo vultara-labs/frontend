@@ -207,6 +207,8 @@ export function StrategySimulator({ ethPrice, depositAmount, selectedStrategy, c
                             max="50"
                             value={customPriceChange}
                             onChange={(e) => setCustomPriceChange(parseInt(e.target.value))}
+                            aria-label="ETH price change percentage"
+                            aria-valuetext={`${customPriceChange}%`}
                             className="w-full h-2 rounded-full appearance-none cursor-pointer bg-white/10"
                             style={{
                                 background: `linear-gradient(to right, var(--error) 0%, var(--text-tertiary) 50%, var(--success) 100%)`

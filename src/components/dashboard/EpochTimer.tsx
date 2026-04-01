@@ -20,10 +20,8 @@ export function EpochTimer({ className = "", showLabel = true, size = "md", expi
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        setTimeout(() => {
-            setMounted(true);
-            setTimeLeft(getTimeUntilEpochEnd(expiryDate));
-        }, 0);
+        setMounted(true);
+        setTimeLeft(getTimeUntilEpochEnd(expiryDate));
 
         const timer = setInterval(() => {
             setTimeLeft(getTimeUntilEpochEnd(expiryDate));

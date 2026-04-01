@@ -139,6 +139,7 @@ export default function AIAdvisorPage() {
 
     return (
         <div className="flex flex-col h-[100dvh] relative bg-[var(--obsidian-base)]">
+            <title>Nova AI | Vultara</title>
             <header className="h-14 lg:h-16 border-b border-[var(--border-subtle)] flex items-center justify-between px-4 lg:px-6 bg-[var(--obsidian-base)]/80 backdrop-blur-md shrink-0 absolute top-0 w-full z-20">
                 <div className="flex items-center gap-3">
                     <div className="flex items-center gap-2 lg:gap-3">
@@ -177,7 +178,7 @@ export default function AIAdvisorPage() {
                     </div>
 
                     {messages.map((msg, i) => (
-                        <ChatMessage key={i} msg={msg} />
+                        <ChatMessage key={`${msg.role}-${msg.time}-${i}`} msg={msg} />
                     ))}
 
                     {/* Quick Prompts (Only if just 1 message) */}
@@ -230,7 +231,7 @@ export default function AIAdvisorPage() {
                                 className="w-full bg-transparent border-none text-white placeholder-[var(--text-tertiary)] focus:ring-0 resize-none py-3 px-0 text-base lg:text-sm outline-none leading-relaxed"
                                 style={{ minHeight: "44px", maxHeight: "128px" }}
                             />
-                            <button onClick={() => handleSend()} disabled={!input.trim() || isTyping} className="p-3 bg-[var(--volt)] text-black rounded-xl hover:brightness-110 active:scale-95 transition-all shrink-0 disabled:opacity-0 disabled:scale-0 mb-0.5">
+                            <button onClick={() => handleSend()} disabled={!input.trim() || isTyping} aria-label="Send message" className="p-3 bg-[var(--volt)] text-black rounded-xl hover:brightness-110 active:scale-95 transition-all shrink-0 disabled:opacity-0 disabled:scale-0 mb-0.5">
                                 <ArrowRight size={18} weight="bold" />
                             </button>
                         </div>

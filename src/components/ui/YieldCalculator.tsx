@@ -71,10 +71,11 @@ export function YieldCalculator() {
 
             {/* Input */}
             <div className="mb-6">
-                <label className="text-xs text-[var(--text-secondary)] mb-2 block">Deposit Amount (USD)</label>
+                <label htmlFor="calc-deposit-amount" className="text-xs text-[var(--text-secondary)] mb-2 block">Deposit Amount (USD)</label>
                 <div className="relative">
                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-tertiary)]">$</span>
                     <input
+                        id="calc-deposit-amount"
                         type="text"
                         inputMode="numeric"
                         value={amountUSD > 0 ? formatNumber(amountUSD) : amount}

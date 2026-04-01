@@ -35,6 +35,7 @@ function WithdrawContent() {
 
     return (
         <div className="min-h-[80vh] flex items-center justify-center p-4">
+            <title>Withdraw | Vultara</title>
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -195,9 +196,9 @@ function WithdrawContent() {
                         {view === "success" && (
                             <motion.div key="success" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center py-8">
                                 <SuccessAnimation />
-                                <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-2">Request Confirmed</h3>
+                                <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-2">Withdrawal Confirmed</h3>
                                 <p className="text-[var(--text-secondary)] text-center mb-4 max-w-xs mx-auto">
-                                    Your request has been processed successfully. Check stats for updates.
+                                    Your withdrawal has been scheduled. Funds will be claimable after the current epoch expires.
                                 </p>
                                 {vault.txHash && (
                                     <a

@@ -7,6 +7,7 @@ import Link from "next/link";
 export default function CalculatorPage() {
     return (
         <div className="p-4 sm:p-6 lg:p-8 max-w-2xl mx-auto">
+            <title>Calculator | Vultara</title>
             <header className="mb-8">
                 <Link href="/dashboard" className="inline-flex items-center gap-2 text-sm text-[var(--text-secondary)] hover:text-white transition-colors mb-4">
                     <ArrowLeft size={16} />

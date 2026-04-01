@@ -31,6 +31,7 @@ function DepositContent() {
 
     return (
         <div className="min-h-[80vh] flex items-center justify-center p-4">
+            <title>Deposit | Vultara</title>
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -178,8 +179,15 @@ function DepositContent() {
                                         <div className="flex items-center gap-1.5">
                                             <span className="text-sm text-[var(--text-secondary)] font-medium">Withdrawal</span>
                                             <div className="group/tooltip relative">
-                                                <Info size={12} className="text-[var(--text-tertiary)] cursor-help" />
-                                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 p-2 rounded-lg bg-[var(--obsidian-base)] border border-[var(--border-subtle)] w-48 text-[10px] text-[var(--text-secondary)] leading-relaxed opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none z-50">
+                                                <button
+                                                    type="button"
+                                                    aria-label="Withdrawal info"
+                                                    aria-describedby="withdrawal-tooltip"
+                                                    className="text-[var(--text-tertiary)] cursor-help focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--volt)] rounded"
+                                                >
+                                                    <Info size={12} />
+                                                </button>
+                                                <div id="withdrawal-tooltip" role="tooltip" className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 p-2 rounded-lg bg-[var(--obsidian-base)] border border-[var(--border-subtle)] w-48 text-[10px] text-[var(--text-secondary)] leading-relaxed opacity-0 group-hover/tooltip:opacity-100 group-focus-within/tooltip:opacity-100 transition-opacity pointer-events-none z-50">
                                                     Funds are locked in active strategies until the epoch expires.
                                                 </div>
                                             </div>
@@ -233,7 +241,7 @@ function DepositContent() {
                                 </label>
                                 <div className="grid grid-cols-2 gap-3 sm:gap-4">
                                     <button onClick={() => setStep("input")} className="btn-secondary h-12 sm:h-14 text-xs active:scale-[0.98]">
-                                        Cancel
+                                        Back
                                     </button>
                                     {isPreviewMode ? (
                                         <button onClick={handlePreviewDeposit} disabled={!riskAcknowledged} className="btn-primary h-12 sm:h-14 text-xs disabled:opacity-40 active:scale-[0.98]">
@@ -270,7 +278,7 @@ function DepositContent() {
                         {step === "success" && (
                             <motion.div key="success" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center py-8">
                                 <SuccessAnimation />
-                                <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-2">Complete</h3>
+                                <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-2">Deposit Complete</h3>
                                 <p className="text-[var(--text-secondary)] text-center mb-4 max-w-xs mx-auto">
                                     Your funds have been deposited successfully into the Vault.
                                 </p>
